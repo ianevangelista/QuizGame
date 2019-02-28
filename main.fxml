@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="200.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+        <Image url="file:/C:/Users/Memir/OneDrive/Skrivebord/howDumbAreYou/53522382_396261590924994_8611080562834145280_n.png" />
+      </image>
+    </ImageView>
+    <TextField layoutX="200.0" layoutY="200.0" prefWidth="200.0" promptText="E-mail" text="" />
+    <Text fill="WHITE" layoutX="281.0" layoutY="192.0" scaleX="2.0829026937877955" scaleY="1.7455211676217737" strokeType="OUTSIDE" strokeWidth="0.0" text="E-mail">
+      <font>
+        <Font name="Arial" size="12.0" fx:id="x1" />
+      </font>
+    </Text>
+    <TextField layoutX="200.0" layoutY="255.0" prefWidth="200.0" promptText="Password" />
+    <Text fill="WHITE" font="$x1" layoutX="274.0" layoutY="247.0" scaleX="2.0829026937877955" scaleY="1.7464345400089645" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
+    <Button layoutX="272.0" layoutY="295.0" mnemonicParsing="false" text="Log in" />
+    <Button layoutX="14.0" layoutY="22.0" minHeight="28.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="78.0" text="Info">
+      <font>
+        <Font size="22.0" />
+      </font>
+    </Button>
+  </children>
+</AnchorPane>
