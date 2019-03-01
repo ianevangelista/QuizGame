@@ -8,7 +8,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
   <children>
     <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="200.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
       <image>
@@ -29,11 +29,15 @@
         <Font size="18.0" />
       </font>
     </Button>
-      <Button layoutX="508.0" layoutY="330.0" minHeight="28.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="78.0" text="FEEDBACK">
-         <font>
-            <Font size="11.0" />
-         </font>
-      </Button>
-      <Button layoutX="263.0" layoutY="330.0" mnemonicParsing="false" text="REGISTER" />
+    <Button layoutX="508.0" layoutY="330.0" minHeight="28.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="78.0" text="FEEDBACK">
+      <font>
+        <Font size="11.0" />
+      </font>
+    </Button>
+    <Button layoutX="263.0" layoutY="330.0" mnemonicParsing="false" text="REGISTER">
+      <font>
+        <Font size="13.0" />
+      </font>
+    </Button>
   </children>
 </AnchorPane>
