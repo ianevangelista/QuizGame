@@ -13,24 +13,25 @@
             <Image url="@gameLogo.png" />
          </image>
       </ImageView>
-      <TextField fx:id="textField" layoutX="200.0" layoutY="127.0" prefWidth="200.0" promptText="E-mail" text="" />
+      <TextField fx:id="email_reg" layoutX="200.0" layoutY="158.0" prefWidth="200.0" promptText="E-mail" text="" />
       <Button layoutX="14.0" layoutY="330.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneHome" prefHeight="42.0" prefWidth="78.0" text="BACK">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button layoutX="261.0" layoutY="301.0" mnemonicParsing="false" onAction="#reg" prefHeight="29.0" prefWidth="78.0" text="REGISTER">
+      <Button layoutX="261.0" layoutY="337.0" mnemonicParsing="false" onAction="#reg" prefHeight="29.0" prefWidth="78.0" text="REGISTER">
          <font>
             <Font size="12.0" />
          </font>
       </Button>
-      <PasswordField layoutX="200.0" layoutY="213.0" prefHeight="27.0" prefWidth="200.0" promptText="Password" />
+      <PasswordField fx:id="pass_reg" layoutX="200.0" layoutY="243.0" prefHeight="27.0" prefWidth="200.0" promptText="Password" />
       <Text fill="WHITE" layoutX="213.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="REGISTRATION" wrappingWidth="174.84765625">
          <font>
             <Font size="24.0" />
          </font>
       </Text>
-      <PasswordField layoutX="200.0" layoutY="258.0" prefHeight="27.0" prefWidth="200.0" promptText="Confirm password" />
-      <DatePicker layoutX="200.0" layoutY="173.0" prefHeight="27.0" prefWidth="200.0" promptText="Birth year" />
+      <PasswordField fx:id="confirm_reg" layoutX="200.0" layoutY="284.0" prefHeight="27.0" prefWidth="200.0" promptText="Confirm password" />
+      <TextField fx:id="birthyear_reg" layoutX="200.0" layoutY="200.0" prefWidth="200.0" promptText="Birthyear" text="" />
+      <TextField fx:id="user_reg" layoutX="200.0" layoutY="118.0" prefWidth="200.0" promptText="Username" text="" />
    </children>
 </AnchorPane>
