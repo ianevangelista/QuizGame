@@ -1,6 +1,7 @@
 package sample;
 
 import Connection.ConnectionClass;
+import Connection.Cleaner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import static java.sql.Connection.*;
 
 
 public class ControllerButton extends ChangeScene{
@@ -35,20 +37,24 @@ public class ControllerButton extends ChangeScene{
         super.change(event, "Feedback.fxml"); //bruker super-metode
     }
 
-    public void reg() {
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
+    public void reg() throws SQLException {
+        Connection connection = null;
+        Statement statement = null;
+        Cleaner cleaner = new Cleaner();
 
         String sql = "INSERT INTO navn VALUES('" + textField.getText() + "')";
         try {
-            Statement statement = connection.createStatement();
+            ConnectionClass connectionClass = new ConnectionClass();
+            connection = connectionClass.getConnection();
+            statement = connection.createStatement();
             statement.executeUpdate(sql);
-        }catch (SQLException e){
+        }catch (Exception e){
             e.printStackTrace();
         }
-
-        connection.close();
-
+        finally {
+            cleaner.closeStatement(statement);
+            cleaner.closeConnection(connection);
+        }
     }
 
     public boolean login() {
@@ -62,7 +68,7 @@ public class ControllerButton extends ChangeScene{
 		}catch (SQLException e){
 			e.printStackTrace();
 		}
-
+        statement.close();
         connection.close();
 	}
 }
