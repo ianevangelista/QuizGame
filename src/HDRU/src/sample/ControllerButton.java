@@ -38,16 +38,10 @@ public class ControllerButton extends ChangeScene{
         super.change(event, "Feedback.fxml"); //bruker super-metode
     }
 
-<<<<<<< HEAD
-    public void reg() { //inne på registrering
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
-=======
     public void reg() throws SQLException {
         Connection connection = null;
         Statement statement = null;
         Cleaner cleaner = new Cleaner();
->>>>>>> 1471592750e2987b3fdc0928c3463fd158022562
 
         String sql = "INSERT INTO navn VALUES('" + textField.getText() + "')";
         try {
