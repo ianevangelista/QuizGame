@@ -17,23 +17,24 @@ public class ControllerButton extends ChangeScene{
     @FXML
     public TextField textField;
 
-    public void sceneInfo(ActionEvent event) throws IOException {
+
+    public void sceneInfo(ActionEvent event) throws IOException { //trykker på infoknapp
        super.change(event, "Info.fxml"); //bruker super-metode
     }
 
-    public void sceneHome(ActionEvent event) throws IOException {
+    public void sceneHome(ActionEvent event) throws IOException { //hjemknapp
         super.change(event, "Main.fxml"); //bruker super-metode
     }
 
-    public void register(ActionEvent event) throws IOException {
+    public void register(ActionEvent event) throws IOException { //trykker registrer
         super.change(event, "Register.fxml"); //bruker super-metode
     }
 
-    public void feedback(ActionEvent event) throws IOException {
+    public void feedback(ActionEvent event) throws IOException { //feedback knapp
         super.change(event, "Feedback.fxml"); //bruker super-metode
     }
 
-    public void reg() {
+    public void reg() { //inne på registrering
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
 
