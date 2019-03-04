@@ -50,11 +50,11 @@ public class ControllerButton extends ChangeScene{
 
         int birthyear = 0;
         String password = null;
+
         if(birthyear_reg.getText() != null){
             String getYear = birthyear_reg.getText();
             birthyear = Integer.parseInt(getYear);
         }
-
         if(pass_reg.getText().equals(confirm_reg.getText())){
             password = pass_reg.getText();
         }
