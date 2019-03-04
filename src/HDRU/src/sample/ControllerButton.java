@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -18,7 +17,13 @@ import java.sql.ResultSet;
 public class ControllerButton extends ChangeScene{
 
     @FXML
-    public TextField textField;
+    public TextField user_reg;
+    public TextField email_reg;
+    public TextField birthyear_reg;
+    public TextField pass_reg;
+    public TextField confirm_reg;
+
+
     public TextField email;
     public TextField password;
     public Label emailWrong;
@@ -39,21 +44,33 @@ public class ControllerButton extends ChangeScene{
         super.change(event, "Feedback.fxml"); //bruker super-metode
     }
 
-    public void reg() throws SQLException {
+    public void reg() {
         Connection connection = null;
         Statement statement = null;
         Cleaner cleaner = new Cleaner();
 
-        String sql = "INSERT INTO navn VALUES('" + textField.getText() + "')";
+        int birthyear = 0;
+        String password = null;
+        if(birthyear_reg.getText() != null){
+            String getYear = birthyear_reg.getText();
+            birthyear = Integer.parseInt(getYear);
+        }
+
+        if(pass_reg.getText().equals(confirm_reg.getText())){
+            password = pass_reg.getText();
+        }
+
+        String sql = "INSERT INTO Player VALUES(\"" + user_reg.getText() + "\",  \"" + email_reg.getText() + "\", " + 0 + ", " + false + ", \"" + password + "\", " + true + ", " + birthyear + ")";
         try {
             ConnectionClass connectionClass = new ConnectionClass();
             connection = connectionClass.getConnection();
             statement = connection.createStatement();
             statement.executeUpdate(sql);
-            statement.close();
-            connection.close();
         }catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            cleaner.closeStatement(statement);
+            cleaner.closeConnection(connection);
         }
 
     }
