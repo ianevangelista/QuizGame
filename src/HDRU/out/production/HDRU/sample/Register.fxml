@@ -13,13 +13,13 @@
             <Image url="@gameLogo.png" />
          </image>
       </ImageView>
-      <TextField layoutX="200.0" layoutY="127.0" prefWidth="200.0" promptText="E-mail" text="" />
+      <TextField fx:id="textField" layoutX="200.0" layoutY="127.0" prefWidth="200.0" promptText="E-mail" text="" />
       <Button layoutX="14.0" layoutY="330.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneHome" prefHeight="42.0" prefWidth="78.0" text="BACK">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button layoutX="261.0" layoutY="301.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="78.0" text="REGISTER">
+      <Button layoutX="261.0" layoutY="301.0" mnemonicParsing="false" onAction="#reg" prefHeight="29.0" prefWidth="78.0" text="REGISTER">
          <font>
             <Font size="12.0" />
          </font>

@@ -21,7 +21,6 @@
             </image>
         </ImageView>
         <TextField layoutX="200.0" layoutY="200.0" prefWidth="200.0" promptText="E-mail" text="" />
-        <Button layoutX="263.0" layoutY="295.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="78.0" text="LOG IN" />
         <Button layoutX="14.0" layoutY="330.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneInfo" prefHeight="42.0" prefWidth="78.0" text="INFO">
             <font>
                 <Font size="18.0" />
@@ -30,11 +29,6 @@
         <Button layoutX="508.0" layoutY="330.0" minHeight="28.0" mnemonicParsing="false" onAction="#feedback" prefHeight="42.0" prefWidth="78.0" text="FEEDBACK">
             <font>
                 <Font size="11.0" />
-            </font>
-        </Button>
-        <Button layoutX="263.0" layoutY="330.0" mnemonicParsing="false" onAction="#register" prefHeight="29.0" prefWidth="78.0" text="REGISTER">
-            <font>
-                <Font size="12.0" />
             </font>
         </Button>
       <Text fill="WHITE" layoutX="255.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E-mail" wrappingWidth="71.84765625">
@@ -48,5 +42,11 @@
             <Font size="24.0" />
          </font>
       </Text>
+        <Button layoutX="263.0" layoutY="330.0" mnemonicParsing="false" onAction="#register" prefHeight="29.0" prefWidth="78.0" text="REGISTER">
+            <font>
+                <Font size="12.0" />
+            </font>
+        </Button>
+        <Button layoutX="263.0" layoutY="295.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="78.0" text="LOG IN" />
     </children>
 </AnchorPane>

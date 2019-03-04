@@ -15,9 +15,9 @@ abstract class ChangeScene {
 
     public void change(ActionEvent event, String fxml) throws IOException {
         Parent tableViewParent = FXMLLoader.load(getClass().getResource(fxml)); //henter inn klasse og fxml-fil
-        Scene main = new Scene(tableViewParent); //lager ny scene
+        Scene scene = new Scene(tableViewParent); //lager ny scene
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow(); //caster stage
-        window.setScene(main); //setter scene
+        window.setScene(scene); //setter scene
         window.show(); //viser scene
     }
 }
