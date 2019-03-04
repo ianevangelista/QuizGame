@@ -16,6 +16,8 @@ public class ControllerButton extends ChangeScene{
 
     @FXML
     public TextField textField;
+    public TextField email;
+    public TextField password;
 
     public void sceneInfo(ActionEvent event) throws IOException {
        super.change(event, "Info.fxml"); //bruker super-metode
@@ -45,5 +47,22 @@ public class ControllerButton extends ChangeScene{
             e.printStackTrace();
         }
 
+        connection.close();
+
     }
+
+    public boolean login() {
+		ConnectionClass connectionClass = new ConnectionClass();
+		Connection connection = connectionClass.getConnection();
+
+		String sql = "SELECT log_password FROM log_user WHERE log_username =" + email.getText()  + ";";
+		try {
+			Statement statement = connection.createStatement();
+			statement.executeUpdate(sql);
+		}catch (SQLException e){
+			e.printStackTrace();
+		}
+
+        connection.close();
+	}
 }
