@@ -37,7 +37,7 @@ public class ControllerButton extends ChangeScene{
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
 
-        String sql = "INSERT INTO navn VALUES('" + textField.getText() + "')";
+        String sql = "INSERT INTO navn VALUES(\""+ textField.getText() +"\");";
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(sql);
