@@ -4,6 +4,7 @@ import Connection.ConnectionClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -19,7 +20,6 @@ public class ControllerButton extends ChangeScene{
     public TextField textField;
     public TextField email;
     public TextField password;
-
 
     public void sceneInfo(ActionEvent event) throws IOException { //trykker på infoknapp
        super.change(event, "Info.fxml"); //bruker super-metode
