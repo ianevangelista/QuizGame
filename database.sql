@@ -12,10 +12,15 @@ CREATE TABLE IF NOT EXISTS `iaevange`.`Player` (
   `password` VARCHAR(100) NULL,
   `salt` VARCHAR(100) NULL,
   `female` TINYINT(1) NULL,
+<<<<<<< HEAD
   `birthyear` INT(4) NULL,
   `gameId` INT NULL,
   PRIMARY KEY (`username`),
   FOREIGN KEY(`gameId`) REFERENCES `iaevange`.`Game` (`gameId`)
+=======
+  `birthyear` INT NULL,
+  PRIMARY KEY (`username`)
+>>>>>>> Endring
 );
 
 

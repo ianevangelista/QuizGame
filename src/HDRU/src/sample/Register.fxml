@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="sample.ControllerButton">
+  <children>
+    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+        <Image url="@gameLogo.png" />
+      </image>
+    </ImageView>
+    <TextField id="textField" fx:id="email_reg" layoutX="200.0" layoutY="127.0" prefWidth="200.0" promptText="E-mail" text="" />
+    <Button layoutX="14.0" layoutY="330.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneHome" prefHeight="42.0" prefWidth="78.0" text="BACK">
+      <font>
+        <Font size="18.0" />
+      </font>
+    </Button>
+    <Button layoutX="261.0" layoutY="301.0" mnemonicParsing="false" onAction="#reg" prefHeight="29.0" prefWidth="78.0" text="REGISTER">
+      <font>
+        <Font size="12.0" />
+      </font>
+    </Button>
+    <PasswordField fx:id="pass_reg" layoutX="200.0" layoutY="213.0" prefHeight="27.0" prefWidth="200.0" promptText="Password" />
+    <Text fill="WHITE" layoutX="213.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="REGISTRATION" wrappingWidth="174.84765625">
+      <font>
+        <Font size="24.0" />
+      </font>
+    </Text>
+    <PasswordField fx:id="confirm_reg" layoutX="200.0" layoutY="258.0" prefHeight="27.0" prefWidth="200.0" promptText="Confirm password" />
+    <TextField id="textField" fx:id="user_reg" layoutX="200.0" layoutY="84.0" prefWidth="200.0" promptText="Username" text="" />
+    <TextField id="textField" fx:id="birthyear_reg" layoutX="200.0" layoutY="166.0" prefWidth="200.0" promptText="Birthyear" text="" />
+  </children>
+</AnchorPane>
