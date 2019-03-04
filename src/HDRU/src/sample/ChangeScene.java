@@ -22,7 +22,8 @@ abstract class ChangeScene {
         window.show(); //viser scene
     }
 
-    public final void changeVisiability(boolean value, Label test){
+    public void changeVisibility(boolean value, Label test){
         test.setVisible(value);
     }
+
 }

@@ -81,7 +81,7 @@ public class ControllerButton extends ChangeScene{
                 rs.close();
                 statement.close();
                 connection.close();
-                super.change(event, "Info.fxml");
+                super.changeVisibility(true, );
             }
 
 		}catch (Exception e){
