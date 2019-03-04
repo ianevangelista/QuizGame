@@ -83,7 +83,7 @@ public class ControllerButton extends ChangeScene{
                 rs.close();
                 statement.close();
                 connection.close();
-                super.changeVisiability(true, emailWrong);
+                super.changeVisibility(true, emailWrong);
             }
 
 		}catch (Exception e){
