@@ -61,20 +61,28 @@ public class ControllerButton extends ChangeScene{
         Connection connection = connectionClass.getConnection();
         ResultSet rs = null;
 
-		String sql = "SELECT password FROM Player WHERE email ='" + email.getText()  + "' AND password='" + password.getText() + "';";
+		String sql = "SELECT password FROM Player WHERE email ='" + email.getText() + "';";
 		try {
 			Statement statement = connection.createStatement();
             rs = statement.executeQuery(sql);
-            
-            if(rs != null){
+
+            rs.next();
+
+            String realPassword = rs.getString("password");
+
+            if(realPassword.equals(password.getText())){
                 rs.close();
                 statement.close();
                 connection.close();
                 super.change(event, "Game.fxml");
             }
-            rs.close();
-            statement.close();
-            connection.close();
+            else{
+                rs.close();
+                statement.close();
+                connection.close();
+                super.change(event, "Info.fxml");
+            }
+
 		}catch (Exception e){
 			e.printStackTrace();
 		}
