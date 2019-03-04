@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
 
 import java.io.IOException;
 
@@ -20,4 +21,9 @@ abstract class ChangeScene {
         window.setScene(scene); //setter scene
         window.show(); //viser scene
     }
+
+    public void changeVisibility(boolean value, Label test){
+        test.setVisible(value);
+    }
+
 }
