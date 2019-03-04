@@ -21,6 +21,7 @@ public class ControllerButton extends ChangeScene{
     public TextField textField;
     public TextField email;
     public TextField password;
+    public Label emailWrong;
 
     public void sceneInfo(ActionEvent event) throws IOException { //trykker på infoknapp
        super.change(event, "Info.fxml"); //bruker super-metode
@@ -62,6 +63,7 @@ public class ControllerButton extends ChangeScene{
         Connection connection = connectionClass.getConnection();
         ResultSet rs = null;
 
+
 		String sql = "SELECT password FROM Player WHERE email ='" + email.getText() + "';";
 		try {
 			Statement statement = connection.createStatement();
@@ -81,7 +83,7 @@ public class ControllerButton extends ChangeScene{
                 rs.close();
                 statement.close();
                 connection.close();
-                super.change(event, "Info.fxml");
+                super.changeVisiability(true, emailWrong);
             }
 
 		}catch (Exception e){
