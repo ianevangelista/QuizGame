@@ -11,7 +11,11 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+<<<<<<< HEAD
 import static java.sql.Connection.*;
+=======
+import java.sql.ResultSet;
+>>>>>>> 2ec46dfdc149abd7616537a86359370a20c6f44a
 
 
 public class ControllerButton extends ChangeScene{
@@ -48,6 +52,7 @@ public class ControllerButton extends ChangeScene{
             connection = connectionClass.getConnection();
             statement = connection.createStatement();
             statement.executeUpdate(sql);
+<<<<<<< HEAD
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -55,20 +60,44 @@ public class ControllerButton extends ChangeScene{
             cleaner.closeStatement(statement);
             cleaner.closeConnection(connection);
         }
+=======
+            statement.close();
+            connection.close();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+>>>>>>> 2ec46dfdc149abd7616537a86359370a20c6f44a
     }
 
     public boolean login() {
 		ConnectionClass connectionClass = new ConnectionClass();
-		Connection connection = connectionClass.getConnection();
+        Connection connection = connectionClass.getConnection();
+        ResultSet rs = null;
 
-		String sql = "SELECT log_password FROM log_user WHERE log_username =" + email.getText()  + ";";
+		String sql = "SELECT password FROM Player WHERE email =" + email.getText()  + " AND password=" + password.getText() + ";";
 		try {
 			Statement statement = connection.createStatement();
-			statement.executeUpdate(sql);
+            rs = statement.executeQuery(sql);
+            
+            if(rs != null){
+                rs.close();
+                statement.close();
+                connection.close();
+                return true;
+            }
+            rs.close();
+            statement.close();
+            connection.close();
+            return false;
 		}catch (SQLException e){
 			e.printStackTrace();
+			return false;
 		}
+<<<<<<< HEAD
         statement.close();
         connection.close();
+=======
+>>>>>>> 2ec46dfdc149abd7616537a86359370a20c6f44a
 	}
 }
