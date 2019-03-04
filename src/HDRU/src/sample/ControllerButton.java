@@ -1,6 +1,7 @@
 package sample;
 
 import Connection.ConnectionClass;
+import Connection.Cleaner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -37,13 +38,22 @@ public class ControllerButton extends ChangeScene{
         super.change(event, "Feedback.fxml"); //bruker super-metode
     }
 
+<<<<<<< HEAD
     public void reg() { //inne på registrering
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
+=======
+    public void reg() throws SQLException {
+        Connection connection = null;
+        Statement statement = null;
+        Cleaner cleaner = new Cleaner();
+>>>>>>> 1471592750e2987b3fdc0928c3463fd158022562
 
         String sql = "INSERT INTO navn VALUES('" + textField.getText() + "')";
         try {
-            Statement statement = connection.createStatement();
+            ConnectionClass connectionClass = new ConnectionClass();
+            connection = connectionClass.getConnection();
+            statement = connection.createStatement();
             statement.executeUpdate(sql);
             statement.close();
             connection.close();
@@ -53,29 +63,35 @@ public class ControllerButton extends ChangeScene{
 
     }
 
-    public boolean login() {
-		ConnectionClass connectionClass = new ConnectionClass();
+    public void playerLogin(ActionEvent event) throws IOException{
+        ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
         ResultSet rs = null;
 
-		String sql = "SELECT password FROM Player WHERE email =" + email.getText()  + " AND password=" + password.getText() + ";";
+		String sql = "SELECT password FROM Player WHERE email ='" + email.getText() + "';";
 		try {
 			Statement statement = connection.createStatement();
             rs = statement.executeQuery(sql);
-            
-            if(rs != null){
+
+            rs.next();
+
+            String realPassword = rs.getString("password");
+
+            if(realPassword.equals(password.getText())){
                 rs.close();
                 statement.close();
                 connection.close();
-                return true;
+                super.change(event, "Game.fxml");
             }
-            rs.close();
-            statement.close();
-            connection.close();
-            return false;
-		}catch (SQLException e){
+            else{
+                rs.close();
+                statement.close();
+                connection.close();
+                super.change(event, "Info.fxml");
+            }
+
+		}catch (Exception e){
 			e.printStackTrace();
-			return false;
 		}
 	}
 }
