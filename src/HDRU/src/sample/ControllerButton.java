@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.ResultSet;
 
 
 public class ControllerButton extends ChangeScene{
@@ -43,26 +44,37 @@ public class ControllerButton extends ChangeScene{
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(sql);
-        }catch (SQLException e){
+            statement.close();
+            connection.close();
+        }catch (SQLException e) {
             e.printStackTrace();
         }
-
-        connection.close();
 
     }
 
     public boolean login() {
 		ConnectionClass connectionClass = new ConnectionClass();
-		Connection connection = connectionClass.getConnection();
+        Connection connection = connectionClass.getConnection();
+        ResultSet rs = null;
 
-		String sql = "SELECT log_password FROM log_user WHERE log_username =" + email.getText()  + ";";
+		String sql = "SELECT password FROM Player WHERE email =" + email.getText()  + " AND password=" + password.getText() + ";";
 		try {
 			Statement statement = connection.createStatement();
-			statement.executeUpdate(sql);
+            rs = statement.executeQuery(sql);
+            
+            if(rs != null){
+                rs.close();
+                statement.close();
+                connection.close();
+                return true;
+            }
+            rs.close();
+            statement.close();
+            connection.close();
+            return false;
 		}catch (SQLException e){
 			e.printStackTrace();
+			return false;
 		}
-
-        connection.close();
 	}
 }
