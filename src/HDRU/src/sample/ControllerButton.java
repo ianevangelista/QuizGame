@@ -36,6 +36,7 @@ public class ControllerButton extends ChangeScene{
         super.change(event, "Feedback.fxml"); //bruker super-metode
     }
 
+
     public void reg() {
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
@@ -52,12 +53,12 @@ public class ControllerButton extends ChangeScene{
 
     }
 
-    public boolean login() {
-		ConnectionClass connectionClass = new ConnectionClass();
+    public void playerLogin(ActionEvent event) throws IOException{
+        ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
         ResultSet rs = null;
 
-		String sql = "SELECT password FROM Player WHERE email =" + email.getText()  + " AND password=" + password.getText() + ";";
+		String sql = "SELECT password FROM Player WHERE email ='" + email.getText()  + "' AND password='" + password.getText() + "';";
 		try {
 			Statement statement = connection.createStatement();
             rs = statement.executeQuery(sql);
@@ -66,15 +67,13 @@ public class ControllerButton extends ChangeScene{
                 rs.close();
                 statement.close();
                 connection.close();
-                return true;
+                super.change(event, "Game.fxml");
             }
             rs.close();
             statement.close();
             connection.close();
-            return false;
-		}catch (SQLException e){
+		}catch (Exception e){
 			e.printStackTrace();
-			return false;
 		}
 	}
 }
