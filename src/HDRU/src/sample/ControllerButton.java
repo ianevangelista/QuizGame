@@ -22,6 +22,7 @@ public class ControllerButton extends ChangeScene{
     public TextField birthyear_reg;
     public TextField pass_reg;
     public TextField confirm_reg;
+    public Label emailWrong;
 
 
     public TextField email;
@@ -98,7 +99,7 @@ public class ControllerButton extends ChangeScene{
                 rs.close();
                 statement.close();
                 connection.close();
-                super.change(event, "Info.fxml");
+                super.changeVisibility(true, emailWrong);
             }
 
 		}catch (Exception e){
