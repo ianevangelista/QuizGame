@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<<<<<<< HEAD
+=======
+<?import javafx.scene.control.Label?>
+>>>>>>> 64b4b7a636fa7a384b1b081a6e5ec3c00191501e
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -40,5 +44,6 @@
       </font>
     </Button>
     <Button layoutX="263.0" layoutY="295.0" mnemonicParsing="false" onAction="#playerLogin" prefHeight="27.0" prefWidth="78.0" text="LOG IN" />
+    <Label fx:id="emailWrong" layoutX="409.0" layoutY="204.0" text="Cannot find E-mail" visible="false" />
   </children>
 </AnchorPane>

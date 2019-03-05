@@ -25,4 +25,5 @@ abstract class ChangeScene {
     public void changeVisibility(boolean value, Label test){
         test.setVisible(value);
     }
+
 }
