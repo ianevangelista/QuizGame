@@ -1,15 +1,15 @@
 package sample;
 
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class HashSalt {
 
+    private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
     public HashSalt(){}
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) {
         byte[] salt = createSalt(); //byte
         String hexSalt = encodeHexString(salt);
 
@@ -20,16 +20,19 @@ public class HashSalt {
         System.out.println(hexSalt);
     }
 
-    public static String genHashSalted(String password, byte[] salt) throws NoSuchAlgorithmException {
-
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        digest.reset();
-        digest.update(salt);
-        byte[] hash = digest.digest(password.getBytes());
-        return bytesToStringHex(hash);
+    public static String genHashSalted(String password, byte[] salt) {
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            digest.reset();
+            digest.update(salt);
+            byte[] hash = digest.digest(password.getBytes());
+            return bytesToStringHex(hash);
+        }catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
     public static String bytesToStringHex(byte[] bytes){
         char[] hexChars = new char[bytes.length * 2];
         for (int i = 0; i < bytes.length; i++){

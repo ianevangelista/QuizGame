@@ -10,32 +10,32 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 
 
-public class ControllerButton extends ChangeScene{
+public class ControllerHome {
 
     @FXML
     public TextField email;
     public TextField password;
 
+    public ChangeScene sceneChanger = new ChangeScene();
 
     public void sceneInfo(ActionEvent event) throws IOException { //trykker på infoknapp
-       super.change(event, "Info.fxml"); //bruker super-metode
+       sceneChanger.change(event, "Info.fxml"); //bruker super-metode
     }
 
-    public void sceneHome(ActionEvent event) throws IOException { //hjemknapp
-        super.change(event, "Main.fxml"); //bruker super-metode
+    public void sceneHome(ActionEvent event) throws IOException { //feedback knapp
+        sceneChanger.change(event, "Main.fxml"); //bruker super-metode
     }
 
     public void register(ActionEvent event) throws IOException { //trykker registrer
-        super.change(event, "Register.fxml"); //bruker super-metode
+        sceneChanger.change(event, "Register.fxml"); //bruker super-metode
     }
 
     public void feedback(ActionEvent event) throws IOException { //feedback knapp
-        super.change(event, "Feedback.fxml"); //bruker super-metode
+        sceneChanger.change(event, "Feedback.fxml"); //bruker super-metode
     }
 
     public void playerLogin(ActionEvent event) throws IOException{
@@ -61,11 +61,11 @@ public class ControllerButton extends ChangeScene{
             String hashedPassword = hashedSaltedPass.genHashSalted(inputPassword, byteSalt);
 
             if(realPassword.equals(hashedPassword)){
-                super.change(event, "Game.fxml");
+                sceneChanger.change(event, "Game.fxml");
             }
             else{
                 System.out.println(hashedPassword);
-                super.change(event, "Info.fxml"); //her skal en pop-up komme
+                sceneChanger.change(event, "Info.fxml"); //her skal en pop-up komme
             }
 
 		}catch (Exception e){

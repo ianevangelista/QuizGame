@@ -7,18 +7,22 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
-
 import java.io.IOException;
 
+public class ChangeScene {
 
-abstract class ChangeScene {
+    public ChangeScene(){}
 
-    public void change(ActionEvent event, String fxml) throws IOException {
-        Parent tableViewParent = FXMLLoader.load(getClass().getResource(fxml)); //henter inn klasse og fxml-fil
-        Scene scene = new Scene(tableViewParent); //lager ny scene
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow(); //caster stage
-        window.setScene(scene); //setter scene
-        window.show(); //viser scene
+    public void change(ActionEvent event, String fxml) {
+        try{
+            Parent tableViewParent = FXMLLoader.load(getClass().getResource(fxml)); //henter inn klasse og fxml-fil
+            Scene scene = new Scene(tableViewParent); //lager ny scene
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow(); //caster stage
+            window.setScene(scene); //setter scene
+            window.show(); //viser scene
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     public void changeVisibility(boolean value, Label test){
