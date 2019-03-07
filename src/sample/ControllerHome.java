@@ -5,7 +5,6 @@ import Connection.Cleaner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -22,23 +21,23 @@ public class ControllerHome {
 
     public ChangeScene sceneChanger = new ChangeScene();
 
-    public void sceneInfo(ActionEvent event) throws IOException { //trykker på infoknapp
+    public void sceneInfo(ActionEvent event) { //trykker på infoknapp
        sceneChanger.change(event, "Info.fxml"); //bruker super-metode
     }
 
-    public void sceneHome(ActionEvent event) throws IOException { //feedback knapp
+    public void sceneHome(ActionEvent event) { //feedback knapp
         sceneChanger.change(event, "Main.fxml"); //bruker super-metode
     }
 
-    public void register(ActionEvent event) throws IOException { //trykker registrer
+    public void register(ActionEvent event) { //trykker registrer
         sceneChanger.change(event, "Register.fxml"); //bruker super-metode
     }
 
-    public void feedback(ActionEvent event) throws IOException { //feedback knapp
+    public void feedback(ActionEvent event) { //feedback knapp
         sceneChanger.change(event, "Feedback.fxml"); //bruker super-metode
     }
 
-    public void playerLogin(ActionEvent event) throws IOException{
+    public void playerLogin(ActionEvent event) {
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
         Cleaner cleaner = new Cleaner();
@@ -74,4 +73,7 @@ public class ControllerHome {
             cleaner.closeThree(statement, rs, connection);
         }
 	}
+
+
+
 }
