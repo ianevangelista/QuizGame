@@ -273,6 +273,10 @@ public class ControllerGame {
         }
     }
 
+    public void setUserEmail(String userEmail){
+        this.userEmail = userEmail;
+    }
+
     public void highscore(ActionEvent event) { //HighScore knapp
         sceneChanger.change(event, "HighScore.fxml");
     }
