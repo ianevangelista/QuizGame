@@ -21,7 +21,7 @@ public class ControllerQuestion {
     public TextField questionField;
     public TextField timerDisplay;
 
-    public void questionDisplay(int gameId, String username) {
+    public void questionDisplay(int gameId, String username) { //helene: fiks at spørsmålene vises riktig
         Connection connection = null;
         Statement statement = null;
         Cleaner cleaner = new Cleaner();

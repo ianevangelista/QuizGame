@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -18,6 +19,7 @@ public class ControllerHome {
     @FXML
     public TextField email;
     public TextField password;
+    public Label visibility;
 
     public ChangeScene sceneChanger = new ChangeScene();
 
@@ -44,12 +46,12 @@ public class ControllerHome {
         ResultSet rs = null;
         Statement statement = null;
 
-
-		String sql = "SELECT password, salt FROM Player WHERE email ='" + email.getText() + "';";
+		String sql = "SELECT email, password, salt FROM Player WHERE email ='" + email.getText() + "';";
 		try {
 			statement = connection.createStatement();
             rs = statement.executeQuery(sql);
             rs.next();
+
 
             String salt = rs.getString("salt");
             String realPassword = rs.getString("password");
@@ -63,8 +65,7 @@ public class ControllerHome {
                 sceneChanger.change(event, "Game.fxml");
             }
             else{
-                System.out.println(hashedPassword);
-                sceneChanger.change(event, "Info.fxml"); //her skal en pop-up komme
+                sceneChanger.changeVisibility(true, visibility); //her skal en pop-up komme
             }
 
 		}catch (Exception e){

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerHome">
+   <children>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@gameLogo.png" />
+         </image>
+      </ImageView>
+      <Text fill="WHITE" layoutX="271.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="INFO" wrappingWidth="57.84765625">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="4.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello and welcome to How Dumb R U?&#10;This is an online and interactive multiplayer game which allows you to test your common knowledge against your friends!  &#10;How to play:&#10;- Register and log in&#10;- Type in the e-mail of your desired opponent&#10;- Choose category&#10;- Each game consists of one category and three questions&#10;- You have 30 seconds on each question to type in an answer &#10;- There are multiple answers to the question, but the more difficult answer you type in which is correct, gives you more points&#10;- The user with the most points after three questions will gain all the points achieved in the game&#10;- The loser will not gain any points&#10;- Good luck!" textAlignment="CENTER" wrappingWidth="591.84765625">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Button layoutX="14.0" layoutY="330.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneHome" prefHeight="42.0" prefWidth="78.0" text="BACK">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

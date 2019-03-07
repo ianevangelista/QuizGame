@@ -18,6 +18,10 @@ import java.util.Collections;
 
 public class ControllerGame {
 
+    private String userEmail;
+    //LAg game ID,
+    private int questionCount;
+
     @FXML
     public TextField user_challenge;
     public Label usernameWrong;
@@ -31,7 +35,7 @@ public class ControllerGame {
     //Incorrect answer
     public TextField player1PtW;
     public TextField player2PtW;
-    private String userEmail;
+
 
 
     public ChangeScene sceneChanger = new ChangeScene();
@@ -136,33 +140,28 @@ public class ControllerGame {
             rsCategoryNumber.close();
 
             ResultSet rsNumberQuestion = statement.executeQuery(sqlNumberQuestion + categoryId + "';"); //henter ant spørsmål i kategorien
-            rsNumberQuestion.next();                                                        //henter første i rsNumberQuestion
-            int antQuestion = rsNumberQuestion.getInt("COUNT(questionId");      //lager en int med ant spøsmål i kategorien
+            rsNumberQuestion.next();//henter første i rsNumberQuestion
+            int antQuestion = rsNumberQuestion.getInt("COUNT(questionId)");      //lager en int med ant spøsmål i kategorien
             rsNumberQuestion.close();
 
             int[] questionId = new int[3];
-
+            String sqlGetText = "SELECT questionId FROM Question WHERE categoryId=" + categoryId + " ORDER BY questionId;";
+            ResultSet rsText;
+            rsText = statement.executeQuery(sqlGetText);
             ArrayList<Integer> listQuestion = new ArrayList<Integer>();
             for (int i=1; i < antQuestion+1; i++) {
-                listQuestion.add(new Integer(i));
+                rsText.next();
+                listQuestion.add(new Integer(rsText.getInt("questionId")));
+
             }
             Collections.shuffle(listQuestion);
             for (int i=0; i<3; i++) {
                 questionId[i] = listQuestion.get(i);
             }
 
-            String sqlGetText = "SELECT questionId FROM Question WHERE categoryId='" + categoryId + "'ORDER BY questionId LIMIT 1 OFFSET ";
-            int[] questionText = new int[3];
-            ResultSet rsText;
-            for(int i = 0; i < questionText.length; i++) {
-                rsText = statement.executeQuery(sqlGetText + (questionId[i]-1) + ";");
-                rsText.next();
-                questionText[i] = rsText.getInt("questionId");
-            }
+            String sqlUpdate = "UPDATE Game SET question1='" + questionId[0] + "', question2 ='" + questionId[1] + "' , question3='" + questionId[2] + "' WHERE gameId=" + gameId + ";";
 
-            String sqlUpdate = "UPDATE Game SET question1='" + questionText[0] + "', question2 ='" + questionText[1] + "' , question3='" + questionText[2] + "' WHERE gameId=" + gameId + ";";
-
-            statement.executeQuery(sqlUpdate);
+            statement.execute(sqlUpdate);
 
         }catch (SQLException e) {
             e.printStackTrace();
