@@ -200,13 +200,13 @@ public class ControllerGame {
             pt2.close();
 
             //Sjekker om det er spiller 1 eller 2 som er "Hovedspiller" og skriver poeng i passende rekkefølge
-            /*if (email.equals(userEmail)) {
+            if (email.equals(userEmail)) {
                 player1Pt.setText(Integer.toString(points1));
                 player2Pt.setText(Integer.toString(points2));
             } else {
                 player1Pt.setText(Integer.toString(points2));
                 player2Pt.setText(Integer.toString(points1));
-            }*/ //her må man fikse userEmail - ian
+            }
 
             //Skriver ut nye poeng
             newPoints.setText(String.valueOf(poeng));
@@ -251,7 +251,7 @@ public class ControllerGame {
             int points2 = pt2.getInt("p2Points");
             pt2.close();
 
-            /*
+
             //Sjekker om det er spiller 1 eller 2 som er "Hovedspiller" og skriver poeng i passende rekkefølge
             if (email.equals(userEmail)) {
                 player1PtW.setText(Integer.toString(points1));
@@ -259,7 +259,7 @@ public class ControllerGame {
             } else {
                 player1PtW.setText(Integer.toString(points2));
                 player2PtW.setText(Integer.toString(points1));
-            }*/ // fikse userEmail - ian
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -267,6 +267,10 @@ public class ControllerGame {
             cleaner.closeTwo(statement, connection);
         }
     }
+
+    public void setUserEmail(String userEmail){
+        this.userEmail = userEmail;
+    } //husk å bruke denne metoden i controllerHome i log in for å sette verdien
 
     public void highscore(ActionEvent event) { //HighScore knapp
         sceneChanger.change(event, "HighScore.fxml");
