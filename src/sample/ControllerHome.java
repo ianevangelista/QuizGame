@@ -48,31 +48,35 @@ public class ControllerHome {
 
 		String sql = "SELECT email, password, salt FROM Player WHERE email ='" + email.getText() + "';";
 		try {
-			statement = connection.createStatement();
+            statement = connection.createStatement();
             rs = statement.executeQuery(sql);
-            rs.next();
 
-
-            String salt = rs.getString("salt");
-            String realPassword = rs.getString("password");
-            String inputPassword = password.getText();
-
-            HashSalt hashedSaltedPass = new HashSalt();
-            byte[] byteSalt = hashedSaltedPass.decodeHexString(salt);
-            String hashedPassword = hashedSaltedPass.genHashSalted(inputPassword, byteSalt);
-
-            if(realPassword.equals(hashedPassword)){
-                sceneChanger.change(event, "Game.fxml");
-            }
-            else{
+            if (!(rs.next())) {
                 sceneChanger.changeVisibility(true, visibility); //her skal en pop-up komme
             }
+            else if (email.getText().isEmpty() || password.getText().isEmpty()) {
+                sceneChanger.changeVisibility(true, visibility); //her skal en pop-up komme
+            }
+            else {
+                String salt = rs.getString("salt");
+                String realPassword = rs.getString("password");
+                String inputPassword = password.getText();
 
-		}catch (Exception e){
-			e.printStackTrace();
-		}finally {
-            cleaner.close(statement, rs, connection);
-        }
+                HashSalt hashedSaltedPass = new HashSalt();
+                byte[] byteSalt = hashedSaltedPass.decodeHexString(salt);
+                String hashedPassword = hashedSaltedPass.genHashSalted(inputPassword, byteSalt);
+
+                if (realPassword.equals(hashedPassword)) {
+                    sceneChanger.change(event, "Game.fxml");
+                } else {
+                    sceneChanger.changeVisibility(true, visibility); //her skal en pop-up komme
+                }
+            }
+            }catch(Exception e){
+                e.printStackTrace();
+            }finally{
+                cleaner.close(statement, rs, connection);
+            }
 	}
 
 
