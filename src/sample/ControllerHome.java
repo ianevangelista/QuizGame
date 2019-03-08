@@ -78,7 +78,4 @@ public class ControllerHome {
                 cleaner.close(statement, rs, connection);
             }
 	}
-
-
-
 }
