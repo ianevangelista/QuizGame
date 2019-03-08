@@ -39,6 +39,7 @@ public class ControllerGame {
 
 
     public ChangeScene sceneChanger = new ChangeScene();
+    public Cleaner cleaner = new Cleaner();
 
     public void chooseOpponent(ActionEvent event) {
         ConnectionClass connectionClass = new ConnectionClass();
@@ -58,14 +59,10 @@ public class ControllerGame {
                 realUsername = "-1";
             }
             if (realUsername.equals(user_challenge.getText())){
-                rs.close();
-                statement.close();
-                connection.close();
+                cleaner.close(statement, rs, connection);
                 sceneChanger.change(event, "Categories.fxml");
             } else {
-                rs.close();
-                statement.close();
-                connection.close();
+                cleaner.close(statement, rs, connection);
                 sceneChanger.changeVisibility(true, usernameWrong);
             }
         }
@@ -77,7 +74,6 @@ public class ControllerGame {
     public void chooseCategories(ActionEvent event) {
         ConnectionClass connectionClass1 = new ConnectionClass();
         Connection connectionCategory = connectionClass1.getConnection();
-        Cleaner cleaner = new Cleaner();
         ResultSet rs = null;
 
         ArrayList categoriesList = new ArrayList();
@@ -112,7 +108,7 @@ public class ControllerGame {
             category3.setText(chosenCategories[2]);
 
             sceneChanger.change(event, "Question.fxml");
-            cleaner.closeTwo(statement, connectionCategory);
+            cleaner.close(statement, null, connectionCategory);
         }
         catch(Exception e){
             e.printStackTrace();
@@ -122,7 +118,6 @@ public class ControllerGame {
     public void questionPicker(int gameId) { //helene
         Connection connection = null;
         Statement statement = null;
-        Cleaner cleaner = new Cleaner();
 
         String sqlCategory = "SELECT categoryID FROM Game WHERE gameID ='" + gameId + "';"; //finner hvilken kategori spiller har valgt
 
@@ -137,12 +132,12 @@ public class ControllerGame {
             ResultSet rsCategoryNumber = statement.executeQuery(sqlCategory);               //lager restultset med kategorinr
             rsCategoryNumber.next();                                                        //henter første i rsCategoryNumber
             int categoryId = rsCategoryNumber.getInt("categoryId");             //lager en int med categoryId
-            rsCategoryNumber.close();
+            cleaner.close(null, rsCategoryNumber, null);
 
             ResultSet rsNumberQuestion = statement.executeQuery(sqlNumberQuestion + categoryId + "';"); //henter ant spørsmål i kategorien
             rsNumberQuestion.next();//henter første i rsNumberQuestion
             int antQuestion = rsNumberQuestion.getInt("COUNT(questionId)");      //lager en int med ant spøsmål i kategorien
-            rsNumberQuestion.close();
+            cleaner.close(null, rsNumberQuestion, null);
 
             int[] questionId = new int[3];
             String sqlGetText = "SELECT questionId FROM Question WHERE categoryId=" + categoryId + " ORDER BY questionId;";
@@ -166,7 +161,7 @@ public class ControllerGame {
         }catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            cleaner.closeTwo(statement, connection);
+            cleaner.close(statement, null, connection);
         }
     }
 
@@ -174,8 +169,6 @@ public class ControllerGame {
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
         Statement statement = null;
-
-        Cleaner cleaner = new Cleaner();
 
         String sqlEmailP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
         String sqlPlayer1 = "SELECT p1Points FROM Game WHERE gameId =" + gameId + ";";
@@ -189,19 +182,19 @@ public class ControllerGame {
             ResultSet p1 = statement.executeQuery(sqlEmailP1);
             p1.next();
             String email = p1.getString("emailP1");
-            p1.close();
+            cleaner.close(statement, null, null);
 
             //Henter ut resultat til spiller 1
             ResultSet pt1 = statement.executeQuery(sqlPlayer1);
             pt1.next();
             int points1 = pt1.getInt("p1Points");
-            pt1.close();
+            cleaner.close(null, pt1, null);
 
             //Henter ut resultat til spiller 2
             ResultSet pt2 = statement.executeQuery(sqlPlayer2);
             pt2.next();
             int points2 = pt2.getInt("p2Points");
-            pt2.close();
+            cleaner.close(null, pt2, null);
 
             //Sjekker om det er spiller 1 eller 2 som er "Hovedspiller" og skriver poeng i passende rekkefølge
             if (email.equals(userEmail)) {
@@ -218,7 +211,7 @@ public class ControllerGame {
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
-            cleaner.closeTwo(statement, connection);
+            cleaner.close(statement, null, connection);
         }
     }
 
@@ -241,19 +234,19 @@ public class ControllerGame {
             ResultSet p1 = statement.executeQuery(sqlEmailP1);
             p1.next();
             String email = p1.getString("emailP1");
-            p1.close();
+            cleaner.close(null, p1, null);
 
             //Henter ut resultat til spiller 1
             ResultSet pt1 = statement.executeQuery(sqlPlayer1);
             pt1.next();
             int points1 = pt1.getInt("p1Points");
-            pt1.close();
+            cleaner.close(null, pt1, null);
 
             //Henter ut resultat til spiller 2
             ResultSet pt2 = statement.executeQuery(sqlPlayer2);
             pt2.next();
             int points2 = pt2.getInt("p2Points");
-            pt2.close();
+            cleaner.close(null, pt2, null);
 
 
             //Sjekker om det er spiller 1 eller 2 som er "Hovedspiller" og skriver poeng i passende rekkefølge
@@ -268,7 +261,7 @@ public class ControllerGame {
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
-            cleaner.closeTwo(statement, connection);
+            cleaner.close(statement, null, connection);
         }
     }
 

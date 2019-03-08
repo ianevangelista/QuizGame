@@ -71,7 +71,7 @@ public class ControllerHome {
 		}catch (Exception e){
 			e.printStackTrace();
 		}finally {
-            cleaner.closeThree(statement, rs, connection);
+            cleaner.close(statement, rs, connection);
         }
 	}
 

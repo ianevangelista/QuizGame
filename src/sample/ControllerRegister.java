@@ -44,7 +44,7 @@ public class ControllerRegister {
         }catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            cleaner.closeTwo(statement, connection);
+            cleaner.close(statement, null, connection);
         }
     }
 
