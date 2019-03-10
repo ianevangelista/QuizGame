@@ -13,15 +13,15 @@ import Connection.ConnectionClass;
 
 import java.util.*;
 
-public class ControllerQuestion {
-    private int questionCount = 0;
+public class textQuestionDisplay {
+    private static int questionCount = 1;
 
     @FXML
     public TextField answerField;
     public TextField questionField;
     public TextField timerDisplay;
 
-    public void questionDisplay(int gameId, String username) { //helene: fiks at spørsmålene vises riktig
+    public static void questionDisplay(int gameId, String username) { //helene: fiks at spørsmålene vises riktig
         Connection connection = null;
         Statement statement = null;
         Cleaner cleaner = new Cleaner();
@@ -40,7 +40,7 @@ public class ControllerQuestion {
                 ResultSet rsQuestionOneText = statement.executeQuery(sqlGetText + "1;");
                 rsQuestionOneText.next();
                 String qOneText = rsQuestionOneText.getString("questionText");
-                questionField.setText(qOneText);                         //printer ut spørsmålet
+                System.out.println(qOneText);                         //printer ut spørsmålet
 
             }
             else if(questionCount == 1) {
@@ -51,7 +51,7 @@ public class ControllerQuestion {
                 ResultSet rsQuestionTwoText = statement.executeQuery(sqlGetText + "2;");
                 rsQuestionTwoText.next();
                 String qTwoText = rsQuestionTwoText.getString("questionText");
-                questionField.setText(qTwoText);
+                System.out.println(qTwoText);
             }
             else if(questionCount == 2) {
                 /*ResultSet rsQuestionThree = statement.executeQuery("SELECT question3" + sqlGetQuestion);
@@ -61,7 +61,8 @@ public class ControllerQuestion {
                 ResultSet rsQuestionThreeText = statement.executeQuery(sqlGetText + "3;");
                 rsQuestionThreeText.next();
                 String qThreeText = rsQuestionThreeText.getString("questionText");
-                questionField.setText(qThreeText);
+
+                System.out.println(qThreeText);
             }
             questionCount++;
 
@@ -72,4 +73,9 @@ public class ControllerQuestion {
             cleaner.close(statement, null, connection);
         }
     }
+
+    public static void main(String[] args) {
+        questionDisplay(123, "Helene");
+    }
 }
+
