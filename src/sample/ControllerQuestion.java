@@ -3,6 +3,7 @@ package sample;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -77,14 +78,57 @@ public class ControllerQuestion {
         Connection connection = null;
         Statement statement = null;
         Cleaner cleaner = new Cleaner();
+
+        String sqlGetAlt = "SELECT answer FROM Alternative WHERE questionId=";
+        String sqlGetQId = "FROM Game WHERE gameId=" + gameId + ";";
         try {
             ConnectionClass connectionClass = new ConnectionClass();
             connection = connectionClass.getConnection();
             statement = connection.createStatement();
 
-            String findUser = findUser(gameId, username);
+            String user = findUser(gameId, username);
+            int QId;
+            String answer = answerField.getText();
+            if(questionCount == 0) {
+                ResultSet rsQId1 = statement.executeQuery("SELECT question1 " + sqlGetQId);
+                rsQId1.next();
+                 QId = rsQId1.getInt("question1");
+            }
+            else if(questionCount == 1) {
+                ResultSet rsQId2 = statement.executeQuery("SELECT question2 " + sqlGetQId);
+                rsQId2.next();
+                 QId = rsQId2.getInt("question2");
+            }
+            else{
+                ResultSet rsQId3 = statement.executeQuery("SELECT question3 " + sqlGetQId);
+                rsQId3.next();
+                 QId = rsQId3.getInt("question3");
+            }
 
-            // skal lage, Helene :*
+            ResultSet rsAlterative = statement.executeQuery(sqlGetAlt + QId + ";");
+            rsAlterative.next();
+            ArrayList <String> alternative = new ArrayList<>();
+            while(rsAlterative.next()) {
+                alternative.add(new String(rsAlterative.getString("answer")));
+            }
+            String sqlGetScore = "SELECT score FROM Alternative WHERE questionId=" + QId + " AND answer=";
+
+            ResultSet rsScore = null;
+            for(String a:alternative) {
+                if(a.equals(answer)) {
+                    rsScore = statement.executeQuery(sqlGetScore + a + ";");
+                    break;
+                }
+            }
+            int score = 0;
+            if(rsScore.next()){ score = rsScore.getInt("score");}
+
+            String points = "";
+            if(user.equals("player1")) { points = "p1Points"; }
+            else if(user.equals("player2")) {points = "p2Points";}
+
+            String sqlUpdate = "UPDATE Game SET " + points + " = " + points + " + " + score + " WHERE gameId=" + gameId + ";";
+            statement.execute(sqlUpdate);
 
 
         }catch (SQLException e) {
