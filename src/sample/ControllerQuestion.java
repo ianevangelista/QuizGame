@@ -72,4 +72,55 @@ public class ControllerQuestion {
             cleaner.close(statement, null, connection);
         }
     }
+
+    public void questionCheck(int gameId, String username) {
+        Connection connection = null;
+        Statement statement = null;
+        Cleaner cleaner = new Cleaner();
+        try {
+            ConnectionClass connectionClass = new ConnectionClass();
+            connection = connectionClass.getConnection();
+            statement = connection.createStatement();
+
+            String findUser = findUser(gameId, username);
+
+            // skal lage, Helene :*
+
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            cleaner.close(statement, null, connection);
+        }
+    }
+
+    private String findUser(int gameId, String username) {
+        Connection connection = null;
+        Statement statement = null;
+        Cleaner cleaner = new Cleaner();
+
+        String sqlP1 = "SELECT player1 FROM Game WHERE gameId=" + gameId + ";";
+        String sqlP2 = "SELECT player2 FROM Game WHERE gameId =" + gameId + ";";
+        try {
+            ConnectionClass connectionClass = new ConnectionClass();
+            connection = connectionClass.getConnection();
+            statement = connection.createStatement();
+
+            ResultSet rsPlayer1 = statement.executeQuery(sqlP1);
+            rsPlayer1.next();
+            String player1 = rsPlayer1.getString("player1");
+            if(username.equals(player1)){return "player1";}
+
+            ResultSet rsPlayer2 = statement.executeQuery(sqlP2);
+            rsPlayer2.next();
+            String player2 = rsPlayer2.getString("player2");
+            if(username.equals(player2)) {return "player2";}
+            return null;
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return "ex";
+        }finally {
+            cleaner.close(statement, null, connection);
+        }
+    }
 }
