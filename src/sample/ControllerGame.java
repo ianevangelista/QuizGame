@@ -25,9 +25,11 @@ public class ControllerGame {
     @FXML
     public TextField user_challenge;
     public Label usernameWrong;
+    //Category
     public Button category1;
     public Button category2;
     public Button category3;
+    public Button show;
     //Correct answer
     public TextField newPoints;
     public TextField player1Pt;
@@ -71,47 +73,74 @@ public class ControllerGame {
         }
     }
 
-    public void chooseCategories(ActionEvent event) {
-        ConnectionClass connectionClass1 = new ConnectionClass();
-        Connection connectionCategory = connectionClass1.getConnection();
-        ResultSet rs = null;
+    public void chooseCategories() { //juni
 
-        ArrayList categoriesList = new ArrayList();
+        Connection connection = null;
+        Statement statement = null;
+
+        ArrayList <Integer> categoriesList = new ArrayList<>();
         int[] randList = new int[3];
-        String sql = "";
+        String[] chosenCategories = new String[3];
 
-        for(Object i : categoriesList) {
-            sql = "SELECT categoryId FROM Category WHERE categoryId = " + i + ";";
-            categoriesList.add(sql);
-        }
+        String sql =  "SELECT categoryId FROM Category;";
 
         try {
-            Statement statement = connectionCategory.createStatement();
+            ConnectionClass connectionClass = new ConnectionClass();
+            connection = connectionClass.getConnection();
+            ResultSet rs = null;
+
+            statement = connection.createStatement();
             rs = statement.executeQuery(sql);
 
-            ArrayList<Integer> numberList = new ArrayList<Integer>();
-            for (int i = 1; i < categoriesList.size(); i++) {
-                numberList.add(new Integer(i));
-            }
-            Collections.shuffle(numberList);
-            for (int i = 0; i < 3; i++) {
-                randList[i] = numberList.get(i);
+            while(rs.next()){
+                categoriesList.add(new Integer(rs.getInt("categoryId")));
             }
 
-            String[] chosenCategories = new String[3];
+            Collections.shuffle(categoriesList);
             for (int i = 0; i < 3; i++) {
-                chosenCategories[i] = "SELECT name FROM Category WHERE categoryId = " + randList[i] + ";";
+                randList[i] = categoriesList.get(i);
             }
+
+            //Category 1
+            ResultSet rs1 = null;
+            statement = connection.createStatement();
+
+            String sql1 = "SELECT name FROM Category WHERE categoryId = " + randList[0] + ";";
+
+            rs1 = statement.executeQuery(sql1);
+            rs1.next();
+            chosenCategories[0] = rs1.getString("name");
+
+            //Category 2
+            ResultSet rs2 = null;
+            statement = connection.createStatement();
+
+            String sql2 = "SELECT name FROM Category WHERE categoryId = " + randList[1] + ";";
+
+            rs2 = statement.executeQuery(sql2);
+            rs2.next();
+            chosenCategories[1] = rs2.getString("name");
+
+            //Category 3
+
+            ResultSet rs3 = null;
+            statement = connection.createStatement();
+
+            String sql3 = "SELECT name FROM Category WHERE categoryId = " + randList[2] + ";";
+
+            rs3 = statement.executeQuery(sql3);
+            rs3.next();
+            chosenCategories[2] = rs3.getString("name");
 
             category1.setText(chosenCategories[0]);
             category2.setText(chosenCategories[1]);
             category3.setText(chosenCategories[2]);
-
-            sceneChanger.change(event, "Question.fxml");
-            cleaner.close(statement, null, connectionCategory);
         }
         catch(Exception e){
             e.printStackTrace();
+        }
+        finally {
+            cleaner.close(statement, null, connection);
         }
     }
 
@@ -274,6 +303,7 @@ public class ControllerGame {
     }
 
     public void start(ActionEvent event) {
+        chooseCategories();
         sceneChanger.change(event, "Category.fxml");
     }
 
