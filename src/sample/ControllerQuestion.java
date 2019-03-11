@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -16,11 +17,22 @@ import java.util.*;
 
 public class ControllerQuestion {
     private int questionCount = 0;
+    public ChangeScene sceneChanger = new ChangeScene();
+    int gameId;
+    String username;
 
     @FXML
     public TextField answerField;
     public TextField questionField;
     public TextField timerDisplay;
+
+    public void sceneQuestion(ActionEvent event) { //trykker på infoknapp
+        String sceneNavn;
+        boolean riktig = questionCheck(gameId, username);
+        if(riktig) sceneNavn = "CorrectAnswer.fxml";
+        else sceneNavn = "IncorrectAnswer.fxml";
+        sceneChanger.change(event, sceneNavn); //bruker super-metode
+    }
 
     public void questionDisplay(int gameId, String username) { //helene: fiks at spørsmålene vises riktig
         Connection connection = null;
@@ -74,10 +86,11 @@ public class ControllerQuestion {
         }
     }
 
-    public void questionCheck(int gameId, String username) {
+    public boolean questionCheck(int gameId, String username) {
         Connection connection = null;
         Statement statement = null;
         Cleaner cleaner = new Cleaner();
+        boolean riktig = false;
 
         String sqlGetAlt = "SELECT answer FROM Alternative WHERE questionId=";
         String sqlGetQId = "FROM Game WHERE gameId=" + gameId + ";";
@@ -117,11 +130,12 @@ public class ControllerQuestion {
             for(String a:alternative) {
                 if(a.equals(answer)) {
                     rsScore = statement.executeQuery(sqlGetScore + a + ";");
+                    riktig = true;
                     break;
                 }
             }
             int score = 0;
-            if(rsScore.next()){ score = rsScore.getInt("score");}
+            if(rsScore.next()){ score = rsScore.getInt("score"); }
 
             String points = "";
             if(user.equals("player1")) { points = "p1Points"; }
@@ -129,10 +143,11 @@ public class ControllerQuestion {
 
             String sqlUpdate = "UPDATE Game SET " + points + " = " + points + " + " + score + " WHERE gameId=" + gameId + ";";
             statement.execute(sqlUpdate);
-
+            return riktig;
 
         }catch (SQLException e) {
             e.printStackTrace();
+            return riktig;
         }finally {
             cleaner.close(statement, null, connection);
         }

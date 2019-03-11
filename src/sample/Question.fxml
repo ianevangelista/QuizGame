@@ -20,7 +20,7 @@
         <Font size="18.0" />
       </font>
     </Button>
-    <Button layoutX="249.0" layoutY="245.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="78.0" text="CONFIRM">
+    <Button layoutX="249.0" layoutY="245.0" mnemonicParsing="false" onAction="#sceneQuestion" prefHeight="29.0" prefWidth="78.0" text="CONFIRM">
       <font>
         <Font size="12.0" />
       </font>
