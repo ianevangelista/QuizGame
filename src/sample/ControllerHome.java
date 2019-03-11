@@ -17,7 +17,7 @@ import java.sql.ResultSet;
 public class ControllerHome {
 
     @FXML
-    public TextField email;
+    public TextField username;
     public TextField password;
     public Label visibility;
 
@@ -46,7 +46,7 @@ public class ControllerHome {
         ResultSet rs = null;
         Statement statement = null;
 
-		String sql = "SELECT email, password, salt FROM Player WHERE email ='" + email.getText() + "';";
+		String sql = "SELECT username, password, salt FROM Player WHERE username ='" + username.getText() + "';";
 		try {
             statement = connection.createStatement();
             rs = statement.executeQuery(sql);
@@ -54,7 +54,7 @@ public class ControllerHome {
             if (!(rs.next())) {
                 sceneChanger.changeVisibility(true, visibility); //her skal en pop-up komme
             }
-            else if (email.getText().isEmpty() || password.getText().isEmpty()) {
+            else if (username.getText().isEmpty() || password.getText().isEmpty()) {
                 sceneChanger.changeVisibility(true, visibility); //her skal en pop-up komme
             }
             else {
