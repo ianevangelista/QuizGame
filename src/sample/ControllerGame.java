@@ -31,7 +31,7 @@ public class ControllerGame {
     public Button category2;
     public Button category3;
     public Button categoyTest;
-    public int[] test = new int[3];
+    public int[] randList = new int[3];
 
     //Correct answer
     public TextField newPoints;
@@ -86,7 +86,6 @@ public class ControllerGame {
         Statement statement = null;
 
         ArrayList <Integer> categoriesList = new ArrayList<>();
-        int[] randList = new int[3];
         String[] chosenCategories = new String[3];
 
         String sql =  "SELECT categoryId FROM Category;";
@@ -105,18 +104,14 @@ public class ControllerGame {
 
             Collections.shuffle(categoriesList);
             for (int i = 0; i < 3; i++) {
-                test[i] = categoriesList.get(i);
+                randList[i] = categoriesList.get(i);
             }
-/*
-            for(int i = 0; i<randList.length; i++){
-                test[i] = randList[0];
-            }*/
 
             //Category 1
             ResultSet rs1 = null;
             statement = connection.createStatement();
 
-            String sql1 = "SELECT name FROM Category WHERE categoryId = " + test[0] + ";";
+            String sql1 = "SELECT name FROM Category WHERE categoryId = " + randList[0] + ";";
 
             rs1 = statement.executeQuery(sql1);
             rs1.next();
@@ -126,7 +121,7 @@ public class ControllerGame {
             ResultSet rs2 = null;
             statement = connection.createStatement();
 
-            String sql2 = "SELECT name FROM Category WHERE categoryId = " + test[1] + ";";
+            String sql2 = "SELECT name FROM Category WHERE categoryId = " + randList[1] + ";";
 
             rs2 = statement.executeQuery(sql2);
             rs2.next();
@@ -136,13 +131,13 @@ public class ControllerGame {
             ResultSet rs3 = null;
             statement = connection.createStatement();
 
-            String sql3 = "SELECT name FROM Category WHERE categoryId = " + test[2] + ";";
+            String sql3 = "SELECT name FROM Category WHERE categoryId = " + randList[2] + ";";
 
             rs3 = statement.executeQuery(sql3);
             rs3.next();
             chosenCategories[2] = rs3.getString("name");
 
-            System.out.println(test[2] + test[1] + test[0]);
+            System.out.println(randList[2]);
 
 
             /*category1.setText(chosenCategories[0]);
@@ -159,32 +154,31 @@ public class ControllerGame {
     }
 
     public void button1(ActionEvent event){
-        categoryChosen(test[0]);
+        categoryChosen(randList[0]);
         questionPicker();
-        sceneChanger.change_Category(event, test[0]);
+        sceneChanger.change(event, "Question.fxml");
     }
     public void button2(ActionEvent event){
-        categoryChosen(test[1]);
+        categoryChosen(randList[1]);
         questionPicker();
-        sceneChanger.change_Category(event, test[1]);
+        sceneChanger.change(event, "Question.fxml");
     }
     public void button3(ActionEvent event){
-        categoryChosen(test[2]);
+        categoryChosen(randList[2]);
         questionPicker();
-        sceneChanger.change_Category(event, test[2]);
+        sceneChanger.change(event, "Question.fxml");
     }
 
-    public void categoryChosen(int categoryid){
+    public void categoryChosen(int categoryID){
         Connection connection = null;
         Statement statement = null;
 
-        String sql = "UPDATE Game SET categoryId = " + categoryid + " WHERE gameId = " + gameId + ";";
+        String sql = "UPDATE Game SET categoryId = " + categoryID + " WHERE gameId = " + gameId + ";";
 
         try {
             ConnectionClass connectionClass = new ConnectionClass();
             connection = connectionClass.getConnection();
             ResultSet rs = null;
-            System.out.println(categoryid);
             statement = connection.createStatement();
             statement.execute(sql);
 
