@@ -5,9 +5,10 @@ import Connection.Cleaner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,6 +23,9 @@ public class ControllerRegister {
     public TextField pass_reg;
     public TextField confirm_reg;
     public Label visibility;
+    public RadioButton btnMale;
+    public RadioButton btnFemale;
+    public ToggleGroup gender;
 
 
     public ChangeScene sceneChanger = new ChangeScene();
@@ -50,8 +54,14 @@ public class ControllerRegister {
             sceneChanger.changeVisibility(true, visibility);
         }
 
+        else if(chooseGender() == -1) {
+            System.out.println("ingenting skal registreres");
+            sceneChanger.changeVisibility(true, visibility);
+        }
+
         else{
-            String sql = "INSERT INTO Player VALUES(\"" + user_name + "\",  \"" + email_adress + "\", " + 0 + ", " + 0 + ", \"" + password + "\",  \"" + stringSalt + "\", " + 0 + ", " + birthyear + ")";
+            int gender = chooseGender();
+            String sql = "INSERT INTO Player VALUES(\"" + user_name + "\",  \"" + email_adress + "\", " + 0 + ", " + 0 + ", \"" + password + "\",  \"" + stringSalt + "\", " + gender + ", " + birthyear + ")";
             try {
                 ConnectionClass connectionClass = new ConnectionClass();
                 connection = connectionClass.getConnection();
@@ -123,5 +133,17 @@ public class ControllerRegister {
             cleaner.close(statementEmail, rsEmail, connection);
         }
         return true;
+    }
+
+    public int chooseGender(){
+        if(this.gender.getSelectedToggle().equals(this.btnMale)){
+            System.out.println("Male");
+            return 1;
+        }
+        else if(this.gender.getSelectedToggle().equals(this.btnFemale)){
+            System.out.println("Female");
+            return 0;
+        }
+        else return -1;
     }
 }

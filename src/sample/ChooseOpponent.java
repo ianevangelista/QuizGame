@@ -1,22 +1,35 @@
-/*package sample;
+package sample;
 
 import Connection.ConnectionClass;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import Connection.Cleaner;
+import Connection.ConnectionClass;
+import javafx.scene.control.Button;
 
 public class ChooseOpponent {
 
     public TextField user_challenge;
     public Label usernameWrong;
+    private Cleaner cleaner = new Cleaner();
+    private ChangeScene sceneChanger = new ChangeScene();
+    private String username;
 
-    public void chooseOpponent(ActionEvent event) {
+    @FXML
+    public TextField opponent;
+    public Button challenge;
+
+
+    public void findOpponent(ActionEvent event) {
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
+
         ResultSet rs = null;
 
         String sql = "SELECT username FROM Player WHERE username ='" + user_challenge.getText() + "';";
@@ -43,4 +56,4 @@ public class ChooseOpponent {
             e.printStackTrace();
         }
     }
-}*/
+}
