@@ -32,7 +32,7 @@ public class ControllerRegister {
     public byte[] salt;
     public String stringSalt;
 
-    public void reg(ActionEvent event) {
+    public void reg() {
         Cleaner cleaner = new Cleaner();
         Connection connection = null;
         Statement statement = null;
