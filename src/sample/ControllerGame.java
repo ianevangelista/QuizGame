@@ -21,7 +21,7 @@ public class ControllerGame {
 
     private String userEmail;
     private int gameId = 899;
-    private int questionCount;
+    private int[] test = new int[3];
 
     @FXML
     public TextField user_challenge;
@@ -31,7 +31,7 @@ public class ControllerGame {
     public Button category2;
     public Button category3;
     public Button categoyTest;
-    public int[] test = new int[3];
+
 
     //Correct answer
     public TextField newPoints;
@@ -142,7 +142,6 @@ public class ControllerGame {
             rs3.next();
             chosenCategories[2] = rs3.getString("name");
 
-            System.out.println(test[2] + test[1] + test[0]);
 
 
             /*category1.setText(chosenCategories[0]);
