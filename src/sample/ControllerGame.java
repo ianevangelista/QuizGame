@@ -50,7 +50,7 @@ public class ControllerGame {
     public ChangeScene sceneChanger = new ChangeScene();
     public Cleaner cleaner = new Cleaner();
 
-    public void chooseOpponent(ActionEvent event) {
+    /*public void chooseOpponent(ActionEvent event) {
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
         ResultSet rs = null;
@@ -78,7 +78,7 @@ public class ControllerGame {
         catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public void chooseCategories() { //juni
 
