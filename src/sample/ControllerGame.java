@@ -267,19 +267,19 @@ public class ControllerGame {
             ResultSet p1 = statement.executeQuery(sqlEmailP1);
             p1.next();
             String email = p1.getString("emailP1");
-            cleaner.close(null, p1, null);
+
 
             //Henter ut resultat til spiller 1
             ResultSet pt1 = statement.executeQuery(sqlPlayer1);
             pt1.next();
             int points1 = pt1.getInt("p1Points");
-            cleaner.close(null, pt1, null);
+
 
             //Henter ut resultat til spiller 2
             ResultSet pt2 = statement.executeQuery(sqlPlayer2);
             pt2.next();
             int points2 = pt2.getInt("p2Points");
-            cleaner.close(null, pt2, null);
+
 
 
             //Sjekker om det er spiller 1 eller 2 som er "Hovedspiller" og skriver poeng i passende rekkefølge
@@ -347,19 +347,19 @@ public class ControllerGame {
             ResultSet p1 = statement.executeQuery(sqlEmailP1);
             p1.next();
             String email = p1.getString("emailP1");
-            cleaner.close(null, p1, null);
+
 
             //Henter ut resultat til spiller 1
             ResultSet pt1 = statement.executeQuery(sqlPlayer1);
             pt1.next();
             int points1 = pt1.getInt("p1Points");
-            cleaner.close(null, pt1, null);
+
 
             //Henter ut resultat til spiller 2
             ResultSet pt2 = statement.executeQuery(sqlPlayer2);
             pt2.next();
             int points2 = pt2.getInt("p2Points");
-            cleaner.close(null, pt2, null);
+
 
             if(!(email.equals(userEmail))){
                 int help = points1;
