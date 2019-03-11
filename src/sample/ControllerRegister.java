@@ -4,6 +4,7 @@ import Connection.ConnectionClass;
 import Connection.Cleaner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -19,6 +20,8 @@ public class ControllerRegister {
     public TextField birthyear_reg;
     public TextField pass_reg;
     public TextField confirm_reg;
+    public Label visibility;
+
 
     public ChangeScene sceneChanger = new ChangeScene();
 
@@ -33,18 +36,21 @@ public class ControllerRegister {
         Cleaner cleaner = new Cleaner();
         Connection connection = null;
         Statement statement = null;
-        notNull();
-        checkPassword();
-        String sql = "INSERT INTO Player VALUES(\"" + user_name + "\",  \"" + email_adress + "\", " + 0 + ", " + 0 + ", \"" + password + "\",  \"" + stringSalt + "\", " + 0 + ", " + birthyear + ")";
-        try {
-            ConnectionClass connectionClass = new ConnectionClass();
-            connection = connectionClass.getConnection();
-            statement = connection.createStatement();
-            statement.executeUpdate(sql);
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            cleaner.close(statement, null, connection);
+        if(!(notNull() && checkPassword())){
+            System.out.println("ingenting skal registreres");
+            sceneChanger.changeVisibility(true, visibility);
+        }else{
+            String sql = "INSERT INTO Player VALUES(\"" + user_name + "\",  \"" + email_adress + "\", " + 0 + ", " + 0 + ", \"" + password + "\",  \"" + stringSalt + "\", " + 0 + ", " + birthyear + ")";
+            try {
+                ConnectionClass connectionClass = new ConnectionClass();
+                connection = connectionClass.getConnection();
+                statement = connection.createStatement();
+                statement.executeUpdate(sql);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                cleaner.close(statement, null, connection);
+            }
         }
     }
 
@@ -52,24 +58,28 @@ public class ControllerRegister {
         sceneChanger.change(event, "Main.fxml"); //bruker super-metode
     }
 
-    public void notNull() {
-        if(user_reg.getText() != null && email_reg.getText() != null && birthyear_reg.getText() != null){
+    public boolean notNull() {
+        if(user_reg.getText().isEmpty() || email_reg.getText().isEmpty() || birthyear_reg.getText().isEmpty() || pass_reg.getText().isEmpty() || confirm_reg.getText().isEmpty()) {
+            return false;
+        } else {
             user_name = user_reg.getText();
             email_adress = email_reg.getText();
             String getYear = birthyear_reg.getText();
             birthyear = Integer.parseInt(getYear);
-        } /*else {
-            sceneChanger.changeVisibility(); her skal det skje noe
-        }*/
+            return false;
+        }
     }
 
-    public void checkPassword(){
-        if(pass_reg.getText().equals(confirm_reg.getText())){
+    public boolean checkPassword(){
+        if(pass_reg.getText().equals(confirm_reg.getText()) && (!(pass_reg.getText().isEmpty() && confirm_reg.getText().isEmpty()))){
             String inputPassword = pass_reg.getText();
             HashSalt hashedSaltedPass = new HashSalt();
             salt = hashedSaltedPass.createSalt();
             stringSalt = hashedSaltedPass.encodeHexString(salt);
             password = hashedSaltedPass.genHashSalted(inputPassword, salt);
+            return true;
+        }else {
+            return false;
         }
     }
 }

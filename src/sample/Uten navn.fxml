@@ -11,7 +11,7 @@
    <children>
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@gameLogo.png" />
+            <Image url="@../../out/production/tdat1006/sample/gameLogo.png" />
          </image>
       </ImageView>
       <Button layoutX="187.0" layoutY="264.0" mnemonicParsing="false" onAction="#reg" prefHeight="29.0" prefWidth="227.0" text="CHALLENGE NEW PLAYER">
@@ -34,12 +34,7 @@
             <Font size="18.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="141.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your total score now is: " textAlignment="CENTER" wrappingWidth="234.84765625">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Text>
-      <Text fill="WHITE" layoutX="366.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0p" textAlignment="CENTER" wrappingWidth="77.99999713897705">
+      <Text fill="WHITE" layoutX="141.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Youre total score now is: " textAlignment="CENTER" wrappingWidth="234.84765625">
          <font>
             <Font size="18.0" />
          </font>

@@ -40,6 +40,10 @@ public class ControllerGame {
     //Incorrect answer
     public TextField player1PtW;
     public TextField player2PtW;
+    //result
+    public TextField totalScore;
+    public TextField resultText;
+    public TextField resultHeading;
 
 
 
@@ -288,7 +292,7 @@ public class ControllerGame {
         }
     }
 
-    public void incorrectAnswer(ActionEvent event, int gameId, int poeng) {
+    public void incorrectAnswer(ActionEvent event, int gameId) {
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
         Statement statement = null;
@@ -341,6 +345,7 @@ public class ControllerGame {
     public void setUserEmail(String userEmail){
         this.userEmail = userEmail;
     } //husk å bruke denne metoden i controllerHome i log in for å sette verdien
+    //   ControllerGame.setUserEmail(email.getText());
 
     public void highscore(ActionEvent event) { //HighScore knapp
         sceneChanger.change(event, "HighScore.fxml");
@@ -365,6 +370,65 @@ public class ControllerGame {
 
     public void sceneGame(ActionEvent event) { //hjemknapp
         sceneChanger.change(event, "Game.fxml");
+    }
+
+    public void result(ActionEvent event, int gameId){
+        ConnectionClass connectionClass = new ConnectionClass();
+        Connection connection = connectionClass.getConnection();
+        Statement statement = null;
+
+        Cleaner cleaner = new Cleaner();
+
+        String sqlEmailP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
+        String sqlPlayer1 = "SELECT p1Points FROM Game WHERE gameId =" + gameId + ";";
+        String sqlPlayer2 = "SELECT p2Points FROM Game WHERE gameId =" + gameId + ";";
+
+
+        try {
+            statement = connection.createStatement();
+
+            //Henter ut mail til spiller 1
+            ResultSet p1 = statement.executeQuery(sqlEmailP1);
+            p1.next();
+            String email = p1.getString("emailP1");
+            cleaner.close(null, p1, null);
+
+            //Henter ut resultat til spiller 1
+            ResultSet pt1 = statement.executeQuery(sqlPlayer1);
+            pt1.next();
+            int points1 = pt1.getInt("p1Points");
+            cleaner.close(null, pt1, null);
+
+            //Henter ut resultat til spiller 2
+            ResultSet pt2 = statement.executeQuery(sqlPlayer2);
+            pt2.next();
+            int points2 = pt2.getInt("p2Points");
+            cleaner.close(null, pt2, null);
+
+            if(!(email.equals(userEmail))){
+                int help = points1;
+                points1 = points2;
+                points2 = help;
+            }
+
+            if(points1 > points2){
+                resultText.setText("You are the winner of this round.");
+                resultHeading.setText("Winner!");
+            }else {
+                resultText.setText("You lost this round.");
+                resultHeading.setText("Loser...");
+            }
+
+            totalScore.setText(Integer.toString(points1));
+
+            sceneChanger.change(event, "Game.fxml");
+            sceneChanger.change(event, "ChallangeUser.fxml");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            cleaner.close(statement, null, connection);
+        }
     }
 
 }
