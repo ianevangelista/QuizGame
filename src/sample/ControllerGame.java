@@ -142,6 +142,8 @@ public class ControllerGame {
             rs3.next();
             chosenCategories[2] = rs3.getString("name");
 
+            System.out.println(test[2] + test[1] + test[0]);
+
 
             /*category1.setText(chosenCategories[0]);
             category2.setText(chosenCategories[1]);
@@ -158,14 +160,17 @@ public class ControllerGame {
 
     public void button1(ActionEvent event){
         categoryChosen(test[0]);
+        questionPicker();
         sceneChanger.change_Category(event, test[0]);
     }
     public void button2(ActionEvent event){
         categoryChosen(test[1]);
+        questionPicker();
         sceneChanger.change_Category(event, test[1]);
     }
     public void button3(ActionEvent event){
         categoryChosen(test[2]);
+        questionPicker();
         sceneChanger.change_Category(event, test[2]);
     }
 
