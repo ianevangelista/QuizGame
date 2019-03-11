@@ -44,7 +44,8 @@ public class ControllerGame {
     public TextField totalScore;
     public TextField resultText;
     public TextField resultHeading;
-
+    //highscore
+    public TextField hSText;
 
 
     public ChangeScene sceneChanger = new ChangeScene();
@@ -308,19 +309,19 @@ public class ControllerGame {
             ResultSet p1 = statement.executeQuery(sqlEmailP1);
             p1.next();
             String email = p1.getString("emailP1");
-            cleaner.close(null, p1, null);
+
 
             //Henter ut resultat til spiller 1
             ResultSet pt1 = statement.executeQuery(sqlPlayer1);
             pt1.next();
             int points1 = pt1.getInt("p1Points");
-            cleaner.close(null, pt1, null);
+
 
             //Henter ut resultat til spiller 2
             ResultSet pt2 = statement.executeQuery(sqlPlayer2);
             pt2.next();
             int points2 = pt2.getInt("p2Points");
-            cleaner.close(null, pt2, null);
+
 
 
             //Sjekker om det er spiller 1 eller 2 som er "Hovedspiller" og skriver poeng i passende rekkefølge
@@ -346,6 +347,8 @@ public class ControllerGame {
 
     public void highscore(ActionEvent event) { //HighScore knapp
         sceneChanger.change(event, "HighScore.fxml");
+        hSText = new TextField();
+        //ControllerHighScore.highscoreTable(); Legger til denne når controllerhighscore er klar
     }
 
     public void start(ActionEvent event) {
@@ -369,6 +372,8 @@ public class ControllerGame {
         sceneChanger.change(event, "Game.fxml");
     }
 
+    public void sceneChallangeUser(ActionEvent event){sceneChanger.change(event, "ChallangeUser.fxml");}
+
     public void result(ActionEvent event, int gameId){
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
@@ -388,19 +393,19 @@ public class ControllerGame {
             ResultSet p1 = statement.executeQuery(sqlEmailP1);
             p1.next();
             String email = p1.getString("emailP1");
-            cleaner.close(null, p1, null);
+
 
             //Henter ut resultat til spiller 1
             ResultSet pt1 = statement.executeQuery(sqlPlayer1);
             pt1.next();
             int points1 = pt1.getInt("p1Points");
-            cleaner.close(null, pt1, null);
+
 
             //Henter ut resultat til spiller 2
             ResultSet pt2 = statement.executeQuery(sqlPlayer2);
             pt2.next();
             int points2 = pt2.getInt("p2Points");
-            cleaner.close(null, pt2, null);
+
 
             if(!(email.equals(userEmail))){
                 int help = points1;
@@ -418,8 +423,6 @@ public class ControllerGame {
 
             totalScore.setText(Integer.toString(points1));
 
-            sceneChanger.change(event, "Game.fxml");
-            sceneChanger.change(event, "ChallangeUser.fxml");
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -13,9 +13,9 @@
         <Image url="@gameLogo.png" />
       </image>
     </ImageView>
-    <TextField id="textField" fx:id="user_reg" layoutX="200.0" layoutY="118.0" prefWidth="200.0" promptText="Username" text="" />
-    <TextField id="textField" fx:id="email_reg" layoutX="200.0" layoutY="158.0" prefWidth="200.0" promptText="E-mail" text="" />
-    <TextField id="textField" fx:id="birthyear_reg" layoutX="200.0" layoutY="200.0" prefWidth="200.0" promptText="Birthyear" text="" />
+    <TextField id="textField" fx:id="user_reg" layoutX="200.0" layoutY="91.0" prefWidth="200.0" promptText="Username" text="" />
+    <TextField id="textField" fx:id="email_reg" layoutX="200.0" layoutY="127.0" prefWidth="200.0" promptText="E-mail" text="" />
+    <TextField id="textField" fx:id="birthyear_reg" layoutX="200.0" layoutY="166.0" prefWidth="200.0" promptText="Birthyear" text="" />
     <PasswordField fx:id="pass_reg" layoutX="200.0" layoutY="245.0" prefHeight="27.0" prefWidth="200.0" promptText="Password" />
     <PasswordField fx:id="confirm_reg" layoutX="200.0" layoutY="288.0" prefHeight="27.0" prefWidth="200.0" promptText="Confirm password" />
     <Button layoutX="261.0" layoutY="337.0" mnemonicParsing="false" onAction="#reg" prefHeight="29.0" prefWidth="78.0" text="REGISTER">
@@ -33,6 +33,13 @@
         <Font size="24.0" />
       </font>
     </Text>
-      <Label fx:id="visibility" layoutX="419.0" layoutY="118.0" prefHeight="196.0" prefWidth="163.0" text="Fill in all columns" visible="false" />
+      <Label fx:id="visibility" layoutX="419.0" layoutY="118.0" prefHeight="196.0" prefWidth="163.0" text="Fill in all columns or &#10;username/e-mail taken" visible="false" />
+      <RadioButton fx:id="btnFemale" layoutX="331.0" layoutY="208.0" mnemonicParsing="false" text="Female">
+         <toggleGroup>
+            <ToggleGroup fx:id="gender" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="btnMale" layoutX="261.0" layoutY="208.0" mnemonicParsing="false" onAction="#chooseGender" text="Male" toggleGroup="$gender" />
+      <Label layoutX="200.0" layoutY="209.0" text="Gender:" />
   </children>
 </AnchorPane>
