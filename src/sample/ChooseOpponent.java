@@ -32,6 +32,7 @@ public class ChooseOpponent {
 
         ResultSet rs = null;
 
+
         String sql = "SELECT username FROM Player WHERE username ='" + user_challenge.getText() + "';";
 
         try{
