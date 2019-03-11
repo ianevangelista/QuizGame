@@ -26,12 +26,11 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <TableView layoutX="223.0" layoutY="147.0" prefHeight="200.0" prefWidth="153.0">
+      <TableView id="hSTable" layoutX="223.0" layoutY="147.0" prefHeight="200.0" prefWidth="153.0">
         <columns>
           <TableColumn id="userCol" prefWidth="75.0" text="User" />
           <TableColumn id="scoreCol" prefWidth="75.0" text="Score" />
         </columns>
       </TableView>
-      <Text id="hSText" layoutX="412.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hei" wrappingWidth="125.2060546875" />
    </children>
 </AnchorPane>

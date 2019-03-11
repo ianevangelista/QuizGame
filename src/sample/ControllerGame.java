@@ -348,7 +348,7 @@ public class ControllerGame {
     public void highscore(ActionEvent event) { //HighScore knapp
         sceneChanger.change(event, "HighScore.fxml");
         hSText = new TextField();
-        //ControllerHighScore.highscoreTable(); Legger til denne når controllerhighscore er klar
+        ControllerHighScore.highscoreTable();
     }
 
     public void start(ActionEvent event) {
