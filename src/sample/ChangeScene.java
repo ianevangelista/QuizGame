@@ -35,7 +35,6 @@ public class ChangeScene {
         try{
             ControllerGame game = new ControllerGame();
             game.categoryChosen(ID);
-
             String fxml = "Question.fxml";
             Parent tableViewParent = FXMLLoader.load(getClass().getResource(fxml)); //henter inn klasse og fxml-fil
             Scene scene = new Scene(tableViewParent); //lager ny scene

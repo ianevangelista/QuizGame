@@ -86,7 +86,6 @@ public class ControllerGame {
         Statement statement = null;
 
         ArrayList <Integer> categoriesList = new ArrayList<>();
-        int[] randList = new int[3];
         String[] chosenCategories = new String[3];
 
         String sql =  "SELECT categoryId FROM Category;";
@@ -107,10 +106,6 @@ public class ControllerGame {
             for (int i = 0; i < 3; i++) {
                 test[i] = categoriesList.get(i);
             }
-/*
-            for(int i = 0; i<randList.length; i++){
-                test[i] = randList[0];
-            }*/
 
             //Category 1
             ResultSet rs1 = null;
@@ -143,7 +138,6 @@ public class ControllerGame {
             chosenCategories[2] = rs3.getString("name");
 
 
-
             /*category1.setText(chosenCategories[0]);
             category2.setText(chosenCategories[1]);
             category3.setText(chosenCategories[2]);*/
@@ -160,30 +154,29 @@ public class ControllerGame {
     public void button1(ActionEvent event){
         categoryChosen(test[0]);
         questionPicker();
-        sceneChanger.change_Category(event, test[0]);
+        sceneChanger.change(event, "Question.fxml");
     }
     public void button2(ActionEvent event){
         categoryChosen(test[1]);
         questionPicker();
-        sceneChanger.change_Category(event, test[1]);
+        sceneChanger.change(event, "Question.fxml");
     }
     public void button3(ActionEvent event){
         categoryChosen(test[2]);
         questionPicker();
-        sceneChanger.change_Category(event, test[2]);
+        sceneChanger.change(event, "Question.fxml");
     }
 
-    public void categoryChosen(int categoryid){
+    public void categoryChosen(int categoryID){
         Connection connection = null;
         Statement statement = null;
 
-        String sql = "UPDATE Game SET categoryId = " + categoryid + " WHERE gameId = " + gameId + ";";
+        String sql = "UPDATE Game SET categoryId = " + categoryID + " WHERE gameId = " + gameId + ";";
 
         try {
             ConnectionClass connectionClass = new ConnectionClass();
             connection = connectionClass.getConnection();
             ResultSet rs = null;
-            System.out.println(categoryid);
             statement = connection.createStatement();
             statement.execute(sql);
 
