@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ControllerGame {
-
-    private String userEmail;
+    ControllerHome controllerhome = new ControllerHome();
+    private String userName = controllerhome.getUserName();
     private int gameId = 899;
     private int[] test = new int[3];
 
@@ -50,6 +50,7 @@ public class ControllerGame {
 
     public ChangeScene sceneChanger = new ChangeScene();
     public Cleaner cleaner = new Cleaner();
+
 
     public void chooseOpponent(ActionEvent event) {
         ConnectionClass connectionClass = new ConnectionClass();
@@ -245,7 +246,7 @@ public class ControllerGame {
         Connection connection = connectionClass.getConnection();
         Statement statement = null;
 
-        String sqlEmailP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
+        String sqlP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
         String sqlPlayer1 = "SELECT p1Points FROM Game WHERE gameId =" + gameId + ";";
         String sqlPlayer2 = "SELECT p2Points FROM Game WHERE gameId =" + gameId + ";";
 
@@ -254,9 +255,9 @@ public class ControllerGame {
             statement = connection.createStatement();
 
             //Henter ut mail til spiller 1
-            ResultSet p1 = statement.executeQuery(sqlEmailP1);
+            ResultSet p1 = statement.executeQuery(sqlP1);
             p1.next();
-            String email = p1.getString("emailP1");
+            String user = p1.getString("player1");
             cleaner.close(statement, null, null);
 
             //Henter ut resultat til spiller 1
@@ -272,7 +273,7 @@ public class ControllerGame {
             cleaner.close(null, pt2, null);
 
             //Sjekker om det er spiller 1 eller 2 som er "Hovedspiller" og skriver poeng i passende rekkefølge
-            if (email.equals(userEmail)) {
+            if (user.equals(userName)) {
                 player1Pt.setText(Integer.toString(points1));
                 player2Pt.setText(Integer.toString(points2));
             } else {
@@ -290,14 +291,14 @@ public class ControllerGame {
         }
     }
 
-    public void incorrectAnswer(ActionEvent event, int gameId) {
+    public void incorrectAnswer(int gameId) {
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
         Statement statement = null;
 
         Cleaner cleaner = new Cleaner();
 
-        String sqlEmailP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
+        String sqlP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
         String sqlPlayer1 = "SELECT p1Points FROM Game WHERE gameId =" + gameId + ";";
         String sqlPlayer2 = "SELECT p2Points FROM Game WHERE gameId =" + gameId + ";";
 
@@ -306,9 +307,9 @@ public class ControllerGame {
             statement = connection.createStatement();
 
             //Henter ut mail til spiller 1
-            ResultSet p1 = statement.executeQuery(sqlEmailP1);
+            ResultSet p1 = statement.executeQuery(sqlP1);
             p1.next();
-            String email = p1.getString("emailP1");
+            String user = p1.getString("player1");
 
 
             //Henter ut resultat til spiller 1
@@ -325,7 +326,7 @@ public class ControllerGame {
 
 
             //Sjekker om det er spiller 1 eller 2 som er "Hovedspiller" og skriver poeng i passende rekkefølge
-            if (email.equals(userEmail)) {
+            if (user.equals(userName)) {
                 player1PtW.setText(Integer.toString(points1));
                 player2PtW.setText(Integer.toString(points2));
             } else {
@@ -339,11 +340,6 @@ public class ControllerGame {
             cleaner.close(statement, null, connection);
         }
     }
-
-    public void setUserEmail(String userEmail){
-        this.userEmail = userEmail;
-    } //husk å bruke denne metoden i controllerHome i log in for å sette verdien
-    //   ControllerGame.setUserEmail(email.getText());
 
     public void highscore(ActionEvent event) { //HighScore knapp
         sceneChanger.change(event, "HighScore.fxml");
@@ -374,14 +370,14 @@ public class ControllerGame {
 
     public void sceneChallangeUser(ActionEvent event){sceneChanger.change(event, "ChallangeUser.fxml");}
 
-    public void result(ActionEvent event, int gameId){
+    public void result(int gameId){
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
         Statement statement = null;
 
         Cleaner cleaner = new Cleaner();
 
-        String sqlEmailP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
+        String sqlP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
         String sqlPlayer1 = "SELECT p1Points FROM Game WHERE gameId =" + gameId + ";";
         String sqlPlayer2 = "SELECT p2Points FROM Game WHERE gameId =" + gameId + ";";
 
@@ -389,10 +385,10 @@ public class ControllerGame {
         try {
             statement = connection.createStatement();
 
-            //Henter ut mail til spiller 1
-            ResultSet p1 = statement.executeQuery(sqlEmailP1);
+            //Henter ut brukernavn til spiller 1
+            ResultSet p1 = statement.executeQuery(sqlP1);
             p1.next();
-            String email = p1.getString("emailP1");
+            String user = p1.getString("player1");
 
 
             //Henter ut resultat til spiller 1
@@ -407,7 +403,7 @@ public class ControllerGame {
             int points2 = pt2.getInt("p2Points");
 
 
-            if(!(email.equals(userEmail))){
+            if(!(user.equals(userName))){
                 int help = points1;
                 points1 = points2;
                 points2 = help;
@@ -430,5 +426,6 @@ public class ControllerGame {
             cleaner.close(statement, null, connection);
         }
     }
+
 
 }
