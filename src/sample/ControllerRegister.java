@@ -36,7 +36,8 @@ public class ControllerRegister {
         Cleaner cleaner = new Cleaner();
         Connection connection = null;
         Statement statement = null;
-        if(notNull() == false && checkPassword() == false){
+        if(!(notNull() && checkPassword())){
+            System.out.println("ingenting skal registreres");
             sceneChanger.changeVisibility(true, visibility);
         }else{
             String sql = "INSERT INTO Player VALUES(\"" + user_name + "\",  \"" + email_adress + "\", " + 0 + ", " + 0 + ", \"" + password + "\",  \"" + stringSalt + "\", " + 0 + ", " + birthyear + ")";
@@ -58,7 +59,7 @@ public class ControllerRegister {
     }
 
     public boolean notNull() {
-        if(user_reg.getText().isEmpty() && email_reg.getText().isEmpty() && birthyear_reg.getText().isEmpty() && pass_reg.getText().isEmpty() && confirm_reg.getText().isEmpty()) {
+        if(user_reg.getText().isEmpty() || email_reg.getText().isEmpty() || birthyear_reg.getText().isEmpty() || pass_reg.getText().isEmpty() || confirm_reg.getText().isEmpty()) {
             return false;
         } else {
             user_name = user_reg.getText();
