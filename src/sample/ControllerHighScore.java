@@ -20,7 +20,7 @@ import javafx.scene.control.TableView;
 
 
 public class ControllerHighScore {
-    @FXML
+   /* @FXML
     public static TextField hSText;
     public static TableColumn userCol;
 
@@ -89,6 +89,6 @@ public class ControllerHighScore {
         }
     }
 
-
+*/
 
 }

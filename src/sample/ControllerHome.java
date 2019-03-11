@@ -16,10 +16,10 @@ import java.sql.ResultSet;
 
 public class ControllerHome {
 
-    private String username;
+    private String userName;
 
     @FXML
-    public TextField email;
+    public TextField username;
     public TextField password;
     public Label visibility;
 
@@ -48,7 +48,7 @@ public class ControllerHome {
         ResultSet rs = null;
         Statement statement = null;
 
-		String sql = "SELECT email, password, salt FROM Player WHERE email ='" + email.getText() + "';";
+		String sql = "SELECT username, password, salt FROM Player WHERE username ='" + username.getText() + "';";
 		try {
             statement = connection.createStatement();
             rs = statement.executeQuery(sql);
@@ -56,7 +56,7 @@ public class ControllerHome {
             if (!(rs.next())) {
                 sceneChanger.changeVisibility(true, visibility); //her skal en pop-up komme
             }
-            else if (email.getText().isEmpty() || password.getText().isEmpty()) {
+            else if (username.getText().isEmpty() || password.getText().isEmpty()) {
                 sceneChanger.changeVisibility(true, visibility); //her skal en pop-up komme
             }
             else {
@@ -69,6 +69,7 @@ public class ControllerHome {
                 String hashedPassword = hashedSaltedPass.genHashSalted(inputPassword, byteSalt);
 
                 if (realPassword.equals(hashedPassword)) {
+                    setUserName(username.getText());
                     sceneChanger.change(event, "Game.fxml");
                 } else {
                     sceneChanger.changeVisibility(true, visibility); //her skal en pop-up komme
@@ -82,7 +83,11 @@ public class ControllerHome {
 	}
 
     private void setUserName(String username){
-        this.username = username;
+        this.userName = username;
+    }
+
+    public String getUserName(){
+        return userName;
     }
 
 
