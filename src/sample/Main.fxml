@@ -34,11 +34,11 @@
         <Font size="11.0" />
       </font>
     </Button>
-    <Text fill="WHITE" layoutX="255.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="71.84765625">
+    <Text fill="WHITE" layoutX="264.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="71.84765625">
          <font>
             <Font size="15.0" />
          </font></Text>
-    <Text fill="WHITE" layoutX="255.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" wrappingWidth="71.84765625">
+    <Text fill="WHITE" layoutX="266.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" wrappingWidth="71.84765625">
          <font>
             <Font size="15.0" />
          </font></Text>
