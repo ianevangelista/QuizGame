@@ -20,7 +20,7 @@ import java.util.Collections;
 public class ControllerGame {
 
     private String userEmail;
-    private int gameid;
+    private int gameId = 899;
     private int questionCount;
 
     @FXML
@@ -173,13 +173,13 @@ public class ControllerGame {
         Connection connection = null;
         Statement statement = null;
 
-        String sql = "UPDATE Game SET categoryId = " + categoryid + " WHERE gameId = " + gameid + ";";
+        String sql = "UPDATE Game SET categoryId = " + categoryid + " WHERE gameId = " + gameId + ";";
 
         try {
             ConnectionClass connectionClass = new ConnectionClass();
             connection = connectionClass.getConnection();
             ResultSet rs = null;
-
+            System.out.println(categoryid);
             statement = connection.createStatement();
             statement.execute(sql);
 
@@ -192,7 +192,7 @@ public class ControllerGame {
 
     }
 
-    public void questionPicker(int gameId) { //helene
+    public void questionPicker() { //helene
         Connection connection = null;
         Statement statement = null;
 
