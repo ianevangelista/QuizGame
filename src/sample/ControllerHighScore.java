@@ -4,7 +4,10 @@ import Connection.ConnectionClass;
 import Connection.Cleaner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -12,12 +15,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+
 
 public class ControllerHighScore {
     @FXML
-    public TextField knapp;
+    public static TextField hSText;
+    public static TableColumn userCol;
 
-    public void highscore(){
+    public static void highscoreTable(){
+
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
         Statement statement = null;
@@ -27,48 +35,56 @@ public class ControllerHighScore {
         String sqlHighScoreUser = "SELECT username FROM `Player` ORDER BY points desc LIMIT 5;";
         String sqlHighScorePoints = "SELECT points FROM `Player` ORDER BY points desc LIMIT 5;";
 
-        ArrayList<String> highScoreList = new ArrayList<>();
+        ArrayList<String> usernameList = new ArrayList<>();
+        ArrayList<String> pointsList = new ArrayList<>();
 
-        try {
+       try {
+
             statement = connection.createStatement();
 
             //Legger navn i tabellen highScoreList
             ResultSet hs = statement.executeQuery(sqlHighScoreUser);
             while(hs.next()){
-                highScoreList.add(0, hs.getString("Highscore"));
+                usernameList.add( hs.getString("username"));
             }
 
             //Legger til poeng i highScoreList
             hs = statement.executeQuery(sqlHighScorePoints);
 
             while(hs.next()){
-                highScoreList.add(1, Integer.toString(hs.getInt("Points")));
+                pointsList.add( Integer.toString(hs.getInt("points")));
             }
 
+            hSText = new TextField();
+            hSText.setPromptText("Halla");
 
 
-            if(!(email.equals(userEmail))){
-                int help = points1;
-                points1 = points2;
-                points2 = help;
+           ObservableList<String> usernames = FXCollections.<String>observableArrayList();
+
+           for(String name : usernameList){
+               usernames.add(name);
+           }
+           TableView<String> tableView = new TableView<String>(usernames);
+
+
+
+
+           userCol.setCellValueFactory("Halla");
+
+            String tekst = "";
+            for(String navn : usernameList){
+                tekst += navn +" \n ";
             }
+           for(String poeng : pointsList){
+               tekst += poeng +" \n";
+           }
 
-            if(points1 > points2){
-                resultText.setText("You are the winner of this round.");
-                resultHeading.setText("Winner!");
-            }else {
-                resultText.setText("You lost this round.");
-                resultHeading.setText("Loser...");
-            }
+            System.out.println(tekst);
 
-            totalScore.setText(Integer.toString(points1));
-
-            sceneChanger.change(event, "Game.fxml");
-            sceneChanger.change(event, "ChallangeUser.fxml");
 
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             cleaner.close(statement, null, connection);
         }
     }

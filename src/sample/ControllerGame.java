@@ -41,7 +41,8 @@ public class ControllerGame {
     public TextField totalScore;
     public TextField resultText;
     public TextField resultHeading;
-
+    //highscore
+    public TextField hSText;
 
 
     public ChangeScene sceneChanger = new ChangeScene();
@@ -305,6 +306,8 @@ public class ControllerGame {
 
     public void highscore(ActionEvent event) { //HighScore knapp
         sceneChanger.change(event, "HighScore.fxml");
+        hSText = new TextField();
+        ControllerHighScore.highscoreTable();
     }
 
     public void start(ActionEvent event) {
@@ -327,6 +330,8 @@ public class ControllerGame {
     public void sceneGame(ActionEvent event) { //hjemknapp
         sceneChanger.change(event, "Game.fxml");
     }
+
+    public void sceneChallangeUser(ActionEvent event){sceneChanger.change(event, "ChallangeUser.fxml");}
 
     public void result(ActionEvent event, int gameId){
         ConnectionClass connectionClass = new ConnectionClass();
@@ -377,8 +382,6 @@ public class ControllerGame {
 
             totalScore.setText(Integer.toString(points1));
 
-            sceneChanger.change(event, "Game.fxml");
-            sceneChanger.change(event, "ChallangeUser.fxml");
 
         } catch (Exception e) {
             e.printStackTrace();

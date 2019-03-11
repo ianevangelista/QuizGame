@@ -16,6 +16,8 @@ import java.sql.ResultSet;
 
 public class ControllerHome {
 
+    private String username;
+
     @FXML
     public TextField email;
     public TextField password;
@@ -78,4 +80,10 @@ public class ControllerHome {
                 cleaner.close(statement, rs, connection);
             }
 	}
+
+    private void setUserName(String username){
+        this.username = username;
+    }
+
+
 }

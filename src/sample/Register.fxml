@@ -33,5 +33,6 @@
         <Font size="24.0" />
       </font>
     </Text>
+      <Label fx:id="visibility" layoutX="419.0" layoutY="214.0" text="Wrong e-mail or password" visible="false" />
   </children>
 </AnchorPane>
