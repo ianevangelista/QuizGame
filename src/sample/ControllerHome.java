@@ -1,7 +1,7 @@
 package sample;
 
-import Connection.ConnectionClass;
 import Connection.Cleaner;
+import Connection.ConnectionPool;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
