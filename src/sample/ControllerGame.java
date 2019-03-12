@@ -144,9 +144,9 @@ public class ControllerGame {
             chosenCategories[2] = rs3.getString("name");
 
 
-            /*category1.setText(chosenCategories[0]);
+            category1.setText(chosenCategories[0]);
             category2.setText(chosenCategories[1]);
-            category3.setText(chosenCategories[2]);*/
+            category3.setText(chosenCategories[2]);
 
         }
         catch(Exception e){
@@ -348,7 +348,7 @@ public class ControllerGame {
     public void highscore(ActionEvent event) { //HighScore knapp
         sceneChanger.change(event, "HighScore.fxml");
         hSText = new TextField();
-        //ControllerHighScore.highscoreTable(); Legger til denne når controllerhighscore er klar
+        ControllerHighScore.highscoreTable();
     }
 
     public void start(ActionEvent event) {

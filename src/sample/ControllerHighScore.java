@@ -9,20 +9,25 @@ import javafx.scene.control.TextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+
+
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+
 
 
 public class ControllerHighScore {
-   /* @FXML
-    public static TextField hSText;
+   @FXML
     public static TableColumn userCol;
+    public static TableColumn scoreCol;
+    public static TableView hSTable;
 
     public static void highscoreTable(){
 
@@ -55,21 +60,17 @@ public class ControllerHighScore {
                 pointsList.add( Integer.toString(hs.getInt("points")));
             }
 
-            hSText = new TextField();
-            hSText.setPromptText("Halla");
-
 
            ObservableList<String> usernames = FXCollections.<String>observableArrayList();
 
            for(String name : usernameList){
                usernames.add(name);
            }
-           TableView<String> tableView = new TableView<String>(usernames);
+
+//MÅ LEGGE TIL RESULTATET I TABELLEN
 
 
 
-
-           userCol.setCellValueFactory("Halla");
 
             String tekst = "";
             for(String navn : usernameList){
@@ -90,5 +91,4 @@ public class ControllerHighScore {
     }
 
 
-*/
 }
