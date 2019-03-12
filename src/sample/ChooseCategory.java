@@ -116,7 +116,6 @@ public class ChooseCategory {
                 randomCategoryId[1] = rand.nextInt(amountOfCategorys);
             }
 
-
             category1.setText(categoryName.get(categoryId.get(randomCategoryId[0])));
             category2.setText(categoryName.get(categoryId.get(randomCategoryId[1])));
             category3.setText(categoryName.get(categoryId.get(randomCategoryId[2])));

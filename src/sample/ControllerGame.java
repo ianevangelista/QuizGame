@@ -1,6 +1,9 @@
 package sample;
 
+import static sample.ControllerHome.getUserName;
+
 import Connection.ConnectionClass;
+import Connection.ConnectionPool;
 import Connection.Cleaner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,19 +21,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ControllerGame {
-    ControllerHome controllerhome = new ControllerHome();
-    private String userName = controllerhome.getUserName();
+
+    private String username = getUserName();
     private int gameId = 899;
     private int[] test = new int[3];
 
     @FXML
     public TextField user_challenge;
     public Label usernameWrong;
+    public Button refresh;
+
     //Category
     public Button category1;
     public Button category2;
     public Button category3;
-    public Button categoyTest;
 
 
     //Correct answer
@@ -277,7 +281,7 @@ public class ControllerGame {
             cleaner.close(null, pt2, null);
 
             //Sjekker om det er spiller 1 eller 2 som er "Hovedspiller" og skriver poeng i passende rekkefølge
-            if (user.equals(userName)) {
+            if (user.equals(username)) {
                 player1Pt.setText(Integer.toString(points1));
                 player2Pt.setText(Integer.toString(points2));
             } else {
@@ -330,7 +334,7 @@ public class ControllerGame {
 
 
             //Sjekker om det er spiller 1 eller 2 som er "Hovedspiller" og skriver poeng i passende rekkefølge
-            if (user.equals(userName)) {
+            if (user.equals(username)) {
                 player1PtW.setText(Integer.toString(points1));
                 player2PtW.setText(Integer.toString(points2));
             } else {
@@ -351,8 +355,9 @@ public class ControllerGame {
         ControllerHighScore.highscoreTable();
     }
 
-    public void start(ActionEvent event) {
-        sceneChanger.change(event, "Category.fxml");
+    public void start(ActionEvent event) throws SQLException{
+        ControllerRefresh refresh = new ControllerRefresh();
+        refresh.refresh(event);
     }
 
     public void sceneInfo(ActionEvent event) { //trykker på infoknapp
@@ -373,7 +378,7 @@ public class ControllerGame {
 
     public void sceneChallangeUser(ActionEvent event){sceneChanger.change(event, "ChallangeUser.fxml");}
 
-    public void result(int gameId){
+    public void result(int gameId) {
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
         Statement statement = null;
@@ -406,16 +411,16 @@ public class ControllerGame {
             int points2 = pt2.getInt("p2Points");
 
 
-            if(!(user.equals(userName))){
+            if (!(user.equals(username))) {
                 int help = points1;
                 points1 = points2;
                 points2 = help;
             }
 
-            if(points1 > points2){
+            if (points1 > points2) {
                 resultText.setText("You are the winner of this round.");
                 resultHeading.setText("Winner!");
-            }else {
+            } else {
                 resultText.setText("You lost this round.");
                 resultHeading.setText("Loser...");
             }
@@ -425,10 +430,9 @@ public class ControllerGame {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             cleaner.close(statement, null, connection);
         }
     }
-
 
 }

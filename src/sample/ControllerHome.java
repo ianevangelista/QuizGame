@@ -90,6 +90,4 @@ public class ControllerHome {
     public static String getUserName(){
         return userName;
     }
-
-
 }
