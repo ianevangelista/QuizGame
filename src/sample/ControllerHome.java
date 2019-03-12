@@ -21,22 +21,20 @@ public class ControllerHome {
     public TextField password;
     public Label visibility;
 
-    public ChangeScene sceneChanger = new ChangeScene();
-
     public void sceneInfo(ActionEvent event) { //trykker på infoknapp
-       sceneChanger.change(event, "Info.fxml"); //bruker super-metode
+       ChangeScene.change(event, "Info.fxml"); //bruker super-metode
     }
 
     public void sceneHome(ActionEvent event) { //feedback knapp
-        sceneChanger.change(event, "Main.fxml"); //bruker super-metode
+        ChangeScene.change(event, "Main.fxml"); //bruker super-metode
     }
 
     public void register(ActionEvent event) { //trykker registrer
-        sceneChanger.change(event, "Register.fxml"); //bruker super-metode
+        ChangeScene.change(event, "Register.fxml"); //bruker super-metode
     }
 
     public void feedback(ActionEvent event) { //feedback knapp
-        sceneChanger.change(event, "Feedback.fxml"); //bruker super-metode
+        ChangeScene.change(event, "Feedback.fxml"); //bruker super-metode
     }
 
     public void playerLogin(ActionEvent event) {
@@ -52,10 +50,10 @@ public class ControllerHome {
             rs = pstmt.executeQuery();
 
             if (!(rs.next())) {
-                sceneChanger.changeVisibility(true, visibility); //her skal en pop-up komme
+                ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
             }
             else if (username.getText().isEmpty() || password.getText().isEmpty()) {
-                sceneChanger.changeVisibility(true, visibility); //her skal en pop-up komme
+                ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
             }
             else {
                 String salt = rs.getString("salt");
@@ -68,9 +66,9 @@ public class ControllerHome {
 
                 if (realPassword.equals(hashedPassword)) {
                     setUserName(username.getText());
-                    sceneChanger.change(event, "Game.fxml");
+                    ChangeScene.change(event, "Game.fxml");
                 } else {
-                    sceneChanger.changeVisibility(true, visibility); //her skal en pop-up komme
+                    ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
                 }
             }
             }catch(Exception e){

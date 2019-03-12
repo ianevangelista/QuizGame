@@ -25,7 +25,6 @@ public class ChooseCategory {
 
     public TextField user_challenge;
     public Label usernameWrong;
-    private ChangeScene sceneChanger = new ChangeScene();
     private String username;
 
     @FXML
@@ -46,7 +45,7 @@ public class ChooseCategory {
     int[] randomCategoryId = new int[3];
 
     public void sceneHome(ActionEvent event) { //home button
-        sceneChanger.change(event, "Main.fxml");
+        ChangeScene.change(event, "Main.fxml");
     }
 
     public void chooseCategory1(){ //When button 1 is pressed

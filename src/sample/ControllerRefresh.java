@@ -13,8 +13,6 @@ import static sample.ControllerHome.getUserName;
 
 public class ControllerRefresh{
 
-    public ChangeScene sceneChanger = new ChangeScene();
-
     private String username = getUserName();
 
     public void refresh(ActionEvent event) throws SQLException {
@@ -33,9 +31,9 @@ public class ControllerRefresh{
             int challenge = rs.getInt(1);
 
             if (challenge != 0) {
-                sceneChanger.change(event, "Challenged.fxml");
+                ChangeScene.change(event, "Challenged.fxml");
             } else {
-                sceneChanger.change(event, "ChallangeUser.fxml");
+                ChangeScene.change(event, "ChallangeUser.fxml");
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -24,9 +24,6 @@ public class ControllerRegister {
     public RadioButton btnFemale;
     public ToggleGroup gender;
 
-
-    private ChangeScene sceneChanger = new ChangeScene();
-
     private String user_name;
     private String email_adress;
     private int birthyear;
@@ -39,20 +36,20 @@ public class ControllerRegister {
         PreparedStatement pstmt = null;
         if(!notNull()) {
             System.out.println("ingenting skal registreres");
-            sceneChanger.changeVisibility(true, visibility);
+            ChangeScene.changeVisibility(true, visibility);
         }
         else if(!checkPassword()) {
             System.out.println("ingenting skal registreres");
-            sceneChanger.changeVisibility(true, visibility);
+            ChangeScene.changeVisibility(true, visibility);
         }
         else if(userExists()) {
             System.out.println("ingenting skal registreres");
-            sceneChanger.changeVisibility(true, visibility);
+            ChangeScene.changeVisibility(true, visibility);
         }
 
         else if(chooseGender() == -1) {
             System.out.println("ingenting skal registreres");
-            sceneChanger.changeVisibility(true, visibility);
+            ChangeScene.changeVisibility(true, visibility);
         }
 
         else{
@@ -77,13 +74,13 @@ public class ControllerRegister {
                 e.printStackTrace();
             } finally {
                 Cleaner.close(pstmt, null, connection);
-                sceneChanger.change(event, "Game.fxml");
+                ChangeScene.change(event, "Game.fxml");
             }
         }
     }
 
     public void sceneHome(ActionEvent event) { //hjemknapp
-        sceneChanger.change(event, "Main.fxml"); //bruker super-metode
+        ChangeScene.change(event, "Main.fxml"); //bruker super-metode
     }
 
     public boolean notNull() {

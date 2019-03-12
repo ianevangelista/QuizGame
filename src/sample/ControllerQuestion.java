@@ -18,7 +18,6 @@ import java.util.*;
 
 public class ControllerQuestion {
     private int questionCount = 0;
-    public ChangeScene sceneChanger = new ChangeScene();
     private static int gameId = getGameId();
     private static String username = getUserName();
     ConnectionClass connectionClass = null;
@@ -52,7 +51,7 @@ public class ControllerQuestion {
             //sett p1/p2finish == true
             sceneNavn = "result.fxml";
         }
-        sceneChanger.change(event, sceneNavn);              //changes scene
+        ChangeScene.change(event, sceneNavn);              //changes scene
     }
 
     public void questionDisplay() { //displays questions

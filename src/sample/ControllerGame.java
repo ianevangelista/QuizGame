@@ -52,9 +52,6 @@ public class ControllerGame {
     //highscore
     public TextField hSText;
 
-
-    public ChangeScene sceneChanger = new ChangeScene();
-
     public void chooseCategories() { //juni
 
         Connection connection = null;
@@ -129,17 +126,17 @@ public class ControllerGame {
     public void button1(ActionEvent event){
         categoryChosen(test[0]);
         //questionPicker();
-        sceneChanger.change(event, "Question.fxml");
+        ChangeScene.change(event, "Question.fxml");
     }
     public void button2(ActionEvent event){
         categoryChosen(test[1]);
         //questionPicker();
-        sceneChanger.change(event, "Question.fxml");
+        ChangeScene.change(event, "Question.fxml");
     }
     public void button3(ActionEvent event){
         categoryChosen(test[2]);
         //questionPicker();
-        sceneChanger.change(event, "Question.fxml");
+        ChangeScene.change(event, "Question.fxml");
     }
 
     public void categoryChosen(int categoryID){
@@ -311,7 +308,7 @@ public class ControllerGame {
     }
 
     public void highscore(ActionEvent event) { //HighScore knapp
-        sceneChanger.change(event, "HighScore.fxml");
+        ChangeScene.change(event, "HighScore.fxml");
         hSText = new TextField();
         ControllerHighScore.highscoreTable();
     }
@@ -322,22 +319,22 @@ public class ControllerGame {
     }
 
     public void sceneInfo(ActionEvent event) { //trykker på infoknapp
-        sceneChanger.change(event, "Info.fxml");
+        ChangeScene.change(event, "Info.fxml");
     }
 
     public void sceneInfoLogin(ActionEvent event) { //trykker på infoknapp
-        sceneChanger.change(event, "Info_Login.fxml");
+        ChangeScene.change(event, "Info_Login.fxml");
     }
 
     public void sceneHome(ActionEvent event) { //hjemknapp
-        sceneChanger.change(event, "Main.fxml");
+        ChangeScene.change(event, "Main.fxml");
     }
 
     public void sceneGame(ActionEvent event) { //hjemknapp
-        sceneChanger.change(event, "Game.fxml");
+        ChangeScene.change(event, "Game.fxml");
     }
 
-    public void sceneChallangeUser(ActionEvent event){sceneChanger.change(event, "ChallangeUser.fxml");}
+    public void sceneChallangeUser(ActionEvent event){ChangeScene.change(event, "ChallangeUser.fxml");}
 
     public void resultFinished() {
         ConnectionClass cs = new ConnectionClass();
