@@ -9,10 +9,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class ControllerRegister {
 
@@ -28,19 +25,19 @@ public class ControllerRegister {
     public ToggleGroup gender;
 
 
-    public ChangeScene sceneChanger = new ChangeScene();
+    private ChangeScene sceneChanger = new ChangeScene();
 
-    public String user_name;
-    public String email_adress;
-    public int birthyear;
-    public String password;
-    public byte[] salt;
-    public String stringSalt;
+    private String user_name;
+    private String email_adress;
+    private int birthyear;
+    private String password;
+    private byte[] salt;
+    private String stringSalt;
 
     public void reg() {
         Cleaner cleaner = new Cleaner();
         Connection connection = null;
-        Statement statement = null;
+        PreparedStatement pstmt = null;
         if(!notNull()) {
             System.out.println("ingenting skal registreres");
             sceneChanger.changeVisibility(true, visibility);
@@ -61,16 +58,26 @@ public class ControllerRegister {
 
         else{
             int gender = chooseGender();
-            String sql = "INSERT INTO Player VALUES(\"" + user_name + "\",  \"" + email_adress + "\", " + 0 + ", " + 0 + ", \"" + password + "\",  \"" + stringSalt + "\", " + gender + ", " + birthyear + ")";
+            int turn = 0;
+            int startPoints = 0;
+            String sql = "INSERT INTO Player(username, email, points, activeTurn, password, salt, female, birthyear)VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             try {
                 ConnectionClass connectionClass = new ConnectionClass();
                 connection = connectionClass.getConnection();
-                statement = connection.createStatement();
-                statement.executeUpdate(sql);
+                pstmt = connection.prepareStatement(sql);
+                pstmt.setString(1, user_reg.getText());
+                pstmt.setString(2, email_reg.getText());
+                pstmt.setInt(3, startPoints);
+                pstmt.setInt(4, turn);
+                pstmt.setString(5, pass_reg.getText());
+                pstmt.setString(6, stringSalt);
+                pstmt.setInt(7, gender);
+                pstmt.setString(8, birthyear_reg.getText());
+                pstmt.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                cleaner.close(statement, null, connection);
+                cleaner.close(pstmt, null, connection);
             }
         }
     }
