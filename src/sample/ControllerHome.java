@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 
 public class ControllerHome {
@@ -41,14 +42,18 @@ public class ControllerHome {
     }
 
     public void playerLogin(ActionEvent event) {
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
+        Connection connection = null;
+        Statement statement = null;
         Cleaner cleaner = new Cleaner();
         ResultSet rs = null;
         PreparedStatement pstmt = null;
 
 		String sql = "SELECT username, password, salt FROM Player WHERE username = ?;";
 		try {
+		    connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+            rs = statement.executeQuery(sql);
+
             pstmt = connection.prepareStatement(sql);
             String userName = username.getText();
             pstmt.setString(1, userName);
