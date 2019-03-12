@@ -42,14 +42,14 @@ public class ControllerHome {
     }
 
     public void playerLogin(ActionEvent event) {
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
+        Connection connection = null;
         Cleaner cleaner = new Cleaner();
         ResultSet rs = null;
         Statement statement = null;
 
 		String sql = "SELECT username, password, salt FROM Player WHERE username ='" + username.getText() + "';";
 		try {
+		    connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             rs = statement.executeQuery(sql);
 
