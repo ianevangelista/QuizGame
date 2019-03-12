@@ -8,10 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.sql.ResultSet;
 
 
@@ -20,7 +18,7 @@ public class ControllerHome {
     private String userName;
 
     @FXML
-    public TextField username;
+    private TextField username;
     public TextField password;
     public Label visibility;
 
