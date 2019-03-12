@@ -8,11 +8,14 @@ CREATE TABLE IF NOT EXISTS `iaevange`.`Player` (
   `username` VARCHAR(15) NOT NULL,
   `email` VARCHAR(60) NULL,
   `points` INT NULL,
-  `activeTurn` TINYINT(1) NOT NULL DEFAULT 0,
-  `password` VARCHAR(45) NULL,
+  `online` TINYINT(1) NOT NULL DEFAULT 0,
+  `password` VARCHAR(100) NULL,
+  `salt` VARCHAR(100) NULL,
   `female` TINYINT(1) NULL,
-  `birthyear` INT NULL,
-  PRIMARY KEY (`username`)
+  `birthyear` INT(4) NULL,
+  `gameId` INT NULL,
+  PRIMARY KEY (`username`),
+  FOREIGN KEY(`gameId`) REFERENCES `iaevange`.`Game` (`gameId`)
 );
 
 
@@ -64,6 +67,8 @@ CREATE TABLE IF NOT EXISTS `iaevange`.`Game` (
   `question1` INT NULL,
   `question2` INT NULL,
   `question3` INT NULL,
+  `p1Finished` TINYINT(1) NULL,
+  `p2Finished` TINYINT(1) NULL,
   PRIMARY KEY (`gameId`),
   FOREIGN KEY (`player1`) REFERENCES `iaevange`.`Player` (`username`),
   FOREIGN KEY (`player2`) REFERENCES `iaevange`.`Player` (`username`),
