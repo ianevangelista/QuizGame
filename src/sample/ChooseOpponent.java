@@ -42,7 +42,7 @@ public class ChooseOpponent{
             insertSentence = connection.prepareStatement(insertSql);
             insertSentence.setString(1, opponent.getText());
             rs = insertSentence.executeQuery();
-            if(rs.next()) {
+            if(rs.next()){
                 opponentUsername = rs.getString("username");
                     makeGame(username, opponentUsername);
             }
@@ -69,13 +69,18 @@ public class ChooseOpponent{
             rsGameId.next();
             gameId = rsGameId.getInt(1);
 
+            sqlInsert = "UPDATE `Player` SET `gameId` = " + gameId + " WHERE `Player`.`username` = '" + player1 + "'";
+            statement.executeUpdate(sqlInsert);
+
+            sqlInsert = "UPDATE `Player` SET `gameId` = " + gameId + " WHERE `Player`.`username` = '" + player2 + "'";
+            statement.executeUpdate(sqlInsert);
+
             System.out.println(gameId);
         }catch (SQLException e) {
             e.printStackTrace();
         }finally {
             cleaner.close(statement, rsGameId, connection);
         }
-
     }
 
     public static int getGameId() {
