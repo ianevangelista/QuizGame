@@ -43,7 +43,6 @@ public class ControllerHome {
 
     public void playerLogin(ActionEvent event) {
         Connection connection = null;
-        Statement statement = null;
         Cleaner cleaner = new Cleaner();
         ResultSet rs = null;
         PreparedStatement pstmt = null;
@@ -51,14 +50,9 @@ public class ControllerHome {
 		String sql = "SELECT username, password, salt FROM Player WHERE username = ?;";
 		try {
 		    connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-            rs = statement.executeQuery(sql);
-
             pstmt = connection.prepareStatement(sql);
-            String userName = username.getText();
-            pstmt.setString(1, userName);
+            pstmt.setString(1, username.getText());
             rs = pstmt.executeQuery();
-
 
             if (!(rs.next())) {
                 sceneChanger.changeVisibility(true, visibility); //her skal en pop-up komme
