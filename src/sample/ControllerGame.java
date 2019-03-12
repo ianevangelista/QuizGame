@@ -54,7 +54,6 @@ public class ControllerGame {
 
 
     public ChangeScene sceneChanger = new ChangeScene();
-    public Cleaner cleaner = new Cleaner();
 
     public void chooseCategories() { //juni
 
@@ -123,7 +122,7 @@ public class ControllerGame {
             e.printStackTrace();
         }
         finally {
-            cleaner.close(statement, null, connection);
+            Cleaner.close(statement, null, connection);
         }
     }
 
@@ -159,7 +158,7 @@ public class ControllerGame {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            cleaner.close(statement, null, connection);
+            Cleaner.close(statement, null, connection);
         }
     }
 
@@ -180,12 +179,12 @@ public class ControllerGame {
             ResultSet rsCategoryNumber = statement.executeQuery(sqlCategory);               //lager restultset med kategorinr
             rsCategoryNumber.next();                                                        //henter første i rsCategoryNumber
             int categoryId = rsCategoryNumber.getInt("categoryId");             //lager en int med categoryId
-            cleaner.close(null, rsCategoryNumber, null);
+            Cleaner.close(null, rsCategoryNumber, null);
 
             ResultSet rsNumberQuestion = statement.executeQuery(sqlNumberQuestion + categoryId + "';"); //henter ant spørsmål i kategorien
             rsNumberQuestion.next();//henter første i rsNumberQuestion
             int antQuestion = rsNumberQuestion.getInt("COUNT(questionId)");      //lager en int med ant spøsmål i kategorien
-            cleaner.close(null, rsNumberQuestion, null);
+            Cleaner.close(null, rsNumberQuestion, null);
 
             int[] questionId = new int[3];
             String sqlGetText = "SELECT questionId FROM Question WHERE categoryId=" + categoryId + " ORDER BY questionId;";
@@ -209,7 +208,7 @@ public class ControllerGame {
         }catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            cleaner.close(statement, null, connection);
+            Cleaner.close(statement, null, connection);
         }
     }*/
 
@@ -230,19 +229,19 @@ public class ControllerGame {
             ResultSet p1 = statement.executeQuery(sqlP1);
             p1.next();
             String user = p1.getString("player1");
-            cleaner.close(statement, null, null);
+            Cleaner.close(statement, null, null);
 
             //Henter ut resultat til spiller 1
             ResultSet pt1 = statement.executeQuery(sqlPlayer1);
             pt1.next();
             int points1 = pt1.getInt("p1Points");
-            cleaner.close(null, pt1, null);
+            Cleaner.close(null, pt1, null);
 
             //Henter ut resultat til spiller 2
             ResultSet pt2 = statement.executeQuery(sqlPlayer2);
             pt2.next();
             int points2 = pt2.getInt("p2Points");
-            cleaner.close(null, pt2, null);
+            Cleaner.close(null, pt2, null);
 
             //Sjekker om det er spiller 1 eller 2 som er "Hovedspiller" og skriver poeng i passende rekkefølge
             if (user.equals(username)) {
@@ -259,7 +258,7 @@ public class ControllerGame {
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
-            cleaner.close(statement, null, connection);
+            Cleaner.close(statement, null, connection);
         }
     }
 
@@ -267,8 +266,6 @@ public class ControllerGame {
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
         Statement statement = null;
-
-        Cleaner cleaner = new Cleaner();
 
         String sqlP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
         String sqlPlayer1 = "SELECT p1Points FROM Game WHERE gameId =" + gameId + ";";
@@ -309,7 +306,7 @@ public class ControllerGame {
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
-            cleaner.close(statement, null, connection);
+            Cleaner.close(statement, null, connection);
         }
     }
 
@@ -380,7 +377,7 @@ public class ControllerGame {
         }catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            cleaner.close(statement, rs, connection);
+            Cleaner.close(statement, rs, connection);
         }
 
 
@@ -397,8 +394,6 @@ public class ControllerGame {
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
         Statement statement = null;
-
-        Cleaner cleaner = new Cleaner();
 
         String sqlP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
         String sqlPlayer1 = "SELECT p1Points FROM Game WHERE gameId =" + gameId + ";";
@@ -446,7 +441,7 @@ public class ControllerGame {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            cleaner.close(statement, null, connection);
+            Cleaner.close(statement, null, connection);
         }
     }
 

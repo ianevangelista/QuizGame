@@ -35,8 +35,6 @@ public class ControllerHighScore {
         Connection connection = connectionClass.getConnection();
         Statement statement = null;
 
-        Cleaner cleaner = new Cleaner();
-
         String sqlHighScoreUser = "SELECT username FROM `Player` ORDER BY points desc LIMIT 5;";
         String sqlHighScorePoints = "SELECT points FROM `Player` ORDER BY points desc LIMIT 5;";
 
@@ -86,7 +84,7 @@ public class ControllerHighScore {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            cleaner.close(statement, null, connection);
+            Cleaner.close(statement, null, connection);
         }
     }
 

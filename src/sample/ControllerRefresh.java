@@ -14,7 +14,6 @@ import static sample.ControllerHome.getUserName;
 public class ControllerRefresh{
 
     public ChangeScene sceneChanger = new ChangeScene();
-    public Cleaner cleaner = new Cleaner();
 
     private String username = getUserName();
 
@@ -41,7 +40,7 @@ public class ControllerRefresh{
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            cleaner.close(statement, null, connection);
+            Cleaner.close(statement, null, connection);
         }
     }
 }

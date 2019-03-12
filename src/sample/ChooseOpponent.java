@@ -15,9 +15,6 @@ import static sample.ControllerHome.getUserName;
 
 public class ChooseOpponent{
 
-
-    private Cleaner cleaner = new Cleaner();
-
     private ConnectionClass connectionClass;
     private Connection connection;
     private String username = getUserName();
@@ -53,7 +50,7 @@ public class ChooseOpponent{
         catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            cleaner.close(insertSentence, rs, connection);
+            Cleaner.close(insertSentence, rs, connection);
         }
     }
 
@@ -79,7 +76,7 @@ public class ChooseOpponent{
         }catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            cleaner.close(statement, rsGameId, connection);
+            Cleaner.close(statement, rsGameId, connection);
         }
     }
 

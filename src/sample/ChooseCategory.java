@@ -25,7 +25,6 @@ public class ChooseCategory {
 
     public TextField user_challenge;
     public Label usernameWrong;
-    private Cleaner cleaner = new Cleaner();
     private ChangeScene sceneChanger = new ChangeScene();
     private String username;
 
@@ -59,7 +58,7 @@ public class ChooseCategory {
             e.printStackTrace();
         }
         finally {
-            cleaner.close(statement, rs, connection);
+            Cleaner.close(statement, rs, connection);
         }
     }
 
@@ -72,7 +71,7 @@ public class ChooseCategory {
             e.printStackTrace();
         }
         finally {
-            cleaner.close(statement, rs, connection);
+            Cleaner.close(statement, rs, connection);
         }
     }
 
@@ -85,7 +84,7 @@ public class ChooseCategory {
             e.printStackTrace();
         }
         finally {
-            cleaner.close(statement, rs, connection);
+            Cleaner.close(statement, rs, connection);
         }
     }
 

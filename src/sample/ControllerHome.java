@@ -11,8 +11,6 @@ import javafx.scene.control.Label;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
-
 
 public class ControllerHome {
 
@@ -43,7 +41,6 @@ public class ControllerHome {
 
     public void playerLogin(ActionEvent event) {
         Connection connection = null;
-        Cleaner cleaner = new Cleaner();
         ResultSet rs = null;
         PreparedStatement pstmt = null;
 
@@ -79,7 +76,7 @@ public class ControllerHome {
             }catch(Exception e){
                 e.printStackTrace();
             }finally{
-                cleaner.close(pstmt, rs, connection);
+                Cleaner.close(pstmt, rs, connection);
             }
 	}
 

@@ -35,7 +35,6 @@ public class ControllerRegister {
     private String stringSalt;
 
     public void reg(ActionEvent event) {
-        Cleaner cleaner = new Cleaner();
         Connection connection = null;
         PreparedStatement pstmt = null;
         if(!notNull()) {
@@ -77,7 +76,7 @@ public class ControllerRegister {
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                cleaner.close(pstmt, null, connection);
+                Cleaner.close(pstmt, null, connection);
                 sceneChanger.change(event, "Game.fxml");
             }
         }
@@ -118,8 +117,6 @@ public class ControllerRegister {
     }
 
     public boolean userExists(){
-        Cleaner cleaner = new Cleaner();
-        //ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = null;
         Statement statementUser = null;
         Statement statementEmail = null;
@@ -142,8 +139,8 @@ public class ControllerRegister {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            cleaner.close(statementUser, rsUser, null);
-            cleaner.close(statementEmail, rsEmail, connection);
+            Cleaner.close(statementUser, rsUser, null);
+            Cleaner.close(statementEmail, rsEmail, connection);
         }
         return true;
     }
