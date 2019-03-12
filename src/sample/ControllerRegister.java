@@ -34,7 +34,7 @@ public class ControllerRegister {
     private byte[] salt;
     private String stringSalt;
 
-    public void reg() {
+    public void reg(ActionEvent event) {
         Cleaner cleaner = new Cleaner();
         Connection connection = null;
         PreparedStatement pstmt = null;
@@ -58,9 +58,9 @@ public class ControllerRegister {
 
         else{
             int gender = chooseGender();
-            int turn = 0;
+            int ol = 1;
             int startPoints = 0;
-            String sql = "INSERT INTO Player(username, email, points, activeTurn, password, salt, female, birthyear)VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Player(username, email, points, online, password, salt, female, birthyear)VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             try {
                 ConnectionClass connectionClass = new ConnectionClass();
                 connection = connectionClass.getConnection();
@@ -68,8 +68,8 @@ public class ControllerRegister {
                 pstmt.setString(1, user_reg.getText());
                 pstmt.setString(2, email_reg.getText());
                 pstmt.setInt(3, startPoints);
-                pstmt.setInt(4, turn);
-                pstmt.setString(5, pass_reg.getText());
+                pstmt.setInt(4, ol);
+                pstmt.setString(5, password);
                 pstmt.setString(6, stringSalt);
                 pstmt.setInt(7, gender);
                 pstmt.setString(8, birthyear_reg.getText());
@@ -78,6 +78,7 @@ public class ControllerRegister {
                 e.printStackTrace();
             } finally {
                 cleaner.close(pstmt, null, connection);
+                sceneChanger.change(event, "Game.fxml");
             }
         }
     }
@@ -145,11 +146,11 @@ public class ControllerRegister {
     public int chooseGender(){
         if(this.gender.getSelectedToggle().equals(this.btnMale)){
             System.out.println("Male");
-            return 1;
+            return 0;
         }
         else if(this.gender.getSelectedToggle().equals(this.btnFemale)){
             System.out.println("Female");
-            return 0;
+            return 1;
         }
         else return -1;
     }

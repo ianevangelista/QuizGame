@@ -7,9 +7,9 @@ import java.security.SecureRandom;
 public class HashSalt {
 
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
-    public HashSalt(){}
+    //public HashSalt(){}
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         byte[] salt = createSalt(); //byte
         String hexSalt = encodeHexString(salt);
 
@@ -18,15 +18,15 @@ public class HashSalt {
 
         System.out.println("SHA-256 Hash: " + genHashSalted("abcd", salt2));
         System.out.println(hexSalt);
-    }
+    }*/
 
     public static String genHashSalted(String password, byte[] salt) {
         try{
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            digest.reset();
-            digest.update(salt);
-            byte[] hash = digest.digest(password.getBytes());
-            return bytesToStringHex(hash);
+            MessageDigest digest = MessageDigest.getInstance("SHA-256"); //hash-algorithm
+            digest.reset(); //resets digest
+            digest.update(salt); //updates
+            byte[] hash = digest.digest(password.getBytes());//hashes password in bytes
+            return bytesToStringHex(hash); //converts from bytes to hexadecimal in form of a string
         }catch (NoSuchAlgorithmException e){
             e.printStackTrace();
         }
@@ -44,10 +44,10 @@ public class HashSalt {
     }
 
     public static byte[] createSalt(){
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        return salt;
+        SecureRandom random = new SecureRandom(); //random generator
+        byte[] salt = new byte[16]; //byte variable
+        random.nextBytes(salt); //fills up the array with random numbers
+        return salt; //returns salt
     }
 
     public static String byteToHex(byte num) {

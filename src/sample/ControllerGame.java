@@ -352,7 +352,6 @@ public class ControllerGame {
     }
 
     public void start(ActionEvent event) {
-        chooseCategories();
         sceneChanger.change(event, "Category.fxml");
     }
 
