@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import java.sql.PreparedStatement;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -27,17 +28,44 @@ public class ChooseOpponent {
 
 
     public void findOpponent(ActionEvent event) {
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
-
+        ConnectionClass connectionClass;
+        Connection connection;
+        Statement statement;
         ResultSet rs = null;
+        ResultSet res = null;
+
+        PreparedStatement insertSetning;
 
 
-        String sql = "SELECT username FROM Player WHERE username ='" + user_challenge.getText() + "';";
+
 
         try{
-            Statement statement = connection.createStatement();
-            rs = statement.executeQuery(sql);
+            connectionClass = new ConnectionClass();
+            connection = connectionClass.getConnection();
+
+            String insertSql = "SELECT username FROM Player WHERE username =?;";
+            insertSetning = connection.prepareStatement(insertSql);
+            insertSetning.setString(1, opponent.getText());
+            rs = insertSetning.executeQuery();
+            if(rs.next()) {
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+           /* rs = statement.executeQuery(sql);
 
             String realUsername = null;
             if (rs.next()) {
@@ -51,7 +79,7 @@ public class ChooseOpponent {
             } else {
                 cleaner.close(statement, rs, connection);
                 sceneChanger.changeVisibility(true, usernameWrong);
-            }
+            }*/
         }
         catch (Exception e) {
             e.printStackTrace();
