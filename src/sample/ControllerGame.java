@@ -55,41 +55,6 @@ public class ControllerGame {
     public ChangeScene sceneChanger = new ChangeScene();
     public Cleaner cleaner = new Cleaner();
 
-
-
-    /*public void chooseOpponent(ActionEvent event) {
-
-    public void chooseOpponent(ActionEvent event) {
->>>>>>> 0348efb293d0d73d20ff84bba5c66bff5f093735
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
-        ResultSet rs = null;
-
-        String sql = "SELECT username FROM Player WHERE username ='" + user_challenge.getText() + "';";
-
-        try{
-            Statement statement = connection.createStatement();
-            rs = statement.executeQuery(sql);
-
-            String realUsername = null;
-            if (rs.next()) {
-                realUsername = rs.getString("user_challenge");
-            } else {
-                realUsername = "-1";
-            }
-            if (realUsername.equals(user_challenge.getText())){
-                cleaner.close(statement, rs, connection);
-                sceneChanger.change(event, "Categories.fxml");
-            } else {
-                cleaner.close(statement, rs, connection);
-                sceneChanger.changeVisibility(true, usernameWrong);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
     public void chooseCategories() { //juni
 
         Connection connection = null;
@@ -163,17 +128,17 @@ public class ControllerGame {
 
     public void button1(ActionEvent event){
         categoryChosen(test[0]);
-        questionPicker();
+        //questionPicker();
         sceneChanger.change(event, "Question.fxml");
     }
     public void button2(ActionEvent event){
         categoryChosen(test[1]);
-        questionPicker();
+        //questionPicker();
         sceneChanger.change(event, "Question.fxml");
     }
     public void button3(ActionEvent event){
         categoryChosen(test[2]);
-        questionPicker();
+        //questionPicker();
         sceneChanger.change(event, "Question.fxml");
     }
 
@@ -195,11 +160,9 @@ public class ControllerGame {
         } finally {
             cleaner.close(statement, null, connection);
         }
-
-
     }
 
-    public void questionPicker() { //helene
+    /*public void questionPicker() { //helene
         Connection connection = null;
         Statement statement = null;
 
@@ -247,7 +210,7 @@ public class ControllerGame {
         }finally {
             cleaner.close(statement, null, connection);
         }
-    }
+    }*/
 
     public void correctAnswer(ActionEvent event, int gameId, int poeng) {
         ConnectionClass connectionClass = new ConnectionClass();
