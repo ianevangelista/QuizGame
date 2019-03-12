@@ -24,6 +24,7 @@ public class ControllerRefresh{
 
         String sql = "SELECT gameId FROM Player WHERE username = '" + username + "';";
 
+
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
@@ -31,7 +32,6 @@ public class ControllerRefresh{
             rs.next();
 
             int challenge = rs.getInt(1);
-            System.out.println(challenge);
 
             if (challenge != 0) {
                 sceneChanger.change(event, "Challenged.fxml");
