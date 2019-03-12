@@ -12,7 +12,7 @@ import static sample.ChooseOpponent.getGameId;
 import static sample.ControllerHome.getUserName;
 
 import Connection.Cleaner;
-import Connection.ConnectionClass;
+import Connection.ConnectionPool;
 
 import java.util.*;
 
@@ -20,7 +20,6 @@ public class ControllerQuestion {
     private int questionCount = 0;
     private static int gameId = getGameId();
     private static String username = getUserName();
-    ConnectionClass connectionClass = null;
     private Connection connection = null;
     private Statement statement = null;
 
@@ -36,8 +35,7 @@ public class ControllerQuestion {
         else sceneNavn = "IncorrectAnswer.fxml";
         if(questionCount == 3) {
             try{
-                connectionClass = new ConnectionClass();
-                connection = connectionClass.getConnection();
+                connection = ConnectionPool.getConnection();
                 statement = connection.createStatement();
                 String player = findUser();
                 String finished = player.equals("player1") ? "p1Finished" : "p2Finished";
@@ -56,8 +54,7 @@ public class ControllerQuestion {
 
     public void questionDisplay() { //displays questions
         try {
-            connectionClass = new ConnectionClass();
-            connection = connectionClass.getConnection();
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             String sqlGetText = "SELECT questionText FROM Game JOIN Question ON questionId = question"; //sqlstatement for question text
@@ -82,8 +79,7 @@ public class ControllerQuestion {
         String sqlGetQId = "FROM Game WHERE gameId=" + gameId + ";";
         String[] sqlQuestionName = {"question1", "question2", "question3"};
         try {
-            connectionClass = new ConnectionClass();
-            connection = connectionClass.getConnection();
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             String user = findUser();       //find user
@@ -136,8 +132,7 @@ public class ControllerQuestion {
         String[] players = {"player1", "player2"};
         String sqlPlayer = "FROM Game WHERE gameId=" + gameId + ";";
         try {
-            ConnectionClass connectionClass = new ConnectionClass();
-            connection = connectionClass.getConnection();
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             for(String p:players) {
@@ -159,8 +154,7 @@ public class ControllerQuestion {
         String sqlCategory = "SELECT categoryID FROM Game WHERE gameID ='" + gameId + "';"; //finner hvilken kategori spiller har valgt
         ResultSet rs = null;
         try {
-            ConnectionClass connectionClass = new ConnectionClass();
-            connection = connectionClass.getConnection();
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             //henter

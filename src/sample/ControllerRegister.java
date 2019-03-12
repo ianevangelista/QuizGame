@@ -58,7 +58,6 @@ public class ControllerRegister {
             int startPoints = 0;
             String sql = "INSERT INTO Player(username, email, points, online, password, salt, female, birthyear)VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             try {
-                //ConnectionClass connectionClass = new ConnectionClass();
                 connection = ConnectionPool.getConnection();
                 pstmt = connection.prepareStatement(sql);
                 pstmt.setString(1, user_name);

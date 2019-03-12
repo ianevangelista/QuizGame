@@ -3,7 +3,6 @@ package sample;
 import static sample.ControllerHome.getUserName;
 import static sample.ControllerQuestion.findUser;
 
-import Connection.ConnectionClass;
 import Connection.ConnectionPool;
 import Connection.Cleaner;
 import javafx.event.ActionEvent;
@@ -63,8 +62,7 @@ public class ControllerGame {
         String sql =  "SELECT categoryId FROM Category;";
 
         try {
-            ConnectionClass connectionClass = new ConnectionClass();
-            connection = connectionClass.getConnection();
+            connection = ConnectionPool.getConnection();
             ResultSet rs = null;
 
             statement = connection.createStatement();
@@ -146,8 +144,7 @@ public class ControllerGame {
         String sql = "UPDATE Game SET categoryId = " + categoryID + " WHERE gameId = " + gameId + ";";
 
         try {
-            ConnectionClass connectionClass = new ConnectionClass();
-            connection = connectionClass.getConnection();
+            connection = ConnectionPool.getConnection();
             ResultSet rs = null;
             statement = connection.createStatement();
             statement.execute(sql);
@@ -168,8 +165,7 @@ public class ControllerGame {
         String sqlNumberQuestion = "SELECT COUNT(questionId) FROM Question WHERE categoryId ='"; //teller ant spørsmål
 
         try {
-            ConnectionClass connectionClass = new ConnectionClass();
-            connection = connectionClass.getConnection();
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             //henter
@@ -210,8 +206,7 @@ public class ControllerGame {
     }*/
 
     public void correctAnswer(ActionEvent event, int gameId, int poeng) {
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
+        Connection connection = null;
         Statement statement = null;
 
         String sqlP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
@@ -220,6 +215,7 @@ public class ControllerGame {
 
 
         try {
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             //Henter ut mail til spiller 1
@@ -260,8 +256,7 @@ public class ControllerGame {
     }
 
     public void incorrectAnswer(int gameId) {
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
+        Connection connection = null;
         Statement statement = null;
 
         String sqlP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
@@ -270,6 +265,7 @@ public class ControllerGame {
 
 
         try {
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             //Henter ut mail til spiller 1
@@ -337,7 +333,6 @@ public class ControllerGame {
     public void sceneChallangeUser(ActionEvent event){ChangeScene.change(event, "ChallangeUser.fxml");}
 
     public void resultFinished() {
-        ConnectionClass cs = new ConnectionClass();
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
@@ -345,7 +340,7 @@ public class ControllerGame {
         String sqlFinished = "SELECT * FROM Game WHERE gameId =" + gameId + ";";
         String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
         try {
-            connection = cs.getConnection();
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             String player = findUser();
             rs = statement.executeQuery(sqlFinished);
@@ -388,8 +383,7 @@ public class ControllerGame {
 
 
     public void result(int gameId) {
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
+        Connection connection = null;
         Statement statement = null;
 
         String sqlP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
@@ -398,6 +392,7 @@ public class ControllerGame {
 
 
         try {
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             //Henter ut brukernavn til spiller 1

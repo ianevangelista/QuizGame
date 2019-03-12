@@ -1,6 +1,7 @@
 package sample;
 
-import Connection.ConnectionClass;
+import Connection.ConnectionPool;
+import Connection.ConnectionPool;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -15,7 +16,6 @@ import static sample.ControllerHome.getUserName;
 
 public class ChooseOpponent{
 
-    private ConnectionClass connectionClass;
     private Connection connection;
     private String username = getUserName();
     private String opponentUsername = null;
@@ -32,8 +32,7 @@ public class ChooseOpponent{
         PreparedStatement insertSentence = null;
 
         try{
-            connectionClass = new ConnectionClass();
-            connection = connectionClass.getConnection();
+            connection = ConnectionPool.getConnection();
             usernameWrong.setVisible(false);
             String insertSql = "SELECT username FROM Player WHERE username =?;";
             insertSentence = connection.prepareStatement(insertSql);
@@ -59,6 +58,7 @@ public class ChooseOpponent{
         ResultSet rsGameId = null;
 
         try{
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             String sqlInsert = "INSERT INTO Game(player1, player2, p1Points, p2Points) VALUES('"+ player1 + "', '" + player2 + "', 0, 0);";
             statement.executeUpdate(sqlInsert, Statement.RETURN_GENERATED_KEYS);

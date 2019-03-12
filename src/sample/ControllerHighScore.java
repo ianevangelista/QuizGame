@@ -1,6 +1,6 @@
 package sample;
 
-import Connection.ConnectionClass;
+import Connection.ConnectionPool;
 import Connection.Cleaner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,8 +31,7 @@ public class ControllerHighScore {
 
     public static void highscoreTable(){
 
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
+        Connection connection = null;
         Statement statement = null;
 
         String sqlHighScoreUser = "SELECT username FROM `Player` ORDER BY points desc LIMIT 5;";
@@ -42,8 +41,8 @@ public class ControllerHighScore {
         ArrayList<String> pointsList = new ArrayList<>();
 
        try {
-
-            statement = connection.createStatement();
+           connection = ConnectionPool.getConnection();
+           statement = connection.createStatement();
 
             //Legger navn i tabellen highScoreList
             ResultSet hs = statement.executeQuery(sqlHighScoreUser);
