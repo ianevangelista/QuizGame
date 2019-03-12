@@ -16,7 +16,7 @@ import java.sql.Statement;
 
 public class ControllerHome {
 
-    private String userName;
+    private static String userName;
 
     @FXML
     private TextField username;
@@ -87,7 +87,7 @@ public class ControllerHome {
         this.userName = username;
     }
 
-    public String getUserName(){
+    public static String getUserName(){
         return userName;
     }
 

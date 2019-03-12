@@ -11,6 +11,8 @@ import java.sql.*;
 import Connection.Cleaner;
 import javafx.scene.control.Button;
 
+import static sample.ControllerHome.getUserName;
+
 public class ChooseOpponent{
 
     public Label usernameWrong;
@@ -57,9 +59,7 @@ public class ChooseOpponent{
     }
 
     private void findMyUsername() {
-        /*ControllerHome ch = new ControllerHome();
-        this.username = ch.getUserName();*/
-        this.username = "emir"; //tester
+        this.username = getUserName();
     }
 
     private void makeGame(String player1, String player2) {
