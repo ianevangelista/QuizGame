@@ -91,10 +91,15 @@ public class ControllerRegister {
         if(user_reg.getText().isEmpty() || email_reg.getText().isEmpty() || birthyear_reg.getText().isEmpty() || pass_reg.getText().isEmpty() || confirm_reg.getText().isEmpty()) {
             return false;
         } else {
-            user_name = user_reg.getText();
-            email_adress = email_reg.getText();
-            String getYear = birthyear_reg.getText();
-            birthyear = Integer.parseInt(getYear);
+            try{
+                user_name = user_reg.getText().toLowerCase();
+                email_adress = email_reg.getText().toLowerCase();
+                String getYear = birthyear_reg.getText();
+                birthyear = Integer.parseInt(getYear);
+            }catch (NumberFormatException e){
+                //e.printStackTrace();
+                return false;
+            }
             return true;
         }
     }
