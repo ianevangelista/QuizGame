@@ -15,12 +15,12 @@ import static sample.ControllerHome.getUserName;
 
 public class ChooseOpponent{
 
-    public Label usernameWrong;
+
     private Cleaner cleaner = new Cleaner();
 
     private ConnectionClass connectionClass;
     private Connection connection;
-    private String username;
+    private String username = getUserName();
     private String opponentUsername = null;
     private static int gameId;
 
@@ -28,7 +28,7 @@ public class ChooseOpponent{
     @FXML
     public TextField opponent;
     public Button challenge;
-
+    public Label usernameWrong;
 
     public void findOpponent(ActionEvent event) {
         ResultSet rs = null;
@@ -37,13 +37,12 @@ public class ChooseOpponent{
         try{
             connectionClass = new ConnectionClass();
             connection = connectionClass.getConnection();
-            findMyUsername();
             usernameWrong.setVisible(false);
             String insertSql = "SELECT username FROM Player WHERE username =?;";
             insertSentence = connection.prepareStatement(insertSql);
             insertSentence.setString(1, opponent.getText());
             rs = insertSentence.executeQuery();
-            if(rs.next()) {
+            if(rs.next()){
                 opponentUsername = rs.getString("username");
                     makeGame(username, opponentUsername);
             }
@@ -58,21 +57,23 @@ public class ChooseOpponent{
         }
     }
 
-    private void findMyUsername() {
-        this.username = getUserName();
-    }
-
     private void makeGame(String player1, String player2) {
         Statement statement = null;
         ResultSet rsGameId = null;
 
         try{
             statement = connection.createStatement();
-            String sqlInsert = "INSERT INTO Game(player1, player2) VALUES('"+ player1 + "', '" + player2 + "');";
+            String sqlInsert = "INSERT INTO Game(player1, player2, p1Points, p2Points) VALUES('"+ player1 + "', '" + player2 + "', 0, 0);";
             statement.executeUpdate(sqlInsert, Statement.RETURN_GENERATED_KEYS);
             rsGameId = statement.getGeneratedKeys();
             rsGameId.next();
             gameId = rsGameId.getInt(1);
+
+            sqlInsert = "UPDATE `Player` SET `gameId` = " + gameId + " WHERE `Player`.`username` = '" + player1 + "'";
+            statement.executeUpdate(sqlInsert);
+
+            sqlInsert = "UPDATE `Player` SET `gameId` = " + gameId + " WHERE `Player`.`username` = '" + player2 + "'";
+            statement.executeUpdate(sqlInsert);
 
             System.out.println(gameId);
         }catch (SQLException e) {
@@ -80,7 +81,6 @@ public class ChooseOpponent{
         }finally {
             cleaner.close(statement, rsGameId, connection);
         }
-
     }
 
     public static int getGameId() {
