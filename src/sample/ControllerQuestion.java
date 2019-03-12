@@ -19,8 +19,8 @@ import java.util.*;
 public class ControllerQuestion {
     private int questionCount = 0;
     public ChangeScene sceneChanger = new ChangeScene();
-    private int gameId = getGameId();
-    private String username = getUserName();
+    private static int gameId = getGameId();
+    private static String username = getUserName();
     ConnectionClass connectionClass = null;
     private Connection connection = null;
     private Statement statement = null;
@@ -131,7 +131,9 @@ public class ControllerQuestion {
         }
     }
 
-    private String findUser() {
+    public static String findUser() {
+        Connection connection = null;
+        Statement statement = null;
         ResultSet rs = null;
         Cleaner cleaner = new Cleaner();
         String[] players = {"player1", "player2"};

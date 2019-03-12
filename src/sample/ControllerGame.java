@@ -1,6 +1,7 @@
 package sample;
 
 import static sample.ControllerHome.getUserName;
+import static sample.ControllerQuestion.findUser;
 
 import Connection.ConnectionClass;
 import Connection.ConnectionPool;
@@ -340,6 +341,57 @@ public class ControllerGame {
     }
 
     public void sceneChallangeUser(ActionEvent event){sceneChanger.change(event, "ChallangeUser.fxml");}
+
+    public void resultFinished() {
+        ConnectionClass cs = new ConnectionClass();
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+
+        String sqlFinished = "SELECT * FROM Game WHERE gameId =" + gameId + ";";
+        String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
+        try {
+            connection = cs.getConnection();
+            statement = connection.createStatement();
+            String player = findUser();
+            rs = statement.executeQuery(sqlFinished);
+            rs.next();
+            int p1Finished = rs.getInt("p1Finished");
+            int p2Finished = rs.getInt("p2Finished");
+
+            //if the opponent isn't finished, but you are
+            if((p1Finished == 1 && p2Finished == 0) && player.equals("player1") || (p2Finished == 1 && p1Finished == 0) && player.equals("player2")) {
+                String sqlQuit = "UPDATE Player SET gameId=NULL WHERE username ='" + username +"';";
+                String sqlDeleteFromGame = "UPDATE Game SET " + player + "= NULL WHERE gameId=" + gameId + ";";
+
+                //slå av autocommit??? rollback osv?
+                statement.executeUpdate(sqlDeleteFromGame);
+                statement.executeUpdate(sqlQuit);
+            }
+
+            //if both are finished
+            if(p1Finished == 1 && p2Finished == 1) {
+                statement.executeQuery(sqlDeleteGame);
+                //utfør sletting, blir gameId sletta på spilleren som spiller da?
+            }
+
+
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            cleaner.close(statement, rs, connection);
+        }
+
+
+    }
+
+
+
+
+
+
+
 
     public void result(int gameId) {
         ConnectionClass connectionClass = new ConnectionClass();
