@@ -8,10 +8,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 
 public class ControllerHome {
@@ -19,7 +19,7 @@ public class ControllerHome {
     private String userName;
 
     @FXML
-    public TextField username;
+    private TextField username;
     public TextField password;
     public Label visibility;
 
@@ -43,15 +43,22 @@ public class ControllerHome {
 
     public void playerLogin(ActionEvent event) {
         Connection connection = null;
+        Statement statement = null;
         Cleaner cleaner = new Cleaner();
         ResultSet rs = null;
-        Statement statement = null;
+        PreparedStatement pstmt = null;
 
-		String sql = "SELECT username, password, salt FROM Player WHERE username ='" + username.getText() + "';";
+		String sql = "SELECT username, password, salt FROM Player WHERE username = ?;";
 		try {
 		    connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             rs = statement.executeQuery(sql);
+
+            pstmt = connection.prepareStatement(sql);
+            String userName = username.getText();
+            pstmt.setString(1, userName);
+            rs = pstmt.executeQuery();
+
 
             if (!(rs.next())) {
                 sceneChanger.changeVisibility(true, visibility); //her skal en pop-up komme
@@ -78,7 +85,7 @@ public class ControllerHome {
             }catch(Exception e){
                 e.printStackTrace();
             }finally{
-                cleaner.close(statement, rs, connection);
+                cleaner.close(pstmt, rs, connection);
             }
 	}
 
