@@ -1,6 +1,6 @@
 package sample;
 
-import Connection.ConnectionClass;
+import Connection.ConnectionPool;
 import Connection.Cleaner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -62,8 +62,8 @@ public class ControllerRegister {
             int startPoints = 0;
             String sql = "INSERT INTO Player(username, email, points, online, password, salt, female, birthyear)VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             try {
-                ConnectionClass connectionClass = new ConnectionClass();
-                connection = connectionClass.getConnection();
+                //ConnectionClass connectionClass = new ConnectionClass();
+                connection = ConnectionPool.getConnection();
                 pstmt = connection.prepareStatement(sql);
                 pstmt.setString(1, user_name);
                 pstmt.setString(2, email_adress);
@@ -119,7 +119,7 @@ public class ControllerRegister {
 
     public boolean userExists(){
         Cleaner cleaner = new Cleaner();
-        ConnectionClass connectionClass = new ConnectionClass();
+        //ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = null;
         Statement statementUser = null;
         Statement statementEmail = null;
@@ -129,7 +129,7 @@ public class ControllerRegister {
         String email = "SELECT email FROM Player WHERE username ='" + email_reg.getText() + "';";
 
         try {
-            connection = connectionClass.getConnection();
+            connection = ConnectionPool.getConnection();
             statementUser = connection.createStatement();
             statementEmail = connection.createStatement();
             rsUser = statementUser.executeQuery(username);
