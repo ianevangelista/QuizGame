@@ -140,9 +140,9 @@ public class ControllerGame {
             System.out.println(randList[2]);
 
 
-            /*category1.setText(chosenCategories[0]);
+            category1.setText(chosenCategories[0]);
             category2.setText(chosenCategories[1]);
-            category3.setText(chosenCategories[2]);*/
+            category3.setText(chosenCategories[2]);
 
         }
         catch(Exception e){
