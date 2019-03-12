@@ -18,10 +18,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ControllerGame {
-
-    private String userEmail;
+    ControllerHome controllerhome = new ControllerHome();
+    private String userName = controllerhome.getUserName();
     private int gameId = 899;
-    private int questionCount;
+    private int[] test = new int[3];
 
     @FXML
     public TextField user_challenge;
@@ -31,7 +31,7 @@ public class ControllerGame {
     public Button category2;
     public Button category3;
     public Button categoyTest;
-    public int[] randList = new int[3];
+
 
     //Correct answer
     public TextField newPoints;
@@ -44,13 +44,19 @@ public class ControllerGame {
     public TextField totalScore;
     public TextField resultText;
     public TextField resultHeading;
-
+    //highscore
+    public TextField hSText;
 
 
     public ChangeScene sceneChanger = new ChangeScene();
     public Cleaner cleaner = new Cleaner();
 
+
+
+    /*public void chooseOpponent(ActionEvent event) {
+
     public void chooseOpponent(ActionEvent event) {
+>>>>>>> 0348efb293d0d73d20ff84bba5c66bff5f093735
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
         ResultSet rs = null;
@@ -78,7 +84,7 @@ public class ControllerGame {
         catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public void chooseCategories() { //juni
 
@@ -104,14 +110,14 @@ public class ControllerGame {
 
             Collections.shuffle(categoriesList);
             for (int i = 0; i < 3; i++) {
-                randList[i] = categoriesList.get(i);
+                test[i] = categoriesList.get(i);
             }
 
             //Category 1
             ResultSet rs1 = null;
             statement = connection.createStatement();
 
-            String sql1 = "SELECT name FROM Category WHERE categoryId = " + randList[0] + ";";
+            String sql1 = "SELECT name FROM Category WHERE categoryId = " + test[0] + ";";
 
             rs1 = statement.executeQuery(sql1);
             rs1.next();
@@ -121,7 +127,7 @@ public class ControllerGame {
             ResultSet rs2 = null;
             statement = connection.createStatement();
 
-            String sql2 = "SELECT name FROM Category WHERE categoryId = " + randList[1] + ";";
+            String sql2 = "SELECT name FROM Category WHERE categoryId = " + test[1] + ";";
 
             rs2 = statement.executeQuery(sql2);
             rs2.next();
@@ -131,13 +137,11 @@ public class ControllerGame {
             ResultSet rs3 = null;
             statement = connection.createStatement();
 
-            String sql3 = "SELECT name FROM Category WHERE categoryId = " + randList[2] + ";";
+            String sql3 = "SELECT name FROM Category WHERE categoryId = " + test[2] + ";";
 
             rs3 = statement.executeQuery(sql3);
             rs3.next();
             chosenCategories[2] = rs3.getString("name");
-
-            System.out.println(randList[2]);
 
 
             category1.setText(chosenCategories[0]);
@@ -154,17 +158,17 @@ public class ControllerGame {
     }
 
     public void button1(ActionEvent event){
-        categoryChosen(randList[0]);
+        categoryChosen(test[0]);
         questionPicker();
         sceneChanger.change(event, "Question.fxml");
     }
     public void button2(ActionEvent event){
-        categoryChosen(randList[1]);
+        categoryChosen(test[1]);
         questionPicker();
         sceneChanger.change(event, "Question.fxml");
     }
     public void button3(ActionEvent event){
-        categoryChosen(randList[2]);
+        categoryChosen(test[2]);
         questionPicker();
         sceneChanger.change(event, "Question.fxml");
     }
@@ -246,7 +250,7 @@ public class ControllerGame {
         Connection connection = connectionClass.getConnection();
         Statement statement = null;
 
-        String sqlEmailP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
+        String sqlP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
         String sqlPlayer1 = "SELECT p1Points FROM Game WHERE gameId =" + gameId + ";";
         String sqlPlayer2 = "SELECT p2Points FROM Game WHERE gameId =" + gameId + ";";
 
@@ -255,9 +259,9 @@ public class ControllerGame {
             statement = connection.createStatement();
 
             //Henter ut mail til spiller 1
-            ResultSet p1 = statement.executeQuery(sqlEmailP1);
+            ResultSet p1 = statement.executeQuery(sqlP1);
             p1.next();
-            String email = p1.getString("emailP1");
+            String user = p1.getString("player1");
             cleaner.close(statement, null, null);
 
             //Henter ut resultat til spiller 1
@@ -273,7 +277,7 @@ public class ControllerGame {
             cleaner.close(null, pt2, null);
 
             //Sjekker om det er spiller 1 eller 2 som er "Hovedspiller" og skriver poeng i passende rekkefølge
-            if (email.equals(userEmail)) {
+            if (user.equals(userName)) {
                 player1Pt.setText(Integer.toString(points1));
                 player2Pt.setText(Integer.toString(points2));
             } else {
@@ -291,14 +295,14 @@ public class ControllerGame {
         }
     }
 
-    public void incorrectAnswer(ActionEvent event, int gameId) {
+    public void incorrectAnswer(int gameId) {
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
         Statement statement = null;
 
         Cleaner cleaner = new Cleaner();
 
-        String sqlEmailP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
+        String sqlP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
         String sqlPlayer1 = "SELECT p1Points FROM Game WHERE gameId =" + gameId + ";";
         String sqlPlayer2 = "SELECT p2Points FROM Game WHERE gameId =" + gameId + ";";
 
@@ -307,26 +311,26 @@ public class ControllerGame {
             statement = connection.createStatement();
 
             //Henter ut mail til spiller 1
-            ResultSet p1 = statement.executeQuery(sqlEmailP1);
+            ResultSet p1 = statement.executeQuery(sqlP1);
             p1.next();
-            String email = p1.getString("emailP1");
-            cleaner.close(null, p1, null);
+            String user = p1.getString("player1");
+
 
             //Henter ut resultat til spiller 1
             ResultSet pt1 = statement.executeQuery(sqlPlayer1);
             pt1.next();
             int points1 = pt1.getInt("p1Points");
-            cleaner.close(null, pt1, null);
+
 
             //Henter ut resultat til spiller 2
             ResultSet pt2 = statement.executeQuery(sqlPlayer2);
             pt2.next();
             int points2 = pt2.getInt("p2Points");
-            cleaner.close(null, pt2, null);
+
 
 
             //Sjekker om det er spiller 1 eller 2 som er "Hovedspiller" og skriver poeng i passende rekkefølge
-            if (email.equals(userEmail)) {
+            if (user.equals(userName)) {
                 player1PtW.setText(Integer.toString(points1));
                 player2PtW.setText(Integer.toString(points2));
             } else {
@@ -341,13 +345,10 @@ public class ControllerGame {
         }
     }
 
-    public void setUserEmail(String userEmail){
-        this.userEmail = userEmail;
-    } //husk å bruke denne metoden i controllerHome i log in for å sette verdien
-    //   ControllerGame.setUserEmail(email.getText());
-
     public void highscore(ActionEvent event) { //HighScore knapp
         sceneChanger.change(event, "HighScore.fxml");
+        hSText = new TextField();
+        ControllerHighScore.highscoreTable();
     }
 
     public void start(ActionEvent event) {
@@ -371,14 +372,16 @@ public class ControllerGame {
         sceneChanger.change(event, "Game.fxml");
     }
 
-    public void result(ActionEvent event, int gameId){
+    public void sceneChallangeUser(ActionEvent event){sceneChanger.change(event, "ChallangeUser.fxml");}
+
+    public void result(int gameId){
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
         Statement statement = null;
 
         Cleaner cleaner = new Cleaner();
 
-        String sqlEmailP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
+        String sqlP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
         String sqlPlayer1 = "SELECT p1Points FROM Game WHERE gameId =" + gameId + ";";
         String sqlPlayer2 = "SELECT p2Points FROM Game WHERE gameId =" + gameId + ";";
 
@@ -386,25 +389,25 @@ public class ControllerGame {
         try {
             statement = connection.createStatement();
 
-            //Henter ut mail til spiller 1
-            ResultSet p1 = statement.executeQuery(sqlEmailP1);
+            //Henter ut brukernavn til spiller 1
+            ResultSet p1 = statement.executeQuery(sqlP1);
             p1.next();
-            String email = p1.getString("emailP1");
-            cleaner.close(null, p1, null);
+            String user = p1.getString("player1");
+
 
             //Henter ut resultat til spiller 1
             ResultSet pt1 = statement.executeQuery(sqlPlayer1);
             pt1.next();
             int points1 = pt1.getInt("p1Points");
-            cleaner.close(null, pt1, null);
+
 
             //Henter ut resultat til spiller 2
             ResultSet pt2 = statement.executeQuery(sqlPlayer2);
             pt2.next();
             int points2 = pt2.getInt("p2Points");
-            cleaner.close(null, pt2, null);
 
-            if(!(email.equals(userEmail))){
+
+            if(!(user.equals(userName))){
                 int help = points1;
                 points1 = points2;
                 points2 = help;
@@ -420,8 +423,6 @@ public class ControllerGame {
 
             totalScore.setText(Integer.toString(points1));
 
-            sceneChanger.change(event, "Game.fxml");
-            sceneChanger.change(event, "ChallangeUser.fxml");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -429,5 +430,6 @@ public class ControllerGame {
             cleaner.close(statement, null, connection);
         }
     }
+
 
 }
