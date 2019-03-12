@@ -65,14 +65,14 @@ public class ControllerRegister {
                 ConnectionClass connectionClass = new ConnectionClass();
                 connection = connectionClass.getConnection();
                 pstmt = connection.prepareStatement(sql);
-                pstmt.setString(1, user_reg.getText());
-                pstmt.setString(2, email_reg.getText());
+                pstmt.setString(1, user_name);
+                pstmt.setString(2, email_adress);
                 pstmt.setInt(3, startPoints);
                 pstmt.setInt(4, ol);
                 pstmt.setString(5, password);
                 pstmt.setString(6, stringSalt);
                 pstmt.setInt(7, gender);
-                pstmt.setString(8, birthyear_reg.getText());
+                pstmt.setInt(8, birthyear);
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
