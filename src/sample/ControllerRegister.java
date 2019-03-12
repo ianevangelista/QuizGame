@@ -65,14 +65,14 @@ public class ControllerRegister {
                 ConnectionClass connectionClass = new ConnectionClass();
                 connection = connectionClass.getConnection();
                 pstmt = connection.prepareStatement(sql);
-                pstmt.setString(1, user_reg.getText());
-                pstmt.setString(2, email_reg.getText());
+                pstmt.setString(1, user_name);
+                pstmt.setString(2, email_adress);
                 pstmt.setInt(3, startPoints);
                 pstmt.setInt(4, ol);
                 pstmt.setString(5, password);
                 pstmt.setString(6, stringSalt);
                 pstmt.setInt(7, gender);
-                pstmt.setString(8, birthyear_reg.getText());
+                pstmt.setInt(8, birthyear);
                 pstmt.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -91,10 +91,15 @@ public class ControllerRegister {
         if(user_reg.getText().isEmpty() || email_reg.getText().isEmpty() || birthyear_reg.getText().isEmpty() || pass_reg.getText().isEmpty() || confirm_reg.getText().isEmpty()) {
             return false;
         } else {
-            user_name = user_reg.getText();
-            email_adress = email_reg.getText();
-            String getYear = birthyear_reg.getText();
-            birthyear = Integer.parseInt(getYear);
+            try{
+                user_name = user_reg.getText().toLowerCase();
+                email_adress = email_reg.getText().toLowerCase();
+                String getYear = birthyear_reg.getText();
+                birthyear = Integer.parseInt(getYear);
+            }catch (NumberFormatException e){
+                //e.printStackTrace();
+                return false;
+            }
             return true;
         }
     }
