@@ -2,6 +2,7 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.sql.Connection;
@@ -26,7 +27,11 @@ public class ControllerQuestion {
 
     @FXML
     public TextField answerField;
-    public TextField questionField;
+    public Label questionField;
+
+    public void sceneHome(ActionEvent event) { //feedback knapp
+        ChangeScene.change(event, "Game.fxml"); //bruker super-metode
+    }
 
     public void sceneQuestion(ActionEvent event) { //clicks submit button
         String sceneNavn;
@@ -152,5 +157,10 @@ public class ControllerQuestion {
         }finally {
             Cleaner.close(statement, rs, connection);
         }
+    }
+
+    public void initialize(){
+        System.out.printf("Speed");
+        questionDisplay();
     }
 }

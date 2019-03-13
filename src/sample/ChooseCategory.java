@@ -159,7 +159,7 @@ public class ChooseCategory {
 
             //Checks that third element is different from first and second
             while (randomCategoryId[0] == randomCategoryId[2] || randomCategoryId[1] == randomCategoryId[2]) {
-                randomCategoryId[1] = rand.nextInt(amountOfCategorys);
+                randomCategoryId[2] = rand.nextInt(amountOfCategorys);
             }
             category1.setText(categoryName.get(categoryId.get(randomCategoryId[0])));
             category2.setText(categoryName.get(categoryId.get(randomCategoryId[1])));
