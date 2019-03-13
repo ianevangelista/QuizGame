@@ -45,7 +45,7 @@ public class ChooseCategory {
     int[] randomCategoryId = new int[3];
 
     public void sceneHome(ActionEvent event) { //home button
-        ChangeScene.change(event, "Main.fxml");
+        ChangeScene.change(event, "Game.fxml");
     }
 
     public void chooseCategory1(){ //When button 1 is pressed
