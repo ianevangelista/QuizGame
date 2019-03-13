@@ -82,6 +82,7 @@ public class ChooseOpponent{
 
             System.out.println(gameId);
         }catch (SQLException e) {
+
             e.printStackTrace();
         }finally {
             Cleaner.close(statement, rsGameId, connection);
