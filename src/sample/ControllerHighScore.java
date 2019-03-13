@@ -2,22 +2,11 @@ package sample;
 
 import Connection.ConnectionPool;
 import Connection.Cleaner;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-
-
-
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
