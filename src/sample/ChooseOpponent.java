@@ -61,30 +61,38 @@ public class ChooseOpponent{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
+            //Checks if the player you are trying to challendge is already challendged
             String sqlCheckIfPlayerAlreadyChallenged = "SELECT gameId FROM `Player` WHERE `Player`.`username` = '" + player2 + "'";
             statement.executeQuery(sqlCheckIfPlayerAlreadyChallenged);
             rsGameId.next();
             int opponentGameId = rsGameId.getInt("gameId");
 
-            if(opponentGameId == 0) return false;
+            if(opponentGameId != 0){ // If the opponent has a gameId it means they are challenged by another player
+                Cleaner.close(statement, rsGameId, connection);
+                return false;
+            }
 
+            //Creats a new game
             String sqlInsert = "INSERT INTO Game(player1, player2, p1Points, p2Points) VALUES('"+ player1 + "', '" + player2 + "', 0, 0);";
             statement.executeUpdate(sqlInsert, Statement.RETURN_GENERATED_KEYS);
             rsGameId = statement.getGeneratedKeys();
             rsGameId.next();
             gameId = rsGameId.getInt(1);
 
+            //Updates both players with a gameId that points to the new game
             sqlInsert = "UPDATE `Player` SET `gameId` = " + gameId + " WHERE `Player`.`username` = '" + player1 + "'";
             statement.executeUpdate(sqlInsert);
 
             sqlInsert = "UPDATE `Player` SET `gameId` = " + gameId + " WHERE `Player`.`username` = '" + player2 + "'";
             statement.executeUpdate(sqlInsert);
 
-            System.out.println(gameId);
+            Cleaner.close(statement, rsGameId, connection);
+            return true;
+
         }catch (SQLException e) {
             e.printStackTrace();
-        }finally {
             Cleaner.close(statement, rsGameId, connection);
+            return false;
         }
     }
 
