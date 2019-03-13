@@ -2,6 +2,7 @@ package sample;
 
 import static sample.ControllerHome.getUserName;
 import static sample.ControllerQuestion.findUser;
+import static sample.Logout.logOut;
 
 import Connection.ConnectionPool;
 import Connection.Cleaner;
@@ -305,6 +306,11 @@ public class ControllerGame {
         ChangeScene.change(event, "HighScore.fxml");
         hSText = new TextField();
         ControllerHighScore.highscoreTable();
+    }
+
+    public void logout(ActionEvent event) { //HighScore knapp
+        Logout.logOut();
+        ChangeScene.change(event, "Main.fxml");
     }
 
     public void start(ActionEvent event) throws SQLException{

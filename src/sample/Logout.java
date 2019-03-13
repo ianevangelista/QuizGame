@@ -8,10 +8,6 @@ import Connection.ConnectionPool;
 import Connection.Cleaner;
 import static sample.ControllerHome.getUserName;
 
-
-
-
-
 public class Logout {
     private static String username = getUserName();
 
@@ -33,6 +29,7 @@ public class Logout {
                 pstmt = connection.prepareStatement(logout);
                 pstmt.setInt(1, offline);
                 pstmt.setString(2, username);
+                pstmt.executeUpdate();
                 return true;
             }
             return false;
