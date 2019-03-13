@@ -27,8 +27,6 @@ public class ControllerGame {
     private int[] test = new int[3];
 
     @FXML
-    public TextField user_challenge;
-    public Label usernameWrong;
     public Button refresh;
 
     //Category
@@ -319,7 +317,6 @@ public class ControllerGame {
     }
 
     public void sceneInfoLogin(ActionEvent event) { //trykker på infoknapp
-        Logout.logOut();
         ChangeScene.change(event, "Info_Login.fxml");
     }
 
@@ -352,10 +349,8 @@ public class ControllerGame {
             //if the opponent isn't finished, but you are
             if((p1Finished == 1 && p2Finished == 0) && player.equals("player1") || (p2Finished == 1 && p1Finished == 0) && player.equals("player2")) {
                 String sqlQuit = "UPDATE Player SET gameId=NULL WHERE username ='" + username +"';";
-                String sqlDeleteFromGame = "UPDATE Game SET " + player + "= NULL WHERE gameId=" + gameId + ";";
 
                 //slå av autocommit??? rollback osv?
-                statement.executeUpdate(sqlDeleteFromGame);
                 statement.executeUpdate(sqlQuit);
             }
 
@@ -375,13 +370,6 @@ public class ControllerGame {
 
 
     }
-
-
-
-
-
-
-
 
     public void result(int gameId) {
         Connection connection = null;
