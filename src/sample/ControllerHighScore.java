@@ -25,9 +25,9 @@ import java.util.ArrayList;
 
 public class ControllerHighScore {
    @FXML
-    public static TableColumn userCol;
-    public static TableColumn scoreCol;
-    public static TableView hSTable;
+    public static TextField userCol;
+    public static TextField scoreCol;
+
 
     public static void highscoreTable(){
 
@@ -57,27 +57,18 @@ public class ControllerHighScore {
                 pointsList.add( Integer.toString(hs.getInt("points")));
             }
 
-
-           ObservableList<String> usernames = FXCollections.<String>observableArrayList();
-
-           for(String name : usernameList){
-               usernames.add(name);
-           }
-
-//MÅ LEGGE TIL RESULTATET I TABELLEN
-
-
-
-
-            String tekst = "";
-            for(String navn : usernameList){
-                tekst += navn +" \n ";
+            String userText = "";
+            for(String name : usernameList){
+                userText += name +" \n ";
             }
-           for(String poeng : pointsList){
-               tekst += poeng +" \n";
+           String pointsText = "";
+           for(String points : pointsList){
+               pointsText += points +" \n";
            }
 
-            System.out.println(tekst);
+           //Printer ut teksten
+           userCol.setText(userText);
+           scoreCol.setText(pointsText);
 
 
         } catch (Exception e) {
