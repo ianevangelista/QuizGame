@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import Connection.Cleaner;
 import javafx.scene.control.Button;
+
+import java.util.Collections;
 import java.util.Random;
 import java.util.ArrayList;
 
@@ -49,8 +51,11 @@ public class ChooseCategory {
     public void chooseCategory1(){ //When button 1 is pressed
         try{
             connection = ConnectionPool.getConnection();
-            String sql = "UPDATE `Game` SET `categoryId` = " + (categoryId.get(randomCategoryId[0])+1) + " WHERE `Game`.`gameId` = " + getGameId();
+
+            int chosenCategoryId = (categoryId.get(randomCategoryId[0])+1);
+            String sql = "UPDATE `Game` SET `categoryId` = " + chosenCategoryId + " WHERE `Game`.`gameId` = " + getGameId();
             statement.executeUpdate(sql);
+            questionPicker(chosenCategoryId);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -63,8 +68,11 @@ public class ChooseCategory {
     public void chooseCategory2(){ //When button 2 is pressed
         try{
             connection = ConnectionPool.getConnection();
-            String sql = "UPDATE `Game` SET `categoryId` = " + (categoryId.get(randomCategoryId[1])+1) + " WHERE `Game`.`gameId` = " + getGameId();
+
+            int chosenCategoryId = (categoryId.get(randomCategoryId[1])+1);
+            String sql = "UPDATE `Game` SET `categoryId` = " + chosenCategoryId + " WHERE `Game`.`gameId` = " + getGameId();
             statement.executeUpdate(sql);
+            questionPicker(chosenCategoryId);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -77,8 +85,11 @@ public class ChooseCategory {
     public void chooseCategory3(){ //When button 3 is pressed
         try{
             connection = ConnectionPool.getConnection();
-            String sql = "UPDATE `Game` SET `categoryId` = " + (categoryId.get(randomCategoryId[2])+1) + " WHERE `Game`.`gameId` = " + getGameId();
+
+            int chosenCategoryId = (categoryId.get(randomCategoryId[2])+1);
+            String sql = "UPDATE `Game` SET `categoryId` = " + chosenCategoryId + " WHERE `Game`.`gameId` = " + getGameId();
             statement.executeUpdate(sql);
+            questionPicker(chosenCategoryId);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -136,6 +147,39 @@ public class ChooseCategory {
         }
         catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void questionPicker(int categoryId) { //helene
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+            ResultSet rs = null;
+
+            int gameId = getGameId();
+
+            String sqlCategory = "SELECT categoryID FROM Game WHERE gameID ='" + gameId + "';"; //finner hvilken kategori spiller har valgt
+
+            int[] questionId = new int[3];
+            String sqlGetText = "SELECT questionId FROM Question WHERE categoryId=" + categoryId + " ORDER BY questionId;";
+            rs = statement.executeQuery(sqlGetText);
+            ArrayList<Integer> listQuestion = new ArrayList<Integer>();
+            while(rs.next()) {
+                listQuestion.add(new Integer(rs.getInt("questionId")));
+            }
+            Collections.shuffle(listQuestion);
+            for (int i=0; i<3; i++) {
+                questionId[i] = listQuestion.get(i);
+            }
+
+            String sqlUpdate = "UPDATE Game SET question1='" + questionId[0] + "', question2 ='" + questionId[1] + "' , question3='" + questionId[2] + "' WHERE gameId=" + gameId + ";";
+
+            statement.executeUpdate(sqlUpdate);
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            Cleaner.close(statement, rs, connection);
         }
     }
 }

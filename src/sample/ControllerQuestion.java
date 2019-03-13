@@ -153,39 +153,4 @@ public class ControllerQuestion {
             Cleaner.close(statement, rs, connection);
         }
     }
-
-    public void questionPicker() { //helene
-        String sqlCategory = "SELECT categoryID FROM Game WHERE gameID ='" + gameId + "';"; //finner hvilken kategori spiller har valgt
-        ResultSet rs = null;
-        try {
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-
-            //henter
-            rs = statement.executeQuery(sqlCategory);               //lager restultset med kategorinr
-            rs.next();                                                        //henter første i rsCategoryNumber
-            int categoryId = rs.getInt("categoryId");             //lager en int med categoryId
-
-            int[] questionId = new int[3];
-            String sqlGetText = "SELECT questionId FROM Question WHERE categoryId=" + categoryId + " ORDER BY questionId;";
-            rs = statement.executeQuery(sqlGetText);
-            ArrayList<Integer> listQuestion = new ArrayList<Integer>();
-            while(rs.next()) {
-                listQuestion.add(new Integer(rs.getInt("questionId")));
-            }
-            Collections.shuffle(listQuestion);
-            for (int i=0; i<3; i++) {
-                questionId[i] = listQuestion.get(i);
-            }
-
-            String sqlUpdate = "UPDATE Game SET question1='" + questionId[0] + "', question2 ='" + questionId[1] + "' , question3='" + questionId[2] + "' WHERE gameId=" + gameId + ";";
-
-            statement.executeUpdate(sqlUpdate);
-
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            Cleaner.close(statement, rs, connection);
-        }
-    }
 }
