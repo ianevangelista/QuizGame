@@ -1,7 +1,7 @@
 package sample;
 
-import Connection.ConnectionClass;
 import Connection.Cleaner;
+import Connection.ConnectionPool;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
 
 public class ControllerHome {
