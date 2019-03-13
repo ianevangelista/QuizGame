@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import static sample.ChooseOpponent.getGameId;
 import static sample.ControllerHome.getUserName;
+import static sample.TimerC.timerRes;
 
 import Connection.Cleaner;
 import Connection.ConnectionPool;
@@ -31,8 +32,6 @@ public class ControllerQuestion {
         String sceneNavn;
         boolean riktig = questionCheck(gameId, username);   //checks answer
 
-        if(riktig) sceneNavn = "CorrectAnswer.fxml";
-        else sceneNavn = "IncorrectAnswer.fxml";
         if(questionCount == 3) {
             try{
                 connection = ConnectionPool.getConnection();
@@ -41,6 +40,7 @@ public class ControllerQuestion {
                 String finished = player.equals("player1") ? "p1Finished" : "p2Finished";
                 String sqlUpdate = "UPDATE Game SET " + finished + "=1 WHERE gameId=" + gameId + ";";
                 statement.executeUpdate(sqlUpdate);
+                timerRes(event);
             }catch(SQLException e) {
                 e.printStackTrace();
             }finally {
@@ -48,6 +48,10 @@ public class ControllerQuestion {
             }
             //sett p1/p2finish == true
             sceneNavn = "result.fxml";
+        }
+        else{
+            if(riktig) sceneNavn = "CorrectAnswer.fxml";
+            else sceneNavn = "IncorrectAnswer.fxml";
         }
         ChangeScene.change(event, sceneNavn);              //changes scene
     }
