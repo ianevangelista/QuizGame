@@ -90,6 +90,7 @@ public class ChooseOpponent{
             return true;
 
         }catch (SQLException e) {
+
             e.printStackTrace();
             Cleaner.close(statement, rsGameId, connection);
             return false;
