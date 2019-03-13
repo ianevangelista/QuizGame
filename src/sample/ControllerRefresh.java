@@ -63,16 +63,26 @@ public class ControllerRefresh {
     public void decline(ActionEvent event) throws SQLException {
         Connection connection = null;
         Statement statement = null;
-
-        String sql = "DELETE FROM Game WHERE player2 = '" + username + "';";
+        ResultSet rs = null;
 
         try{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
+            //Updates both players with a gameId that points to the new game
+            String sqlGetPlayer1 = "SELECT player1 FROM Game WHERE player2 = '" + username + "';";
+            rs = statement.executeQuery(sqlGetPlayer1);
+            rs.next();
+            String player1 = rs.getString("player1");
 
-            System.out.println(username);
-            statement.executeUpdate(sql);
+            String sqlInsert = "UPDATE `Player` SET `gameId` = NULL WHERE `Player`.`username` = '" + player1 + "'";
+            statement.executeUpdate(sqlInsert);
+
+            sqlInsert = "UPDATE `Player` SET `gameId` = NULL WHERE `Player`.`username` = '" + username + "';";
+            statement.executeUpdate(sqlInsert);
+
+            String sqlDeleteGame = "DELETE FROM Game WHERE player2 = '" + username + "';";
+            statement.executeUpdate(sqlDeleteGame);
 
             ChangeScene.change(event, "ChallangeUser.fxml");
         }
