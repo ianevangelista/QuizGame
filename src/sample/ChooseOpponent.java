@@ -61,9 +61,9 @@ public class ChooseOpponent{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
-            //Checks if the player you are trying to challendge is already challendged
+            //Checks if the player you are trying to challenge is already challenged
             String sqlCheckIfPlayerAlreadyChallenged = "SELECT gameId FROM `Player` WHERE `Player`.`username` = '" + player2 + "'";
-            statement.executeQuery(sqlCheckIfPlayerAlreadyChallenged);
+            rsGameId = statement.executeQuery(sqlCheckIfPlayerAlreadyChallenged);
             rsGameId.next();
             int opponentGameId = rsGameId.getInt("gameId");
 
@@ -72,7 +72,7 @@ public class ChooseOpponent{
                 return false;
             }
 
-            //Creats a new game
+            //Creates a new game
             String sqlInsert = "INSERT INTO Game(player1, player2, p1Points, p2Points) VALUES('"+ player1 + "', '" + player2 + "', 0, 0);";
             statement.executeUpdate(sqlInsert, Statement.RETURN_GENERATED_KEYS);
             rsGameId = statement.getGeneratedKeys();
