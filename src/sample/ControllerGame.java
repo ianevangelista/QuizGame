@@ -437,4 +437,21 @@ public class ControllerGame {
         }
     }
 
+    public boolean logOut(){
+        Connection connection = null;
+        Statement statement = null;
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+
+            Cleaner.close(statement, null, connection);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Cleaner.close(statement, null, connection);
+            return false;
+        }
+
+    }
+
 }

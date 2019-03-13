@@ -53,13 +53,21 @@ public class ChooseOpponent{
         }
     }
 
-    private void makeGame(String player1, String player2) {
+    private boolean makeGame(String player1, String player2) {
         Statement statement = null;
         ResultSet rsGameId = null;
 
         try{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
+
+            String sqlCheckIfPlayerAlreadyChallenged = "SELECT gameId FROM `Player` WHERE `Player`.`username` = '" + player2 + "'";
+            statement.executeQuery(sqlCheckIfPlayerAlreadyChallenged);
+            rsGameId.next();
+            int opponentGameId = rsGameId.getInt("gameId");
+
+            if(opponentGameId == 0) return false;
+
             String sqlInsert = "INSERT INTO Game(player1, player2, p1Points, p2Points) VALUES('"+ player1 + "', '" + player2 + "', 0, 0);";
             statement.executeUpdate(sqlInsert, Statement.RETURN_GENERATED_KEYS);
             rsGameId = statement.getGeneratedKeys();
