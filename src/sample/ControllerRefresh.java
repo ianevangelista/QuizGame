@@ -55,8 +55,6 @@ public class ControllerRefresh {
     }
 
     public void accept(ActionEvent event) {
-        ChooseCategory category = new ChooseCategory();
-        category.initialize();
         ChangeScene.change(event, "Category.fxml");
     }
 
