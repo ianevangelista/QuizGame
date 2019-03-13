@@ -25,7 +25,7 @@
             <Font size="24.0" />
          </font>
       </Text>
-      <Button layoutX="12.0" layoutY="347.0" minHeight="28.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="76.0" text="HOME">
+      <Button layoutX="12.0" layoutY="347.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneHome" prefHeight="39.0" prefWidth="76.0" text="HOME">
          <font>
             <Font size="18.0" />
          </font>
