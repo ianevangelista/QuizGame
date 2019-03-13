@@ -93,4 +93,8 @@ public class ControllerRefresh {
             Cleaner.close(statement, null, connection);
         }
     }
+
+    public void sceneHome(ActionEvent event) { //feedback knapp
+        ChangeScene.change(event, "Game.fxml"); //bruker super-metode
+    }
 }
