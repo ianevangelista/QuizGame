@@ -48,7 +48,7 @@ public class ChooseCategory {
         ChangeScene.change(event, "Game.fxml");
     }
 
-    public void chooseCategory1(){ //When button 1 is pressed
+    public void chooseCategory1(ActionEvent event){ //When button 1 is pressed
         try{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
@@ -69,10 +69,11 @@ public class ChooseCategory {
         }
         finally {
             Cleaner.close(statement, rs, connection);
+            ChangeScene.change(event, "Question.fxml");
         }
     }
 
-    public void chooseCategory2(){ //When button 2 is pressed
+    public void chooseCategory2(ActionEvent event){ //When button 2 is pressed
         try{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
@@ -93,10 +94,11 @@ public class ChooseCategory {
         }
         finally {
             Cleaner.close(statement, rs, connection);
+            ChangeScene.change(event, "Question.fxml");
         }
     }
 
-    public void chooseCategory3(){ //When button 3 is pressed
+    public void chooseCategory3(ActionEvent event){ //When button 3 is pressed
         try{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
@@ -111,12 +113,14 @@ public class ChooseCategory {
             String sql = "UPDATE `Game` SET `categoryId` = " + chosenCategoryId + " WHERE `Game`.`gameId` = " + gameId;
             statement.executeUpdate(sql);
             questionPicker(chosenCategoryId, gameId);
+
         }
         catch (Exception e){
             e.printStackTrace();
         }
         finally {
             Cleaner.close(statement, rs, connection);
+            ChangeScene.change(event, "Question.fxml");
         }
     }
 
