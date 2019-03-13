@@ -7,12 +7,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
-public class Main extends Application {
+public class testQuestion extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent main = FXMLLoader.load(getClass().getResource("Main.fxml"));
-        primaryStage.setTitle("How Dumb Are You?");
+        Parent main = FXMLLoader.load(getClass().getResource("Question.fxml"));
+        primaryStage.setTitle("Main");
         primaryStage.setScene(new Scene(main, 600, 400));
         primaryStage.show();
     }

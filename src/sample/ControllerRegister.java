@@ -1,6 +1,6 @@
 package sample;
 
-import Connection.ConnectionClass;
+import Connection.ConnectionPool;
 import Connection.Cleaner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,9 +24,6 @@ public class ControllerRegister {
     public RadioButton btnFemale;
     public ToggleGroup gender;
 
-
-    private ChangeScene sceneChanger = new ChangeScene();
-
     private String user_name;
     private String email_adress;
     private int birthyear;
@@ -35,25 +32,24 @@ public class ControllerRegister {
     private String stringSalt;
 
     public void reg(ActionEvent event) {
-        Cleaner cleaner = new Cleaner();
         Connection connection = null;
         PreparedStatement pstmt = null;
         if(!notNull()) {
             System.out.println("ingenting skal registreres");
-            sceneChanger.changeVisibility(true, visibility);
+            ChangeScene.changeVisibility(true, visibility);
         }
         else if(!checkPassword()) {
             System.out.println("ingenting skal registreres");
-            sceneChanger.changeVisibility(true, visibility);
+            ChangeScene.changeVisibility(true, visibility);
         }
         else if(userExists()) {
             System.out.println("ingenting skal registreres");
-            sceneChanger.changeVisibility(true, visibility);
+            ChangeScene.changeVisibility(true, visibility);
         }
 
         else if(chooseGender() == -1) {
             System.out.println("ingenting skal registreres");
-            sceneChanger.changeVisibility(true, visibility);
+            ChangeScene.changeVisibility(true, visibility);
         }
 
         else{
@@ -62,8 +58,7 @@ public class ControllerRegister {
             int startPoints = 0;
             String sql = "INSERT INTO Player(username, email, points, online, password, salt, female, birthyear)VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             try {
-                ConnectionClass connectionClass = new ConnectionClass();
-                connection = connectionClass.getConnection();
+                connection = ConnectionPool.getConnection();
                 pstmt = connection.prepareStatement(sql);
                 pstmt.setString(1, user_name);
                 pstmt.setString(2, email_adress);
@@ -77,14 +72,14 @@ public class ControllerRegister {
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                cleaner.close(pstmt, null, connection);
-                sceneChanger.change(event, "Game.fxml");
+                Cleaner.close(pstmt, null, connection);
+                ChangeScene.change(event, "Game.fxml");
             }
         }
     }
 
     public void sceneHome(ActionEvent event) { //hjemknapp
-        sceneChanger.change(event, "Main.fxml"); //bruker super-metode
+        ChangeScene.change(event, "Main.fxml"); //bruker super-metode
     }
 
     public boolean notNull() {
@@ -118,8 +113,6 @@ public class ControllerRegister {
     }
 
     public boolean userExists(){
-        Cleaner cleaner = new Cleaner();
-        ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = null;
         Statement statementUser = null;
         Statement statementEmail = null;
@@ -129,7 +122,7 @@ public class ControllerRegister {
         String email = "SELECT email FROM Player WHERE username ='" + email_reg.getText() + "';";
 
         try {
-            connection = connectionClass.getConnection();
+            connection = ConnectionPool.getConnection();
             statementUser = connection.createStatement();
             statementEmail = connection.createStatement();
             rsUser = statementUser.executeQuery(username);
@@ -142,8 +135,8 @@ public class ControllerRegister {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            cleaner.close(statementUser, rsUser, null);
-            cleaner.close(statementEmail, rsEmail, connection);
+            Cleaner.close(statementUser, rsUser, null);
+            Cleaner.close(statementEmail, rsEmail, connection);
         }
         return true;
     }

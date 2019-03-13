@@ -4,131 +4,100 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import static sample.ChooseOpponent.getGameId;
+import static sample.ControllerHome.getUserName;
+import static sample.TimerC.timerRes;
 
 import Connection.Cleaner;
-import Connection.ConnectionClass;
+import Connection.ConnectionPool;
 
 import java.util.*;
 
 public class ControllerQuestion {
     private int questionCount = 0;
-    public ChangeScene sceneChanger = new ChangeScene();
-    int gameId;
-    String username;
+    private static int gameId = getGameId();
+    private static String username = getUserName();
+    private Connection connection = null;
+    private Statement statement = null;
 
     @FXML
     public TextField answerField;
     public TextField questionField;
 
-    public void sceneQuestion(ActionEvent event) { //clicks submitbutton
+    public void sceneQuestion(ActionEvent event) { //clicks submit button
         String sceneNavn;
         boolean riktig = questionCheck(gameId, username);   //checks answer
 
-        if(riktig) sceneNavn = "CorrectAnswer.fxml";
-        else sceneNavn = "IncorrectAnswer.fxml";
-        if(questionCount == 3) sceneNavn = "result.fxml";
-        sceneChanger.change(event, sceneNavn);              //changes scene
+        if(questionCount == 3) {
+            try{
+                connection = ConnectionPool.getConnection();
+                statement = connection.createStatement();
+                String player = findUser();
+                String finished = player.equals("player1") ? "p1Finished" : "p2Finished";
+                String sqlUpdate = "UPDATE Game SET " + finished + "=1 WHERE gameId=" + gameId + ";";
+                statement.executeUpdate(sqlUpdate);
+                timerRes(event);
+            }catch(SQLException e) {
+                e.printStackTrace();
+            }finally {
+                Cleaner.close(statement, null,connection);
+            }
+            //sett p1/p2finish == true
+            sceneNavn = "result.fxml";
+        }
+        else{
+            if(riktig) sceneNavn = "CorrectAnswer.fxml";
+            else sceneNavn = "IncorrectAnswer.fxml";
+        }
+        ChangeScene.change(event, sceneNavn);              //changes scene
     }
 
-    public void setGameId(int newGameId) {      //set GameId
-        gameId = newGameId;
-    }
-
-    public void setUsername(String newUsername) {       //set username
-        username = newUsername;
-    }
-
-    public void questionDisplay(int gameId, String username) { //displays questions
-        Connection connection = null;
-        Statement statement = null;
-        Cleaner cleaner = new Cleaner();
+    public void questionDisplay() { //displays questions
         try {
-            ConnectionClass connectionClass = new ConnectionClass();
-            connection = connectionClass.getConnection();
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             String sqlGetText = "SELECT questionText FROM Game JOIN Question ON questionId = question"; //sqlstatement for question text
 
-            //displays question one
-            if(questionCount == 0) {
-                ResultSet rsQuestionOneText = statement.executeQuery(sqlGetText + "1;");        //
-                rsQuestionOneText.next();
-                String qOneText = rsQuestionOneText.getString("questionText");
-                questionField.setText(qOneText);                         //printer ut spørsmålet
-
-            }
-            //displays question two
-            else if(questionCount == 1) {
-                ResultSet rsQuestionTwoText = statement.executeQuery(sqlGetText + "2;");
-                rsQuestionTwoText.next();
-                String qTwoText = rsQuestionTwoText.getString("questionText");
-                questionField.setText(qTwoText);
-            }
-            //displays question three
-            else if(questionCount == 2) {
-                ResultSet rsQuestionThreeText = statement.executeQuery(sqlGetText + "3;");
-                rsQuestionThreeText.next();
-                String qThreeText = rsQuestionThreeText.getString("questionText");
-                questionField.setText(qThreeText);
-            }
+            ResultSet rsQuestionText = statement.executeQuery(sqlGetText + (questionCount+1) + ";");        //
+            rsQuestionText.next();
+            String qText = rsQuestionText.getString("questionText");
+            questionField.setText(qText);
             questionCount++;
-
 
         }catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            cleaner.close(statement, null, connection);
+            Cleaner.close(statement, null, connection);
         }
     }
 
     public boolean questionCheck(int gameId, String username) {
-        Connection connection = null;
-        Statement statement = null;
-        Cleaner cleaner = new Cleaner();
         boolean riktig = false;
 
         String sqlGetAlt = "SELECT answer FROM Alternative WHERE questionId=";
         String sqlGetQId = "FROM Game WHERE gameId=" + gameId + ";";
+        String[] sqlQuestionName = {"question1", "question2", "question3"};
         try {
-            ConnectionClass connectionClass = new ConnectionClass();
-            connection = connectionClass.getConnection();
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
-            String user = findUser(gameId, username);       //find user
-            int QId;
-            String answer = answerField.getText();          //get answwer
+            String user = findUser();       //find user
+            String answer = (answerField.getText()).toLowerCase();          //get answer in lowercase
 
-            //checks q1
-            if(questionCount == 0) {
-                ResultSet rsQId1 = statement.executeQuery("SELECT question1 " + sqlGetQId);
-                rsQId1.next();
-                 QId = rsQId1.getInt("question1");
-            }
-            //checks q2
-            else if(questionCount == 1) {
-                ResultSet rsQId2 = statement.executeQuery("SELECT question2 " + sqlGetQId);
-                rsQId2.next();
-                 QId = rsQId2.getInt("question2");
-            }
-            //checks q3
-            else{
-                ResultSet rsQId3 = statement.executeQuery("SELECT question3 " + sqlGetQId);
-                rsQId3.next();
-                 QId = rsQId3.getInt("question3");
-            }
+            ResultSet rsQId = statement.executeQuery("SELECT " + sqlQuestionName[questionCount] + sqlGetQId);
+            rsQId.next();
+            int QId = rsQId.getInt(1);
 
             //goes through all the alternatives to the question
             ResultSet rsAlterative = statement.executeQuery(sqlGetAlt + QId + ";");
-            rsAlterative.next();
             ArrayList <String> alternative = new ArrayList<>();
-            while(rsAlterative.next()) {
-                alternative.add(new String(rsAlterative.getString("answer")));
-            }
+            while(rsAlterative.next()) alternative.add(new String(rsAlterative.getString("answer")));
+
             String sqlGetScore = "SELECT score FROM Alternative WHERE questionId=" + QId + " AND answer=";
 
             //checks if the answer equals any of the alternatives and in that case saves the score
@@ -142,12 +111,10 @@ public class ControllerQuestion {
             }
             int score = 0;
             //prints score to scorevariable
-            if(rsScore.next()){ score = rsScore.getInt("score"); }
+            if(rsScore.next()) score = rsScore.getInt("score");
 
-            //variable for sql
-            String points = "";
-            if(user.equals("player1")) { points = "p1Points"; }
-            else if(user.equals("player2")) {points = "p2Points";}
+            //chooses correct players score
+            String points = (user.equals("player1") ? "p1Points" : "p2Points");
 
             //updates score in database
             String sqlUpdate = "UPDATE Game SET " + points + " = " + points + " + " + score + " WHERE gameId=" + gameId + ";";
@@ -158,40 +125,67 @@ public class ControllerQuestion {
             e.printStackTrace();
             return riktig;
         }finally {
-            cleaner.close(statement, null, connection);
+            Cleaner.close(statement, null, connection);
         }
     }
 
-    private String findUser(int gameId, String username) {
+    public static String findUser() {
         Connection connection = null;
         Statement statement = null;
-        Cleaner cleaner = new Cleaner();
-
-        //finds player1 & 2
-        String sqlP1 = "SELECT player1 FROM Game WHERE gameId=" + gameId + ";";
-        String sqlP2 = "SELECT player2 FROM Game WHERE gameId =" + gameId + ";";
+        ResultSet rs = null;
+        String[] players = {"player1", "player2"};
+        String sqlPlayer = "FROM Game WHERE gameId=" + gameId + ";";
         try {
-            ConnectionClass connectionClass = new ConnectionClass();
-            connection = connectionClass.getConnection();
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
-            //check if player1 equals username
-            ResultSet rsPlayer1 = statement.executeQuery(sqlP1);
-            rsPlayer1.next();
-            String player1 = rsPlayer1.getString("player1");
-            if(username.equals(player1)){return "player1";}
-
-            //check if player2 equals username
-            ResultSet rsPlayer2 = statement.executeQuery(sqlP2);
-            rsPlayer2.next();
-            String player2 = rsPlayer2.getString("player2");
-            if(username.equals(player2)) {return "player2";}
+            for(String p:players) {
+                rs = statement.executeQuery("SELECT " + p + sqlPlayer);
+                rs.next();
+                String playerName = rs.getString(p);
+                if(username.equals(playerName)){return p;}
+            }
             return null;
         }catch (SQLException e) {
             e.printStackTrace();
             return "ex";
         }finally {
-            cleaner.close(statement, null, connection);
+            Cleaner.close(statement, rs, connection);
+        }
+    }
+
+    public void questionPicker() { //helene
+        String sqlCategory = "SELECT categoryID FROM Game WHERE gameID ='" + gameId + "';"; //finner hvilken kategori spiller har valgt
+        ResultSet rs = null;
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+
+            //henter
+            rs = statement.executeQuery(sqlCategory);               //lager restultset med kategorinr
+            rs.next();                                                        //henter første i rsCategoryNumber
+            int categoryId = rs.getInt("categoryId");             //lager en int med categoryId
+
+            int[] questionId = new int[3];
+            String sqlGetText = "SELECT questionId FROM Question WHERE categoryId=" + categoryId + " ORDER BY questionId;";
+            rs = statement.executeQuery(sqlGetText);
+            ArrayList<Integer> listQuestion = new ArrayList<Integer>();
+            while(rs.next()) {
+                listQuestion.add(new Integer(rs.getInt("questionId")));
+            }
+            Collections.shuffle(listQuestion);
+            for (int i=0; i<3; i++) {
+                questionId[i] = listQuestion.get(i);
+            }
+
+            String sqlUpdate = "UPDATE Game SET question1='" + questionId[0] + "', question2 ='" + questionId[1] + "' , question3='" + questionId[2] + "' WHERE gameId=" + gameId + ";";
+
+            statement.executeUpdate(sqlUpdate);
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            Cleaner.close(statement, rs, connection);
         }
     }
 }

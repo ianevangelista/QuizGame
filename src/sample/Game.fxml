@@ -24,7 +24,7 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Button layoutX="261.0" layoutY="259.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="78.0" text="LOG OUT">
+      <Button layoutX="261.0" layoutY="259.0" mnemonicParsing="false" onAction="#logout" prefHeight="29.0" prefWidth="78.0" text="LOG OUT">
          <font>
             <Font size="12.0" />
          </font>
@@ -35,6 +35,11 @@
          </font></Button>
       <Label fx:id="emailWrong" layoutX="409.0" layoutY="204.0" text="Wrong E-mail or password" textFill="RED" visible="false" />
       <Button layoutX="461.0" layoutY="344.0" minHeight="28.0" mnemonicParsing="false" onAction="#highscore" prefHeight="42.0" prefWidth="128.0" text="HIGH SCORE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="refresh" layoutX="461.0" layoutY="290.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="128.0" text="REFRESH">
          <font>
             <Font size="18.0" />
          </font>

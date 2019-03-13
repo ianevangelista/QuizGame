@@ -1,6 +1,10 @@
 package sample;
 
-import Connection.ConnectionClass;
+import static sample.ControllerHome.getUserName;
+import static sample.ControllerQuestion.findUser;
+import static sample.Logout.logOut;
+
+import Connection.ConnectionPool;
 import Connection.Cleaner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,19 +22,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ControllerGame {
-    ControllerHome controllerhome = new ControllerHome();
-    private String userName = controllerhome.getUserName();
+
+    private String username = getUserName();
     private int gameId = 899;
     private int[] test = new int[3];
 
     @FXML
-    public TextField user_challenge;
-    public Label usernameWrong;
+    public Button refresh;
+
     //Category
     public Button category1;
     public Button category2;
     public Button category3;
-    public Button categoyTest;
 
 
     //Correct answer
@@ -47,45 +50,6 @@ public class ControllerGame {
     //highscore
     public TextField hSText;
 
-
-    public ChangeScene sceneChanger = new ChangeScene();
-    public Cleaner cleaner = new Cleaner();
-
-
-
-    /*public void chooseOpponent(ActionEvent event) {
-
-    public void chooseOpponent(ActionEvent event) {
->>>>>>> 0348efb293d0d73d20ff84bba5c66bff5f093735
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
-        ResultSet rs = null;
-
-        String sql = "SELECT username FROM Player WHERE username ='" + user_challenge.getText() + "';";
-
-        try{
-            Statement statement = connection.createStatement();
-            rs = statement.executeQuery(sql);
-
-            String realUsername = null;
-            if (rs.next()) {
-                realUsername = rs.getString("user_challenge");
-            } else {
-                realUsername = "-1";
-            }
-            if (realUsername.equals(user_challenge.getText())){
-                cleaner.close(statement, rs, connection);
-                sceneChanger.change(event, "Categories.fxml");
-            } else {
-                cleaner.close(statement, rs, connection);
-                sceneChanger.changeVisibility(true, usernameWrong);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
     public void chooseCategories() { //juni
 
         Connection connection = null;
@@ -97,8 +61,7 @@ public class ControllerGame {
         String sql =  "SELECT categoryId FROM Category;";
 
         try {
-            ConnectionClass connectionClass = new ConnectionClass();
-            connection = connectionClass.getConnection();
+            connection = ConnectionPool.getConnection();
             ResultSet rs = null;
 
             statement = connection.createStatement();
@@ -153,24 +116,24 @@ public class ControllerGame {
             e.printStackTrace();
         }
         finally {
-            cleaner.close(statement, null, connection);
+            Cleaner.close(statement, null, connection);
         }
     }
 
     public void button1(ActionEvent event){
         categoryChosen(test[0]);
-        questionPicker();
-        sceneChanger.change(event, "Question.fxml");
+        //questionPicker();
+        ChangeScene.change(event, "Question.fxml");
     }
     public void button2(ActionEvent event){
         categoryChosen(test[1]);
-        questionPicker();
-        sceneChanger.change(event, "Question.fxml");
+        //questionPicker();
+        ChangeScene.change(event, "Question.fxml");
     }
     public void button3(ActionEvent event){
         categoryChosen(test[2]);
-        questionPicker();
-        sceneChanger.change(event, "Question.fxml");
+        //questionPicker();
+        ChangeScene.change(event, "Question.fxml");
     }
 
     public void categoryChosen(int categoryID){
@@ -180,8 +143,7 @@ public class ControllerGame {
         String sql = "UPDATE Game SET categoryId = " + categoryID + " WHERE gameId = " + gameId + ";";
 
         try {
-            ConnectionClass connectionClass = new ConnectionClass();
-            connection = connectionClass.getConnection();
+            connection = ConnectionPool.getConnection();
             ResultSet rs = null;
             statement = connection.createStatement();
             statement.execute(sql);
@@ -189,13 +151,11 @@ public class ControllerGame {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            cleaner.close(statement, null, connection);
+            Cleaner.close(statement, null, connection);
         }
-
-
     }
 
-    public void questionPicker() { //helene
+    /*public void questionPicker() { //helene
         Connection connection = null;
         Statement statement = null;
 
@@ -204,20 +164,19 @@ public class ControllerGame {
         String sqlNumberQuestion = "SELECT COUNT(questionId) FROM Question WHERE categoryId ='"; //teller ant spørsmål
 
         try {
-            ConnectionClass connectionClass = new ConnectionClass();
-            connection = connectionClass.getConnection();
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             //henter
             ResultSet rsCategoryNumber = statement.executeQuery(sqlCategory);               //lager restultset med kategorinr
             rsCategoryNumber.next();                                                        //henter første i rsCategoryNumber
             int categoryId = rsCategoryNumber.getInt("categoryId");             //lager en int med categoryId
-            cleaner.close(null, rsCategoryNumber, null);
+            Cleaner.close(null, rsCategoryNumber, null);
 
             ResultSet rsNumberQuestion = statement.executeQuery(sqlNumberQuestion + categoryId + "';"); //henter ant spørsmål i kategorien
             rsNumberQuestion.next();//henter første i rsNumberQuestion
             int antQuestion = rsNumberQuestion.getInt("COUNT(questionId)");      //lager en int med ant spøsmål i kategorien
-            cleaner.close(null, rsNumberQuestion, null);
+            Cleaner.close(null, rsNumberQuestion, null);
 
             int[] questionId = new int[3];
             String sqlGetText = "SELECT questionId FROM Question WHERE categoryId=" + categoryId + " ORDER BY questionId;";
@@ -241,13 +200,12 @@ public class ControllerGame {
         }catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            cleaner.close(statement, null, connection);
+            Cleaner.close(statement, null, connection);
         }
-    }
+    }*/
 
     public void correctAnswer(ActionEvent event, int gameId, int poeng) {
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
+        Connection connection = null;
         Statement statement = null;
 
         String sqlP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
@@ -256,28 +214,29 @@ public class ControllerGame {
 
 
         try {
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             //Henter ut mail til spiller 1
             ResultSet p1 = statement.executeQuery(sqlP1);
             p1.next();
             String user = p1.getString("player1");
-            cleaner.close(statement, null, null);
+            Cleaner.close(statement, null, null);
 
             //Henter ut resultat til spiller 1
             ResultSet pt1 = statement.executeQuery(sqlPlayer1);
             pt1.next();
             int points1 = pt1.getInt("p1Points");
-            cleaner.close(null, pt1, null);
+            Cleaner.close(null, pt1, null);
 
             //Henter ut resultat til spiller 2
             ResultSet pt2 = statement.executeQuery(sqlPlayer2);
             pt2.next();
             int points2 = pt2.getInt("p2Points");
-            cleaner.close(null, pt2, null);
+            Cleaner.close(null, pt2, null);
 
             //Sjekker om det er spiller 1 eller 2 som er "Hovedspiller" og skriver poeng i passende rekkefølge
-            if (user.equals(userName)) {
+            if (user.equals(username)) {
                 player1Pt.setText(Integer.toString(points1));
                 player2Pt.setText(Integer.toString(points2));
             } else {
@@ -291,16 +250,13 @@ public class ControllerGame {
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
-            cleaner.close(statement, null, connection);
+            Cleaner.close(statement, null, connection);
         }
     }
 
     public void incorrectAnswer(int gameId) {
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
+        Connection connection = null;
         Statement statement = null;
-
-        Cleaner cleaner = new Cleaner();
 
         String sqlP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
         String sqlPlayer1 = "SELECT p1Points FROM Game WHERE gameId =" + gameId + ";";
@@ -308,6 +264,7 @@ public class ControllerGame {
 
 
         try {
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             //Henter ut mail til spiller 1
@@ -330,7 +287,7 @@ public class ControllerGame {
 
 
             //Sjekker om det er spiller 1 eller 2 som er "Hovedspiller" og skriver poeng i passende rekkefølge
-            if (user.equals(userName)) {
+            if (user.equals(username)) {
                 player1PtW.setText(Integer.toString(points1));
                 player2PtW.setText(Integer.toString(points2));
             } else {
@@ -341,44 +298,88 @@ public class ControllerGame {
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
-            cleaner.close(statement, null, connection);
+            Cleaner.close(statement, null, connection);
         }
     }
 
     public void highscore(ActionEvent event) { //HighScore knapp
-        sceneChanger.change(event, "HighScore.fxml");
+        ChangeScene.change(event, "HighScore.fxml");
         hSText = new TextField();
         ControllerHighScore.highscoreTable();
     }
 
-    public void start(ActionEvent event) {
-        sceneChanger.change(event, "Category.fxml");
+    public void logout(ActionEvent event) { //HighScore knapp
+        Logout.logOut();
+        ChangeScene.change(event, "Main.fxml");
+    }
+
+    public void start(ActionEvent event) throws SQLException{
+        ControllerRefresh refresh = new ControllerRefresh();
+        refresh.refresh(event);
     }
 
     public void sceneInfo(ActionEvent event) { //trykker på infoknapp
-        sceneChanger.change(event, "Info.fxml");
+        ChangeScene.change(event, "Info.fxml");
     }
 
     public void sceneInfoLogin(ActionEvent event) { //trykker på infoknapp
-        sceneChanger.change(event, "Info_Login.fxml");
+        ChangeScene.change(event, "Info_Login.fxml");
     }
 
     public void sceneHome(ActionEvent event) { //hjemknapp
-        sceneChanger.change(event, "Main.fxml");
+        ChangeScene.change(event, "Main.fxml");
     }
 
     public void sceneGame(ActionEvent event) { //hjemknapp
-        sceneChanger.change(event, "Game.fxml");
+        ChangeScene.change(event, "Game.fxml");
     }
 
-    public void sceneChallangeUser(ActionEvent event){sceneChanger.change(event, "ChallangeUser.fxml");}
+    public void sceneChallangeUser(ActionEvent event){ChangeScene.change(event, "ChallangeUser.fxml");}
 
-    public void result(int gameId){
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
+    public void resultFinished() {
+        Connection connection = null;
         Statement statement = null;
+        ResultSet rs = null;
 
-        Cleaner cleaner = new Cleaner();
+        String sqlFinished = "SELECT * FROM Game WHERE gameId =" + gameId + ";";
+        String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+            String player = findUser();
+            rs = statement.executeQuery(sqlFinished);
+            rs.next();
+            int p1Finished = rs.getInt("p1Finished");
+            int p2Finished = rs.getInt("p2Finished");
+
+            //if the opponent isn't finished, but you are
+            if((p1Finished == 1 && p2Finished == 0) && player.equals("player1") || (p2Finished == 1 && p1Finished == 0) && player.equals("player2")) {
+                String sqlQuit = "UPDATE Player SET gameId=NULL WHERE username ='" + username +"';";
+
+                //slå av autocommit??? rollback osv?
+                statement.executeUpdate(sqlQuit);
+            }
+
+            //if both are finished
+            if(p1Finished == 1 && p2Finished == 1) {
+                statement.executeQuery(sqlDeleteGame);
+                //utfør sletting, blir gameId sletta på spilleren som spiller da?
+            }
+
+
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            Cleaner.close(statement, rs, connection);
+        }
+
+
+    }
+
+    public void result(int gameId) {
+        Connection connection = null;
+        Statement statement = null;
 
         String sqlP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
         String sqlPlayer1 = "SELECT p1Points FROM Game WHERE gameId =" + gameId + ";";
@@ -386,6 +387,7 @@ public class ControllerGame {
 
 
         try {
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             //Henter ut brukernavn til spiller 1
@@ -406,16 +408,16 @@ public class ControllerGame {
             int points2 = pt2.getInt("p2Points");
 
 
-            if(!(user.equals(userName))){
+            if (!(user.equals(username))) {
                 int help = points1;
                 points1 = points2;
                 points2 = help;
             }
 
-            if(points1 > points2){
+            if (points1 > points2) {
                 resultText.setText("You are the winner of this round.");
                 resultHeading.setText("Winner!");
-            }else {
+            } else {
                 resultText.setText("You lost this round.");
                 resultHeading.setText("Loser...");
             }
@@ -425,10 +427,8 @@ public class ControllerGame {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            cleaner.close(statement, null, connection);
+        } finally {
+            Cleaner.close(statement, null, connection);
         }
     }
-
-
 }

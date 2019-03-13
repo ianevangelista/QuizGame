@@ -15,9 +15,9 @@ public class ChangeScene {
 
     public ChangeScene(){}
 
-    public void change(ActionEvent event, String fxml) {
+    public static void change(ActionEvent event, String fxml) {
         try{
-            Parent tableViewParent = FXMLLoader.load(getClass().getResource(fxml)); //henter inn klasse og fxml-fil
+            Parent tableViewParent = FXMLLoader.load(ChangeScene.class.getResource(fxml)); //henter inn klasse og fxml-fil
             Scene scene = new Scene(tableViewParent); //lager ny scene
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow(); //caster stage
             window.setScene(scene); //setter scene
@@ -27,7 +27,7 @@ public class ChangeScene {
         }
     }
 
-    public void changeVisibility(boolean value, Label test){
+    public static void changeVisibility(boolean value, Label test){
         test.setVisible(value);
     }
 
