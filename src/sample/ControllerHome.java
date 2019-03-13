@@ -4,6 +4,7 @@ import Connection.Cleaner;
 import Connection.ConnectionPool;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import static sample.Logout.logOut;
 
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
@@ -42,7 +43,7 @@ public class ControllerHome {
         ResultSet rs = null;
         PreparedStatement pstmt = null;
 
-		String sql = "SELECT username, password, salt FROM Player WHERE username = ?;";
+		String sql = "SELECT username, online, password, salt FROM Player WHERE username = ?;";
 		try {
 		    connection = ConnectionPool.getConnection();
             pstmt = connection.prepareStatement(sql);
@@ -66,6 +67,7 @@ public class ControllerHome {
 
                 if (realPassword.equals(hashedPassword)) {
                     setUserName(username.getText());
+                    Logout.logIn();
                     ChangeScene.change(event, "Game.fxml");
                 } else {
                     ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
