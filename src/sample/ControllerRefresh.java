@@ -19,9 +19,9 @@ public class ControllerRefresh {
     public Button acc;
     public Button dec;
 
-    private String username = getUserName();
+    private static String username = getUserName();
 
-    public void refresh(ActionEvent event) {
+    public static void refresh(ActionEvent event) {
         Connection connection = null;
         Statement statement = null;
 
