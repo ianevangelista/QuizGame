@@ -12,7 +12,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent main = FXMLLoader.load(getClass().getResource("Main.fxml"));
-        primaryStage.setTitle("Main");
+        primaryStage.setTitle("How Dumb Are You?");
         primaryStage.setScene(new Scene(main, 600, 400));
         primaryStage.show();
     }

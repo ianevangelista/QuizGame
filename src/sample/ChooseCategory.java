@@ -1,6 +1,6 @@
 package sample;
 
-import Connection.ConnectionClass;
+import Connection.ConnectionPool;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import Connection.Cleaner;
-import Connection.ConnectionClass;
 import javafx.scene.control.Button;
 import java.util.Random;
 import java.util.ArrayList;
@@ -25,8 +24,6 @@ public class ChooseCategory {
 
     public TextField user_challenge;
     public Label usernameWrong;
-    private Cleaner cleaner = new Cleaner();
-    private ChangeScene sceneChanger = new ChangeScene();
     private String username;
 
     @FXML
@@ -35,8 +32,7 @@ public class ChooseCategory {
     public Button category3;
 
     //Connections set-up
-    ConnectionClass connectionClass = new ConnectionClass();
-    Connection connection = connectionClass.getConnection();
+    Connection connection = null;
     Statement statement = null;
     ResultSet rs = null;
 
@@ -47,11 +43,12 @@ public class ChooseCategory {
     int[] randomCategoryId = new int[3];
 
     public void sceneHome(ActionEvent event) { //home button
-        sceneChanger.change(event, "Main.fxml");
+        ChangeScene.change(event, "Main.fxml");
     }
 
     public void chooseCategory1(){ //When button 1 is pressed
         try{
+            connection = ConnectionPool.getConnection();
             String sql = "UPDATE `Game` SET `categoryId` = " + (categoryId.get(randomCategoryId[0])+1) + " WHERE `Game`.`gameId` = " + getGameId();
             statement.executeUpdate(sql);
         }
@@ -59,12 +56,13 @@ public class ChooseCategory {
             e.printStackTrace();
         }
         finally {
-            cleaner.close(statement, rs, connection);
+            Cleaner.close(statement, rs, connection);
         }
     }
 
     public void chooseCategory2(){ //When button 2 is pressed
         try{
+            connection = ConnectionPool.getConnection();
             String sql = "UPDATE `Game` SET `categoryId` = " + (categoryId.get(randomCategoryId[1])+1) + " WHERE `Game`.`gameId` = " + getGameId();
             statement.executeUpdate(sql);
         }
@@ -72,12 +70,13 @@ public class ChooseCategory {
             e.printStackTrace();
         }
         finally {
-            cleaner.close(statement, rs, connection);
+            Cleaner.close(statement, rs, connection);
         }
     }
 
     public void chooseCategory3(){ //When button 3 is pressed
         try{
+            connection = ConnectionPool.getConnection();
             String sql = "UPDATE `Game` SET `categoryId` = " + (categoryId.get(randomCategoryId[2])+1) + " WHERE `Game`.`gameId` = " + getGameId();
             statement.executeUpdate(sql);
         }
@@ -85,13 +84,14 @@ public class ChooseCategory {
             e.printStackTrace();
         }
         finally {
-            cleaner.close(statement, rs, connection);
+            Cleaner.close(statement, rs, connection);
         }
     }
 
     public void initialize(){ //gets run when the window is opened for the first time
         Random rand = new java.util.Random();
         try {
+            connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
         } catch (SQLException e1) {
             e1.printStackTrace();

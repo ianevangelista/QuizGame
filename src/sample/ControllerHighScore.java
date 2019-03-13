@@ -1,23 +1,12 @@
 package sample;
 
-import Connection.ConnectionClass;
+import Connection.ConnectionPool;
 import Connection.Cleaner;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-
-
-
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -25,17 +14,14 @@ import java.util.ArrayList;
 
 public class ControllerHighScore {
    @FXML
-    public static TableColumn userCol;
-    public static TableColumn scoreCol;
-    public static TableView hSTable;
+    public static TextField userCol;
+    public static TextField scoreCol;
+
 
     public static void highscoreTable(){
 
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
+        Connection connection = null;
         Statement statement = null;
-
-        Cleaner cleaner = new Cleaner();
 
         String sqlHighScoreUser = "SELECT username FROM `Player` ORDER BY points desc LIMIT 5;";
         String sqlHighScorePoints = "SELECT points FROM `Player` ORDER BY points desc LIMIT 5;";
@@ -44,8 +30,8 @@ public class ControllerHighScore {
         ArrayList<String> pointsList = new ArrayList<>();
 
        try {
-
-            statement = connection.createStatement();
+           connection = ConnectionPool.getConnection();
+           statement = connection.createStatement();
 
             //Legger navn i tabellen highScoreList
             ResultSet hs = statement.executeQuery(sqlHighScoreUser);
@@ -60,33 +46,24 @@ public class ControllerHighScore {
                 pointsList.add( Integer.toString(hs.getInt("points")));
             }
 
-
-           ObservableList<String> usernames = FXCollections.<String>observableArrayList();
-
-           for(String name : usernameList){
-               usernames.add(name);
-           }
-
-//MÅ LEGGE TIL RESULTATET I TABELLEN
-
-
-
-
-            String tekst = "";
-            for(String navn : usernameList){
-                tekst += navn +" \n ";
+            String userText = "";
+            for(String name : usernameList){
+                userText += name +" \n ";
             }
-           for(String poeng : pointsList){
-               tekst += poeng +" \n";
+           String pointsText = "";
+           for(String points : pointsList){
+               pointsText += points +" \n";
            }
 
-            System.out.println(tekst);
+           //Printer ut teksten
+           userCol.setText(userText);
+           scoreCol.setText(pointsText);
 
 
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            cleaner.close(statement, null, connection);
+            Cleaner.close(statement, null, connection);
         }
     }
 
