@@ -27,8 +27,6 @@ public class ControllerGame {
     private int[] test = new int[3];
 
     @FXML
-    public TextField user_challenge;
-    public Label usernameWrong;
     public Button refresh;
 
     //Category
@@ -374,13 +372,6 @@ public class ControllerGame {
 
 
     }
-
-
-
-
-
-
-
 
     public void result(int gameId) {
         Connection connection = null;
