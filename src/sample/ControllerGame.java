@@ -2,6 +2,7 @@ package sample;
 
 import static sample.ControllerHome.getUserName;
 import static sample.ControllerQuestion.findUser;
+import static sample.Logout.logOut;
 
 import Connection.ConnectionPool;
 import Connection.Cleaner;
@@ -307,6 +308,11 @@ public class ControllerGame {
         ControllerHighScore.highscoreTable();
     }
 
+    public void logout(ActionEvent event) { //HighScore knapp
+        Logout.logOut();
+        ChangeScene.change(event, "Main.fxml");
+    }
+
     public void start(ActionEvent event) throws SQLException{
         ControllerRefresh refresh = new ControllerRefresh();
         refresh.refresh(event);
@@ -424,22 +430,5 @@ public class ControllerGame {
         } finally {
             Cleaner.close(statement, null, connection);
         }
-    }
-
-    public boolean logOut(){
-        Connection connection = null;
-        Statement statement = null;
-        try {
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-
-            Cleaner.close(statement, null, connection);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            Cleaner.close(statement, null, connection);
-            return false;
-        }
-
     }
 }
