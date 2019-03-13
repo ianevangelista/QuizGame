@@ -319,6 +319,7 @@ public class ControllerGame {
     }
 
     public void sceneInfoLogin(ActionEvent event) { //trykker på infoknapp
+        Logout.logOut();
         ChangeScene.change(event, "Info_Login.fxml");
     }
 
@@ -436,22 +437,4 @@ public class ControllerGame {
             Cleaner.close(statement, null, connection);
         }
     }
-
-    public boolean logOut(){
-        Connection connection = null;
-        Statement statement = null;
-        try {
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-
-            Cleaner.close(statement, null, connection);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            Cleaner.close(statement, null, connection);
-            return false;
-        }
-
-    }
-
 }
