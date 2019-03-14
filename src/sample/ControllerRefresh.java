@@ -68,7 +68,7 @@ public class ControllerRefresh {
             statement = connection.createStatement();
 
             //Updates both players with a gameId that points to the new game
-            String sqlGetPlayer1 = "SELECT player1 FROM Game WHERE player2 = '" + username + "';";
+            String sqlGetPlayer1 = "SELECT player1 FROM Game WHERE player1 = '" + username + "';";
             rs = statement.executeQuery(sqlGetPlayer1);
             rs.next();
             String player1 = rs.getString("player1");
@@ -79,16 +79,16 @@ public class ControllerRefresh {
             sqlInsert = "UPDATE `Player` SET `gameId` = NULL WHERE `Player`.`username` = '" + username + "';";
             statement.executeUpdate(sqlInsert);
 
-            String sqlDeleteGame = "DELETE FROM Game WHERE player2 = '" + username + "';";
+            String sqlDeleteGame = "DELETE FROM Game WHERE player1 = '" + username + "';";
             statement.executeUpdate(sqlDeleteGame);
 
-            ChangeScene.change(event, "ChallangeUser.fxml");
         }
         catch (Exception e) {
             e.printStackTrace();
         }
         finally {
             Cleaner.close(statement, null, connection);
+            ChangeScene.change(event, "ChallangeUser.fxml");
         }
     }
 
