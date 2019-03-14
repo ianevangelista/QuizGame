@@ -89,7 +89,7 @@ public class ControllerRefresh {
             sqlInsert = "UPDATE `Player` SET `gameId` = NULL WHERE `Player`.`username` = '" + username + "';";
             statement.executeUpdate(sqlInsert);
 
-            String sqlDeleteGame = "DELETE FROM Game WHERE player1 = '" + username + "';";
+            String sqlDeleteGame = "DELETE FROM Game WHERE player2 = '" + username + "';";
             statement.executeUpdate(sqlDeleteGame);
 
         }
