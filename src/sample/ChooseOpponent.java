@@ -27,6 +27,10 @@ public class ChooseOpponent{
     public Button challenge;
     public Label usernameWrong;
 
+    public void sceneHome(ActionEvent event) { //home button
+        ChangeScene.change(event, "Game.fxml");
+    }
+
     public void findOpponent(ActionEvent event) {
         ResultSet rs = null;
         PreparedStatement insertSentence = null;
