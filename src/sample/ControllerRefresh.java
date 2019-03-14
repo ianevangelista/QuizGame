@@ -24,23 +24,32 @@ public class ControllerRefresh {
     public static void refresh(ActionEvent event) {
         Connection connection = null;
         Statement statement = null;
-
-        String sql = "SELECT gameId FROM Player WHERE username = '" + username + "';";
-
+        ResultSet rsSelect = null;
+        ResultSet rs = null;
 
         try {
+            String sql = "SELECT gameId FROM Player WHERE username = '" + username + "';";
+
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(sql);
-            rs.next();
+            rsSelect = statement.executeQuery(sql);
+            rsSelect.next();
 
-            int challenge = rs.getInt(1);
+            int playerGameId = rs.getInt(1);
 
-            if (challenge != 0) {
-                ChangeScene.change(event, "Challenged.fxml");
-            } else {
+            if(playerGameId != 0) {
+                sql = "SELECT player1 FROM Game WHERE username = '" + username + "';";
+                rs = statement.executeQuery(sql);
+                rs.next();
+                if (rs.getString("player1").equals(username)) {
+                    ChangeScene.change(event, "Challenged.fxml");
+                } else {
+                    ChangeScene.change(event, "ChallangeUser.fxml");
+                }
+            }else {
                 ChangeScene.change(event, "ChallangeUser.fxml");
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -68,7 +77,7 @@ public class ControllerRefresh {
             statement = connection.createStatement();
 
             //Updates both players with a gameId that points to the new game
-            String sqlGetPlayer1 = "SELECT player1 FROM Game WHERE player1 = '" + username + "';";
+            String sqlGetPlayer1 = "SELECT player1 FROM Game WHERE player2 = '" + username + "';";
             rs = statement.executeQuery(sqlGetPlayer1);
             rs.next();
             String player1 = rs.getString("player1");
