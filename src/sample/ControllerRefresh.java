@@ -35,7 +35,7 @@ public class ControllerRefresh {
             rsSelect = statement.executeQuery(sql);
             rsSelect.next();
 
-            int playerGameId = rs.getInt(1);
+            int playerGameId = rsSelect.getInt(1);
 
             if(playerGameId != 0) {
                 sql = "SELECT player1 FROM Game WHERE username = '" + username + "';";
