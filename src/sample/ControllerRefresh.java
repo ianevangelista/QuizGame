@@ -28,7 +28,7 @@ public class ControllerRefresh {
         ResultSet rs = null;
 
         try {
-            String sql = "SELECT gameId FROM Player WHERE username = '" + username + "';";
+            String sql = "SELECT gameId FROM Player WHERE player1 = '" + username + "';";
 
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
@@ -38,13 +38,13 @@ public class ControllerRefresh {
             int playerGameId = rsSelect.getInt(1);
 
             if(playerGameId != 0) {
-                sql = "SELECT player1 FROM Game WHERE username = '" + username + "';";
+                sql = "SELECT player1 FROM Game WHERE player1 = '" + username + "';";
                 rs = statement.executeQuery(sql);
                 rs.next();
                 if (rs.getString("player1").equals(username)) {
                     ChangeScene.change(event, "Challenged.fxml");
                 } else {
-                    ChangeScene.change(event, "ChallangeUser.fxml");
+                    ChangeScene.change(event, "Wait.fxml");
                 }
             }else {
                 ChangeScene.change(event, "ChallangeUser.fxml");
