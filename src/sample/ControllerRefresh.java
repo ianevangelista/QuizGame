@@ -45,7 +45,7 @@ public class ControllerRefresh {
                     ChangeScene.change(event, "Wait.fxml");
                 }
                 else {
-                    ChangeScene.change(event, "Challlenged.fxml");
+                    ChangeScene.change(event, "Challenged.fxml");
                 }
             }else {
                 ChangeScene.change(event, "ChallangeUser.fxml");
