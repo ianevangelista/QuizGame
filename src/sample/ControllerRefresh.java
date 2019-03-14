@@ -28,7 +28,7 @@ public class ControllerRefresh {
         ResultSet rs = null;
 
         try {
-            String sql = "SELECT gameId FROM Player WHERE player1 = '" + username + "';";
+            String sql = "SELECT gameId FROM Player WHERE username = '" + username + "';";
 
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
