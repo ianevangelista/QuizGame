@@ -38,13 +38,14 @@ public class ControllerRefresh {
             int playerGameId = rsSelect.getInt(1);
 
             if(playerGameId != 0) {
-                sql = "SELECT player1 FROM Game WHERE player1 = '" + username + "';";
+                sql = "SELECT player1 FROM Game WHERE player1 = '" + username + "' OR player2 = '" + username + "' ;";
                 rs = statement.executeQuery(sql);
                 rs.next();
                 if (rs.getString("player1").equals(username)) {
                     ChangeScene.change(event, "Wait.fxml");
-                } else {
-                    ChangeScene.change(event, "ChalllangeUser.fxml");
+                }
+                else {
+                    ChangeScene.change(event, "Challlenged.fxml");
                 }
             }else {
                 ChangeScene.change(event, "ChallangeUser.fxml");
