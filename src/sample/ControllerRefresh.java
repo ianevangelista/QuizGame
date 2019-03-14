@@ -42,9 +42,9 @@ public class ControllerRefresh {
                 rs = statement.executeQuery(sql);
                 rs.next();
                 if (rs.getString("player1").equals(username)) {
-                    ChangeScene.change(event, "Challenged.fxml");
-                } else {
                     ChangeScene.change(event, "Wait.fxml");
+                } else {
+                    ChangeScene.change(event, "ChalllangeUser.fxml");
                 }
             }else {
                 ChangeScene.change(event, "ChallangeUser.fxml");
