@@ -68,12 +68,11 @@ public class ControllerQuestion {
             statement = connection.createStatement();
 
             String sqlGetText = "SELECT questionText FROM Game JOIN Question ON questionId = question"; //sqlstatement for question text
-
             ResultSet rsQuestionText = statement.executeQuery(sqlGetText + (questionCount+1) + ";");        //
             rsQuestionText.next();
             String qText = rsQuestionText.getString("questionText");
             questionField.setText(qText);
-
+            questionCount++;
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -95,7 +94,7 @@ public class ControllerQuestion {
             String answer = answerField.getText().toLowerCase();          //get answer in lowercase
 
             String sqlGetQId = " FROM Game WHERE gameId=" + gameId + ";";
-            rs = statement.executeQuery("SELECT " + sqlQuestionName[questionCount] + sqlGetQId);
+            rs = statement.executeQuery("SELECT " + sqlQuestionName[questionCount-1] + sqlGetQId);
             rs.next();
             int QId = rs.getInt(1);
 
@@ -117,7 +116,6 @@ public class ControllerQuestion {
             //updates score in database
             String sqlUpdate = "UPDATE Game SET " + points + " = " + points + " + " + score + " WHERE gameId=" + gameId + ";";
             statement.execute(sqlUpdate);
-            questionCount++;
             return riktig;
 
         }catch (SQLException e) {
