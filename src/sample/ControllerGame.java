@@ -288,8 +288,6 @@ public class ControllerGame {
         }finally {
             Cleaner.close(statement, rs, connection);
         }
-
-
     }
 
     public void result(int gameId) {

@@ -86,9 +86,8 @@ public class ControllerQuestion {
 
     public boolean questionCheck(int gameId, String username) {
         boolean riktig = false;
+        ResultSet rs = null;
 
-        String sqlGetAlt = "SELECT answer FROM Alternative WHERE questionId=";
-        String sqlGetQId = "FROM Game WHERE gameId=" + gameId + ";";
         String[] sqlQuestionName = {"question1", "question2", "question3"};
         try {
             connection = ConnectionPool.getConnection();
@@ -97,29 +96,21 @@ public class ControllerQuestion {
             String user = findUser();       //find user
             String answer = (answerField.getText()).toLowerCase();          //get answer in lowercase
 
-            ResultSet rsQId = statement.executeQuery("SELECT " + sqlQuestionName[questionCount] + sqlGetQId);
-            rsQId.next();
-            int QId = rsQId.getInt(1);
+            String sqlGetQId = " FROM Game WHERE gameId=" + gameId + ";";
+            rs = statement.executeQuery("SELECT " + sqlQuestionName[questionCount] + sqlGetQId);
+            rs.next();
+            int QId = rs.getInt(1);
 
-            //goes through all the alternatives to the question
-            ResultSet rsAlterative = statement.executeQuery(sqlGetAlt + QId + ";");
-            ArrayList <String> alternative = new ArrayList<>();
-            while(rsAlterative.next()) alternative.add(new String(rsAlterative.getString("answer")));
-
-            String sqlGetScore = "SELECT score FROM Alternative WHERE questionId=" + QId + " AND answer=";
-
-            //checks if the answer equals any of the alternatives and in that case saves the score
-            ResultSet rsScore = null;
-            for(String a:alternative) {
-                if(a.equals(answer)) {
-                    rsScore = statement.executeQuery(sqlGetScore + a + ";");
+            String sqlGetAlt = "SELECT answer, score FROM Alternative WHERE questionId = ";
+            rs = statement.executeQuery(sqlGetAlt + QId + ";");
+            int score = 0;
+            while(rs.next()){
+                String realAns = rs.getString("answer");
+                if(answer.equals(realAns.toLowerCase())){
+                    score = rs.getInt("score");
                     riktig = true;
-                    break;
                 }
             }
-            int score = 0;
-            //prints score to scorevariable
-            if(rsScore.next()) score = rsScore.getInt("score");
 
             //chooses correct players score
             String points = (user.equals("player1") ? "p1Points" : "p2Points");
@@ -141,19 +132,15 @@ public class ControllerQuestion {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
-        String[] players = {"player1", "player2"};
-        String sqlPlayer = "FROM Game WHERE gameId=" + gameId + ";";
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-
-            for(String p:players) {
-                rs = statement.executeQuery("SELECT " + p + " " + sqlPlayer);
-                rs.next();
-                String playerName = rs.getString(p);
-                if(username.equals(playerName)){return p;}
-            }
-            return null;
+            String sqlPlayer = "SELECT player1 FROM Game WHERE gameId=" + gameId + ";";
+            rs = statement.executeQuery(sqlPlayer);
+            rs.next();
+            String player1Name = rs.getString("player1");
+            if(username.equals(player1Name)){return "player1";}
+            else return "player2";
         }catch (SQLException e) {
             e.printStackTrace();
             return "ex";
@@ -162,8 +149,5 @@ public class ControllerQuestion {
         }
     }
 
-    public void initialize(){
-        System.out.printf("Speed");
-        questionDisplay();
-    }
+    public void initialize(){ questionDisplay(); }
 }
