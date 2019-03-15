@@ -41,6 +41,7 @@ public class ControllerQuestion {
         boolean riktig = questionCheck(gameId, username);   //checks answer
 
         if(questionCount == 3) {
+            questionCount = 0;
             try{
                 connection = ConnectionPool.getConnection();
                 statement = connection.createStatement();

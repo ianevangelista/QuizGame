@@ -102,6 +102,29 @@ public class ChooseOpponent{
     }
 
     public static int getGameId() {
-        return gameId;
+        if(gameId != 0) return gameId;
+        else{
+            Connection connection = null;
+            Statement statement = null;
+            ResultSet rsGameId = null;
+
+            try {
+                connection = ConnectionPool.getConnection();
+                statement = connection.createStatement();
+
+                String username = getUserName();
+
+                //Checks if the player you are trying to challenge is already challenged
+                String sqlGetGameIdFromPlayer = "SELECT gameId FROM `Player` WHERE `Player`.`username` = '" + username + "'";
+                rsGameId = statement.executeQuery(sqlGetGameIdFromPlayer);
+                rsGameId.next();
+                int gameId = rsGameId.getInt("gameId");
+                return  gameId;
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                return  0;
+            }
+        }
     }
 }
