@@ -32,6 +32,9 @@ public class ControllerQuestion {
     public void sceneHome(ActionEvent event) { //feedback knapp
         ChangeScene.change(event, "Game.fxml"); //bruker super-metode
     }
+    public void questionScene(ActionEvent event) { //feedback knapp
+        ChangeScene.change(event, "Question.fxml");
+    }
 
     public void sceneQuestion(ActionEvent event) { //clicks submit button
         String sceneNavn;
@@ -145,7 +148,7 @@ public class ControllerQuestion {
             statement = connection.createStatement();
 
             for(String p:players) {
-                rs = statement.executeQuery("SELECT " + p + sqlPlayer);
+                rs = statement.executeQuery("SELECT " + p + " " + sqlPlayer);
                 rs.next();
                 String playerName = rs.getString(p);
                 if(username.equals(playerName)){return p;}
