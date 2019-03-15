@@ -102,8 +102,8 @@ public class ControllerQuestion {
             rs.next();
             int QId = rs.getInt(1);
 
-            String sqlGetAlt = "SELECT answer, score FROM Alternative WHERE questionId = ";
-            rs = statement.executeQuery(sqlGetAlt + QId + ";");
+            String sqlGetAlt = "SELECT answer, score FROM Alternative WHERE questionId = " + QId +";";
+            rs = statement.executeQuery(sqlGetAlt);
             int score = 0;
             while(rs.next()){
                 String realAns = rs.getString("answer");
