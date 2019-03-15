@@ -32,13 +32,10 @@ public class ControllerQuestion {
     public void sceneHome(ActionEvent event) { //feedback knapp
         ChangeScene.change(event, "Game.fxml"); //bruker super-metode
     }
-    public void questionScene(ActionEvent event) { //feedback knapp
-        ChangeScene.change(event, "Question.fxml");
-    }
 
-    public void sceneQuestion(ActionEvent event) { //clicks submit button
+    public void confirmAnswer(ActionEvent event) { //clicks submit button
         String sceneNavn;
-        boolean riktig = questionCheck(gameId, username);   //checks answer
+        boolean riktig = questionCheck(gameId);   //checks answer
 
         if(questionCount == 3) {
             questionCount = 0;
@@ -76,7 +73,7 @@ public class ControllerQuestion {
             rsQuestionText.next();
             String qText = rsQuestionText.getString("questionText");
             questionField.setText(qText);
-            questionCount++;
+
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -85,7 +82,7 @@ public class ControllerQuestion {
         }
     }
 
-    public boolean questionCheck(int gameId, String username) {
+    public boolean questionCheck(int gameId) {
         boolean riktig = false;
         ResultSet rs = null;
 
@@ -95,7 +92,7 @@ public class ControllerQuestion {
             statement = connection.createStatement();
 
             String user = findUser();       //find user
-            String answer = (answerField.getText()).toLowerCase();          //get answer in lowercase
+            String answer = answerField.getText().toLowerCase();          //get answer in lowercase
 
             String sqlGetQId = " FROM Game WHERE gameId=" + gameId + ";";
             rs = statement.executeQuery("SELECT " + sqlQuestionName[questionCount] + sqlGetQId);
@@ -107,6 +104,7 @@ public class ControllerQuestion {
             int score = 0;
             while(rs.next()){
                 String realAns = rs.getString("answer");
+                System.out.println(realAns);
                 if(answer.equals(realAns.toLowerCase())){
                     score = rs.getInt("score");
                     riktig = true;
@@ -119,6 +117,7 @@ public class ControllerQuestion {
             //updates score in database
             String sqlUpdate = "UPDATE Game SET " + points + " = " + points + " + " + score + " WHERE gameId=" + gameId + ";";
             statement.execute(sqlUpdate);
+            questionCount++;
             return riktig;
 
         }catch (SQLException e) {

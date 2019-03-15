@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerQuestion">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragDetected="#confirmAnswer" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerQuestion">
   <children>
     <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
       <image>
@@ -26,7 +26,7 @@
         <Font size="18.0" />
       </font>
     </Button>
-    <Button layoutX="249.0" layoutY="245.0" mnemonicParsing="false" onAction="#sceneQuestion" prefHeight="29.0" prefWidth="78.0" text="CONFIRM">
+    <Button layoutX="249.0" layoutY="245.0" mnemonicParsing="false" onAction="#confirmAnswer" prefHeight="29.0" prefWidth="78.0" text="CONFIRM">
       <font>
         <Font size="12.0" />
       </font>

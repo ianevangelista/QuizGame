@@ -233,10 +233,6 @@ public class ControllerGame {
         ControllerRefresh.refresh(event);
     }
 
-    public void sceneInfo(ActionEvent event) { //trykker på infoknapp
-        ChangeScene.change(event, "Info.fxml");
-    }
-
     public void sceneInfoLogin(ActionEvent event) { //trykker på infoknapp
         ChangeScene.change(event, "Info_Login.fxml");
     }
