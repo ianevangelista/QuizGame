@@ -38,14 +38,19 @@ public class ChooseOpponent{
         try{
             connection = ConnectionPool.getConnection();
             usernameWrong.setVisible(false);
+
+            //gets the opponents username, using a prepared statment beacause it's user input
             String insertSql = "SELECT username FROM Player WHERE username =?;";
             insertSentence = connection.prepareStatement(insertSql);
-            insertSentence.setString(1, opponent.getText());
+            insertSentence.setString(1, (opponent.getText().toLowerCase())); //toLowerCase
             rs = insertSentence.executeQuery();
+
+            //if it is a registered username
             if(rs.next()){
                 opponentUsername = rs.getString("username");
                     makeGame(username, opponentUsername);
             }
+            //if the username doesn't exsist
             else {
                 usernameWrong.setVisible(true);
             }
