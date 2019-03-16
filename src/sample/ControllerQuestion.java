@@ -37,15 +37,21 @@ public class ControllerQuestion {
         String sceneNavn;
         boolean riktig = questionCheck(gameId);   //checks answer
 
+        //checks if all the quesitons have been displayed
         if(questionCount == 3) {
             questionCount = 0;
             try{
                 connection = ConnectionPool.getConnection();
                 statement = connection.createStatement();
+
                 String player = findUser();
                 String finished = player.equals("player1") ? "p1Finished" : "p2Finished";
+
+                //puts the finished variable true
                 String sqlUpdate = "UPDATE Game SET " + finished + "=1 WHERE gameId=" + gameId + ";";
                 statement.executeUpdate(sqlUpdate);
+
+                //starts timer
                 timerRes(event);
             }catch(SQLException e) {
                 e.printStackTrace();
@@ -59,7 +65,8 @@ public class ControllerQuestion {
             if(riktig) sceneNavn = "CorrectAnswer.fxml";
             else sceneNavn = "IncorrectAnswer.fxml";
         }
-        ChangeScene.change(event, sceneNavn);              //changes scene
+        //changes scene
+        ChangeScene.change(event, sceneNavn);
     }
 
     public void questionDisplay() { //displays questions
@@ -67,10 +74,13 @@ public class ControllerQuestion {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
-            String sqlGetText = "SELECT questionText FROM Game JOIN Question ON questionId = question"; //sqlstatement for question text
-            ResultSet rsQuestionText = statement.executeQuery(sqlGetText + (questionCount+1) + ";");        //
+            //sql to get question text
+            String sqlGetText = "SELECT questionText FROM Game JOIN Question ON questionId = question";
+            ResultSet rsQuestionText = statement.executeQuery(sqlGetText + (questionCount+1) + ";");
             rsQuestionText.next();
             String qText = rsQuestionText.getString("questionText");
+
+            //displays question
             questionField.setText(qText);
             questionCount++;
 
@@ -91,13 +101,15 @@ public class ControllerQuestion {
             statement = connection.createStatement();
 
             String user = findUser();       //find user
-            String answer = answerField.getText().toLowerCase();          //get answer in lowercase
+            String answer = answerField.getText().toLowerCase();  //get answer in lowercase
 
+            //gets the answered questionid
             String sqlGetQId = " FROM Game WHERE gameId=" + gameId + ";";
             rs = statement.executeQuery("SELECT " + sqlQuestionName[questionCount-1] + sqlGetQId);
             rs.next();
             int QId = rs.getInt(1);
 
+            //selects all alternatives to the question
             String sqlGetAlt = "SELECT answer, score FROM Alternative WHERE questionId = " + QId +";";
             rs = statement.executeQuery(sqlGetAlt);
             int score = 0;
