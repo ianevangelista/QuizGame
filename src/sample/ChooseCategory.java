@@ -180,8 +180,10 @@ public class ChooseCategory {
             statement = connection.createStatement();
             ResultSet rs = null;
 
+            //finds selected category, trenger vi denne??
             String sqlCategory = "SELECT categoryID FROM Game WHERE gameID ='" + gameId + "';"; //finner hvilken kategori spiller har valgt
 
+            //gets all the questions in chosen category
             int[] questionId = new int[3];
             String sqlGetText = "SELECT questionId FROM Question WHERE categoryId=" + categoryId + " ORDER BY questionId;";
             rs = statement.executeQuery(sqlGetText);
@@ -189,11 +191,14 @@ public class ChooseCategory {
             while(rs.next()) {
                 listQuestion.add(new Integer(rs.getInt("questionId")));
             }
+
+            //shuffles the list and puts 0-2 in a new list
             Collections.shuffle(listQuestion);
             for (int i=0; i<3; i++) {
                 questionId[i] = listQuestion.get(i);
             }
 
+            //updates the database with the selected questionids
             String sqlUpdate = "UPDATE Game SET question1='" + questionId[0] + "', question2 ='" + questionId[1] + "' , question3='" + questionId[2] + "' WHERE gameId=" + gameId + ";";
 
             statement.executeUpdate(sqlUpdate);

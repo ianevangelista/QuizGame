@@ -40,7 +40,7 @@ public class TimerC {
         timerR.schedule(task, 0, +3000);
     }
 
-    public static void timerCate(ActionEvent event){
+    public static void timerCat(ActionEvent event){
         tellerC = 30;
         timerC = new Timer();
         TimerTask task = new TimerTask() {
