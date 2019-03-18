@@ -48,11 +48,10 @@ public class ControllerRefresh {
         }
     }
 
-    public void challenged() {
-        /*acc.setStyle("-fx-background-color: #a3f267");
-        dec.setStyle("-fx-background-color: #F29B7F");*/
-
-    }
+    /*public void challenged() {
+        acc.setStyle("-fx-background-color: #a3f267");
+        dec.setStyle("-fx-background-color: #F29B7F");
+    }*/
 
     public void accept(ActionEvent event) {
         ChooseCategory category = new ChooseCategory();
