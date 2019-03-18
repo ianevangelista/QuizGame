@@ -56,6 +56,9 @@ public class ControllerHome {
             else if (username.getText().isEmpty() || password.getText().isEmpty()) {
                 ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
             }
+            else if (rs.getBoolean("online")) {
+                ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
+            }
             else {
                 String salt = rs.getString("salt");
                 String realPassword = rs.getString("password");

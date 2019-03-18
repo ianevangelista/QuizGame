@@ -18,24 +18,64 @@ import java.util.Timer;
 
 public class TimerC {
 
-    private static Timer timer;
-    private static int teller;
+    private static Timer timerR;
+    private static int tellerR;
+    private static Timer timerC;
+    private static int tellerC;
     private static int gameId = getGameId();
     private static Connection connection = null;
     private static Statement statement = null;
 
     public static void timerRes(ActionEvent event){
-        teller = 30;
-        timer = new Timer();
+        tellerR = 30;
+        timerR = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if(teller == 0) turnOfTimer();
-                if(checkRes(event)) turnOfTimer();
-                teller--;
+                if(tellerR == 0) turnOfTimerR();
+                if(checkRes(event)) turnOfTimerR();
+                tellerR--;
             }
         };
-        timer.schedule(task, 0, +1000);
+        timerR.schedule(task, 0, +3000);
+    }
+
+    public static void timerCat(ActionEvent event){
+        tellerC = 30;
+        timerC = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if(tellerC == 0) turnOfTimerC();
+                if(checkCat(event)) turnOfTimerC();
+                tellerC--;
+            }
+        };
+        timerC.schedule(task, 0, +3000);
+    }
+
+    public static boolean checkCat(ActionEvent event) {
+        ResultSet rs = null;
+        String sqlCheck = "SELECT * FROM Game WHERE gameId = " + gameId + ";";
+
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+
+            rs = statement.executeQuery(sqlCheck);
+            rs.next();
+            int catId = rs.getInt("categoryId");
+            if (catId != 0) {
+                ChangeScene.change(event, "Question.fxml");
+                return true;
+            }
+            return false;
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }finally {
+            Cleaner.close(statement, rs, connection);
+        }
     }
 
     public static boolean checkRes(ActionEvent event) {
@@ -64,9 +104,15 @@ public class TimerC {
         }
     }
 
-    public static void turnOfTimer() {
-        if (timer != null) {
-            timer.cancel();
+    public static void turnOfTimerR() {
+        if (timerR != null) {
+            timerR.cancel();
+        }
+    }
+
+    public static void turnOfTimerC() {
+        if (timerC != null) {
+            timerC.cancel();
         }
     }
 }

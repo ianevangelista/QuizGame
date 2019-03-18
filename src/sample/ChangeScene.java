@@ -30,7 +30,7 @@ public class ChangeScene {
     public static void changeVisibility(boolean value, Label test){
         test.setVisible(value);
     }
-
+/*
     public void change_Category(ActionEvent event, int ID) {
         try{
             ControllerGame game = new ControllerGame();
@@ -45,5 +45,5 @@ public class ChangeScene {
             e.printStackTrace();
         }
     }
-
+*/
 }

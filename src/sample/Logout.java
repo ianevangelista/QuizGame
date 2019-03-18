@@ -22,7 +22,7 @@ public class Logout {
             pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, username);
             rs = pstmt.executeQuery();
-            rs.next();
+            if(!(rs.next()))return false;
             int status = rs.getInt("online");
             if(status == 1){
                 int offline = 0;
