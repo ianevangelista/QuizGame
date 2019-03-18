@@ -13,8 +13,6 @@ import java.sql.Statement;
 
 public class ChangeScene {
 
-    public ChangeScene(){}
-
     public static void change(ActionEvent event, String fxml) {
         try{
             Parent tableViewParent = FXMLLoader.load(ChangeScene.class.getResource(fxml)); //henter inn klasse og fxml-fil
