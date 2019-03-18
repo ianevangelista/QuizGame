@@ -19,17 +19,12 @@
             <Image url="@gameLogo.png" />
          </image>
       </ImageView>
-      <Button layoutX="14.0" layoutY="330.0" minHeight="28.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="78.0" text="BACK">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Button>
-      <Button layoutX="230.0" layoutY="258.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="140.0" text="NEXT">
+      <Button id="nextQ" layoutX="230.0" layoutY="258.0" mnemonicParsing="false" onAction="#start" prefHeight="50.0" prefWidth="140.0" text="NEXT">
          <font>
             <Font size="12.0" />
          </font>
       </Button>
-      <Text fill="WHITE" layoutX="200.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="That is correct!" textAlignment="CENTER" wrappingWidth="199.99999701976776">
+      <Text fill="WHITE" layoutX="188.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="That is correct!" textAlignment="CENTER" wrappingWidth="224.99999701976776">
          <font>
             <Font size="24.0" />
          </font>
@@ -44,22 +39,17 @@
             <Font size="21.0" />
          </font>
       </Text>
-      <Text fill="#26ff00" layoutX="200.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+" textAlignment="CENTER" wrappingWidth="107.99999701976776">
+      <Text fill="WHITE" layoutX="233.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+   pt" textAlignment="CENTER" wrappingWidth="107.99999701976776">
          <font>
             <Font size="24.0" />
          </font>
       </Text>
-      <Text id="newPoints" fill="#26ff00" layoutX="300.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="pt" textAlignment="CENTER" wrappingWidth="49.99999701976776">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Text>
-      <Text id="player1Pt" fill="WHITE" layoutX="370.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="pt" textAlignment="CENTER" wrappingWidth="34.99999701976776">
+      <Text fill="WHITE" layoutX="370.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="pt" textAlignment="CENTER" wrappingWidth="34.99999701976776">
          <font>
             <Font size="21.0" />
          </font>
       </Text>
-      <Text id="player2Pt" fill="WHITE" layoutX="400.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="pt" wrappingWidth="49.99999701976776">
+      <Text id="player2PtW" fill="WHITE" layoutX="400.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="pt" wrappingWidth="49.99999701976776">
          <font>
             <Font size="21.0" />
          </font>

@@ -27,6 +27,10 @@ public class ChooseOpponent{
     public Button challenge;
     public Label usernameWrong;
 
+    public void sceneHome(ActionEvent event) { //home button
+        ChangeScene.change(event, "Game.fxml");
+    }
+
     public void findOpponent(ActionEvent event) {
         ResultSet rs = null;
         PreparedStatement insertSentence = null;
@@ -34,14 +38,19 @@ public class ChooseOpponent{
         try{
             connection = ConnectionPool.getConnection();
             usernameWrong.setVisible(false);
+
+            //gets the opponents username, using a prepared statment beacause it's user input
             String insertSql = "SELECT username FROM Player WHERE username =?;";
             insertSentence = connection.prepareStatement(insertSql);
-            insertSentence.setString(1, opponent.getText());
+            insertSentence.setString(1, (opponent.getText().toLowerCase())); //toLowerCase
             rs = insertSentence.executeQuery();
+
+            //if it is a registered username
             if(rs.next()){
                 opponentUsername = rs.getString("username");
                     makeGame(username, opponentUsername);
             }
+            //if the username doesn't exsist
             else {
                 usernameWrong.setVisible(true);
             }
@@ -98,6 +107,29 @@ public class ChooseOpponent{
     }
 
     public static int getGameId() {
-        return gameId;
+        if(gameId != 0) return gameId;
+        else{
+            Connection connection = null;
+            Statement statement = null;
+            ResultSet rsGameId = null;
+
+            try {
+                connection = ConnectionPool.getConnection();
+                statement = connection.createStatement();
+
+                String username = getUserName();
+
+                //Checks if the player you are trying to challenge is already challenged
+                String sqlGetGameIdFromPlayer = "SELECT gameId FROM `Player` WHERE `Player`.`username` = '" + username + "'";
+                rsGameId = statement.executeQuery(sqlGetGameIdFromPlayer);
+                rsGameId.next();
+                int gameId = rsGameId.getInt("gameId");
+                return  gameId;
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                return  0;
+            }
+        }
     }
 }

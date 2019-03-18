@@ -19,28 +19,42 @@ public class ControllerRefresh {
     public Button acc;
     public Button dec;
 
-    private String username = getUserName();
+    private static String username = getUserName();
 
-    public void refresh(ActionEvent event) {
+    public static void refresh(ActionEvent event) {
         Connection connection = null;
         Statement statement = null;
-
-        String sql = "SELECT gameId FROM Player WHERE username = '" + username + "';";
-
+        ResultSet rsSelect = null;
+        ResultSet rs = null;
 
         try {
+            String sql = "SELECT gameId FROM Player WHERE username = '" + username + "';";
+
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(sql);
-            rs.next();
+            rsSelect = statement.executeQuery(sql);
+            rsSelect.next();
 
-            int challenge = rs.getInt(1);
+            int playerGameId = rsSelect.getInt(1);
 
-            if (challenge != 0) {
-                ChangeScene.change(event, "Challenged.fxml");
-            } else {
+            if(playerGameId != 0) {
+                sql = "SELECT player1, categoryId FROM Game WHERE player1 = '" + username + "' OR player2 = '" + username + "' ;";
+                rs = statement.executeQuery(sql);
+                rs.next();
+                if (rs.getString("player1").equals(username)) {
+                    if(rs.getInt("categoryId") == 0){
+                        ChangeScene.change(event, "Wait.fxml");
+                    }else{
+                        ChangeScene.change(event, "Question.fxml");
+                    }
+                }
+                else {
+                    ChangeScene.change(event, "Challenged.fxml");
+                }
+            }else {
                 ChangeScene.change(event, "ChallangeUser.fxml");
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -54,8 +68,6 @@ public class ControllerRefresh {
     }*/
 
     public void accept(ActionEvent event) {
-        ChooseCategory category = new ChooseCategory();
-        category.initialize();
         ChangeScene.change(event, "Category.fxml");
     }
 
@@ -83,13 +95,13 @@ public class ControllerRefresh {
             String sqlDeleteGame = "DELETE FROM Game WHERE player2 = '" + username + "';";
             statement.executeUpdate(sqlDeleteGame);
 
-            ChangeScene.change(event, "ChallangeUser.fxml");
         }
         catch (Exception e) {
             e.printStackTrace();
         }
         finally {
             Cleaner.close(statement, null, connection);
+            ChangeScene.change(event, "ChallangeUser.fxml");
         }
     }
 

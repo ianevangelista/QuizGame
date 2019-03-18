@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -8,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerQuestion">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragDetected="#confirmAnswer" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerQuestion">
   <children>
     <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
       <image>
@@ -20,21 +26,17 @@
         <Font size="18.0" />
       </font>
     </Button>
-    <Button layoutX="249.0" layoutY="245.0" mnemonicParsing="false" onAction="#sceneQuestion" prefHeight="29.0" prefWidth="78.0" text="CONFIRM">
+    <Button layoutX="249.0" layoutY="245.0" mnemonicParsing="false" onAction="#confirmAnswer" prefHeight="29.0" prefWidth="78.0" text="CONFIRM">
       <font>
         <Font size="12.0" />
       </font>
     </Button>
-    <Text fill="WHITE" layoutX="135.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question:" wrappingWidth="113.84765625">
+    <Text fill="WHITE" layoutX="14.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question:" wrappingWidth="113.84765625">
       <font>
         <Font size="24.0" />
       </font>
     </Text>
-      <Text fx:id="questionField" fill="WHITE" layoutX="259.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="insert qs" wrappingWidth="288.2060546875">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Text>
       <TextField fx:id="answerField" layoutX="205.0" layoutY="193.0" promptText="Answer" />
+      <Label fx:id="questionField" layoutX="129.0" layoutY="103.0" prefHeight="85.0" prefWidth="342.0" text="Label" />
   </children>
 </AnchorPane>

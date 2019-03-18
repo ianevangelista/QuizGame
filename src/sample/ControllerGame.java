@@ -120,90 +120,6 @@ public class ControllerGame {
         }
     }
 
-    public void button1(ActionEvent event){
-        categoryChosen(test[0]);
-        //questionPicker();
-        ChangeScene.change(event, "Question.fxml");
-    }
-    public void button2(ActionEvent event){
-        categoryChosen(test[1]);
-        //questionPicker();
-        ChangeScene.change(event, "Question.fxml");
-    }
-    public void button3(ActionEvent event){
-        categoryChosen(test[2]);
-        //questionPicker();
-        ChangeScene.change(event, "Question.fxml");
-    }
-
-    public void categoryChosen(int categoryID){
-        Connection connection = null;
-        Statement statement = null;
-
-        String sql = "UPDATE Game SET categoryId = " + categoryID + " WHERE gameId = " + gameId + ";";
-
-        try {
-            connection = ConnectionPool.getConnection();
-            ResultSet rs = null;
-            statement = connection.createStatement();
-            statement.execute(sql);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            Cleaner.close(statement, null, connection);
-        }
-    }
-
-    /*public void questionPicker() { //helene
-        Connection connection = null;
-        Statement statement = null;
-
-        String sqlCategory = "SELECT categoryID FROM Game WHERE gameID ='" + gameId + "';"; //finner hvilken kategori spiller har valgt
-
-        String sqlNumberQuestion = "SELECT COUNT(questionId) FROM Question WHERE categoryId ='"; //teller ant spørsmål
-
-        try {
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-
-            //henter
-            ResultSet rsCategoryNumber = statement.executeQuery(sqlCategory);               //lager restultset med kategorinr
-            rsCategoryNumber.next();                                                        //henter første i rsCategoryNumber
-            int categoryId = rsCategoryNumber.getInt("categoryId");             //lager en int med categoryId
-            Cleaner.close(null, rsCategoryNumber, null);
-
-            ResultSet rsNumberQuestion = statement.executeQuery(sqlNumberQuestion + categoryId + "';"); //henter ant spørsmål i kategorien
-            rsNumberQuestion.next();//henter første i rsNumberQuestion
-            int antQuestion = rsNumberQuestion.getInt("COUNT(questionId)");      //lager en int med ant spøsmål i kategorien
-            Cleaner.close(null, rsNumberQuestion, null);
-
-            int[] questionId = new int[3];
-            String sqlGetText = "SELECT questionId FROM Question WHERE categoryId=" + categoryId + " ORDER BY questionId;";
-            ResultSet rsText;
-            rsText = statement.executeQuery(sqlGetText);
-            ArrayList<Integer> listQuestion = new ArrayList<Integer>();
-            for (int i=1; i < antQuestion+1; i++) {
-                rsText.next();
-                listQuestion.add(new Integer(rsText.getInt("questionId")));
-
-            }
-            Collections.shuffle(listQuestion);
-            for (int i=0; i<3; i++) {
-                questionId[i] = listQuestion.get(i);
-            }
-
-            String sqlUpdate = "UPDATE Game SET question1='" + questionId[0] + "', question2 ='" + questionId[1] + "' , question3='" + questionId[2] + "' WHERE gameId=" + gameId + ";";
-
-            statement.execute(sqlUpdate);
-
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            Cleaner.close(statement, null, connection);
-        }
-    }*/
-
     public void correctAnswer(ActionEvent event, int gameId, int poeng) {
         Connection connection = null;
         Statement statement = null;
@@ -313,13 +229,8 @@ public class ControllerGame {
         ChangeScene.change(event, "Main.fxml");
     }
 
-    public void start(ActionEvent event) throws SQLException{
-        ControllerRefresh refresh = new ControllerRefresh();
-        refresh.refresh(event);
-    }
-
-    public void sceneInfo(ActionEvent event) { //trykker på infoknapp
-        ChangeScene.change(event, "Info.fxml");
+    public void start(ActionEvent event) {
+        ControllerRefresh.refresh(event);
     }
 
     public void sceneInfoLogin(ActionEvent event) { //trykker på infoknapp
@@ -373,8 +284,6 @@ public class ControllerGame {
         }finally {
             Cleaner.close(statement, rs, connection);
         }
-
-
     }
 
     public void result(int gameId) {

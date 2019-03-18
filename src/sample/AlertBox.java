@@ -16,6 +16,7 @@ public class AlertBox {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
         window.setMinWidth(250);
+        window.setMinHeight(200);
         Label label = new Label();
         label.setText(message);
         Button closeBtn = new Button("Yes, logout");
