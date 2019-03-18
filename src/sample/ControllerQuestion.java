@@ -59,7 +59,7 @@ public class ControllerQuestion {
                 Cleaner.close(statement, null,connection);
             }
             //sett p1/p2finish == true
-            sceneNavn = "result.fxml";
+            sceneNavn = "Result.fxml";
         }
         else{
             if(riktig) sceneNavn = "CorrectAnswer.fxml";
