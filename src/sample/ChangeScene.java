@@ -28,20 +28,4 @@ public class ChangeScene {
     public static void changeVisibility(boolean value, Label test){
         test.setVisible(value);
     }
-/*
-    public void change_Category(ActionEvent event, int ID) {
-        try{
-            ControllerGame game = new ControllerGame();
-            game.categoryChosen(ID);
-            String fxml = "Question.fxml";
-            Parent tableViewParent = FXMLLoader.load(getClass().getResource(fxml)); //henter inn klasse og fxml-fil
-            Scene scene = new Scene(tableViewParent); //lager ny scene
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow(); //caster stage
-            window.setScene(scene); //setter scene
-            window.show(); //viser scene
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-*/
 }

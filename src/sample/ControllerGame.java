@@ -25,16 +25,9 @@ public class ControllerGame {
 
     private String username = getUserName();
     private int gameId = 899;
-    private int[] test = new int[3];
 
     @FXML
     public Button refresh;
-
-    //Category
-    public Button category1;
-    public Button category2;
-    public Button category3;
-
 
     //Correct answer
     public TextField newPoints;
@@ -49,76 +42,6 @@ public class ControllerGame {
     public TextField resultHeading;
     //highscore
     public TextField hSText;
-
-    public void chooseCategories() { //juni
-
-        Connection connection = null;
-        Statement statement = null;
-
-        ArrayList <Integer> categoriesList = new ArrayList<>();
-        String[] chosenCategories = new String[3];
-
-        String sql =  "SELECT categoryId FROM Category;";
-
-        try {
-            connection = ConnectionPool.getConnection();
-            ResultSet rs = null;
-
-            statement = connection.createStatement();
-            rs = statement.executeQuery(sql);
-
-            while(rs.next()){
-                categoriesList.add(new Integer(rs.getInt("categoryId")));
-            }
-
-            Collections.shuffle(categoriesList);
-            for (int i = 0; i < 3; i++) {
-                test[i] = categoriesList.get(i);
-            }
-
-            //Category 1
-            ResultSet rs1 = null;
-            statement = connection.createStatement();
-
-            String sql1 = "SELECT name FROM Category WHERE categoryId = " + test[0] + ";";
-
-            rs1 = statement.executeQuery(sql1);
-            rs1.next();
-            chosenCategories[0] = rs1.getString("name");
-
-            //Category 2
-            ResultSet rs2 = null;
-            statement = connection.createStatement();
-
-            String sql2 = "SELECT name FROM Category WHERE categoryId = " + test[1] + ";";
-
-            rs2 = statement.executeQuery(sql2);
-            rs2.next();
-            chosenCategories[1] = rs2.getString("name");
-
-            //Category 3
-            ResultSet rs3 = null;
-            statement = connection.createStatement();
-
-            String sql3 = "SELECT name FROM Category WHERE categoryId = " + test[2] + ";";
-
-            rs3 = statement.executeQuery(sql3);
-            rs3.next();
-            chosenCategories[2] = rs3.getString("name");
-
-
-            category1.setText(chosenCategories[0]);
-            category2.setText(chosenCategories[1]);
-            category3.setText(chosenCategories[2]);
-
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        finally {
-            Cleaner.close(statement, null, connection);
-        }
-    }
 
     public void correctAnswer(ActionEvent event, int gameId, int poeng) {
         Connection connection = null;
