@@ -245,7 +245,7 @@ public class ControllerGame {
         ChangeScene.change(event, "Game.fxml");
     }
 
-    public void sceneChallangeUser(ActionEvent event){ChangeScene.change(event, "ChallangeUser.fxml");}
+    public void sceneChallengeUser(ActionEvent event){ChangeScene.change(event, "ChallangeUser.fxml");}
 
     public void resultFinished() {
         Connection connection = null;

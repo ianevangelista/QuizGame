@@ -92,7 +92,7 @@ public class TimerC {
             rs.next();
             int opponent = rs.getInt(opponentFinished);
             if (opponent == 1) {
-                ChangeScene.change(event, "result.fxml");
+                ChangeScene.change(event, "Result.fxml");
                 return true;
             }
             return false;
