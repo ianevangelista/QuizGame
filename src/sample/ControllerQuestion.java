@@ -19,7 +19,7 @@ import Connection.ConnectionPool;
 import java.util.*;
 
 public class ControllerQuestion {
-    private int questionCount = 0;
+    private static int questionCount = 0;
     private static int gameId = getGameId();
     private static String username = getUserName();
     private Connection connection = null;
