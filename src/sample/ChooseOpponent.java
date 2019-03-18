@@ -123,7 +123,7 @@ public class ChooseOpponent{
                 String sqlGetGameIdFromPlayer = "SELECT gameId FROM `Player` WHERE `Player`.`username` = '" + username + "'";
                 rsGameId = statement.executeQuery(sqlGetGameIdFromPlayer);
                 rsGameId.next();
-                int gameId = rsGameId.getInt("gameId");
+                gameId = rsGameId.getInt("gameId");
                 return  gameId;
             }
             catch (Exception e){
