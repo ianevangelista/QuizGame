@@ -32,7 +32,7 @@
          </font>
       </Button>
       <TextField fx:id="opponent" layoutX="225.0" layoutY="174.0" promptText="Username" />
-      <Button fx:id="challenge" layoutX="225.0" layoutY="209.0" mnemonicParsing="false" onAction="#findOpponent" prefHeight="39.0" prefWidth="149.0" text="Challange">
+      <Button fx:id="challenge" layoutX="225.0" layoutY="209.0" mnemonicParsing="false" onAction="#findOpponent" prefHeight="39.0" prefWidth="149.0" text="Challenge">
          <font>
             <Font size="18.0" />
          </font>

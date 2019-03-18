@@ -52,7 +52,7 @@ public class ControllerRefresh {
                     ChangeScene.change(event, "Challenged.fxml");
                 }
             }else {
-                ChangeScene.change(event, "ChallangeUser.fxml");
+                ChangeScene.change(event, "ChallengeUser.fxml");
             }
 
         } catch (Exception e) {
@@ -101,7 +101,7 @@ public class ControllerRefresh {
         }
         finally {
             Cleaner.close(statement, null, connection);
-            ChangeScene.change(event, "ChallangeUser.fxml");
+            ChangeScene.change(event, "ChallengeUser.fxml");
         }
     }
 
