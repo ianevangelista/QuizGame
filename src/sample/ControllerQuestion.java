@@ -68,17 +68,7 @@ public class ControllerQuestion {
                 //puts the finished variable true
                 String sqlUpdate = "UPDATE Game SET " + finished + "=1 WHERE gameId=" + gameId + ";";
                 statement.executeUpdate(sqlUpdate);
-
-                if(riktig){
-                    ChangeScene.changeVisibility(true, correctAns);
-                    correctAns.setText(String.valueOf(playerScore));
-                    ChangeScene.changeVisibilityBtn(true, nxtBtn);
-                }
-                else{
-                    ChangeScene.changeVisibility(true, wrongAns);
-                    wrongAns.setText(String.valueOf(0));
-                    ChangeScene.changeVisibilityBtn(true, nxtBtn);
-                }
+                changeTextVis(riktig);
 
                 //starts timer
                 //timerRes(event);
@@ -90,18 +80,22 @@ public class ControllerQuestion {
             ChangeScene.changeVisibilityBtn(true, nxtBtn);
         }
         else{
-            if(riktig){
-                ChangeScene.changeVisibility(true, correctAns);
-                correctAns.setText(String.valueOf(playerScore));
-                ChangeScene.changeVisibilityBtn(true, nxtBtn);
-            }
-            else{
-                ChangeScene.changeVisibility(true, wrongAns);
-                wrongAns.setText(String.valueOf(0));
-                ChangeScene.changeVisibilityBtn(true, nxtBtn);
-            }
+            changeTextVis(riktig);
         }
         questionCount++;
+    }
+
+    private void changeTextVis(boolean bool){
+        if(bool){
+            ChangeScene.changeVisibility(true, correctAns);
+            correctAns.setText(String.valueOf(playerScore));
+            ChangeScene.changeVisibilityBtn(true, nxtBtn);
+        }
+        else{
+            ChangeScene.changeVisibility(true, wrongAns);
+            wrongAns.setText(String.valueOf(0));
+            ChangeScene.changeVisibilityBtn(true, nxtBtn);
+        }
     }
 
     public void questionDisplay() { //displays questions
