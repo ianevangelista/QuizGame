@@ -74,7 +74,7 @@ public class ControllerResult {
 
                 String sqlUpdatePlayerScore = "";
 
-                if(player = "player1"){
+                if(player == "player1"){
                     if(p1Points > p2Points){
                         resultText.setText("You won! :)");
                         sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + p1Points + " WHERE username ='" + player1Id +"';";
@@ -100,7 +100,7 @@ public class ControllerResult {
 
             }
             else{
-                resultText = "Waiting for opponent to finish game";
+                resultText.setText("Waiting for opponent to finish game");
 
                 //TODO make game know if waiting player won or lost (Use score delta)
             }

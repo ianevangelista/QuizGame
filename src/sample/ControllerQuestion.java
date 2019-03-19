@@ -19,7 +19,7 @@ import Connection.ConnectionPool;
 import java.util.*;
 
 public class ControllerQuestion {
-    private static int questionCount = 0;
+    private static int questionCount = 1;
     private static int gameId = getGameId();
     private static String username = getUserName();
     private Connection connection = null;
@@ -41,7 +41,7 @@ public class ControllerQuestion {
 
         //checks if all the quesitons have been displayed
         if(questionCount == 3) {
-            questionCount = 0;
+            questionCount = 1;
             try{
                 connection = ConnectionPool.getConnection();
                 statement = connection.createStatement();
@@ -66,6 +66,7 @@ public class ControllerQuestion {
         else{
             if(riktig) sceneNavn = "CorrectAnswer.fxml";
             else sceneNavn = "IncorrectAnswer.fxml";
+            questionCount++;
         }
         //changes scene
         ChangeScene.change(event, sceneNavn);
@@ -84,7 +85,6 @@ public class ControllerQuestion {
 
             //displays question
             questionField.setText(qText);
-            questionCount++;
 
         }catch (SQLException e) {
             e.printStackTrace();
