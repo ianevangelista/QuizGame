@@ -39,14 +39,15 @@ public class ControllerQuestion {
     public void initialize(){ questionDisplay(); }
 
     public void nextQuest(ActionEvent event) {
-        questionCount++;
+        if(questionCount==3){
+            questionCount = 0;
+            ChangeScene.change(event, "Result.fxml");
+        }
         questionDisplay();
         ChangeScene.changeVisibility(false, correctAns);
         ChangeScene.changeVisibility(false, wrongAns);
         ChangeScene.changeVisibilityBtn(false, nxtBtn);
-        if(questionCount==2){
-            ChangeScene.change(event, "Result.fxml");
-        }
+
     }
     public void sceneHome(ActionEvent event) { //feedback knapp
         ChangeScene.change(event, "Game.fxml"); //bruker super-metode
@@ -57,7 +58,6 @@ public class ControllerQuestion {
 
         //checks if all the quesitons have been displayed
         if(questionCount == 2) {
-            questionCount = 0;
             try{
                 connection = ConnectionPool.getConnection();
                 statement = connection.createStatement();
@@ -91,6 +91,7 @@ public class ControllerQuestion {
                 ChangeScene.changeVisibilityBtn(true, nxtBtn);
             }
         }
+        questionCount++;
     }
 
     public void questionDisplay() { //displays questions
