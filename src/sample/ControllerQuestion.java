@@ -35,6 +35,7 @@ public class ControllerQuestion {
     public Label correctAns;
     public Label wrongAns;
     public Button nxtBtn;
+    public Button confirmBtn;
 
     public void initialize(){ questionDisplay(); }
 
@@ -47,6 +48,7 @@ public class ControllerQuestion {
             ChangeScene.changeVisibility(false, correctAns);
             ChangeScene.changeVisibility(false, wrongAns);
             ChangeScene.changeVisibilityBtn(false, nxtBtn);
+            // ChangeScene.changeVisibilityBtn(false, confirmBtn); Husk å endre slik at confirmknappen kan vises og ikke
         }
     }
     public void sceneHome(ActionEvent event) { //feedback knapp
@@ -54,7 +56,7 @@ public class ControllerQuestion {
     }
 
     public void confirmAnswer(ActionEvent event) { //clicks submit button
-        boolean riktig = questionCheck(gameId);   //checks answer
+        boolean riktig = questionCheck();   //checks answer
 
         //checks if all the quesitons have been displayed
         if(questionCount == 2) {
@@ -143,7 +145,7 @@ public class ControllerQuestion {
         }
     }*/
 
-    public boolean questionCheck(int gameId) {
+    public boolean questionCheck() {
         boolean riktig = false;
         ResultSet rs = null;
 
@@ -165,6 +167,7 @@ public class ControllerQuestion {
             String sqlGetAlt = "SELECT answer, score FROM Alternative WHERE questionId = " + QId +";";
             rs = statement.executeQuery(sqlGetAlt);
             //getScore(QId);
+
             while(rs.next()){
                 String realAns = rs.getString("answer");
                 if(answer.equals(realAns.toLowerCase())){
@@ -177,7 +180,7 @@ public class ControllerQuestion {
             String points = (user.equals("player1") ? "p1Points" : "p2Points");
 
             //updates score in database
-            String sqlUpdate = "UPDATE Game SET " + points + " = " + points + " + " + score + " WHERE gameId=" + gameId + ";";
+            String sqlUpdate = "UPDATE Game SET " + points + " = " + points + " + " + playerScore + " WHERE gameId=" + gameId + ";";
             statement.execute(sqlUpdate);
             return riktig;
 
