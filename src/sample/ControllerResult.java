@@ -40,7 +40,7 @@ public class ControllerResult {
 
     public void sceneChallengeUser(ActionEvent event){ ChangeScene.change(event, "ChallengeUser.fxml");}
 
-    private void initialize() {
+    public void initialize() {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;

@@ -39,7 +39,7 @@ public class ControllerQuestion {
     public void initialize(){ questionDisplay(); }
 
     public void start(ActionEvent event) {
-        ControllerRefresh.refresh(event);
+        questionDisplay();
         ChangeScene.changeVisibility(false, correctAns);
         ChangeScene.changeVisibility(false, wrongAns);
         ChangeScene.changeVisibilityBtn(false, nxtBtn);
@@ -66,7 +66,7 @@ public class ControllerQuestion {
                 statement.executeUpdate(sqlUpdate);
 
                 //starts timer
-                timerRes(event);
+                //timerRes(event);
             }catch(SQLException e) {
                 e.printStackTrace();
             }finally {
