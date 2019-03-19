@@ -19,12 +19,14 @@ import java.util.ArrayList;
 
 //imports the method getGameId() from the class ChooseOpponent
 import static sample.ControllerHome.getUserName;
+import static sample.ChooseOpponent.getGameId;
 
 
 
 public class ChooseCategory {
 
     private String username = getUserName();
+    private int gameId = getGameId();
 
     @FXML
     public Button category1;
@@ -51,16 +53,16 @@ public class ChooseCategory {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
-            String sqlGetGameId = "SELECT gameId FROM Game WHERE player2 = '" + username +"'";
+            /*String sqlGetGameId = "SELECT gameId FROM Game WHERE player2 = '" + username +"'";
             rs = statement.executeQuery(sqlGetGameId);
             rs.next();
 
-            int gameId = rs.getInt("gameId");
+            int gameId = rs.getInt("gameId");*/
 
             int chosenCategoryId = randomCategoryId[0];
             String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
-            questionPicker(chosenCategoryId, gameId);
+            questionPicker(chosenCategoryId);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -76,16 +78,16 @@ public class ChooseCategory {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
-            String sqlGetGameId = "SELECT gameId FROM Game WHERE player2 = '" + username +"'";
+            /*String sqlGetGameId = "SELECT gameId FROM Game WHERE player2 = '" + username +"'";
             rs = statement.executeQuery(sqlGetGameId);
             rs.next();
 
-            int gameId = rs.getInt("gameId");
+            int gameId = rs.getInt("gameId");*/
 
             int chosenCategoryId = randomCategoryId[1];
             String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
-            questionPicker(chosenCategoryId, gameId);
+            questionPicker(chosenCategoryId);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -101,16 +103,16 @@ public class ChooseCategory {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
-            String sqlGetGameId = "SELECT gameId FROM Game WHERE player2 = '" + username +"'";
+            /*String sqlGetGameId = "SELECT gameId FROM Game WHERE player2 = '" + username +"'";
             rs = statement.executeQuery(sqlGetGameId);
             rs.next();
 
-            int gameId = rs.getInt("gameId");
+            int gameId = rs.getInt("gameId");*/
 
             int chosenCategoryId = randomCategoryId[2];
             String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
-            questionPicker(chosenCategoryId, gameId);
+            questionPicker(chosenCategoryId);
 
         }
         catch (Exception e){
@@ -172,7 +174,7 @@ public class ChooseCategory {
         }
     }
 
-    private void questionPicker(int categoryId, int gameId) { //helene
+    private void questionPicker(int categoryId) { //helene
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
@@ -180,7 +182,7 @@ public class ChooseCategory {
 
             //gets all the questions in chosen category
             int[] questionId = new int[3];
-            String sqlGetText = "SELECT questionId FROM Question WHERE categoryId=" + categoryId + " ORDER BY questionId;";
+            String sqlGetText = "SELECT questionId FROM Question WHERE categoryId=" + categoryId + ";";
             rs = statement.executeQuery(sqlGetText);
             ArrayList<Integer> listQuestion = new ArrayList<Integer>();
             while(rs.next()) {
