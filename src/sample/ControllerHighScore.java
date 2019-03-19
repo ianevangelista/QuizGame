@@ -66,6 +66,4 @@ public class ControllerHighScore {
             Cleaner.close(statement, null, connection);
         }
     }
-
-
 }

@@ -5,13 +5,9 @@ import Connection.ConnectionPool;
 import Connection.Cleaner;
 import javafx.scene.control.Button;
 import javafx.fxml.FXML;
-
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
 import java.sql.*;
 
 import static sample.ControllerHome.getUserName;
-import static sample.ChooseOpponent.getGameId;
 
 public class ControllerRefresh {
 
@@ -71,7 +67,7 @@ public class ControllerRefresh {
         ChangeScene.change(event, "Category.fxml");
     }
 
-    public void decline(ActionEvent event) throws SQLException {
+    public void decline(ActionEvent event) {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
