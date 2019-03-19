@@ -22,7 +22,7 @@ public class ControllerEmail {
     ResultSet rs = null;
 
     @FXML
-    public TextField feedback;
+    public TextArea feedback;
     public TextField email;
 
     public void feedback(){
@@ -57,9 +57,8 @@ public class ControllerEmail {
             message.setFrom(new InternetAddress(username));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));
 
-            message.setSubject("Hei");
+            message.setSubject("Feedback fra How Dumb R U?");
             message.setText(feedback.getText());
-            System.out.println("Hei");
 
             Transport transport = session.getTransport("smtp");
             transport.connect(host, username, password);
