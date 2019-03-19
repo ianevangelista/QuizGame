@@ -5,11 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.Statement;
+
 
 public class ChangeScene {
 
@@ -27,5 +27,8 @@ public class ChangeScene {
 
     public static void changeVisibility(boolean value, Label test){
         test.setVisible(value);
+    }
+    public static void changeVisibilityBtn(boolean value, Button btn){
+        btn.setVisible(value);
     }
 }
