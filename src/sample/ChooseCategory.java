@@ -58,7 +58,7 @@ public class ChooseCategory {
             int gameId = rs.getInt("gameId");
 
             int chosenCategoryId = randomCategoryId[0];
-            String sql = "UPDATE `Game` SET `categoryId` = " + chosenCategoryId + " WHERE `Game`.`gameId` = " + gameId;
+            String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
             questionPicker(chosenCategoryId, gameId);
         }
@@ -83,7 +83,7 @@ public class ChooseCategory {
             int gameId = rs.getInt("gameId");
 
             int chosenCategoryId = randomCategoryId[1];
-            String sql = "UPDATE `Game` SET `categoryId` = " + chosenCategoryId + " WHERE `Game`.`gameId` = " + gameId;
+            String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
             questionPicker(chosenCategoryId, gameId);
         }
@@ -108,7 +108,7 @@ public class ChooseCategory {
             int gameId = rs.getInt("gameId");
 
             int chosenCategoryId = randomCategoryId[2];
-            String sql = "UPDATE `Game` SET `categoryId` = " + chosenCategoryId + " WHERE `Game`.`gameId` = " + gameId;
+            String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
             questionPicker(chosenCategoryId, gameId);
 
