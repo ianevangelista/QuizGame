@@ -30,7 +30,6 @@ public class ControllerResult {
 
     @FXML
     public Button refresh;
-
     //result
     public Text totalScore;
     public Text resultText;
