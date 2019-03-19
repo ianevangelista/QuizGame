@@ -1,15 +1,14 @@
 package sample;
 
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+
 import Connection.Cleaner;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -18,7 +17,7 @@ import Connection.ConnectionPool;
 
 public class ControllerEmail {
 
-    /*Connection connection = null;
+    Connection connection = null;
     Statement statement = null;
     ResultSet rs = null;
 
@@ -28,44 +27,56 @@ public class ControllerEmail {
 
     public void feedback(){
 
-        String findEmail = "SELECT email FROM Player WHERE username = '" + getUserName() + "';";
+        //String findEmail = "SELECT email FROM Player WHERE username = '" + getUserName() + "';";
 
-        String sendTo = "howdumbru@hotmail.com";
-        String host = "smtp.live.com";
-        String sendFrom = "jlei-lar@hotmail.com";
+        String sendTo = "howdumbru.game@gmail.com";
+        String host = "smtp.gmail.com";
+        String username = "howdumbru.game@gmail.com";
+        String password = "Junierkul";
 
-        Properties properties = System.getProperties();
-        properties.setProperty("mail.smtp.live", host);
-        Session session = Session.getDefaultInstance(properties);
+        Properties props = new Properties();
+        Session session = Session.getDefaultInstance(props);
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.user", username);
+        props.put("mail.smtp.password", password);
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.ssl.trust", host);
+
 
         try{
-            connection = ConnectionPool.getConnection();
+            /*connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             rs = statement.executeQuery(findEmail);
-            rs.next();
+            rs.next();*/
 
-            //sendFrom = rs.getString(1);
+            //sendFrom = email.getText();//rs.getString(1);
 
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(sendFrom));
+            message.setFrom(new InternetAddress(username));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));
 
-            message.setText(SETT INN MELDINGEN SOM SKAL BLI SENDT);
+            message.setSubject("Hei");
+            message.setText(feedback.getText());
+            System.out.println("Hei");
 
-            Transport.send(message);
+            Transport transport = session.getTransport("smtp");
+            transport.connect(host, username, password);
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
 
             //KOM MED MELDING OM AT MAIL ER SENDT
 
         }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
         catch (MessagingException e) {
+            System.out.println("Heihei fanger feil");
             e.printStackTrace();
-        }
-        finally {
-            Cleaner.close(statement, rs, connection);
         }
 
-    }*/
+    }
+
+    public void sceneHome(ActionEvent event) { //feedback knapp
+        ChangeScene.change(event, "Main.fxml"); //bruker super-metode
+    }
 }
