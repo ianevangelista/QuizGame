@@ -42,7 +42,8 @@ public class ControllerEmail {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));
 
             message.setSubject("Feedback from How Dumb R U?");
-            message.setText(feedback.getText());
+            String melding = feedback.getText() + "\nSendt from: " + email.getText();
+            message.setText(melding);
 
             Transport transport = session.getTransport("smtp");
             transport.connect(host, username, password);
