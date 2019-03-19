@@ -39,7 +39,7 @@ public class ControllerResult {
 
     public void sceneChallengeUser(ActionEvent event){ ChangeScene.change(event, "ChallengeUser.fxml");}
 
-    private void resultFinished() {
+    private void initialize() {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
@@ -75,53 +75,6 @@ public class ControllerResult {
             e.printStackTrace();
         }finally {
             Cleaner.close(statement, rs, connection);
-        }
-    }
-
-    public void result() {
-        Connection connection = null;
-        Statement statement = null;
-
-        String sqlPlayerGame = "SELECT player1, p1Points, p2Points FROM Game WHERE gameId =" + gameId + ";";
-
-
-        try {
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-
-            //Henter ut brukernavn til spiller 1
-            ResultSet playerGameInfo = statement.executeQuery(sqlPlayerGame);
-            playerGameInfo.next();
-            String user = playerGameInfo.getString("player1");
-
-            //Henter ut resultat til spiller 1
-            int points1 = playerGameInfo.getInt("p1Points");
-
-            //Henter ut resultat til spiller 2
-            int points2 = playerGameInfo.getInt("p2Points");
-
-
-            if (!(user.equals(username))) {
-                int help = points1;
-                points1 = points2;
-                points2 = help;
-            }
-
-            if (points1 > points2) {
-                resultText.setText("You are the winner of this round.");
-                resultHeading.setText("Winner!");
-            } else {
-                resultText.setText("You lost this round.");
-                resultHeading.setText("Loser...");
-            }
-
-            totalScore.setText(Integer.toString(points1));
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            Cleaner.close(statement, null, connection);
         }
     }
 }

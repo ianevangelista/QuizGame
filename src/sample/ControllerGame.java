@@ -15,6 +15,8 @@ import java.sql.Statement;
 
 import static sample.ChooseOpponent.getGameId;
 
+
+
 public class ControllerGame {
 
     private String username = getUserName();
@@ -28,6 +30,28 @@ public class ControllerGame {
     public TextField resultHeading;
     //highscore
     public TextField hSText;
+
+    public void logout(ActionEvent event) { //HighScore knapp
+        Logout.logOut();
+        ChangeScene.change(event, "Main.fxml");
+    }
+
+    public void start(ActionEvent event) {
+        ControllerRefresh.refresh(event);
+    }
+
+    public void sceneInfoLogin(ActionEvent event) { //trykker på infoknapp
+        ChangeScene.change(event, "Info_Login.fxml");
+    }
+
+    public void sceneHome(ActionEvent event) { //hjemknapp
+        ChangeScene.change(event, "Main.fxml");
+    }
+
+    public void sceneGame(ActionEvent event) { //hjemknapp
+        ChangeScene.change(event, "Game.fxml");
+    }
+
 
     public void highscore(ActionEvent event) { //HighScore knapp
         ChangeScene.change(event, "HighScore.fxml");
