@@ -115,6 +115,27 @@ public class ChooseOpponent{
         }
     }
 
+   public static void resetGameId(){
+       Connection connection = null;
+       Statement statement = null;
+
+       String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
+
+       try {
+           connection = ConnectionPool.getConnection();
+           statement = connection.createStatement();
+           statement.executeUpdate(sqlDeleteGame);
+
+           gameId = -1;
+
+       } catch (Exception e) {
+           e.printStackTrace();
+       } finally {
+           Cleaner.close(statement, null, connection);
+       }
+   }
+
+
     public static int getGameId() {
         if(gameId != 0) return gameId;
         else{
