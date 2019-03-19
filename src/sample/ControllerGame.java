@@ -7,6 +7,7 @@ import Connection.Cleaner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -14,8 +15,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import static sample.ChooseOpponent.getGameId;
-
-
 
 public class ControllerGame {
 
@@ -51,7 +50,6 @@ public class ControllerGame {
     public void sceneGame(ActionEvent event) { //hjemknapp
         ChangeScene.change(event, "Game.fxml");
     }
-
 
     public void highscore(ActionEvent event) { //HighScore knapp
         ChangeScene.change(event, "HighScore.fxml");
