@@ -38,8 +38,8 @@ public class ControllerQuestion {
 
     public void initialize(){ questionDisplay(); }
 
-    public void start(ActionEvent event) {
-        ControllerRefresh.refresh(event);
+    public void nextQuest() {
+        questionDisplay();
         ChangeScene.changeVisibility(false, correctAns);
         ChangeScene.changeVisibility(false, wrongAns);
         ChangeScene.changeVisibilityBtn(false, nxtBtn);
