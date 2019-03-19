@@ -2,24 +2,16 @@ package sample;
 
 import static sample.ControllerHome.getUserName;
 import static sample.ControllerQuestion.findUser;
-import static sample.Logout.logOut;
-
 import Connection.ConnectionPool;
 import Connection.Cleaner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-
-import javax.swing.*;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class ControllerGame {
 
@@ -28,118 +20,12 @@ public class ControllerGame {
 
     @FXML
     public Button refresh;
-
-    //Correct answer
-    public TextField newPoints;
-    public TextField player1Pt;
-    public TextField player2Pt;
-    //Incorrect answer
-    public TextField player1PtW;
-    public TextField player2PtW;
     //result
     public TextField totalScore;
     public TextField resultText;
     public TextField resultHeading;
     //highscore
     public TextField hSText;
-
-    public void correctAnswer(ActionEvent event, int gameId, int poeng) {
-        Connection connection = null;
-        Statement statement = null;
-
-        String sqlP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
-        String sqlPlayer1 = "SELECT p1Points FROM Game WHERE gameId =" + gameId + ";";
-        String sqlPlayer2 = "SELECT p2Points FROM Game WHERE gameId =" + gameId + ";";
-
-
-        try {
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-
-            //Henter ut mail til spiller 1
-            ResultSet p1 = statement.executeQuery(sqlP1);
-            p1.next();
-            String user = p1.getString("player1");
-            Cleaner.close(statement, null, null);
-
-            //Henter ut resultat til spiller 1
-            ResultSet pt1 = statement.executeQuery(sqlPlayer1);
-            pt1.next();
-            int points1 = pt1.getInt("p1Points");
-            Cleaner.close(null, pt1, null);
-
-            //Henter ut resultat til spiller 2
-            ResultSet pt2 = statement.executeQuery(sqlPlayer2);
-            pt2.next();
-            int points2 = pt2.getInt("p2Points");
-            Cleaner.close(null, pt2, null);
-
-            //Sjekker om det er spiller 1 eller 2 som er "Hovedspiller" og skriver poeng i passende rekkefølge
-            if (user.equals(username)) {
-                player1Pt.setText(Integer.toString(points1));
-                player2Pt.setText(Integer.toString(points2));
-            } else {
-                player1Pt.setText(Integer.toString(points2));
-                player2Pt.setText(Integer.toString(points1));
-            }
-
-            //Skriver ut nye poeng
-            newPoints.setText(String.valueOf(poeng));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-            Cleaner.close(statement, null, connection);
-        }
-    }
-
-    public void incorrectAnswer(int gameId) {
-        Connection connection = null;
-        Statement statement = null;
-
-        String sqlP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
-        String sqlPlayer1 = "SELECT p1Points FROM Game WHERE gameId =" + gameId + ";";
-        String sqlPlayer2 = "SELECT p2Points FROM Game WHERE gameId =" + gameId + ";";
-
-
-        try {
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-
-            //Henter ut mail til spiller 1
-            ResultSet p1 = statement.executeQuery(sqlP1);
-            p1.next();
-            String user = p1.getString("player1");
-
-
-            //Henter ut resultat til spiller 1
-            ResultSet pt1 = statement.executeQuery(sqlPlayer1);
-            pt1.next();
-            int points1 = pt1.getInt("p1Points");
-
-
-            //Henter ut resultat til spiller 2
-            ResultSet pt2 = statement.executeQuery(sqlPlayer2);
-            pt2.next();
-            int points2 = pt2.getInt("p2Points");
-
-
-
-            //Sjekker om det er spiller 1 eller 2 som er "Hovedspiller" og skriver poeng i passende rekkefølge
-            if (user.equals(username)) {
-                player1PtW.setText(Integer.toString(points1));
-                player2PtW.setText(Integer.toString(points2));
-            } else {
-                player1PtW.setText(Integer.toString(points2));
-                player2PtW.setText(Integer.toString(points1));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-            Cleaner.close(statement, null, connection);
-        }
-    }
 
     public void highscore(ActionEvent event) { //HighScore knapp
         ChangeScene.change(event, "HighScore.fxml");
