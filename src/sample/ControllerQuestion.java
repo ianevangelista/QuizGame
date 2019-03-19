@@ -35,6 +35,7 @@ public class ControllerQuestion {
     public Label correctAns;
     public Label wrongAns;
     public Button nxtBtn;
+    public Button confirmBtn;
 
     public void initialize(){ questionDisplay(); }
 
@@ -47,6 +48,7 @@ public class ControllerQuestion {
             ChangeScene.changeVisibility(false, correctAns);
             ChangeScene.changeVisibility(false, wrongAns);
             ChangeScene.changeVisibilityBtn(false, nxtBtn);
+            // ChangeScene.changeVisibilityBtn(false, confirmBtn); Husk å endre slik at confirmknappen kan vises og ikke
         }
     }
     public void sceneHome(ActionEvent event) { //feedback knapp
