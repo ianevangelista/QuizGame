@@ -29,7 +29,6 @@ public class ControllerResult {
 
     @FXML
     public Button refresh;
-
     //result
     public TextField totalScore;
     public TextField resultText;
