@@ -1,9 +1,5 @@
 package sample;
 
-import java.awt.*;
-import java.sql.*;
-
-import Connection.Cleaner;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -11,23 +7,16 @@ import javax.mail.internet.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 
-import static sample.ControllerHome.getUserName;
-import Connection.ConnectionPool;
 
 public class ControllerEmail {
-
-    Connection connection = null;
-    Statement statement = null;
-    ResultSet rs = null;
 
     @FXML
     public TextArea feedback;
     public TextField email;
 
-    public void feedback(){
-
-        //String findEmail = "SELECT email FROM Player WHERE username = '" + getUserName() + "';";
+    public void feedback(ActionEvent event){
 
         String sendTo = "howdumbru.game@gmail.com";
         String host = "smtp.gmail.com";
@@ -46,12 +35,6 @@ public class ControllerEmail {
 
 
         try{
-            /*connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-            rs = statement.executeQuery(findEmail);
-            rs.next();*/
-
-            //sendFrom = email.getText();//rs.getString(1);
 
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
@@ -65,7 +48,7 @@ public class ControllerEmail {
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
 
-            //KOM MED MELDING OM AT MAIL ER SENDT
+            ChangeScene.change(event, "Main.fxml");
 
         }
         catch (MessagingException e) {
