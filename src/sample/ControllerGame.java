@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static sample.ChooseOpponent.getGameId;
+
 public class ControllerGame {
 
     private String username = getUserName();
