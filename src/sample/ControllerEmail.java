@@ -83,9 +83,6 @@ public class ControllerEmail {
             message.setText("Feedback received! We will come back to you as soon as possible.\n" +
                     "\nHere's your feedback:\n" + feedback.getText() +
                     "\n\nFrom: How Dumb R U?");
-            System.out.println("Feedback received! We will come back to you as soon as possible.\n" +
-                    "\nHere's your feedback:\n" + feedback.getText() +
-                    "\n\nRegards 'How Dumb R U?'");
 
             transport = session.getTransport("smtp");
             transport.connect(host, username, password);
