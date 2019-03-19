@@ -1,5 +1,6 @@
 package sample;
 
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,16 +10,23 @@ import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
+
 import static sample.ControllerHome.getUserName;
 import Connection.ConnectionPool;
 
 public class ControllerEmail {
 
-    Connection connection = null;
+    /*Connection connection = null;
     Statement statement = null;
     ResultSet rs = null;
 
-    /*public void feedback(){
+    @FXML
+    public TextField feedback;
+    public TextField email;
+
+    public void feedback(){
 
         String findEmail = "SELECT email FROM Player WHERE username = '" + getUserName() + "';";
 
