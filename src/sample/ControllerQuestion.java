@@ -2,6 +2,7 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -19,6 +20,9 @@ import Connection.ConnectionPool;
 import java.util.*;
 
 public class ControllerQuestion {
+    private static ArrayList<String> answer;
+    private static ArrayList<Integer> score;
+    private static int playerScore = 0;
     private static int questionCount = 0;
     private static int gameId = getGameId();
     private static String username = getUserName();
@@ -28,15 +32,23 @@ public class ControllerQuestion {
     @FXML
     public TextField answerField;
     public Label questionField;
+    public Label correctAns;
+    public Label wrongAns;
+    public Button nxtBtn;
 
     public void initialize(){ questionDisplay(); }
 
+    public void start(ActionEvent event) {
+        ControllerRefresh.refresh(event);
+        ChangeScene.changeVisibility(false, correctAns);
+        ChangeScene.changeVisibility(false, wrongAns);
+        ChangeScene.changeVisibilityBtn(false, nxtBtn);
+    }
     public void sceneHome(ActionEvent event) { //feedback knapp
         ChangeScene.change(event, "Game.fxml"); //bruker super-metode
     }
 
     public void confirmAnswer(ActionEvent event) { //clicks submit button
-        String sceneNavn;
         boolean riktig = questionCheck(gameId);   //checks answer
 
         //checks if all the quesitons have been displayed
@@ -61,14 +73,21 @@ public class ControllerQuestion {
                 Cleaner.close(statement, null,connection);
             }
             //sett p1/p2finish == true
-            sceneNavn = "Result.fxml";
+            ChangeScene.changeVisibilityBtn(true, nxtBtn);
+            ChangeScene.change(event, "Result.fxml");
         }
         else{
-            if(riktig) sceneNavn = "CorrectAnswer.fxml";
-            else sceneNavn = "IncorrectAnswer.fxml";
+            if(riktig){
+                ChangeScene.changeVisibility(true, correctAns);
+                correctAns.setText(String.valueOf(playerScore));
+                ChangeScene.changeVisibilityBtn(true, nxtBtn);
+            }
+            else{
+                ChangeScene.changeVisibility(true, wrongAns);
+                wrongAns.setText(String.valueOf(playerScore));
+                ChangeScene.changeVisibilityBtn(true, nxtBtn);
+            }
         }
-        //changes scene
-        ChangeScene.change(event, sceneNavn);
     }
 
     public void questionDisplay() { //displays questions
@@ -93,6 +112,30 @@ public class ControllerQuestion {
         }
     }
 
+    /*public void getScore(int QId){
+        ResultSet rs = null;
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+
+            String sql = "SELECT answer, score FROM Alternative WHERE QuestionId = " + QId;
+            rs = statement.executeQuery(sql);
+            while(rs.next()){
+                answer.add(rs.getString("answer"));
+                score.add(rs.getInt("score"));
+            }
+            if(questionCount == 3){
+                answer.clear();
+                score.clear();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            Cleaner.close(statement, rs, connection);
+        }
+    }*/
+
     public boolean questionCheck(int gameId) {
         boolean riktig = false;
         ResultSet rs = null;
@@ -114,12 +157,11 @@ public class ControllerQuestion {
             //selects all alternatives to the question
             String sqlGetAlt = "SELECT answer, score FROM Alternative WHERE questionId = " + QId +";";
             rs = statement.executeQuery(sqlGetAlt);
-            int score = 0;
+            //getScore(QId);
             while(rs.next()){
                 String realAns = rs.getString("answer");
-                //System.out.println(realAns);
                 if(answer.equals(realAns.toLowerCase())){
-                    score = rs.getInt("score");
+                    playerScore = rs.getInt("score");
                     riktig = true;
                 }
             }
@@ -136,7 +178,7 @@ public class ControllerQuestion {
             e.printStackTrace();
             return riktig;
         }finally {
-            Cleaner.close(statement, null, connection);
+            Cleaner.close(statement, rs, connection);
         }
     }
 
