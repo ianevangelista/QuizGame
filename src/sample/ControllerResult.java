@@ -56,6 +56,9 @@ public class ControllerResult {
             int p1Finished = rs.getInt("p1Finished");
             int p2Finished = rs.getInt("p2Finished");
 
+            //Temporaraly disable foreign key
+            statement.executeUpdate("SET FOREIGN_KEY_CHECKS=0;");
+
             //Removes gameId from player so that they can play a new game
             String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + username +"';";
             //slå av autocommit??? rollback osv?
@@ -66,6 +69,9 @@ public class ControllerResult {
                 String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
                 statement.executeUpdate(sqlDeleteGame);
                 //utfør sletting, blir gameId sletta på spilleren som spiller da?
+
+                //Enable foreign key
+                statement.executeUpdate("SET FOREIGN_KEY_CHECKS=1;");
 
                 int p1Points = rs.getInt("p1Points");
                 int p2Points = rs.getInt("p2Points");
