@@ -64,7 +64,7 @@ public class ControllerResult {
             //if both are finished
             if(p1Finished == 1 && p2Finished == 1) {
                 String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
-                statement.executeQuery(sqlDeleteGame);
+                statement.executeUpdate(sqlDeleteGame);
                 //utfør sletting, blir gameId sletta på spilleren som spiller da?
 
                 int p1Points = rs.getInt("p1Points");
