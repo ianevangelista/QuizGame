@@ -54,5 +54,6 @@
             <Font size="21.0" />
          </font>
       </Text>
+      <Label fx:id="scoreLabel" layoutX="132.0" layoutY="318.0" prefHeight="28.0" prefWidth="69.0" text="Label" />
    </children>
 </AnchorPane>
