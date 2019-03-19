@@ -17,6 +17,11 @@ public class ControllerEmail {
     public TextArea feedback;
     public TextField email;
 
+    Properties props = new Properties();
+    Session session = Session.getDefaultInstance(props);
+    MimeMessage message = new MimeMessage(session);
+    Transport transport = null;
+
     public void sendFeedback(){
 
         String sendTo = "howdumbru.game@gmail.com";
@@ -24,8 +29,6 @@ public class ControllerEmail {
         String username = "howdumbru.game@gmail.com";
         String password = "Junierkul";
 
-        Properties props = new Properties();
-        Session session = Session.getDefaultInstance(props);
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.user", username);
@@ -34,10 +37,8 @@ public class ControllerEmail {
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.ssl.trust", host);
 
-
         try{
 
-            MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));
 
@@ -45,7 +46,7 @@ public class ControllerEmail {
             String melding = feedback.getText() + "\nSendt from: " + email.getText();
             message.setText(melding);
 
-            Transport transport = session.getTransport("smtp");
+            transport = session.getTransport("smtp");
             transport.connect(host, username, password);
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
@@ -65,8 +66,6 @@ public class ControllerEmail {
         String username = "howdumbru.game@gmail.com";
         String password = "Junierkul";
 
-        Properties props = new Properties();
-        Session session = Session.getDefaultInstance(props);
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.user", username);
@@ -77,14 +76,18 @@ public class ControllerEmail {
 
         try{
 
-            MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));
 
             message.setSubject("Received feedback from How Dumb R U?");
-            message.setText("Feedback received! We will come back to you as soon as possible.");
+            message.setText("Feedback received! We will come back to you as soon as possible.\n" +
+                    "\nHere's your feedback:\n" + feedback.getText() +
+                    "\n\nFrom: How Dumb R U?");
+            System.out.println("Feedback received! We will come back to you as soon as possible.\n" +
+                    "\nHere's your feedback:\n" + feedback.getText() +
+                    "\n\nRegards 'How Dumb R U?'");
 
-            Transport transport = session.getTransport("smtp");
+            transport = session.getTransport("smtp");
             transport.connect(host, username, password);
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
@@ -104,6 +107,6 @@ public class ControllerEmail {
     }
 
     public void sceneHome(ActionEvent event) { //feedback knapp
-        ChangeScene.change(event, "Main.fxml"); //bruker super-metode
+        ChangeScene.change(event, "Main.fxml");
     }
 }
