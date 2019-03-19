@@ -38,11 +38,15 @@ public class ControllerQuestion {
 
     public void initialize(){ questionDisplay(); }
 
-    public void nextQuest() {
+    public void nextQuest(ActionEvent event) {
+        questionCount++;
         questionDisplay();
         ChangeScene.changeVisibility(false, correctAns);
         ChangeScene.changeVisibility(false, wrongAns);
         ChangeScene.changeVisibilityBtn(false, nxtBtn);
+        if(questionCount==2){
+            ChangeScene.change(event, "Result.fxml");
+        }
     }
     public void sceneHome(ActionEvent event) { //feedback knapp
         ChangeScene.change(event, "Game.fxml"); //bruker super-metode
@@ -74,7 +78,6 @@ public class ControllerQuestion {
             }
             //sett p1/p2finish == true
             ChangeScene.changeVisibilityBtn(true, nxtBtn);
-            ChangeScene.change(event, "Result.fxml");
         }
         else{
             if(riktig){
@@ -84,10 +87,9 @@ public class ControllerQuestion {
             }
             else{
                 ChangeScene.changeVisibility(true, wrongAns);
-                wrongAns.setText(String.valueOf(playerScore));
+                wrongAns.setText(String.valueOf(0));
                 ChangeScene.changeVisibilityBtn(true, nxtBtn);
             }
-            questionCount++;
         }
     }
 
