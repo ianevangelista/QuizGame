@@ -44,33 +44,66 @@ public class ControllerResult {
         Statement statement = null;
         ResultSet rs = null;
 
-        String sqlFinished = "SELECT * FROM Game WHERE gameId =" + gameId + ";";
-        String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             String player = findUser();
+            String sqlFinished = "SELECT * FROM Game WHERE gameId =" + gameId + ";";
             rs = statement.executeQuery(sqlFinished);
             rs.next();
+
+            //get bool value of whether they are finnished or not
             int p1Finished = rs.getInt("p1Finished");
             int p2Finished = rs.getInt("p2Finished");
 
-            //if the opponent isn't finished, but you are
-            if((p1Finished == 1 && p2Finished == 0) && player.equals("player1") || (p2Finished == 1 && p1Finished == 0) && player.equals("player2")) {
-                String sqlQuit = "UPDATE Player SET gameId=NULL WHERE username ='" + username +"';";
-
-                //slå av autocommit??? rollback osv?
-                statement.executeUpdate(sqlQuit);
-            }
+            //Removes gameId from player so that they can play a new game
+            String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + username +"';";
+            //slå av autocommit??? rollback osv?
+            statement.executeUpdate(sqlRemoveGameIdFromPlayer);
 
             //if both are finished
-            else if(p1Finished == 1 && p2Finished == 1) {
+            if(p1Finished == 1 && p2Finished == 1) {
+                String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
                 statement.executeQuery(sqlDeleteGame);
                 //utfør sletting, blir gameId sletta på spilleren som spiller da?
+
+                int p1Points = rs.getInt("p1Points");
+                int p2Points = rs.getInt("p2Points");
+                String player1Id = rs.getString("player1");
+                String player2Id = rs.getString("player2");
+
+                String sqlUpdatePlayerScore = "";
+
+                if(player = "player1"){
+                    if(p1Points > p2Points){
+                        resultText.setText("You won! :)");
+                        sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + p1Points + " WHERE username ='" + player1Id +"';";
+                    } else {
+                        resultText.setText("You lost :(");
+                        sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + p2Points + " WHERE username ='" + player2Id +"';";
+                    }
+                } else {
+                    if(p2Points > p1Points){
+                        resultText.setText("You won! :)");
+                        sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + p1Points + " WHERE username ='" + player1Id +"';";
+                    } else {
+                        resultText.setText("You lost :(");
+                        sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + p2Points + " WHERE username ='" + player2Id +"';";
+                    }
+                }
+                statement.executeUpdate(sqlUpdatePlayerScore);
+
+                String sqlGetPlayerScore = "SELECT points FROM Player WHERE username = " + username;
+                rs = statement.executeQuery(sqlGetPlayerScore);
+                rs.next();
+                totalScore.setText("Your score is now: " + rs.getInt("points"));
+
             }
+            else{
+                resultText = "Waiting for opponent to finish game";
 
-
-
+                //TODO make game know if waiting player won or lost (Use score delta)
+            }
         }catch (SQLException e) {
             e.printStackTrace();
         }finally {
