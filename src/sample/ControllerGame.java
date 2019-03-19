@@ -20,11 +20,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
+import static sample.ChooseOpponent.getGameId;
 
 public class ControllerGame {
 
     private String username = getUserName();
-    private int gameId = 899;
+    private int gameId = getGameId();
 
     @FXML
     public Button refresh;
@@ -42,6 +43,27 @@ public class ControllerGame {
     public TextField resultHeading;
     //highscore
     public TextField hSText;
+
+    public void logout(ActionEvent event) { //HighScore knapp
+        Logout.logOut();
+        ChangeScene.change(event, "Main.fxml");
+    }
+
+    public void start(ActionEvent event) {
+        ControllerRefresh.refresh(event);
+    }
+
+    public void sceneInfoLogin(ActionEvent event) { //trykker på infoknapp
+        ChangeScene.change(event, "Info_Login.fxml");
+    }
+
+    public void sceneHome(ActionEvent event) { //hjemknapp
+        ChangeScene.change(event, "Main.fxml");
+    }
+
+    public void sceneGame(ActionEvent event) { //hjemknapp
+        ChangeScene.change(event, "Game.fxml");
+    }
 
     public void correctAnswer(ActionEvent event, int gameId, int poeng) {
         Connection connection = null;
@@ -147,30 +169,9 @@ public class ControllerGame {
         ControllerHighScore.highscoreTable();
     }
 
-    public void logout(ActionEvent event) { //HighScore knapp
-        Logout.logOut();
-        ChangeScene.change(event, "Main.fxml");
-    }
-
-    public void start(ActionEvent event) {
-        ControllerRefresh.refresh(event);
-    }
-
-    public void sceneInfoLogin(ActionEvent event) { //trykker på infoknapp
-        ChangeScene.change(event, "Info_Login.fxml");
-    }
-
-    public void sceneHome(ActionEvent event) { //hjemknapp
-        ChangeScene.change(event, "Main.fxml");
-    }
-
-    public void sceneGame(ActionEvent event) { //hjemknapp
-        ChangeScene.change(event, "Game.fxml");
-    }
-
     public void sceneChallengeUser(ActionEvent event){ChangeScene.change(event, "ChallengeUser.fxml");}
 
-    public void resultFinished() {
+    /*private void resultFinished() {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
@@ -209,7 +210,7 @@ public class ControllerGame {
         }
     }
 
-    public void result(int gameId) {
+    public void result() {
         Connection connection = null;
         Statement statement = null;
 
@@ -262,5 +263,5 @@ public class ControllerGame {
         } finally {
             Cleaner.close(statement, null, connection);
         }
-    }
+    }*/
 }

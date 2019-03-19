@@ -29,6 +29,8 @@ public class ControllerQuestion {
     public TextField answerField;
     public Label questionField;
 
+    public void initialize(){ questionDisplay(); }
+
     public void sceneHome(ActionEvent event) { //feedback knapp
         ChangeScene.change(event, "Game.fxml"); //bruker super-metode
     }
@@ -158,6 +160,4 @@ public class ControllerQuestion {
             Cleaner.close(statement, rs, connection);
         }
     }
-
-    public void initialize(){ questionDisplay(); }
 }
