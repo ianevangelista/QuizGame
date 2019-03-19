@@ -4,11 +4,8 @@ import Connection.Cleaner;
 import Connection.ConnectionPool;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import static sample.Logout.logOut;
-
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -2,6 +2,7 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -19,7 +20,10 @@ import Connection.ConnectionPool;
 import java.util.*;
 
 public class ControllerQuestion {
-    private int questionCount = 0;
+    private static ArrayList<String> answer;
+    private static ArrayList<Integer> score;
+    private static int playerScore = 0;
+    private static int questionCount = 0;
     private static int gameId = getGameId();
     private static String username = getUserName();
     private Connection connection = null;
@@ -28,18 +32,32 @@ public class ControllerQuestion {
     @FXML
     public TextField answerField;
     public Label questionField;
+    public Label correctAns;
+    public Label wrongAns;
+    public Button nxtBtn;
 
+    public void initialize(){ questionDisplay(); }
+
+    public void nextQuest(ActionEvent event) {
+        if(questionCount==3){
+            questionCount = 0;
+            ChangeScene.change(event, "Result.fxml");
+        }
+        questionDisplay();
+        ChangeScene.changeVisibility(false, correctAns);
+        ChangeScene.changeVisibility(false, wrongAns);
+        ChangeScene.changeVisibilityBtn(false, nxtBtn);
+
+    }
     public void sceneHome(ActionEvent event) { //feedback knapp
         ChangeScene.change(event, "Game.fxml"); //bruker super-metode
     }
 
     public void confirmAnswer(ActionEvent event) { //clicks submit button
-        String sceneNavn;
         boolean riktig = questionCheck(gameId);   //checks answer
 
         //checks if all the quesitons have been displayed
-        if(questionCount == 3) {
-            questionCount = 0;
+        if(questionCount == 2) {
             try{
                 connection = ConnectionPool.getConnection();
                 statement = connection.createStatement();
@@ -52,21 +70,28 @@ public class ControllerQuestion {
                 statement.executeUpdate(sqlUpdate);
 
                 //starts timer
-                timerRes(event);
+                //timerRes(event);
             }catch(SQLException e) {
                 e.printStackTrace();
             }finally {
                 Cleaner.close(statement, null,connection);
             }
             //sett p1/p2finish == true
-            sceneNavn = "result.fxml";
+            ChangeScene.changeVisibilityBtn(true, nxtBtn);
         }
         else{
-            if(riktig) sceneNavn = "CorrectAnswer.fxml";
-            else sceneNavn = "IncorrectAnswer.fxml";
+            if(riktig){
+                ChangeScene.changeVisibility(true, correctAns);
+                correctAns.setText(String.valueOf(playerScore));
+                ChangeScene.changeVisibilityBtn(true, nxtBtn);
+            }
+            else{
+                ChangeScene.changeVisibility(true, wrongAns);
+                wrongAns.setText(String.valueOf(0));
+                ChangeScene.changeVisibilityBtn(true, nxtBtn);
+            }
         }
-        //changes scene
-        ChangeScene.change(event, sceneNavn);
+        questionCount++;
     }
 
     public void questionDisplay() { //displays questions
@@ -82,7 +107,6 @@ public class ControllerQuestion {
 
             //displays question
             questionField.setText(qText);
-            questionCount++;
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -90,6 +114,30 @@ public class ControllerQuestion {
             Cleaner.close(statement, null, connection);
         }
     }
+
+    /*public void getScore(int QId){
+        ResultSet rs = null;
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+
+            String sql = "SELECT answer, score FROM Alternative WHERE QuestionId = " + QId;
+            rs = statement.executeQuery(sql);
+            while(rs.next()){
+                answer.add(rs.getString("answer"));
+                score.add(rs.getInt("score"));
+            }
+            if(questionCount == 3){
+                answer.clear();
+                score.clear();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            Cleaner.close(statement, rs, connection);
+        }
+    }*/
 
     public boolean questionCheck(int gameId) {
         boolean riktig = false;
@@ -105,19 +153,18 @@ public class ControllerQuestion {
 
             //gets the answered questionid
             String sqlGetQId = " FROM Game WHERE gameId=" + gameId + ";";
-            rs = statement.executeQuery("SELECT " + sqlQuestionName[questionCount-1] + sqlGetQId);
+            rs = statement.executeQuery("SELECT " + sqlQuestionName[questionCount] + sqlGetQId);
             rs.next();
             int QId = rs.getInt(1);
 
             //selects all alternatives to the question
             String sqlGetAlt = "SELECT answer, score FROM Alternative WHERE questionId = " + QId +";";
             rs = statement.executeQuery(sqlGetAlt);
-            int score = 0;
+            //getScore(QId);
             while(rs.next()){
                 String realAns = rs.getString("answer");
-                System.out.println(realAns);
                 if(answer.equals(realAns.toLowerCase())){
-                    score = rs.getInt("score");
+                    playerScore = rs.getInt("score");
                     riktig = true;
                 }
             }
@@ -134,7 +181,7 @@ public class ControllerQuestion {
             e.printStackTrace();
             return riktig;
         }finally {
-            Cleaner.close(statement, null, connection);
+            Cleaner.close(statement, rs, connection);
         }
     }
 
@@ -158,6 +205,4 @@ public class ControllerQuestion {
             Cleaner.close(statement, rs, connection);
         }
     }
-
-    public void initialize(){ questionDisplay(); }
 }

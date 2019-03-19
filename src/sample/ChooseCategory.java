@@ -24,8 +24,6 @@ import static sample.ControllerHome.getUserName;
 
 public class ChooseCategory {
 
-    public TextField user_challenge;
-    public Label usernameWrong;
     private String username = getUserName();
 
     @FXML
