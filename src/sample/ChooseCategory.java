@@ -57,7 +57,7 @@ public class ChooseCategory {
 
             int gameId = rs.getInt("gameId");
 
-            int chosenCategoryId = (categoryId.get(randomCategoryId[0])+1);
+            int chosenCategoryId = randomCategoryId[0];
             String sql = "UPDATE `Game` SET `categoryId` = " + chosenCategoryId + " WHERE `Game`.`gameId` = " + gameId;
             statement.executeUpdate(sql);
             questionPicker(chosenCategoryId, gameId);
@@ -82,7 +82,7 @@ public class ChooseCategory {
 
             int gameId = rs.getInt("gameId");
 
-            int chosenCategoryId = (categoryId.get(randomCategoryId[1])+1);
+            int chosenCategoryId = randomCategoryId[1];
             String sql = "UPDATE `Game` SET `categoryId` = " + chosenCategoryId + " WHERE `Game`.`gameId` = " + gameId;
             statement.executeUpdate(sql);
             questionPicker(chosenCategoryId, gameId);
@@ -107,7 +107,7 @@ public class ChooseCategory {
 
             int gameId = rs.getInt("gameId");
 
-            int chosenCategoryId = (categoryId.get(randomCategoryId[2])+1);
+            int chosenCategoryId = randomCategoryId[2];
             String sql = "UPDATE `Game` SET `categoryId` = " + chosenCategoryId + " WHERE `Game`.`gameId` = " + gameId;
             statement.executeUpdate(sql);
             questionPicker(chosenCategoryId, gameId);
@@ -147,21 +147,21 @@ public class ChooseCategory {
 
             //Fills array with random numbers
             for (int i = 0; i < 3; i++) {
-                randomCategoryId[i] = rand.nextInt(amountOfCategorys);
+                randomCategoryId[i] = rand.nextInt(amountOfCategorys)+1;
             }
 
             //Checks that first and second element are different
             while (randomCategoryId[0] == randomCategoryId[1]) {
-                randomCategoryId[1] = rand.nextInt(amountOfCategorys);
+                randomCategoryId[1] = rand.nextInt(amountOfCategorys)+1;
             }
 
             //Checks that third element is different from first and second
             while (randomCategoryId[0] == randomCategoryId[2] || randomCategoryId[1] == randomCategoryId[2]) {
-                randomCategoryId[2] = rand.nextInt(amountOfCategorys);
+                randomCategoryId[2] = rand.nextInt(amountOfCategorys)+1;
             }
-            category1.setText(categoryName.get(categoryId.get(randomCategoryId[0])));
-            category2.setText(categoryName.get(categoryId.get(randomCategoryId[1])));
-            category3.setText(categoryName.get(categoryId.get(randomCategoryId[2])));
+            category1.setText(categoryName.get(randomCategoryId[0]-1));
+            category2.setText(categoryName.get(randomCategoryId[1]-1));
+            category3.setText(categoryName.get(randomCategoryId[2]-1));
 
         }
         catch (Exception e) {
@@ -177,9 +177,6 @@ public class ChooseCategory {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             ResultSet rs = null;
-
-            //finds selected category, trenger vi denne??
-            String sqlCategory = "SELECT categoryID FROM Game WHERE gameID ='" + gameId + "';"; //finner hvilken kategori spiller har valgt
 
             //gets all the questions in chosen category
             int[] questionId = new int[3];
