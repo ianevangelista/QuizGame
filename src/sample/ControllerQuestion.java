@@ -29,6 +29,8 @@ public class ControllerQuestion {
     public TextField answerField;
     public Label questionField;
 
+    public void initialize(){ questionDisplay(); }
+
     public void sceneHome(ActionEvent event) { //feedback knapp
         ChangeScene.change(event, "Game.fxml"); //bruker super-metode
     }
@@ -115,7 +117,7 @@ public class ControllerQuestion {
             int score = 0;
             while(rs.next()){
                 String realAns = rs.getString("answer");
-                System.out.println(realAns);
+                //System.out.println(realAns);
                 if(answer.equals(realAns.toLowerCase())){
                     score = rs.getInt("score");
                     riktig = true;
@@ -158,6 +160,4 @@ public class ControllerQuestion {
             Cleaner.close(statement, rs, connection);
         }
     }
-
-    public void initialize(){ questionDisplay(); }
 }

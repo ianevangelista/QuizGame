@@ -2,42 +2,44 @@ package sample;
 
 import static sample.ControllerHome.getUserName;
 import static sample.ControllerQuestion.findUser;
+import static sample.Logout.logOut;
+
 import Connection.ConnectionPool;
 import Connection.Cleaner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+
+import javax.swing.*;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.util.ArrayList;
+import java.util.Collections;
 import static sample.ChooseOpponent.getGameId;
 
-public class ControllerGame {
+public class ControllerResult {
 
     private String username = getUserName();
     private int gameId = getGameId();
 
     @FXML
     public Button refresh;
+
     //result
     public TextField totalScore;
     public TextField resultText;
     public TextField resultHeading;
-    //highscore
-    public TextField hSText;
 
-    public void highscore(ActionEvent event) { //HighScore knapp
-        ChangeScene.change(event, "HighScore.fxml");
-        hSText = new TextField();
-        ControllerHighScore.highscoreTable();
-    }
+    public void sceneHome(ActionEvent event){ ChangeScene.change(event, "Game.fxml");}
 
-    public void sceneChallengeUser(ActionEvent event){ChangeScene.change(event, "ChallengeUser.fxml");}
+    public void sceneChallengeUser(ActionEvent event){ ChangeScene.change(event, "ChallengeUser.fxml");}
 
-    /*private void resultFinished() {
+    private void resultFinished() {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
@@ -62,7 +64,7 @@ public class ControllerGame {
             }
 
             //if both are finished
-            if(p1Finished == 1 && p2Finished == 1) {
+            else if(p1Finished == 1 && p2Finished == 1) {
                 statement.executeQuery(sqlDeleteGame);
                 //utfør sletting, blir gameId sletta på spilleren som spiller da?
             }
@@ -80,9 +82,7 @@ public class ControllerGame {
         Connection connection = null;
         Statement statement = null;
 
-        String sqlP1 = "SELECT player1 FROM Game WHERE gameId =" + gameId + ";";
-        String sqlPlayer1 = "SELECT p1Points FROM Game WHERE gameId =" + gameId + ";";
-        String sqlPlayer2 = "SELECT p2Points FROM Game WHERE gameId =" + gameId + ";";
+        String sqlPlayerGame = "SELECT player1, p1Points, p2Points FROM Game WHERE gameId =" + gameId + ";";
 
 
         try {
@@ -90,21 +90,15 @@ public class ControllerGame {
             statement = connection.createStatement();
 
             //Henter ut brukernavn til spiller 1
-            ResultSet p1 = statement.executeQuery(sqlP1);
-            p1.next();
-            String user = p1.getString("player1");
-
+            ResultSet playerGameInfo = statement.executeQuery(sqlPlayerGame);
+            playerGameInfo.next();
+            String user = playerGameInfo.getString("player1");
 
             //Henter ut resultat til spiller 1
-            ResultSet pt1 = statement.executeQuery(sqlPlayer1);
-            pt1.next();
-            int points1 = pt1.getInt("p1Points");
-
+            int points1 = playerGameInfo.getInt("p1Points");
 
             //Henter ut resultat til spiller 2
-            ResultSet pt2 = statement.executeQuery(sqlPlayer2);
-            pt2.next();
-            int points2 = pt2.getInt("p2Points");
+            int points2 = playerGameInfo.getInt("p2Points");
 
 
             if (!(user.equals(username))) {
@@ -129,5 +123,5 @@ public class ControllerGame {
         } finally {
             Cleaner.close(statement, null, connection);
         }
-    }*/
+    }
 }

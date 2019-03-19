@@ -1,7 +1,6 @@
 package sample;
 
 import Connection.ConnectionPool;
-import Connection.ConnectionPool;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -31,7 +30,7 @@ public class ChooseOpponent{
         ChangeScene.change(event, "Game.fxml");
     }
 
-    public void findOpponent(ActionEvent event) {
+    public void findOpponent() {
         ResultSet rs = null;
         PreparedStatement insertSentence = null;
 
@@ -123,7 +122,7 @@ public class ChooseOpponent{
                 String sqlGetGameIdFromPlayer = "SELECT gameId FROM `Player` WHERE `Player`.`username` = '" + username + "'";
                 rsGameId = statement.executeQuery(sqlGetGameIdFromPlayer);
                 rsGameId.next();
-                int gameId = rsGameId.getInt("gameId");
+                gameId = rsGameId.getInt("gameId");
                 return  gameId;
             }
             catch (Exception e){
