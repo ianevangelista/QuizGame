@@ -19,7 +19,7 @@ public class AlertBox {
         window.setMinHeight(200);
         Label label = new Label();
         label.setText(message);
-        Button closeBtn = new Button("Yes, logout");
+        Button closeBtn = new Button("Yes, leave");
         Button regretBtn = new Button("No, stay");
 
         closeBtn.setOnAction(event -> {
