@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import static sample.TimerC.timerCat;
 
 import java.sql.*;
 
@@ -31,7 +32,7 @@ public class ChooseOpponent{
         ChangeScene.change(event, "Game.fxml");
     }
 
-    public void findOpponent() {
+    public void findOpponent(ActionEvent event) {
         ResultSet rs = null;
         PreparedStatement insertSentence = null;
 
@@ -54,6 +55,8 @@ public class ChooseOpponent{
                 }
                 else {
                     makeGame(username, opponentUsername);
+                    timerCat(event);
+                    ChangeScene.change(event, "Wait.fxml");
                 }
             }
             //if the username doesn't exsist
