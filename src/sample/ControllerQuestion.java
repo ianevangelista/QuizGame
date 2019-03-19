@@ -23,7 +23,7 @@ public class ControllerQuestion {
     private static ArrayList<String> answer;
     private static ArrayList<Integer> score;
     private static int playerScore = 0;
-    private static int questionCount = 1;
+    private static int questionCount = 0;
     private static int gameId = getGameId();
     private static String username = getUserName();
     private Connection connection = null;
@@ -52,8 +52,8 @@ public class ControllerQuestion {
         boolean riktig = questionCheck(gameId);   //checks answer
 
         //checks if all the quesitons have been displayed
-        if(questionCount == 3) {
-            questionCount = 1;
+        if(questionCount == 2) {
+            questionCount = 0;
             try{
                 connection = ConnectionPool.getConnection();
                 statement = connection.createStatement();
@@ -150,7 +150,7 @@ public class ControllerQuestion {
 
             //gets the answered questionid
             String sqlGetQId = " FROM Game WHERE gameId=" + gameId + ";";
-            rs = statement.executeQuery("SELECT " + sqlQuestionName[questionCount-1] + sqlGetQId);
+            rs = statement.executeQuery("SELECT " + sqlQuestionName[questionCount] + sqlGetQId);
             rs.next();
             int QId = rs.getInt(1);
 

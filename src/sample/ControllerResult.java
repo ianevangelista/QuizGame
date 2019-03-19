@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -30,11 +31,11 @@ public class ControllerResult {
     @FXML
     public Button refresh;
     //result
-    public TextField totalScore;
-    public TextField resultText;
+    public Text totalScore;
+    public Text resultText;
     public TextField resultHeading;
 
-    public void sceneHome(ActionEvent event){ ChangeScene.change(event, "Game.fxml");}
+    public void sceneGame(ActionEvent event) { ChangeScene.change(event, "Game.fxml"); }
 
     public void sceneChallengeUser(ActionEvent event){ ChangeScene.change(event, "ChallengeUser.fxml");}
 
@@ -95,7 +96,9 @@ public class ControllerResult {
                 String sqlGetPlayerScore = "SELECT points FROM Player WHERE username = " + username;
                 rs = statement.executeQuery(sqlGetPlayerScore);
                 rs.next();
-                totalScore.setText("Your score is now: " + rs.getInt("points"));
+
+                String points = rs.getInt("points") + "p";
+                totalScore.setText(points);
 
             }
             else{
