@@ -39,15 +39,15 @@ public class ControllerQuestion {
     public void initialize(){ questionDisplay(); }
 
     public void nextQuest(ActionEvent event) {
-        if(questionCount==3){
+        if(questionCount == 3){
             questionCount = 0;
             ChangeScene.change(event, "Result.fxml");
+        }else{
+            questionDisplay();
+            ChangeScene.changeVisibility(false, correctAns);
+            ChangeScene.changeVisibility(false, wrongAns);
+            ChangeScene.changeVisibilityBtn(false, nxtBtn);
         }
-        questionDisplay();
-        ChangeScene.changeVisibility(false, correctAns);
-        ChangeScene.changeVisibility(false, wrongAns);
-        ChangeScene.changeVisibilityBtn(false, nxtBtn);
-
     }
     public void sceneHome(ActionEvent event) { //feedback knapp
         ChangeScene.change(event, "Game.fxml"); //bruker super-metode
@@ -69,6 +69,17 @@ public class ControllerQuestion {
                 String sqlUpdate = "UPDATE Game SET " + finished + "=1 WHERE gameId=" + gameId + ";";
                 statement.executeUpdate(sqlUpdate);
 
+                if(riktig){
+                    ChangeScene.changeVisibility(true, correctAns);
+                    correctAns.setText(String.valueOf(playerScore));
+                    ChangeScene.changeVisibilityBtn(true, nxtBtn);
+                }
+                else{
+                    ChangeScene.changeVisibility(true, wrongAns);
+                    wrongAns.setText(String.valueOf(0));
+                    ChangeScene.changeVisibilityBtn(true, nxtBtn);
+                }
+
                 //starts timer
                 //timerRes(event);
             }catch(SQLException e) {
@@ -76,7 +87,6 @@ public class ControllerQuestion {
             }finally {
                 Cleaner.close(statement, null,connection);
             }
-            //sett p1/p2finish == true
             ChangeScene.changeVisibilityBtn(true, nxtBtn);
         }
         else{
