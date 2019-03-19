@@ -26,6 +26,7 @@ public class ChooseOpponent{
     public TextField opponent;
     public Button challenge;
     public Label usernameWrong;
+    public Label challengeYou;
 
     public void sceneHome(ActionEvent event) { //home button
         ChangeScene.change(event, "Game.fxml");
@@ -38,6 +39,7 @@ public class ChooseOpponent{
         try{
             connection = ConnectionPool.getConnection();
             usernameWrong.setVisible(false);
+            challengeYou.setVisible(false);
 
             //gets the opponents username, using a prepared statment beacause it's user input
             String insertSql = "SELECT username FROM Player WHERE username =?;";
@@ -48,7 +50,12 @@ public class ChooseOpponent{
             //if it is a registered username
             if(rs.next()){
                 opponentUsername = rs.getString("username");
+                if(opponentUsername.equals(username)) {
+                    challengeYou.setVisible(true);
+                }
+                else {
                     makeGame(username, opponentUsername);
+                }
             }
             //if the username doesn't exsist
             else {
