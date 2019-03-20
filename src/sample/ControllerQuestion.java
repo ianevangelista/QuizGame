@@ -51,8 +51,8 @@ public class ControllerQuestion {
             ChangeScene.changeVisibilityBtn(true, confirmBtn);
             answerField.setVisible(true);
             questionField.setVisible(true);
-            questionField.setVisible(false);
-            answerField.setText("Answer");
+            questionLabel.setVisible(true);
+            answerField.setText("");
         }
     }
     public void sceneHome(ActionEvent event) { //feedback knapp
@@ -84,13 +84,17 @@ public class ControllerQuestion {
                 Cleaner.close(statement, null,connection);
             }
             ChangeScene.changeVisibilityBtn(true, nxtBtn);
+
         }
         else{
             changeTextVis(riktig);
         }
         ChangeScene.changeVisibilityBtn(false, confirmBtn);
+        ChangeScene.changeVisibility(true, feedback);
         answerField.setVisible(false);
-        questionField.setVisible(true);
+        questionField.setVisible(false);
+        questionLabel.setVisible(false);
+
         questionCount++;
     }
 
