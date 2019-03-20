@@ -48,6 +48,8 @@ public class ControllerResult {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             String player = findUser();
+            String me = player.equals("player1") ? "p1Points" : "p2Points";
+            String opponent= player.equals("player1") ? "p2Points" : "p1Points";
             String sqlFinished = "SELECT * FROM Game WHERE gameId =" + gameId + ";";
             rs = statement.executeQuery(sqlFinished);
             rs.next();
@@ -55,8 +57,39 @@ public class ControllerResult {
             //get bool value of whether they are finnished or not
             int p1Finished = rs.getInt("p1Finished");
             int p2Finished = rs.getInt("p2Finished");
+            int mePoints = rs.getInt(me);
+            int opponentPoints = rs.getInt(opponent);
 
-            //Temporaraly disable foreign key
+            //Removes gameId from player so that they can play a new game
+            String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + username +"';";
+            //slå av autocommit??? rollback osv?
+            statement.executeUpdate(sqlRemoveGameIdFromPlayer);
+
+            if(p1Finished == 1 && p2Finished == 1) {
+                String sqlUpdatePlayerScore = "";
+                if (mePoints > opponentPoints) {
+                    resultText.setText("You won! :)");
+                    sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + mePoints + " WHERE username ='" + username + "';";
+                    statement.executeUpdate(sqlUpdatePlayerScore);
+                } else {
+                    resultText.setText("You lost :(");
+                }
+
+
+                String sqlGetPlayerScore = "SELECT points FROM Player WHERE username = " + username;
+                rs = statement.executeQuery(sqlGetPlayerScore);
+                rs.next();
+
+                String points = rs.getInt("points") + "p";
+                totalScore.setText("your points: " + points);
+
+                String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
+                statement.executeUpdate(sqlDeleteGame);
+                //utfør sletting, blir gameId sletta på spilleren som spiller da?
+            }
+
+
+            /*//Temporaraly disable foreign key
             statement.executeUpdate("SET FOREIGN_KEY_CHECKS=0;");
 
             //Removes gameId from player so that they can play a new game
@@ -104,9 +137,8 @@ public class ControllerResult {
                 rs.next();
 
                 String points = rs.getInt("points") + "p";
-                totalScore.setText(points);
+                totalScore.setText(points);*/
 
-            }
             else{
                 resultText.setText("Waiting for opponent to finish game");
 

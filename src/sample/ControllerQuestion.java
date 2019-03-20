@@ -109,9 +109,10 @@ public class ControllerQuestion {
             //sql to get question text
             String sqlGetText = "SELECT questionText FROM Game JOIN Question ON questionId = question";
             ResultSet rsQuestionText = statement.executeQuery(sqlGetText + (questionCount+1) + ";");
-            rsQuestionText.next();
-            String qText = rsQuestionText.getString("questionText");
-
+            String qText = "";
+            if(rsQuestionText.next()) {
+                qText = rsQuestionText.getString("questionText");
+            }
             //displays question
             questionField.setText(qText);
 
