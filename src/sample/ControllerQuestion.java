@@ -48,7 +48,7 @@ public class ControllerQuestion {
             ChangeScene.changeVisibility(false, correctAns);
             ChangeScene.changeVisibility(false, wrongAns);
             ChangeScene.changeVisibilityBtn(false, nxtBtn);
-            // ChangeScene.changeVisibilityBtn(false, confirmBtn); Husk å endre slik at confirmknappen kan vises og ikke
+            ChangeScene.changeVisibilityBtn(true, confirmBtn);
         }
     }
     public void sceneHome(ActionEvent event) { //feedback knapp
@@ -84,6 +84,7 @@ public class ControllerQuestion {
         else{
             changeTextVis(riktig);
         }
+        ChangeScene.changeVisibilityBtn(false, confirmBtn);
         questionCount++;
     }
 
