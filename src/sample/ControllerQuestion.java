@@ -49,6 +49,7 @@ public class ControllerQuestion {
             ChangeScene.changeVisibility(false, wrongAns);
             ChangeScene.changeVisibilityBtn(false, nxtBtn);
             ChangeScene.changeVisibilityBtn(true, confirmBtn);
+            answerField.setVisible(true);
         }
     }
     public void sceneHome(ActionEvent event) { //feedback knapp
@@ -85,6 +86,7 @@ public class ControllerQuestion {
             changeTextVis(riktig);
         }
         ChangeScene.changeVisibilityBtn(false, confirmBtn);
+        answerField.setVisible(false);
         questionCount++;
     }
 
