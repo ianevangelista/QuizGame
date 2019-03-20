@@ -19,6 +19,7 @@ public class ChooseOpponent{
     private Connection connection;
     private String username = getUserName();
     private String opponentUsername = null;
+    private int opponentOnline = 0;
     private static int gameId;
 
 
@@ -27,6 +28,7 @@ public class ChooseOpponent{
     public Button challenge;
     public Label usernameWrong;
     public Label challengeYou;
+    public Label challengeOffline;
 
     public void sceneHome(ActionEvent event) { //home button
         ChangeScene.change(event, "Game.fxml");
@@ -42,7 +44,7 @@ public class ChooseOpponent{
             challengeYou.setVisible(false);
 
             //gets the opponents username, using a prepared statment beacause it's user input
-            String insertSql = "SELECT username FROM Player WHERE username =?;";
+            String insertSql = "SELECT username, online FROM Player WHERE username =?;";
             insertSentence = connection.prepareStatement(insertSql);
             insertSentence.setString(1, (opponent.getText().toLowerCase())); //toLowerCase
             rs = insertSentence.executeQuery();
@@ -50,9 +52,15 @@ public class ChooseOpponent{
             //if it is a registered username
             if(rs.next()){
                 opponentUsername = rs.getString("username");
+                opponentOnline = rs.getInt("Online");
                 if(opponentUsername.equals(username)) {
                     challengeYou.setVisible(true);
                 }
+
+                if(opponentOnline == 0){
+                    System.out.println("Funker kanskje");
+                }
+
                 else {
                     makeGame(username, opponentUsername);
                     //timerCat();

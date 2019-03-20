@@ -17,6 +17,9 @@ public class ControllerRefresh {
 
     private static String username = getUserName();
 
+    public void initialize(){ challenged(); }
+
+
     public static void refresh(ActionEvent event) {
         Connection connection = null;
         Statement statement = null;
@@ -58,10 +61,10 @@ public class ControllerRefresh {
         }
     }
 
-    /*public void challenged() {
+    public void challenged() {
         acc.setStyle("-fx-background-color: #a3f267");
         dec.setStyle("-fx-background-color: #F29B7F");
-    }*/
+    }
 
     public void accept(ActionEvent event) {
         ChangeScene.change(event, "Category.fxml");

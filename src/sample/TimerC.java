@@ -64,7 +64,7 @@ public class TimerC {
                 }
                 else {
                     //tellerText.setText(String.valueOf(teller));
-                    System.out.println("hei");
+                    //System.out.println("hei");
                     teller++;
                 }
             }

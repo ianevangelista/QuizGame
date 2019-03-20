@@ -1,24 +1,32 @@
 package sample;
 
-import Connection.ConnectionPool;
-import Connection.Cleaner;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
+import Connection.Cleaner;
+import Connection.ConnectionPool;
+
 import java.util.ArrayList;
 
-
-
 public class ControllerHighScore {
-   @FXML
-    public static TextField userCol;
-    public static TextField scoreCol;
+    @FXML
+    public Label userCol;
+    public Label scoreCol;
+
+    public void initialize(){ highscoreTable(); }
 
 
-    public static void highscoreTable(){
+    public void sceneGame(ActionEvent event) { //hjemknapp
+        ChangeScene.change(event, "Game.fxml");
+    }
+
+    public void highscoreTable(){
 
         Connection connection = null;
         Statement statement = null;
@@ -29,9 +37,9 @@ public class ControllerHighScore {
         ArrayList<String> usernameList = new ArrayList<>();
         ArrayList<String> pointsList = new ArrayList<>();
 
-       try {
-           connection = ConnectionPool.getConnection();
-           statement = connection.createStatement();
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
 
             //Legger navn i tabellen highScoreList
             ResultSet hs = statement.executeQuery(sqlHighScoreUser);
@@ -48,16 +56,16 @@ public class ControllerHighScore {
 
             String userText = "";
             for(String name : usernameList){
-                userText += name +" \n ";
+                userText += name +"\n\n";
             }
-           String pointsText = "";
-           for(String points : pointsList){
-               pointsText += points +" \n";
-           }
+            String pointsText = "";
+            for(String points : pointsList){
+                pointsText += points +"\n\n";
+            }
 
-           //Printer ut teksten
-           userCol.setText(userText);
-           scoreCol.setText(pointsText);
+            userCol.setText(userText);
+            scoreCol.setText(pointsText);
+
 
 
         } catch (Exception e) {
