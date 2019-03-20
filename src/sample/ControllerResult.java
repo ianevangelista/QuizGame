@@ -70,10 +70,11 @@ public class ControllerResult {
                 if (mePoints > opponentPoints) {
                     resultText.setText("You won! :)");
                     sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + mePoints + " WHERE username ='" + username + "';";
+                    statement.executeUpdate(sqlUpdatePlayerScore);
                 } else {
                     resultText.setText("You lost :(");
                 }
-                statement.executeUpdate(sqlUpdatePlayerScore);
+
 
                 String sqlGetPlayerScore = "SELECT points FROM Player WHERE username = " + username;
                 rs = statement.executeQuery(sqlGetPlayerScore);
