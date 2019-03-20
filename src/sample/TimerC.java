@@ -4,6 +4,7 @@ import Connection.ConnectionPool;
 import Connection.Cleaner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 
 import javax.swing.*;
@@ -28,9 +29,11 @@ public class TimerC {
     private static int gameId = getGameId();
     private static Connection connection = null;
     private static Statement statement = null;
+    private static boolean categoryChosen = false;
 
     @FXML
     public static Text tellerText;
+    public Button btnNext;
 
     public void sceneGame(ActionEvent event) { //hjemknapp
         turnOfTimerC();
@@ -52,14 +55,15 @@ public class TimerC {
         timerCat();
     }
 
-    public static void timerCat(){
+    public void timerCat(){
         timerC = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 if(checkCat()) {
                     turnOfTimerC();
-                    //ChangeScene.change(event, "Question.fxml");
+                    categoryChosen = true;
+                    showBtn();
                     System.out.println("bytter til annen scene");
                 }
                 else {
@@ -69,7 +73,15 @@ public class TimerC {
                 }
             }
         };
-        timerC.schedule(task, 0, 1000);
+        timerC.schedule(task, 10000, 3000);
+    }
+
+    public void showBtn(){
+        if(categoryChosen) ChangeScene.changeVisibilityBtn(true, btnNext);
+    }
+
+    public void sceneQuestion(ActionEvent event) { //hjemknapp
+        ChangeScene.change(event, "Question.fxml");
     }
 
     public static boolean checkCat() {
