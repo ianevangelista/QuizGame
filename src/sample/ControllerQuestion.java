@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -36,6 +37,7 @@ public class ControllerQuestion {
     public Label wrongAns;
     public Button nxtBtn;
     public Button confirmBtn;
+    public Text questionLabel;
 
     public void initialize(){ questionDisplay(); }
 
@@ -50,6 +52,8 @@ public class ControllerQuestion {
             ChangeScene.changeVisibilityBtn(false, nxtBtn);
             ChangeScene.changeVisibilityBtn(true, confirmBtn);
             answerField.setVisible(true);
+            questionField.setVisible(true);
+            questionField.setVisible(true);
         }
     }
     public void sceneHome(ActionEvent event) { //feedback knapp
@@ -87,6 +91,8 @@ public class ControllerQuestion {
         }
         ChangeScene.changeVisibilityBtn(false, confirmBtn);
         answerField.setVisible(false);
+        questionField.setVisible(false);
+        questionField.setVisible(false);
         questionCount++;
     }
 
