@@ -101,7 +101,7 @@ public class ControllerQuestion {
     private void changeTextVis(boolean bool){
         if(bool){
             ChangeScene.changeVisibility(true, feedback);
-            feedback.setText("Congratulations! You got " + playerScore + " points.");
+            feedback.setText("Congratulations! You got " + playerScore + " point(s).");
             ChangeScene.changeVisibilityBtn(true, nxtBtn);
         }
         else{
