@@ -175,6 +175,8 @@ public class ChooseCategory {
                 questionId[i] = listQuestion.get(i);
             }
 
+            System.out.printf("game id:" + gameId);
+
             //updates the database with the selected questionids
             String sqlUpdate = "UPDATE Game SET question1='" + questionId[0] + "', question2 ='" + questionId[1] + "' , question3='" + questionId[2] + "' WHERE gameId=" + gameId + ";";
 

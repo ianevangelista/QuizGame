@@ -117,8 +117,8 @@ public class ControllerQuestion {
             statement = connection.createStatement();
 
             //sql to get question text
-            String sqlGetText = "SELECT questionText FROM Game JOIN Question ON questionId = question WHERE gameId = " + gameId;
-            ResultSet rsQuestionText = statement.executeQuery(sqlGetText + (questionCount+1) + ";");
+            String sqlGetText = "SELECT questionText FROM Game JOIN Question ON questionId = question" + (questionCount+1) +  " WHERE gameId = " + gameId;
+            ResultSet rsQuestionText = statement.executeQuery(sqlGetText);
             String qText = "";
             if(rsQuestionText.next()) {
                 qText = rsQuestionText.getString("questionText");
