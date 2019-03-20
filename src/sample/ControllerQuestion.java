@@ -34,7 +34,6 @@ public class ControllerQuestion {
     public TextField answerField;
     public Label questionField;
     public Label correctAns;
-    public Label wrongAns;
     public Button nxtBtn;
     public Button confirmBtn;
     public Text questionLabel;
@@ -48,12 +47,11 @@ public class ControllerQuestion {
         }else{
             questionDisplay();
             ChangeScene.changeVisibility(false, correctAns);
-            ChangeScene.changeVisibility(false, wrongAns);
             ChangeScene.changeVisibilityBtn(false, nxtBtn);
             ChangeScene.changeVisibilityBtn(true, confirmBtn);
             answerField.setVisible(true);
             questionField.setVisible(true);
-            questionField.setVisible(true);
+            questionField.setVisible(false);
         }
     }
     public void sceneHome(ActionEvent event) { //feedback knapp
@@ -91,20 +89,19 @@ public class ControllerQuestion {
         }
         ChangeScene.changeVisibilityBtn(false, confirmBtn);
         answerField.setVisible(false);
-        questionField.setVisible(false);
-        questionField.setVisible(false);
+        questionField.setVisible(true);
         questionCount++;
     }
 
     private void changeTextVis(boolean bool){
         if(bool){
             ChangeScene.changeVisibility(true, correctAns);
-            correctAns.setText(String.valueOf(playerScore));
+            correctAns.setText("Du fikk " + playerScore + " poeng!");
             ChangeScene.changeVisibilityBtn(true, nxtBtn);
         }
         else{
-            ChangeScene.changeVisibility(true, wrongAns);
-            wrongAns.setText(String.valueOf(0));
+            ChangeScene.changeVisibility(true, correctAns);
+            correctAns.setText("Du svarte feil.");
             ChangeScene.changeVisibilityBtn(true, nxtBtn);
         }
     }
