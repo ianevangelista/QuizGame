@@ -33,7 +33,7 @@ public class ControllerQuestion {
     @FXML
     public TextField answerField;
     public Label questionField;
-    public Label correctAns;
+    public Label feedback;
     public Button nxtBtn;
     public Button confirmBtn;
     public Text questionLabel;
@@ -46,12 +46,13 @@ public class ControllerQuestion {
             ChangeScene.change(event, "Result.fxml");
         }else{
             questionDisplay();
-            ChangeScene.changeVisibility(false, correctAns);
+            ChangeScene.changeVisibility(false, feedback);
             ChangeScene.changeVisibilityBtn(false, nxtBtn);
             ChangeScene.changeVisibilityBtn(true, confirmBtn);
             answerField.setVisible(true);
             questionField.setVisible(true);
             questionField.setVisible(false);
+            answerField.setText("Answer");
         }
     }
     public void sceneHome(ActionEvent event) { //feedback knapp
@@ -95,13 +96,13 @@ public class ControllerQuestion {
 
     private void changeTextVis(boolean bool){
         if(bool){
-            ChangeScene.changeVisibility(true, correctAns);
-            correctAns.setText("Du fikk " + playerScore + " poeng!");
+            ChangeScene.changeVisibility(true, feedback);
+            feedback.setText("Congratulations! You got " + playerScore + " points.");
             ChangeScene.changeVisibilityBtn(true, nxtBtn);
         }
         else{
-            ChangeScene.changeVisibility(true, correctAns);
-            correctAns.setText("Du svarte feil.");
+            ChangeScene.changeVisibility(true, feedback);
+            feedback.setText("You answered wrong.");
             ChangeScene.changeVisibilityBtn(true, nxtBtn);
         }
     }

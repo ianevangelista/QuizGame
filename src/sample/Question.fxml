@@ -36,13 +36,9 @@
          <font>
             <Font size="18.0" />
          </font></Label>
-      <Label fx:id="correctAns" alignment="CENTER" layoutX="147.0" layoutY="131.0" prefHeight="85.0" prefWidth="342.0" text="Label" textFill="WHITE" visible="false">
+      <Label fx:id="feedback" alignment="CENTER" layoutX="147.0" layoutY="131.0" prefHeight="85.0" prefWidth="342.0" text="Label" textFill="WHITE" visible="false">
          <font>
             <Font size="23.0" />
-         </font></Label>
-      <Label fx:id="wrongAns" layoutX="364.0" layoutY="288.0" prefHeight="85.0" prefWidth="342.0" text="Label" textFill="WHITE" visible="false">
-         <font>
-            <Font size="30.0" />
          </font></Label>
       <Button fx:id="nxtBtn" layoutX="280.0" layoutY="245.0" mnemonicParsing="false" onAction="#nextQuest" prefHeight="29.0" prefWidth="78.0" text="NEXT" visible="false">
          <font>
