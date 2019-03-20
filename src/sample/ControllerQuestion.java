@@ -22,7 +22,7 @@ import java.util.*;
 public class ControllerQuestion {
     private static ArrayList<String> answer;
     private static ArrayList<Integer> score;
-    private static int playerScore = 0;
+    private int playerScore = 0;
     private static int questionCount = 0;
     private static int gameId = getGameId();
     private static String username = getUserName();

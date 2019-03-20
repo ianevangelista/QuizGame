@@ -55,7 +55,7 @@ public class ChooseOpponent{
                 }
                 else {
                     makeGame(username, opponentUsername);
-                    timerCat(event);
+                    //timerCat();
                     ChangeScene.change(event, "Wait.fxml");
                 }
             }
