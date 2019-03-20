@@ -1,6 +1,7 @@
 package sample;
 
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
@@ -19,6 +20,11 @@ public class ControllerHighScore {
     public Label scoreCol;
 
     public void initialize(){ highscoreTable(); }
+
+
+    public void sceneGame(ActionEvent event) { //hjemknapp
+        ChangeScene.change(event, "Game.fxml");
+    }
 
     public void highscoreTable(){
 
@@ -50,17 +56,16 @@ public class ControllerHighScore {
 
             String userText = "";
             for(String name : usernameList){
-                userText += name +"\n ";
+                userText += name +"\n\n";
             }
             String pointsText = "";
             for(String points : pointsList){
-                pointsText += points +"\n";
+                pointsText += points +"\n\n";
             }
 
-            //userCol.setText("Halla");
-            scoreCol.setText("Hei");
+            userCol.setText(userText);
+            scoreCol.setText(pointsText);
 
-            System.out.println("Hei");
 
 
         } catch (Exception e) {
