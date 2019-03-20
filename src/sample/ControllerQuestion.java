@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import static sample.ChooseOpponent.getGameId;
 import static sample.ControllerHome.getUserName;
-import static sample.TimerC.timerRes;
+
 
 import Connection.Cleaner;
 import Connection.ConnectionPool;
