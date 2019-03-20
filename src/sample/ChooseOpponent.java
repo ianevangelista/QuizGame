@@ -28,7 +28,7 @@ public class ChooseOpponent{
     public Button challenge;
     public Label usernameWrong;
     public Label challengeYou;
-    public Label challengeOffline;
+    public Label userOffline;
 
     public void sceneHome(ActionEvent event) { //home button
         ChangeScene.change(event, "Game.fxml");
