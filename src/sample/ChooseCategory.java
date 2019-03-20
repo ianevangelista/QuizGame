@@ -59,7 +59,7 @@ public class ChooseCategory {
 
             int gameId = rs.getInt("gameId");*/
 
-            int chosenCategoryId = randomCategoryId[0];
+            int chosenCategoryId = (categoryId.get(randomCategoryId[0])+1);
             String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
             questionPicker(chosenCategoryId);
@@ -84,7 +84,7 @@ public class ChooseCategory {
 
             int gameId = rs.getInt("gameId");*/
 
-            int chosenCategoryId = randomCategoryId[1];
+            int chosenCategoryId = (categoryId.get(randomCategoryId[1])+1);
             String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
             questionPicker(chosenCategoryId);
@@ -109,7 +109,7 @@ public class ChooseCategory {
 
             int gameId = rs.getInt("gameId");*/
 
-            int chosenCategoryId = randomCategoryId[2];
+            int chosenCategoryId = (categoryId.get(randomCategoryId[2])+1);
             String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
             questionPicker(chosenCategoryId);
@@ -149,17 +149,17 @@ public class ChooseCategory {
 
             //Fills array with random numbers
             for (int i = 0; i < 3; i++) {
-                randomCategoryId[i] = rand.nextInt(amountOfCategorys)+1;
+                randomCategoryId[i] = rand.nextInt(amountOfCategorys);
             }
 
             //Checks that first and second element are different
             while (randomCategoryId[0] == randomCategoryId[1]) {
-                randomCategoryId[1] = rand.nextInt(amountOfCategorys)+1;
+                randomCategoryId[1] = rand.nextInt(amountOfCategorys);
             }
 
             //Checks that third element is different from first and second
             while (randomCategoryId[0] == randomCategoryId[2] || randomCategoryId[1] == randomCategoryId[2]) {
-                randomCategoryId[2] = rand.nextInt(amountOfCategorys)+1;
+                randomCategoryId[2] = rand.nextInt(amountOfCategorys);
             }
             category1.setText(categoryName.get(randomCategoryId[0]-1));
             category2.setText(categoryName.get(randomCategoryId[1]-1));
