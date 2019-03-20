@@ -63,11 +63,12 @@ public class TimerC {
             statement = connection.createStatement();
 
             rs = statement.executeQuery(sqlCheck);
-            rs.next();
-            int catId = rs.getInt("categoryId");
-            if (catId != 0) {
-                ChangeScene.change(event, "Question.fxml");
-                return true;
+            if(rs.next()) {
+                int catId = rs.getInt("categoryId");
+                if (catId != 0) {
+                    ChangeScene.change(event, "Question.fxml");
+                    return true;
+                }
             }
             return false;
         }catch (SQLException e) {
