@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -32,10 +33,10 @@ public class ControllerQuestion {
     @FXML
     public TextField answerField;
     public Label questionField;
-    public Label correctAns;
-    public Label wrongAns;
+    public Label feedback;
     public Button nxtBtn;
     public Button confirmBtn;
+    public Text questionLabel;
 
     public void initialize(){ questionDisplay(); }
 
@@ -45,10 +46,13 @@ public class ControllerQuestion {
             ChangeScene.change(event, "Result.fxml");
         }else{
             questionDisplay();
-            ChangeScene.changeVisibility(false, correctAns);
-            ChangeScene.changeVisibility(false, wrongAns);
+            ChangeScene.changeVisibility(false, feedback);
             ChangeScene.changeVisibilityBtn(false, nxtBtn);
             ChangeScene.changeVisibilityBtn(true, confirmBtn);
+            answerField.setVisible(true);
+            questionField.setVisible(true);
+            questionField.setVisible(false);
+            answerField.setText("Answer");
         }
     }
     public void sceneHome(ActionEvent event) { //feedback knapp
@@ -85,18 +89,20 @@ public class ControllerQuestion {
             changeTextVis(riktig);
         }
         ChangeScene.changeVisibilityBtn(false, confirmBtn);
+        answerField.setVisible(false);
+        questionField.setVisible(true);
         questionCount++;
     }
 
     private void changeTextVis(boolean bool){
         if(bool){
-            ChangeScene.changeVisibility(true, correctAns);
-            correctAns.setText(String.valueOf(playerScore));
+            ChangeScene.changeVisibility(true, feedback);
+            feedback.setText("Congratulations! You got " + playerScore + " points.");
             ChangeScene.changeVisibilityBtn(true, nxtBtn);
         }
         else{
-            ChangeScene.changeVisibility(true, wrongAns);
-            wrongAns.setText(String.valueOf(0));
+            ChangeScene.changeVisibility(true, feedback);
+            feedback.setText("You answered wrong.");
             ChangeScene.changeVisibilityBtn(true, nxtBtn);
         }
     }
