@@ -76,15 +76,16 @@ public class ControllerResult {
                 }
 
 
-                String sqlGetPlayerScore = "SELECT points FROM Player WHERE username = " + username;
+                String sqlGetPlayerScore = "SELECT points FROM Player WHERE username = '" + username + "';";
                 rs = statement.executeQuery(sqlGetPlayerScore);
-                rs.next();
+                if(rs.next()){
+                    String points = rs.getInt("points") + "p";
+                    totalScore.setText("your points: " + points);
+                    String sqlDeleteGame = "DELETE FROM Game WHERE gameId ='" + gameId + "';";
+                    statement.executeUpdate(sqlDeleteGame);
+                }
 
-                String points = rs.getInt("points") + "p";
-                totalScore.setText("your points: " + points);
 
-                String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
-                statement.executeUpdate(sqlDeleteGame);
                 //utfør sletting, blir gameId sletta på spilleren som spiller da?
             }
 
