@@ -58,7 +58,7 @@ public class ChooseOpponent{
                 }
 
                 if(opponentOnline == 0){
-                    System.out.println("Funker kanskje");
+                    userOffline.setVisible(true);
                 }
 
                 else {
