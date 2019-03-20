@@ -18,15 +18,12 @@ import java.util.Random;
 import java.util.ArrayList;
 
 //imports the method getGameId() from the class ChooseOpponent
-import static sample.ControllerHome.getUserName;
 import static sample.ChooseOpponent.getGameId;
 
 
 
 public class ChooseCategory {
-
-    private String username = getUserName();
-    private int gameId = getGameId();
+    private int gameId;
 
     @FXML
     public Button category1;
@@ -53,13 +50,7 @@ public class ChooseCategory {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
-            /*String sqlGetGameId = "SELECT gameId FROM Game WHERE player2 = '" + username +"'";
-            rs = statement.executeQuery(sqlGetGameId);
-            rs.next();
-
-            int gameId = rs.getInt("gameId");*/
-
-            int chosenCategoryId = (categoryId.get(randomCategoryId[0])+1);
+            int chosenCategoryId = categoryId.get(randomCategoryId[0]);
             String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
             questionPicker(chosenCategoryId);
@@ -78,13 +69,7 @@ public class ChooseCategory {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
-            /*String sqlGetGameId = "SELECT gameId FROM Game WHERE player2 = '" + username +"'";
-            rs = statement.executeQuery(sqlGetGameId);
-            rs.next();
-
-            int gameId = rs.getInt("gameId");*/
-
-            int chosenCategoryId = (categoryId.get(randomCategoryId[1])+1);
+            int chosenCategoryId = categoryId.get(randomCategoryId[1]);
             String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
             questionPicker(chosenCategoryId);
@@ -103,13 +88,7 @@ public class ChooseCategory {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
-            /*String sqlGetGameId = "SELECT gameId FROM Game WHERE player2 = '" + username +"'";
-            rs = statement.executeQuery(sqlGetGameId);
-            rs.next();
-
-            int gameId = rs.getInt("gameId");*/
-
-            int chosenCategoryId = (categoryId.get(randomCategoryId[2])+1);
+            int chosenCategoryId = categoryId.get(randomCategoryId[2]);
             String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
             questionPicker(chosenCategoryId);
@@ -129,13 +108,14 @@ public class ChooseCategory {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
+            gameId = getGameId();
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
 
         try {
             // Gets all categories from the database
-            String sql = "SELECT * FROM `Category`";
+            String sql = "SELECT categoryId, name FROM `Category`";
             rs = statement.executeQuery(sql);
 
             ArrayList<String> categoryName = new ArrayList<String>();
@@ -145,7 +125,7 @@ public class ChooseCategory {
                 categoryName.add(rs.getString("name"));
             }
 
-            int amountOfCategorys = categoryId.size()-1;
+            int amountOfCategorys = categoryId.size();
 
             //Fills array with random numbers
             for (int i = 0; i < 3; i++) {
@@ -161,9 +141,9 @@ public class ChooseCategory {
             while (randomCategoryId[0] == randomCategoryId[2] || randomCategoryId[1] == randomCategoryId[2]) {
                 randomCategoryId[2] = rand.nextInt(amountOfCategorys);
             }
-            category1.setText(categoryName.get(randomCategoryId[0]-1));
-            category2.setText(categoryName.get(randomCategoryId[1]-1));
-            category3.setText(categoryName.get(randomCategoryId[2]-1));
+            category1.setText(categoryName.get(randomCategoryId[0]));
+            category2.setText(categoryName.get(randomCategoryId[1]));
+            category3.setText(categoryName.get(randomCategoryId[2]));
 
         }
         catch (Exception e) {
