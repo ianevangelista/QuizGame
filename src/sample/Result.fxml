@@ -4,7 +4,6 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -40,21 +39,20 @@
             <Font size="18.0" />
          </font>
       </Text>
-      <Text id="totalScore" fx:id="totalScore" fill="WHITE" layoutX="366.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="77.99999713897705">
+      <Text id="totalScore" fx:id="totalScore" fill="WHITE" layoutX="366.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="77.99999713897705">
          <font>
             <Font size="18.0" />
          </font>
       </Text>
       <Button fx:id="btnNext" layoutX="261.0" layoutY="265.0" mnemonicParsing="false" onAction="#sceneResult" text="Get result" visible="false" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#64b1e3" height="59.0" layoutX="117.0" layoutY="160.0" stroke="BLACK" strokeType="INSIDE" width="368.0" />
-      <Text fx:id="theirScore" fill="#fffefe" layoutX="120.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your opponent got 0 points this round." textAlignment="CENTER" wrappingWidth="361.84765625">
+      <Text fx:id="theirScore" fill="#1dd1ff" layoutX="120.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your opponent got 0 points this round." textAlignment="CENTER" visible="false" wrappingWidth="361.84765625">
          <font>
-            <Font size="18.0" />
+            <Font size="14.0" />
          </font>
       </Text>
-      <Text fx:id="yourScore" fill="WHITE" layoutX="119.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You got 0 points this round!" textAlignment="CENTER" wrappingWidth="361.8476629257202">
+      <Text fx:id="yourScore" fill="#1dd1ff" layoutX="119.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You got 0 points this round!" textAlignment="CENTER" visible="false" wrappingWidth="361.8476629257202">
          <font>
-            <Font size="18.0" />
+            <Font size="14.0" />
          </font>
       </Text>
    </children>

@@ -78,14 +78,17 @@ public class ControllerResult {
 
             if(p1Finished == 1 && p2Finished == 1) {
                 String sqlUpdatePlayerScore = "";
+                totalScoreText.setVisible(true);
+                theirScore.setVisible(true);
+                yourScore.setVisible(true);
+                theirScore.setText("Your opponent got " + opponentPoints + " points this round.");
+                yourScore.setText("You got " + mePoints + " points this round!");
                 if (mePoints > opponentPoints) {
                     resultText.setText("You won! :)");
-                    totalScoreText.setVisible(true);
                     sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + mePoints + " WHERE username ='" + username + "';";
                     statement.executeUpdate(sqlUpdatePlayerScore);
                 } else {
                     resultText.setText("You lost :(");
-                    totalScoreText.setVisible(true);
                 }
 
 
