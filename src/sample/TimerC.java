@@ -32,7 +32,7 @@ public class TimerC {
     private static boolean categoryChosen = false;
 
     @FXML
-    public static Text messageText;
+    public Text messageText;
     public Button btnNext;
 
     public void sceneGame(ActionEvent event) { //hjemknapp
