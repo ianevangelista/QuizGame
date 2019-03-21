@@ -19,7 +19,7 @@
             <Image url="@gameLogo.png" />
          </image>
       </ImageView>
-      <Button layoutX="187.0" layoutY="264.0" mnemonicParsing="false" onAction="#sceneChallengeUser" prefHeight="29.0" prefWidth="227.0" text="CHALLENGE NEW PLAYER">
+      <Button fx:id="btnChallenge" layoutX="187.0" layoutY="264.0" mnemonicParsing="false" onAction="#sceneChallengeUser" prefHeight="29.0" prefWidth="227.0" text="CHALLENGE NEW PLAYER">
          <font>
             <Font size="12.0" />
          </font>
@@ -49,5 +49,6 @@
             <Font size="18.0" />
          </font>
       </Text>
+      <Button fx:id="btnNext" layoutX="237.0" layoutY="307.0" mnemonicParsing="false" onAction="#sceneResult" text="Button" visible="false" />
    </children>
 </AnchorPane>

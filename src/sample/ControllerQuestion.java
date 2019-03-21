@@ -21,8 +21,6 @@ import Connection.ConnectionPool;
 import java.util.*;
 
 public class ControllerQuestion {
-    private static ArrayList<String> answer;
-    private static ArrayList<Integer> score;
     private int playerScore = 0;
     private static int questionCount = 0;
     private static int gameId = getGameId();
@@ -76,8 +74,6 @@ public class ControllerQuestion {
                 statement.executeUpdate(sqlUpdate);
                 changeTextVis(riktig);
 
-                //starts timer
-                //timerRes(event);
             }catch(SQLException e) {
                 e.printStackTrace();
             }finally {
@@ -132,30 +128,6 @@ public class ControllerQuestion {
             Cleaner.close(statement, null, connection);
         }
     }
-
-    /*public void getScore(int QId){
-        ResultSet rs = null;
-        try {
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-
-            String sql = "SELECT answer, score FROM Alternative WHERE QuestionId = " + QId;
-            rs = statement.executeQuery(sql);
-            while(rs.next()){
-                answer.add(rs.getString("answer"));
-                score.add(rs.getInt("score"));
-            }
-            if(questionCount == 3){
-                answer.clear();
-                score.clear();
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            Cleaner.close(statement, rs, connection);
-        }
-    }*/
 
     public boolean questionCheck() {
         boolean riktig = false;

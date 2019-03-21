@@ -21,19 +21,27 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import static sample.ChooseOpponent.getGameId;
 
 public class ControllerResult {
 
     private String username = getUserName();
     private int gameId = getGameId();
+    private java.util.Timer timerR;
+    private int teller = 0;
+    private Connection connection = null;
+    private Statement statement = null;
+    private boolean finished = false;
 
     @FXML
-    public Button refresh;
     //result
     public Text totalScore;
     public Text resultText;
-    public TextField resultHeading;
+    public Button btnNext;
+    public Button btnChallenge;
 
     public void sceneGame(ActionEvent event) { ChangeScene.change(event, "Game.fxml"); }
 
@@ -81,8 +89,6 @@ public class ControllerResult {
                 if(rs.next()){
                     String points = rs.getInt("points") + "p";
                     totalScore.setText(points);
-                    String sqlDeleteGame = "DELETE FROM Game WHERE gameId ='" + gameId + "';";
-                    statement.executeUpdate(sqlDeleteGame);
                 }
 
 
@@ -141,7 +147,9 @@ public class ControllerResult {
                 totalScore.setText(points);*/
 
             else{
+                ChangeScene.changeVisibilityBtn(false, btnChallenge);
                 resultText.setText("Waiting for opponent to finish game");
+                timerRes();
 
                 //TODO make game know if waiting player won or lost (Use score delta)
             }
@@ -149,6 +157,78 @@ public class ControllerResult {
             e.printStackTrace();
         }finally {
             Cleaner.close(statement, rs, connection);
+        }
+    }
+
+    public void showBtn(){
+        ChangeScene.changeVisibilityBtn(true, btnNext);
+    }
+
+    public void sceneResult(ActionEvent event) { //hjemknapp
+        ChangeScene.change(event, "Result.fxml");
+        Connection connection = null;
+        Statement statement = null;
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+            String sqlDeleteGame = "DELETE FROM Game WHERE gameId ='" + gameId + "';";
+            statement.executeUpdate(sqlDeleteGame);
+
+         } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            Cleaner.close(statement, null, connection);
+            ChangeScene.changeVisibilityBtn(true, btnChallenge);
+        }
+    }
+
+
+        public void timerRes(){
+        timerR = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if(checkRes()) {
+                    turnOfTimerR();
+                    showBtn();
+                    finished = true;
+                    System.out.println("funker i run");
+                }
+            }
+        };
+        timerR.schedule(task, 10000, 3000);
+    }
+
+    public boolean checkRes() {
+        ResultSet rs = null;
+        String me = findUser();
+        String opponentFinished = (me.equals("player1") ? "p2Finished" : "p1Finished");
+
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+            String sqlCheck = "SELECT p1Finished, p2Finished FROM Game WHERE gameId = " + gameId + ";";
+            rs = statement.executeQuery(sqlCheck);
+            if(rs.next()){
+                int user = rs.getInt(opponentFinished);
+                if (user == 1) {
+                    System.out.println("funker i checkRes");
+                    return true;
+                }
+            }
+            return false;
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }finally {
+            Cleaner.close(statement, rs, connection);
+            System.out.println(opponentFinished);
+        }
+    }
+
+    public void turnOfTimerR() {
+        if (timerR != null) {
+            timerR.cancel();
         }
     }
 }
