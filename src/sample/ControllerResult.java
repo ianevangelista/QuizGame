@@ -42,6 +42,7 @@ public class ControllerResult {
     public Text resultText;
     public Button btnNext;
     public Button btnChallenge;
+    public Text yourScore;
 
     public void sceneGame(ActionEvent event) { ChangeScene.change(event, "Game.fxml"); }
 
@@ -77,10 +78,12 @@ public class ControllerResult {
                 String sqlUpdatePlayerScore = "";
                 if (mePoints > opponentPoints) {
                     resultText.setText("You won! :)");
+                    yourScore.setVisible(true);
                     sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + mePoints + " WHERE username ='" + username + "';";
                     statement.executeUpdate(sqlUpdatePlayerScore);
                 } else {
                     resultText.setText("You lost :(");
+                    yourScore.setVisible(true);
                 }
 
 
@@ -149,6 +152,7 @@ public class ControllerResult {
             else{
                 ChangeScene.changeVisibilityBtn(false, btnChallenge);
                 resultText.setText("Waiting for opponent to finish game");
+                yourScore.setVisible(false);
                 timerRes();
 
                 //TODO make game know if waiting player won or lost (Use score delta)
