@@ -32,7 +32,7 @@ public class TimerC {
     private static boolean categoryChosen = false;
 
     @FXML
-    public static Text tellerText;
+    public static Text messageText;
     public Button btnNext;
 
     public void sceneGame(ActionEvent event) { //hjemknapp
@@ -64,10 +64,9 @@ public class TimerC {
                     turnOfTimerC();
                     categoryChosen = true;
                     showBtn();
-                    System.out.println("bytter til annen scene");
+                    //System.out.println("bytter til annen scene");
                 }
                 else {
-                    //tellerText.setText(String.valueOf(teller));
                     //System.out.println("hei");
                     teller++;
                 }
@@ -77,7 +76,10 @@ public class TimerC {
     }
 
     public void showBtn(){
-        if(categoryChosen) ChangeScene.changeVisibilityBtn(true, btnNext);
+        if(categoryChosen) {
+            ChangeScene.changeVisibilityBtn(true, btnNext);
+            messageText.setText("Ready, set, go!");
+        }
     }
 
     public void sceneQuestion(ActionEvent event) { //hjemknapp
