@@ -34,7 +34,7 @@
             <Font size="18.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="141.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your total score now is: " textAlignment="CENTER" wrappingWidth="234.84765625">
+      <Text fx:id="yourScore" fill="WHITE" layoutX="141.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your total score now is: " textAlignment="CENTER" wrappingWidth="234.84765625">
          <font>
             <Font size="18.0" />
          </font>
