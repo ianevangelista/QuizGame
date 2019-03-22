@@ -5,6 +5,7 @@ import Connection.Cleaner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 
 import javax.swing.*;
@@ -23,16 +24,14 @@ import java.util.Timer;
 
 public class TimerC {
 
-    private static Timer timerR;
     private static Timer timerC;
-    private static int teller = 0;
     private static int gameId = getGameId();
     private static Connection connection = null;
     private static Statement statement = null;
     private static boolean categoryChosen = false;
 
     @FXML
-    public Text messageText;
+    public Label messageText;
     public Button btnNext;
 
     public void sceneGame(ActionEvent event) { //hjemknapp
@@ -52,6 +51,7 @@ public class TimerC {
     }*/
 
     public void initialize(){
+        ChangeScene.changeVisibility(false, messageText);
         timerCat();
     }
 
@@ -64,11 +64,6 @@ public class TimerC {
                     turnOfTimerC();
                     categoryChosen = true;
                     showBtn();
-                    //System.out.println("bytter til annen scene");
-                }
-                else {
-                    //System.out.println("hei");
-                    teller++;
                 }
             }
         };
@@ -107,38 +102,6 @@ public class TimerC {
             Cleaner.close(statement, rs, connection);
         }
     }
-
-    /*public static boolean checkRes(ActionEvent event) {
-        ResultSet rs = null;
-        String me = findUser();
-        String opponentFinished = (me.equals("player1") ? "p2Finished" : "p1Finished");
-        String sqlCheck = "SELECT * FROM Game WHERE gameId = " + gameId + ";";
-
-        try {
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-
-            rs = statement.executeQuery(sqlCheck);
-            rs.next();
-            int opponent = rs.getInt(opponentFinished);
-            if (opponent == 1) {
-                ChangeScene.change(event, "Result.fxml");
-                return true;
-            }
-            return false;
-        }catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }finally {
-            Cleaner.close(statement, rs, connection);
-        }
-    }
-
-    public static void turnOfTimerR() {
-        if (timerR != null) {
-            timerR.cancel();
-        }
-    }*/
 
     public static void turnOfTimerC() {
         if (timerC != null) {

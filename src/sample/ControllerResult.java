@@ -25,6 +25,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static sample.ChooseOpponent.getGameId;
+import static sample.ChooseOpponent.resetGameId;
 
 public class ControllerResult {
 
@@ -76,6 +77,7 @@ public class ControllerResult {
             //slå av autocommit??? rollback osv?
             statement.executeUpdate(sqlRemoveGameIdFromPlayer);
 
+
             if(p1Finished == 1 && p2Finished == 1) {
                 String sqlUpdatePlayerScore = "";
                 totalScoreText.setVisible(true);
@@ -91,6 +93,7 @@ public class ControllerResult {
                     resultText.setText("You lost :(");
                 }
 
+                resetGameId(); // resets gameId to play new game
 
                 String sqlGetPlayerScore = "SELECT points FROM Player WHERE username = '" + username + "';";
                 rs = statement.executeQuery(sqlGetPlayerScore);
@@ -99,8 +102,6 @@ public class ControllerResult {
                     totalScore.setText(points);
                 }
 
-
-                //utfør sletting, blir gameId sletta på spilleren som spiller da?
             }
 
 
@@ -173,7 +174,7 @@ public class ControllerResult {
         ChangeScene.changeVisibilityBtn(true, btnNext);
     }
 
-    public void sceneResult(ActionEvent event) { //hjemknapp
+    public void sceneResult(ActionEvent event) {
         ChangeScene.change(event, "Result.fxml");
         Connection connection = null;
         Statement statement = null;
@@ -182,6 +183,7 @@ public class ControllerResult {
             statement = connection.createStatement();
             String sqlDeleteGame = "DELETE FROM Game WHERE gameId ='" + gameId + "';";
             statement.executeUpdate(sqlDeleteGame);
+            resetGameId();
 
          } catch (SQLException e) {
             e.printStackTrace();

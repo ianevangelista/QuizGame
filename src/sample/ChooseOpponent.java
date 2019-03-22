@@ -119,7 +119,8 @@ public class ChooseOpponent{
     }
 
    public static void resetGameId(){
-       Connection connection = null;
+        gameId = 0;
+       /*Connection connection = null;
        Statement statement = null;
 
        String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
@@ -135,7 +136,7 @@ public class ChooseOpponent{
            e.printStackTrace();
        } finally {
            Cleaner.close(statement, null, connection);
-       }
+       }*/
    }
 
 

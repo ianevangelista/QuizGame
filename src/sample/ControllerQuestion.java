@@ -23,7 +23,7 @@ import java.util.*;
 public class ControllerQuestion {
     private int playerScore = 0;
     private static int questionCount = 0;
-    private static int gameId = getGameId();
+    private static int gameId;
     private static String username = getUserName();
     private Connection connection = null;
     private Statement statement = null;
@@ -36,7 +36,10 @@ public class ControllerQuestion {
     public Button confirmBtn;
     public Text questionLabel;
 
-    public void initialize(){ questionDisplay(); }
+    public void initialize(){
+        gameId = getGameId();
+        questionDisplay();
+    }
 
     public void nextQuest(ActionEvent event) {
         if(questionCount == 3){
