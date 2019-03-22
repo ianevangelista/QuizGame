@@ -68,7 +68,7 @@ public class TimerC {
 
     public static boolean checkCat() {
         ResultSet rs = null;
-        String sqlCheck = "SELECT categoryId FROM Game WHERE gameId = " + gameId + ";";
+        String sqlCheck = "SELECT question3 FROM Game WHERE gameId = " + gameId + ";";
 
         try {
             connection = ConnectionPool.getConnection();

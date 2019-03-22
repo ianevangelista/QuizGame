@@ -102,23 +102,14 @@ public class ControllerResult {
 
             }
 
-
-            /*//Temporaraly disable foreign key
-            statement.executeUpdate("SET FOREIGN_KEY_CHECKS=0;");
-
-            //Removes gameId from player so that they can play a new game
-            String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + username +"';";
-            //slå av autocommit??? rollback osv?
-            statement.executeUpdate(sqlRemoveGameIdFromPlayer);
-
             //if both are finished
             if(p1Finished == 1 && p2Finished == 1) {
-                String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
-                statement.executeUpdate(sqlDeleteGame);
-                //utfør sletting, blir gameId sletta på spilleren som spiller da?
-
-                //Enable foreign key
-                statement.executeUpdate("SET FOREIGN_KEY_CHECKS=1;");
+                String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
+                ResultSet rsPlayersWithTheGameId = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
+                if(rsPlayersWithTheGameId.next() == false) {
+                    String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
+                    statement.executeUpdate(sqlDeleteGame);
+                }
 
                 int p1Points = rs.getInt("p1Points");
                 int p2Points = rs.getInt("p2Points");
@@ -127,21 +118,21 @@ public class ControllerResult {
 
                 String sqlUpdatePlayerScore = "";
 
-                if(player == "player1"){
-                    if(p1Points > p2Points){
+                if (player == "player1") {
+                    if (p1Points > p2Points) {
                         resultText.setText("You won! :)");
-                        sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + p1Points + " WHERE username ='" + player1Id +"';";
+                        sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + p1Points + " WHERE username ='" + player1Id + "';";
                     } else {
                         resultText.setText("You lost :(");
-                        sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + p2Points + " WHERE username ='" + player2Id +"';";
+                        sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + p2Points + " WHERE username ='" + player2Id + "';";
                     }
                 } else {
-                    if(p2Points > p1Points){
+                    if (p2Points > p1Points) {
                         resultText.setText("You won! :)");
-                        sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + p1Points + " WHERE username ='" + player1Id +"';";
+                        sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + p1Points + " WHERE username ='" + player1Id + "';";
                     } else {
                         resultText.setText("You lost :(");
-                        sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + p2Points + " WHERE username ='" + player2Id +"';";
+                        sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + p2Points + " WHERE username ='" + player2Id + "';";
                     }
                 }
                 statement.executeUpdate(sqlUpdatePlayerScore);
@@ -151,15 +142,13 @@ public class ControllerResult {
                 rs.next();
 
                 String points = rs.getInt("points") + "p";
-                totalScore.setText(points);*/
-
+                totalScore.setText(points);
+            }
             else{
                 ChangeScene.changeVisibilityBtn(false, btnChallenge);
                 resultText.setText("Waiting for opponent to finish game");
                 totalScoreText.setVisible(false);
                 timerRes();
-
-                //TODO make game know if waiting player won or lost (Use score delta)
             }
         }catch (SQLException e) {
             e.printStackTrace();
