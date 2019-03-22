@@ -64,7 +64,7 @@ public class ControllerGame {
         ChangeScene.change(event, "Profile.fxml");
     }
 
-        public void sceneChallengeUser(ActionEvent event){
+    public void sceneChallengeUser(ActionEvent event){
         ChangeScene.change(event, "ChallengeUser.fxml");
         System.out.println("gameid: " + gameId);
     }

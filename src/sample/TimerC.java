@@ -1,24 +1,20 @@
 package sample;
 
-import Connection.ConnectionPool;
 import Connection.Cleaner;
+import Connection.ConnectionPool;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.text.Text;
-
-import javax.swing.*;
-
-import static sample.ControllerQuestion.findUser;
-import static sample.ChooseOpponent.getGameId;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.TimerTask;
 import java.util.Timer;
+import java.util.TimerTask;
+
+import static sample.ChooseOpponent.getGameId;
 
 
 
@@ -39,19 +35,8 @@ public class TimerC {
         ChangeScene.change(event, "Game.fxml");
     }
 
-    /*public static void timerRes(ActionEvent event){
-        timerR = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                if(checkRes(event)) turnOfTimerR();
-            }
-        };
-        timerR.schedule(task, 0, +3000);
-    }*/
-
     public void initialize(){
-        ChangeScene.changeVisibility(false, messageText);
+        //ChangeScene.changeVisibility(false, messageText);
         timerCat();
     }
 
@@ -73,7 +58,7 @@ public class TimerC {
     public void showBtn(){
         if(categoryChosen) {
             ChangeScene.changeVisibilityBtn(true, btnNext);
-            messageText.setText("Ready, set, go!");
+            //messageText.setText("Ready, set, go!");
         }
     }
 

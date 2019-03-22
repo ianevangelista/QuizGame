@@ -32,10 +32,8 @@ public class ControllerResult {
     private String username = getUserName();
     private int gameId = getGameId();
     private java.util.Timer timerR;
-    private int teller = 0;
     private Connection connection = null;
     private Statement statement = null;
-    private boolean finished = false;
 
     @FXML
     //result
@@ -202,7 +200,6 @@ public class ControllerResult {
                 if(checkRes()) {
                     turnOfTimerR();
                     showBtn();
-                    finished = true;
                     System.out.println("funker i run");
                 }
             }
