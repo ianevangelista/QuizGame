@@ -60,8 +60,13 @@ public class ControllerGame {
         ChangeScene.change(event, "HighScore.fxml");
     }
 
-    public void profile(ActionEvent event){
+    public void profile(ActionEvent event) {
         ChangeScene.change(event, "Profile.fxml");
+    }
+
+        public void sceneChallengeUser(ActionEvent event){
+        ChangeScene.change(event, "ChallengeUser.fxml");
+        System.out.println("gameid: " + gameId);
     }
 
 }

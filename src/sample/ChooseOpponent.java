@@ -54,13 +54,9 @@ public class ChooseOpponent{
                 opponentOnline = rs.getInt("Online");
                 if(opponentUsername.equals(username)) {
                     challengeYou.setVisible(true);
-                }
-
-                if(opponentOnline == 0){
+                } else if(opponentOnline == 0){
                     userOffline.setVisible(true);
-                }
-
-                else {
+                } else {
                     makeGame(username, opponentUsername);
                     //timerCat();
                     ChangeScene.change(event, "Wait.fxml");
@@ -133,7 +129,7 @@ public class ChooseOpponent{
            statement = connection.createStatement();
            statement.executeUpdate(sqlDeleteGame);
 
-           gameId = -1;
+           gameId = 0;
 
        } catch (Exception e) {
            e.printStackTrace();
