@@ -60,7 +60,10 @@ public class ControllerGame {
         ChangeScene.change(event, "HighScore.fxml");
     }
 
-    public void sceneChallengeUser(ActionEvent event){ChangeScene.change(event, "ChallengeUser.fxml");}
+    public void sceneChallengeUser(ActionEvent event){
+        ChangeScene.change(event, "ChallengeUser.fxml");
+        System.out.println("gameid: " + gameId);
+    }
 
     /*private void resultFinished() {
         Connection connection = null;
