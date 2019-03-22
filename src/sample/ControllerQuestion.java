@@ -162,18 +162,31 @@ public class ControllerQuestion {
             rs.next();
             int QId = rs.getInt(1);
 
-            //selects all alternatives to the question
-            String sqlGetAlt = "SELECT answer, score FROM Alternative WHERE questionId = " + QId +";";
-            rs = statement.executeQuery(sqlGetAlt);
+            //Check if player gave actual answer before checking DB
+            if(answer != ""){
+                //selects all alternatives to the question
+                String sqlGetAlt = "SELECT score FROM Alternative WHERE questionId = " + QId +" AND answer = '" + answer + "';";
+                rs = statement.executeQuery(sqlGetAlt);
+
+                if(rs.next()){
+                    playerScore = rs.getInt("score");
+                    riktig = true;
+                } else {
+                    playerScore = 0;
+                }
+            } else {
+                System.out.printf(answer);
+                playerScore = 0;
+            }
             //getScore(QId);
 
-            while(rs.next()){
+            /*while(rs.next()){
                 String realAns = rs.getString("answer");
                 if(answer.equals(realAns.toLowerCase())){
                     playerScore = rs.getInt("score");
                     riktig = true;
                 }
-            }
+            }*/
 
             //chooses correct players score
             String points = (user.equals("player1") ? "p1Points" : "p2Points");
