@@ -44,7 +44,19 @@ public class ControllerQuestion {
     public void nextQuest(ActionEvent event) {
         if(questionCount == 3){
             questionCount = 0;
-            ChangeScene.change(event, "Result.fxml");
+            Connection connection = null;
+            Statement statement = null;
+            ResultSet rs = null;
+            try {
+                connection = ConnectionPool.getConnection();
+                statement = connection.createStatement();
+                //Removes gameId from player so that they can play a new game
+                String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + username + "';";
+                statement.executeUpdate(sqlRemoveGameIdFromPlayer);//slå av autocommit??? rollback osv?
+                ChangeScene.change(event, "Result.fxml");
+            }
+            catch (Exception e){ e.printStackTrace();}
+            finally {Cleaner.close(statement,rs,connection);}
         }else{
             questionDisplay();
             ChangeScene.changeVisibility(false, feedback);

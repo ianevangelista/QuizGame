@@ -57,6 +57,7 @@ public class ControllerResult {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
+
             String player = findUser();
             String me = player.equals("player1") ? "p1Points" : "p2Points";
             String opponent= player.equals("player1") ? "p2Points" : "p1Points";
@@ -70,13 +71,13 @@ public class ControllerResult {
             int mePoints = rs.getInt(me);
             int opponentPoints = rs.getInt(opponent);
 
-            //Removes gameId from player so that they can play a new game
-            String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + username +"';";
-            //slå av autocommit??? rollback osv?
-            statement.executeUpdate(sqlRemoveGameIdFromPlayer);
-
-
             if(p1Finished == 1 && p2Finished == 1) {
+                String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
+                ResultSet rsPlayersWithTheGameId = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
+                if(rsPlayersWithTheGameId.next() == false) {
+                    String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
+                    statement.executeUpdate(sqlDeleteGame);
+                }
                 String sqlUpdatePlayerScore = "";
                 totalScoreText.setVisible(true);
                 theirScore.setVisible(true);
@@ -99,9 +100,14 @@ public class ControllerResult {
                     String points = rs.getInt("points") + "p";
                     totalScore.setText(points);
                 }
-
+            }else{
+                ChangeScene.changeVisibilityBtn(false, btnChallenge);
+                resultText.setText("Waiting for opponent to finish game");
+                totalScoreText.setVisible(false);
+                timerRes();
             }
 
+            /*
             //if both are finished
             if(p1Finished == 1 && p2Finished == 1) {
                 String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
@@ -143,13 +149,8 @@ public class ControllerResult {
 
                 String points = rs.getInt("points") + "p";
                 totalScore.setText(points);
-            }
-            else{
-                ChangeScene.changeVisibilityBtn(false, btnChallenge);
-                resultText.setText("Waiting for opponent to finish game");
-                totalScoreText.setVisible(false);
-                timerRes();
-            }
+            }*/
+
         }catch (SQLException e) {
             e.printStackTrace();
         }finally {
@@ -163,21 +164,7 @@ public class ControllerResult {
 
     public void sceneResult(ActionEvent event) {
         ChangeScene.change(event, "Result.fxml");
-        Connection connection = null;
-        Statement statement = null;
-        try {
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-            String sqlDeleteGame = "DELETE FROM Game WHERE gameId ='" + gameId + "';";
-            statement.executeUpdate(sqlDeleteGame);
-            resetGameId();
-
-         } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            Cleaner.close(statement, null, connection);
-            ChangeScene.changeVisibilityBtn(true, btnChallenge);
-        }
+        ChangeScene.changeVisibilityBtn(true, btnChallenge);
     }
 
 
