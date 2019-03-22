@@ -39,9 +39,9 @@ public class ControllerProfile {
 
         String sql = "SELECT points FROM Player WHERE username = '" + username + "';";
 
-        File first = new File("C:\\Prosjekt\\tdat1006\\src\\sample\\1.");
-        File second = new File("tdat1006\\src\\sample\\2.");
-        File third = new File("tdat1006\\src\\sample\\3.");
+        File first = new File("src/sample/1..png");
+        File second = new File("src/sample/2..png");
+        File third = new File("src/sample/3..png");
 
         System.out.println("Test");
 
