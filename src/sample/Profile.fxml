@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerProfile">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerProfile">
    <children>
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -24,11 +24,21 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Label layoutX="255.0" layoutY="200.0" prefHeight="39.0" prefWidth="109.0" textFill="WHITE">
+      <ImageView fx:id="picture" fitHeight="104.0" fitWidth="100.0" layoutX="260.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="printUsername" alignment="CENTER" layoutX="115.0" layoutY="200.0" prefHeight="39.0" prefWidth="389.0" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="21.0" />
          </font>
       </Label>
-      <ImageView fx:id="picture" fitHeight="104.0" fitWidth="100.0" layoutX="260.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="printEmail" alignment="CENTER" layoutX="115.0" layoutY="232.0" prefHeight="39.0" prefWidth="389.0" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
+      <Label fx:id="printFemale" alignment="CENTER" layoutX="115.0" layoutY="267.0" prefHeight="39.0" prefWidth="389.0" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

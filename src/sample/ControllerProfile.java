@@ -24,8 +24,10 @@ public class ControllerProfile {
     Statement statement = null;
 
     @FXML
-    private ImageView picture;
-    private Label printUsername;
+    public ImageView picture;
+    public Label printUsername;
+    public Label printEmail;
+    public Label printFemale;
 
     public void initialize() {
         choosePic();
@@ -37,23 +39,23 @@ public class ControllerProfile {
 
     public void choosePic(){
 
-        String sql = "SELECT points FROM Player WHERE username = '" + username + "';";
+        String sql = "SELECT points, email, female FROM Player WHERE username = '" + username + "';";
 
         File first = new File("src/sample/1..png");
         File second = new File("src/sample/2..png");
         File third = new File("src/sample/3..png");
 
-        System.out.println("Test");
-
         try{
+
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
 
             rs.next();
-            int points = rs.getInt(1);
+            int points = rs.getInt("points");
+            String email = rs.getString("email");
+            int female = rs.getInt("female");
 
-            System.out.println(points);
 
             Image one = new Image(first.toURI().toString());
             Image two = new Image(second.toURI().toString());
@@ -71,12 +73,22 @@ public class ControllerProfile {
             else if(points > 500){
                 picture.setImage(three);
             }
+
+            System.out.println(username);
+
+            printUsername.setText(username);
+            printEmail.setText(email);
+            if(female == 1) {
+                printFemale.setText("Female");
+            }
+            else{
+                printFemale.setText("Male");
+            }
+
         }
         catch(SQLException e){
             e.printStackTrace();
         }
     }
-
-
 
 }
