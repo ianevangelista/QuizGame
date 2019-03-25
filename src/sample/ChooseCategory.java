@@ -3,9 +3,6 @@ package sample;
 import Connection.ConnectionPool;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -112,11 +109,7 @@ public class ChooseCategory {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             gameId = getGameId();
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-        }
 
-        try {
             // Gets all categories from the database
             String sql = "SELECT categoryId, name FROM `Category`";
             rs = statement.executeQuery(sql);
@@ -161,7 +154,6 @@ public class ChooseCategory {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-            ResultSet rs = null;
 
             //gets all the questions in chosen category
             int[] questionId = new int[3];
