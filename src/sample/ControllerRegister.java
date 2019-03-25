@@ -52,6 +52,11 @@ public class ControllerRegister {
             ChangeScene.changeVisibility(true, visibility);
         }
 
+        else if(checkBirthyear()) {
+            System.out.println("ingenting skal registreres");
+            ChangeScene.changeVisibility(true, visibility);
+        }
+
         else{
             int gender = chooseGender();
             int ol = 1;
@@ -151,5 +156,14 @@ public class ControllerRegister {
             return 1;
         }
         else return -1;
+    }
+
+    public boolean checkBirthyear(){
+        int year = Integer.parseInt(birthyear_reg.getText());
+        if(year < 1903 || year > 2019){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
