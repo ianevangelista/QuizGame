@@ -112,11 +112,7 @@ public class ChooseCategory {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             gameId = getGameId();
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-        }
 
-        try {
             // Gets all categories from the database
             String sql = "SELECT categoryId, name FROM `Category`";
             rs = statement.executeQuery(sql);
@@ -161,7 +157,6 @@ public class ChooseCategory {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-            ResultSet rs = null;
 
             //gets all the questions in chosen category
             int[] questionId = new int[3];
