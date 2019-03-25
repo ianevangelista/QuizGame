@@ -18,33 +18,58 @@ public class Logout {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
-        String sqlLogout = "UPDATE Player SET online = 0, gameId = NULL WHERE username = '" + username + "';";
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             //Updates player to be offline
+            String sqlLogout = "UPDATE Player SET online = 0, gameId = NULL WHERE username = '" + username + "';";
             statement.executeUpdate(sqlLogout);
 
             //Automatically lose a game if you log out
             int gameId = getGameId();
-            if(gameId != 0){
+            if(gameId != 0) {
                 String player = findUser();
                 String sqlRageQuitGame;
-                if(player.equals("player1")) {
+                if (player.equals("player1")) {
                     sqlRageQuitGame = "UPDATE Game SET p1Points = 0, p1Finished = 1 WHERE gameId =" + gameId + ";";
-                } else{
+                } else {
                     sqlRageQuitGame = "UPDATE Game SET p2Points = 0, p2Finished = 1 WHERE gameId =" + gameId + ";";
                 }
                 statement.executeUpdate(sqlRageQuitGame);
+
+                //Delete game if other player is finished and give opponent points
+                String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
+                ResultSet rsPlayersWithTheGameId = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
+
+                if (!rsPlayersWithTheGameId.next()) {
+                    if (player.equals("player1")) {
+                        String getOpponentPoints = "SELECT player2, p2Points FROM Game WHERE gameId = " + gameId;
+                        rs = statement.executeQuery(getOpponentPoints);
+                        rs.next();
+                        int opponentPoints = rs.getInt("p2Points");
+                        String sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + opponentPoints + " WHERE username ='" + rs.getString("player2") + "';";
+                        statement.executeUpdate(sqlUpdatePlayerScore);
+                    } else {
+                        String getOpponentPoints = "SELECT player1, p1Points FROM Game WHERE gameId = " + gameId;
+                        rs = statement.executeQuery(getOpponentPoints);
+                        rs.next();
+                        int opponentPoints = rs.getInt("p1Points");
+                        String sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + opponentPoints + " WHERE username ='" + rs.getString("player1") + "';";
+                        statement.executeUpdate(sqlUpdatePlayerScore);
+                    }
+                    String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
+                    statement.executeUpdate(sqlDeleteGame);
+                    return true;
+                }
             }
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }finally {
             Cleaner.close(statement, null, connection);
         }
+        return true;
     }
     public static boolean logIn(){
         Connection connection = null;

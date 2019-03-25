@@ -81,6 +81,10 @@ public class ControllerQuestion {
                 }
                 statement.executeUpdate(sqlRageQuitGame);
 
+                //remove gameId from player
+                String sqlRemoveGameId = "UPDATE Player SET gameId = NULL WHERE username = '" + username + "';";
+                statement.executeUpdate(sqlRemoveGameId);
+
                 //Delete game if other player is finished and give opponent points
                 String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
                 ResultSet rsPlayersWithTheGameId = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
