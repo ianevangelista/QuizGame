@@ -9,6 +9,9 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 import java.sql.*;
 
@@ -47,6 +50,14 @@ public class ControllerRegister {
         else if(userExists()) {
             System.out.println("Brukernavn opptatt");
             visible(errorMessageUserTaken);
+        }
+        else if(emailExists()) {
+            System.out.println("Email opptatt");
+            visible(errorMessageEmailTaken);
+        }
+        else if(!checkEmail()) {
+            System.out.println("Email ugyldig");
+            visible(errorMessageEmailInvalid);
         }
         else if(checkBirthyear()) {
             System.out.println("Feil fødselsdato");
@@ -111,19 +122,15 @@ public class ControllerRegister {
     public boolean userExists(){
         Connection connection = null;
         Statement statementUser = null;
-        Statement statementEmail = null;
         ResultSet rsUser = null;
-        ResultSet rsEmail = null;
         String username = "SELECT username FROM Player WHERE username ='" + user_reg.getText() + "';";
-        String email = "SELECT email FROM Player WHERE username ='" + email_reg.getText() + "';";
+
 
         try {
             connection = ConnectionPool.getConnection();
             statementUser = connection.createStatement();
-            statementEmail = connection.createStatement();
             rsUser = statementUser.executeQuery(username);
-            rsEmail = statementEmail.executeQuery(email);
-            if(rsUser.next() || rsEmail.next()){
+            if(rsUser.next()){
                 return true;
             }else {
                 return false;
@@ -132,11 +139,32 @@ public class ControllerRegister {
             e.printStackTrace();
         }finally {
             Cleaner.close(statementUser, rsUser, null);
-            Cleaner.close(statementEmail, rsEmail, connection);
         }
         return true;
     }
 
+    public boolean emailExists(){
+        Connection connection = null;
+        Statement statementEmail = null;
+        ResultSet rsEmail = null;
+        String email = "SELECT email FROM Player WHERE username ='" + email_reg.getText() + "';";
+
+        try {
+            connection = ConnectionPool.getConnection();
+            statementEmail = connection.createStatement();
+            rsEmail = statementEmail.executeQuery(email);
+            if(rsEmail.next()){
+                return true;
+            }else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            Cleaner.close(statementEmail, rsEmail, connection);
+        }
+        return true;
+    }
     public int chooseGender(){
         if(this.gender.getSelectedToggle().equals(this.btnMale)){
             System.out.println("Male");
@@ -147,6 +175,19 @@ public class ControllerRegister {
             return 1;
         }
         else return -1;
+    }
+
+    public boolean checkEmail(){
+        String getEmail = email_reg.getText();
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (getEmail == null)
+            return false;
+        return pat.matcher(getEmail).matches();
     }
 
     public boolean checkBirthyear(){
