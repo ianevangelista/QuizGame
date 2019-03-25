@@ -20,15 +20,15 @@ public class ControllerRegister {
     public TextField birthyear_reg;
     public TextField pass_reg;
     public TextField confirm_reg;
-    public Label visibility;
-    public RadioButton btnMale;
-    public RadioButton btnFemale;
-    public ToggleGroup gender;
     public Label errorMessageEmpty;
     public Label errorMessageBirthyear;
     public Label errorMessageEmailTaken;
     public Label errorMessageUserTaken;
     public Label errorMessageEmailInvalid;
+    public Label errorMessagePassword;
+    public RadioButton btnMale;
+    public RadioButton btnFemale;
+    public ToggleGroup gender;
 
     private String user_name;
     private String email_adress;
@@ -41,28 +41,21 @@ public class ControllerRegister {
         Connection connection = null;
         PreparedStatement pstmt = null;
         if(!notNull()) {
-            System.out.println("ingenting skal registreres");
-            ChangeScene.changeVisibility(true, visibility);
-        }
-        else if(!checkPassword()) {
-            System.out.println("ingenting skal registreres");
-            ChangeScene.changeVisibility(true, visibility);
+            System.out.println("Ikke fylt ut alle felt");
+            errorMessageEmpty.setVisible(true);
         }
         else if(userExists()) {
-            System.out.println("ingenting skal registreres");
-            ChangeScene.changeVisibility(true, visibility);
+            System.out.println("Brukernavn opptatt");
+            errorMessageUserTaken.setVisible(true);;
         }
-
-        else if(chooseGender() == -1) {
-            System.out.println("ingenting skal registreres");
-            ChangeScene.changeVisibility(true, visibility);
-        }
-
         else if(checkBirthyear()) {
-            System.out.println("ingenting skal registreres");
-            ChangeScene.changeVisibility(true, visibility);
+            System.out.println("Feil fødselsdato");
+            errorMessageBirthyear.setVisible(true);
         }
-
+        else if(!checkPassword()) {
+            System.out.println("Ikke samsvarende passord");
+            errorMessagePassword.setVisible(true);
+        }
         else{
             int gender = chooseGender();
             int ol = 1;
