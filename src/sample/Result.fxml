@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -12,14 +7,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerResult">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerResult">
    <children>
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@gameLogo.png" />
          </image>
       </ImageView>
-      <Button layoutX="187.0" layoutY="264.0" mnemonicParsing="false" onAction="#sceneChallengeUser" prefHeight="29.0" prefWidth="227.0" text="CHALLENGE NEW PLAYER">
+      <Button fx:id="btnChallenge" layoutX="187.0" layoutY="264.0" mnemonicParsing="false" onAction="#sceneChallengeUser" prefHeight="29.0" prefWidth="227.0" text="CHALLENGE NEW PLAYER">
          <font>
             <Font size="12.0" />
          </font>
@@ -34,19 +29,30 @@
             <Font size="24.0" />
          </font>
       </Text>
-      <Text id="resultText" fx:id="resultText" fill="WHITE" layoutX="196.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Getting result..." textAlignment="CENTER" wrappingWidth="207.84765625">
+      <Text id="resultText" fx:id="resultText" fill="WHITE" layoutX="196.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Getting result..." textAlignment="CENTER" wrappingWidth="207.84765625">
          <font>
             <Font size="18.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="141.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your total score now is: " textAlignment="CENTER" wrappingWidth="234.84765625">
+      <Text fx:id="totalScoreText" fill="WHITE" layoutX="141.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your total score now is: " textAlignment="CENTER" wrappingWidth="234.84765625">
          <font>
             <Font size="18.0" />
          </font>
       </Text>
-      <Text id="totalScore" fx:id="totalScore" fill="WHITE" layoutX="366.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="77.99999713897705">
+      <Text id="totalScore" fx:id="totalScore" fill="WHITE" layoutX="366.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="77.99999713897705">
          <font>
             <Font size="18.0" />
+         </font>
+      </Text>
+      <Button fx:id="btnNext" layoutX="261.0" layoutY="265.0" mnemonicParsing="false" onAction="#sceneResult" text="Get result" visible="false" />
+      <Text fx:id="theirScore" fill="#1dd1ff" layoutX="120.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your opponent got 0 points this round." textAlignment="CENTER" visible="false" wrappingWidth="361.84765625">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fx:id="yourScore" fill="#1dd1ff" layoutX="119.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You got 0 points this round!" textAlignment="CENTER" visible="false" wrappingWidth="361.8476629257202">
+         <font>
+            <Font size="14.0" />
          </font>
       </Text>
    </children>

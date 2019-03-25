@@ -20,7 +20,7 @@
             <Image url="@gameLogo.png" />
          </image>
       </ImageView>
-      <Text fill="WHITE" layoutX="167.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Waiting for opponent" textAlignment="CENTER" wrappingWidth="265.1810302734375">
+      <Text fill="WHITE" layoutX="178.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Waiting for opponent..." textAlignment="CENTER" wrappingWidth="272.1810302734375">
          <font>
             <Font size="24.0" />
          </font>
@@ -31,11 +31,7 @@
          </font>
       </Button>
       <Label fx:id="usernameWrong" layoutX="400.0" layoutY="177.0" prefHeight="18.0" prefWidth="101.0" text="Can't find user" textFill="RED" visible="false" />
-      <Text fx:id="tellerText" fill="WHITE" layoutX="286.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="teller">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Text>
-      <Button fx:id="btnNext" layoutX="227.0" layoutY="297.0" mnemonicParsing="false" onAction="#sceneQuestion" text="Button" visible="false" />
+      <Button fx:id="btnNext" layoutX="271.0" layoutY="228.0" mnemonicParsing="false" onAction="#sceneQuestion" text="Start game" visible="false" />
+      <Label fx:id="messageText" layoutX="271.0" layoutY="272.0" text="Label" visible="false" />
    </children>
 </AnchorPane>

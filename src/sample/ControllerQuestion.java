@@ -14,21 +14,18 @@ import java.sql.Statement;
 import static sample.ChooseOpponent.getGameId;
 import static sample.ControllerHome.getUserName;
 
-
 import Connection.Cleaner;
 import Connection.ConnectionPool;
 
-import java.util.*;
-
 public class ControllerQuestion {
-    private static ArrayList<String> answer;
-    private static ArrayList<Integer> score;
     private int playerScore = 0;
     private static int questionCount = 0;
-    private static int gameId = getGameId();
+    private static int gameId;
     private static String username = getUserName();
     private Connection connection = null;
     private Statement statement = null;
+    private ResultSet rs = null;
+
 
     @FXML
     public TextField answerField;
@@ -38,12 +35,24 @@ public class ControllerQuestion {
     public Button confirmBtn;
     public Text questionLabel;
 
-    public void initialize(){ questionDisplay(); }
+    public void initialize(){
+        gameId = getGameId();
+        questionDisplay();
+    }
 
     public void nextQuest(ActionEvent event) {
         if(questionCount == 3){
             questionCount = 0;
-            ChangeScene.change(event, "Result.fxml");
+            try {
+                connection = ConnectionPool.getConnection();
+                statement = connection.createStatement();
+                //Removes gameId from player so that they can play a new game
+                String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + username + "';";
+                statement.executeUpdate(sqlRemoveGameIdFromPlayer);//slå av autocommit??? rollback osv?
+                ChangeScene.change(event, "Result.fxml");
+            }
+            catch (Exception e){ e.printStackTrace();}
+            finally {Cleaner.close(statement, rs, connection);}
         }else{
             questionDisplay();
             ChangeScene.changeVisibility(false, feedback);
@@ -76,15 +85,12 @@ public class ControllerQuestion {
                 statement.executeUpdate(sqlUpdate);
                 changeTextVis(riktig);
 
-                //starts timer
-                //timerRes(event);
             }catch(SQLException e) {
                 e.printStackTrace();
             }finally {
-                Cleaner.close(statement, null,connection);
+                Cleaner.close(statement, null, connection);
             }
             ChangeScene.changeVisibilityBtn(true, nxtBtn);
-
         }
         else{
             changeTextVis(riktig);
@@ -118,10 +124,10 @@ public class ControllerQuestion {
 
             //sql to get question text
             String sqlGetText = "SELECT questionText FROM Game JOIN Question ON questionId = question" + (questionCount+1) +  " WHERE gameId = " + gameId;
-            ResultSet rsQuestionText = statement.executeQuery(sqlGetText);
+            rs = statement.executeQuery(sqlGetText);
             String qText = "";
-            if(rsQuestionText.next()) {
-                qText = rsQuestionText.getString("questionText");
+            if(rs.next()) {
+                qText = rs.getString("questionText");
             }
             //displays question
             questionField.setText(qText);
@@ -129,37 +135,12 @@ public class ControllerQuestion {
         }catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            Cleaner.close(statement, null, connection);
+            Cleaner.close(statement, rs, connection);
         }
     }
 
-    /*public void getScore(int QId){
-        ResultSet rs = null;
-        try {
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-
-            String sql = "SELECT answer, score FROM Alternative WHERE QuestionId = " + QId;
-            rs = statement.executeQuery(sql);
-            while(rs.next()){
-                answer.add(rs.getString("answer"));
-                score.add(rs.getInt("score"));
-            }
-            if(questionCount == 3){
-                answer.clear();
-                score.clear();
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            Cleaner.close(statement, rs, connection);
-        }
-    }*/
-
     public boolean questionCheck() {
         boolean riktig = false;
-        ResultSet rs = null;
 
         String[] sqlQuestionName = {"question1", "question2", "question3"};
         try {
@@ -175,17 +156,21 @@ public class ControllerQuestion {
             rs.next();
             int QId = rs.getInt(1);
 
-            //selects all alternatives to the question
-            String sqlGetAlt = "SELECT answer, score FROM Alternative WHERE questionId = " + QId +";";
-            rs = statement.executeQuery(sqlGetAlt);
-            //getScore(QId);
+            //Check if player gave actual answer before checking DB
+            if(answer != ""){
+                //selects all alternatives to the question
+                String sqlGetAlt = "SELECT score FROM Alternative WHERE questionId = " + QId +" AND answer = '" + answer + "';";
+                rs = statement.executeQuery(sqlGetAlt);
 
-            while(rs.next()){
-                String realAns = rs.getString("answer");
-                if(answer.equals(realAns.toLowerCase())){
+                if(rs.next()){
                     playerScore = rs.getInt("score");
                     riktig = true;
+                } else {
+                    playerScore = 0;
                 }
+            } else {
+                System.out.printf(answer);
+                playerScore = 0;
             }
 
             //chooses correct players score

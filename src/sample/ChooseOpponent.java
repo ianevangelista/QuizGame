@@ -5,7 +5,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+<<<<<<< HEAD
 
+=======
+>>>>>>> becdb65cf904a98701bcd88bbaef4355129cdb4d
 
 import java.sql.*;
 
@@ -16,7 +19,11 @@ import static sample.ControllerHome.getUserName;
 
 public class ChooseOpponent{
 
-    private Connection connection;
+    private static Connection connection = null;
+    private static Statement statement = null;
+    private static ResultSet rs = null;
+    private PreparedStatement pstmt = null;
+
     private String username = getUserName();
     private String opponentUsername = null;
     private int opponentOnline = 0;
@@ -35,8 +42,6 @@ public class ChooseOpponent{
     }
 
     public void findOpponent(ActionEvent event) {
-        ResultSet rs = null;
-        PreparedStatement insertSentence = null;
 
         try{
             connection = ConnectionPool.getConnection();
@@ -45,9 +50,9 @@ public class ChooseOpponent{
 
             //gets the opponents username, using a prepared statment beacause it's user input
             String insertSql = "SELECT username, online FROM Player WHERE username =?;";
-            insertSentence = connection.prepareStatement(insertSql);
-            insertSentence.setString(1, (opponent.getText().toLowerCase())); //toLowerCase
-            rs = insertSentence.executeQuery();
+            pstmt = connection.prepareStatement(insertSql);
+            pstmt.setString(1, (opponent.getText().toLowerCase())); //toLowerCase
+            rs = pstmt.executeQuery();
 
             //if it is a registered username
             if(rs.next()){
@@ -55,13 +60,9 @@ public class ChooseOpponent{
                 opponentOnline = rs.getInt("Online");
                 if(opponentUsername.equals(username)) {
                     challengeYou.setVisible(true);
-                }
-
-                if(opponentOnline == 0){
+                } else if(opponentOnline == 0){
                     userOffline.setVisible(true);
-                }
-
-                else {
+                } else {
                     makeGame(username, opponentUsername);
                     //timerCat();
                     ChangeScene.change(event, "Wait.fxml");
@@ -75,7 +76,7 @@ public class ChooseOpponent{
         catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            Cleaner.close(insertSentence, rs, connection);
+            Cleaner.close(pstmt, rs, connection);
         }
     }
 
@@ -116,41 +117,21 @@ public class ChooseOpponent{
             return true;
 
         }catch (SQLException e) {
-
             e.printStackTrace();
-            Cleaner.close(statement, rsGameId, connection);
             return false;
+        }finally {
+            Cleaner.close(statement, rsGameId, connection);
         }
     }
 
    public static void resetGameId(){
-       Connection connection = null;
-       Statement statement = null;
-
-       String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
-
-       try {
-           connection = ConnectionPool.getConnection();
-           statement = connection.createStatement();
-           statement.executeUpdate(sqlDeleteGame);
-
-           gameId = -1;
-
-       } catch (Exception e) {
-           e.printStackTrace();
-       } finally {
-           Cleaner.close(statement, null, connection);
-       }
+        gameId = 0;
    }
-
 
     public static int getGameId() {
         if(gameId != 0) return gameId;
         else{
-            Connection connection = null;
-            Statement statement = null;
             ResultSet rsGameId = null;
-
             try {
                 connection = ConnectionPool.getConnection();
                 statement = connection.createStatement();
@@ -167,6 +148,8 @@ public class ChooseOpponent{
             catch (Exception e){
                 e.printStackTrace();
                 return  0;
+            }finally {
+                Cleaner.close(statement, rsGameId, connection);
             }
         }
     }
