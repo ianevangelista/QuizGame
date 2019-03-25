@@ -76,8 +76,8 @@ public class TimerC {
 
             rs = statement.executeQuery(sqlCheck);
             if(rs.next()) {
-                int catId = rs.getInt(1);
-                if (catId != 0) return true;
+                int qId = rs.getInt(1);
+                if (qId != 0) return true;
             }
             return false;
         }catch (SQLException e) {
