@@ -42,19 +42,19 @@ public class ControllerRegister {
         PreparedStatement pstmt = null;
         if(!notNull()) {
             System.out.println("Ikke fylt ut alle felt");
-            errorMessageEmpty.setVisible(true);
+            visible(errorMessageEmpty);
         }
         else if(userExists()) {
             System.out.println("Brukernavn opptatt");
-            errorMessageUserTaken.setVisible(true);;
+            visible(errorMessageUserTaken);
         }
         else if(checkBirthyear()) {
             System.out.println("Feil fødselsdato");
-            errorMessageBirthyear.setVisible(true);
+            visible(errorMessageBirthyear);
         }
         else if(!checkPassword()) {
             System.out.println("Ikke samsvarende passord");
-            errorMessagePassword.setVisible(true);
+            visible(errorMessagePassword);
         } else{
             int gender = chooseGender();
             int ol = 1;
@@ -162,5 +162,15 @@ public class ControllerRegister {
         }else{
             return false;
         }
+    }
+
+    private void visible(Label label){
+        errorMessageEmpty.setVisible(false);
+        errorMessageBirthyear.setVisible(false);
+        errorMessageEmailTaken.setVisible(false);
+        errorMessageUserTaken.setVisible(false);
+        errorMessageEmailInvalid.setVisible(false);
+        errorMessagePassword.setVisible(false);
+        label.setVisible(true);
     }
 }
