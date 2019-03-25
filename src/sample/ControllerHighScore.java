@@ -1,6 +1,4 @@
 package sample;
-
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -15,12 +13,12 @@ import Connection.ConnectionPool;
 import java.util.ArrayList;
 
 public class ControllerHighScore {
+
     @FXML
     public Label userCol;
     public Label scoreCol;
 
     public void initialize(){ highscoreTable(); }
-
 
     public void sceneGame(ActionEvent event) { //hjemknapp
         ChangeScene.change(event, "Game.fxml");
@@ -30,6 +28,7 @@ public class ControllerHighScore {
 
         Connection connection = null;
         Statement statement = null;
+        ResultSet hs = null;
 
         String sqlHighScoreUser = "SELECT username FROM `Player` ORDER BY points desc LIMIT 5;";
         String sqlHighScorePoints = "SELECT points FROM `Player` ORDER BY points desc LIMIT 5;";
@@ -42,7 +41,7 @@ public class ControllerHighScore {
             statement = connection.createStatement();
 
             //Legger navn i tabellen highScoreList
-            ResultSet hs = statement.executeQuery(sqlHighScoreUser);
+            hs = statement.executeQuery(sqlHighScoreUser);
             while(hs.next()){
                 usernameList.add( hs.getString("username"));
             }
@@ -62,16 +61,13 @@ public class ControllerHighScore {
             for(String points : pointsList){
                 pointsText += points +"\n\n";
             }
-
             userCol.setText(userText);
             scoreCol.setText(pointsText);
-
-
 
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            Cleaner.close(statement, null, connection);
+            Cleaner.close(statement, hs, connection);
         }
     }
 }
