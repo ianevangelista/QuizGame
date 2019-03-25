@@ -12,6 +12,9 @@ import java.sql.ResultSet;
 
 public class ControllerHome {
 
+    private Connection connection = null;
+    private ResultSet rs = null;
+    private PreparedStatement pstmt = null;
     private static String userName;
 
     @FXML
@@ -24,21 +27,18 @@ public class ControllerHome {
     }
 
     public void sceneHome(ActionEvent event) { //feedback knapp
-        ChangeScene.change(event, "Main.fxml"); //bruker super-metode
+        ChangeScene.change(event, "Main.fxml");
     }
 
     public void register(ActionEvent event) { //trykker registrer
-        ChangeScene.change(event, "Register.fxml"); //bruker super-metode
+        ChangeScene.change(event, "Register.fxml");
     }
 
     public void feedback(ActionEvent event) { //feedback knapp
-        ChangeScene.change(event, "Feedback.fxml"); //bruker super-metode
+        ChangeScene.change(event, "Feedback.fxml");
     }
 
     public void playerLogin(ActionEvent event) {
-        Connection connection = null;
-        ResultSet rs = null;
-        PreparedStatement pstmt = null;
 
 		String sql = "SELECT username, online, password, salt FROM Player WHERE username = ?;";
 		try {
