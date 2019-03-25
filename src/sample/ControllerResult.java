@@ -2,28 +2,20 @@ package sample;
 
 import static sample.ControllerHome.getUserName;
 import static sample.ControllerQuestion.findUser;
-import static sample.Logout.logOut;
-
 import Connection.ConnectionPool;
 import Connection.Cleaner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-import javax.swing.*;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.Timer;
 import java.util.TimerTask;
-
 import static sample.ChooseOpponent.getGameId;
 import static sample.ChooseOpponent.resetGameId;
 
@@ -32,8 +24,6 @@ public class ControllerResult {
     private String username = getUserName();
     private int gameId = getGameId();
     private java.util.Timer timerR;
-    private Connection connection = null;
-    private Statement statement = null;
     private boolean bothFinished = false;
 
     @FXML
@@ -55,15 +45,16 @@ public class ControllerResult {
                 connection = ConnectionPool.getConnection();
                 statement = connection.createStatement();
                 String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
-                ResultSet rsPlayersWithTheGameId = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
+                rs = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
 
-                if (!rsPlayersWithTheGameId.next()) {
+                if (!rs.next()) {
                     String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
                     statement.executeUpdate(sqlDeleteGame);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
+                Cleaner.close(statement, rs, connection);
                 ChangeScene.change(event, "Game.fxml");
             }
         }
@@ -78,15 +69,16 @@ public class ControllerResult {
                 connection = ConnectionPool.getConnection();
                 statement = connection.createStatement();
                 String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
-                ResultSet rsPlayersWithTheGameId = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
+                rs = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
 
-                if (!rsPlayersWithTheGameId.next()) {
+                if (!rs.next()) {
                     String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
                     statement.executeUpdate(sqlDeleteGame);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
+                Cleaner.close(statement, rs, connection);
                 ChangeScene.change(event, "ChallengeUser.fxml");
             }
         }
@@ -142,57 +134,12 @@ public class ControllerResult {
                     totalScore.setText(points);
                 }
 
-
             }else{
                 ChangeScene.changeVisibilityBtn(false, btnChallenge);
                 resultText.setText("Waiting for opponent to finish game");
                 totalScoreText.setVisible(false);
                 timerRes();
             }
-
-            /*
-            //if both are finished
-            if(p1Finished == 1 && p2Finished == 1) {
-                String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
-                ResultSet rsPlayersWithTheGameId = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
-                if(rsPlayersWithTheGameId.next() == false) {
-                    String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
-                    statement.executeUpdate(sqlDeleteGame);
-                }
-
-                int p1Points = rs.getInt("p1Points");
-                int p2Points = rs.getInt("p2Points");
-                String player1Id = rs.getString("player1");
-                String player2Id = rs.getString("player2");
-
-                String sqlUpdatePlayerScore = "";
-
-                if (player == "player1") {
-                    if (p1Points > p2Points) {
-                        resultText.setText("You won! :)");
-                        sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + p1Points + " WHERE username ='" + player1Id + "';";
-                    } else {
-                        resultText.setText("You lost :(");
-                        sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + p2Points + " WHERE username ='" + player2Id + "';";
-                    }
-                } else {
-                    if (p2Points > p1Points) {
-                        resultText.setText("You won! :)");
-                        sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + p1Points + " WHERE username ='" + player1Id + "';";
-                    } else {
-                        resultText.setText("You lost :(");
-                        sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + p2Points + " WHERE username ='" + player2Id + "';";
-                    }
-                }
-                statement.executeUpdate(sqlUpdatePlayerScore);
-
-                String sqlGetPlayerScore = "SELECT points FROM Player WHERE username = " + username;
-                rs = statement.executeQuery(sqlGetPlayerScore);
-                rs.next();
-
-                String points = rs.getInt("points") + "p";
-                totalScore.setText(points);
-            }*/
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -227,6 +174,8 @@ public class ControllerResult {
     }
 
     public boolean checkRes() {
+        Connection connection = null;
+        Statement statement = null;
         ResultSet rs = null;
         String me = findUser();
         String opponentFinished = (me.equals("player1") ? "p2Finished" : "p1Finished");
@@ -263,7 +212,6 @@ public class ControllerResult {
         Connection connection = null;
         Statement statement = null;
 
-
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
@@ -281,7 +229,6 @@ public class ControllerResult {
     public void addGamesWon(){
         Connection connection = null;
         Statement statement = null;
-
 
         try {
             connection = ConnectionPool.getConnection();
