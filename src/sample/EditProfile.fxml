@@ -29,45 +29,48 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Label fx:id="printUsername11" alignment="CENTER_RIGHT" layoutX="102.0" layoutY="132.0" prefHeight="39.0" prefWidth="144.0" text="Email:  " textAlignment="CENTER" textFill="WHITE">
+      <Label alignment="CENTER_RIGHT" layoutX="102.0" layoutY="132.0" prefHeight="39.0" prefWidth="144.0" text="Email:  " textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="printUsername12" alignment="CENTER_RIGHT" layoutX="139.0" layoutY="173.0" prefHeight="39.0" prefWidth="107.0" text="Gender:  " textAlignment="CENTER" textFill="WHITE">
+      <Label alignment="CENTER_RIGHT" layoutX="139.0" layoutY="173.0" prefHeight="39.0" prefWidth="107.0" text="Gender:  " textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Button fx:id="confirmGender" layoutX="444.0" layoutY="177.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneGame" prefHeight="39.0" prefWidth="114.0" text="CONFIRM">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Button>
       <TextField fx:id="inputEmail" layoutX="253.0" layoutY="130.0" prefHeight="39.0" prefWidth="182.0" />
       <RadioButton fx:id="btnMale" layoutX="254.0" layoutY="180.0" mnemonicParsing="false" text="Male" />
       <RadioButton fx:id="btnFemale" layoutX="345.0" layoutY="180.0" mnemonicParsing="false" text="Female" />
-      <Label fx:id="printUsername111" alignment="CENTER_RIGHT" layoutX="82.0" layoutY="266.0" prefHeight="39.0" prefWidth="165.0" text="New password:  " textAlignment="CENTER" textFill="WHITE">
+      <Label alignment="CENTER_RIGHT" layoutX="82.0" layoutY="266.0" prefHeight="39.0" prefWidth="165.0" text="New password:  " textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="printUsername1111" alignment="CENTER_RIGHT" layoutX="81.0" layoutY="221.0" prefHeight="39.0" prefWidth="165.0" text="Old password:  " textAlignment="CENTER" textFill="WHITE">
+      <Label alignment="CENTER_RIGHT" layoutX="81.0" layoutY="221.0" prefHeight="39.0" prefWidth="165.0" text="Old password:  " textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="inputOldPassword" layoutX="253.0" layoutY="221.0" prefHeight="39.0" prefWidth="182.0" />
-      <TextField fx:id="inputNewPassword" layoutX="253.0" layoutY="267.0" prefHeight="39.0" prefWidth="182.0" />
-      <Button fx:id="confirmEmail" layoutX="444.0" layoutY="130.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneGame" prefHeight="39.0" prefWidth="114.0" text="CONFIRM">
+      <Label fx:id="errorMessage" alignment="CENTER" layoutX="226.0" layoutY="306.0" prefHeight="59.0" prefWidth="236.0" text="You need to insert something" visible="false" />
+      <PasswordField fx:id="inputOldPassword" layoutX="253.0" layoutY="221.0" prefHeight="39.0" prefWidth="182.0" />
+      <PasswordField fx:id="inputNewPassword" layoutX="253.0" layoutY="267.0" prefHeight="39.0" prefWidth="182.0" />
+      <Button fx:id="confirmEmail" layoutX="443.0" layoutY="130.0" minHeight="28.0" mnemonicParsing="false" onAction="#emailConfirm" prefHeight="39.0" prefWidth="107.0" text="CONFIRM">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="confirmPassword" layoutX="444.0" layoutY="266.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneGame" prefHeight="39.0" prefWidth="114.0" text="CONFIRM">
+      <Button fx:id="confirmGender" layoutX="443.0" layoutY="173.0" minHeight="28.0" mnemonicParsing="false" onAction="#genderConfirm" prefHeight="39.0" prefWidth="107.0" text="CONFIRM">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
+      <Button fx:id="confirmPassword" layoutX="443.0" layoutY="266.0" minHeight="28.0" mnemonicParsing="false" onAction="#passwordConfirm" prefHeight="39.0" prefWidth="107.0" text="CONFIRM">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Label fx:id="confirmed" alignment="CENTER" layoutX="226.0" layoutY="306.0" prefHeight="59.0" prefWidth="236.0" text="Edit complete" visible="false" />
+      <Label fx:id="wrongPassword" alignment="CENTER" layoutX="236.0" layoutY="316.0" prefHeight="59.0" prefWidth="236.0" text="Wrong password" visible="false" />
    </children>
 </AnchorPane>
