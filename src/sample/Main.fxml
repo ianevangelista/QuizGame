@@ -48,6 +48,6 @@
       </font>
     </Button>
     <Button layoutX="263.0" layoutY="295.0" mnemonicParsing="false" onAction="#playerLogin" prefHeight="27.0" prefWidth="78.0" text="LOG IN" />
-    <Label fx:id="visibility" layoutX="409.0" layoutY="204.0" text="Wrong e-mail or password" visible="false" />
+    <Label fx:id="visibility" layoutX="409.0" layoutY="204.0" text="Wrong username or password" visible="false" />
   </children>
 </AnchorPane>
