@@ -23,7 +23,7 @@ public class Logout {
             statement = connection.createStatement();
 
             //Updates player to be offline
-            String sqlLogout = "UPDATE Player SET online = 0, gameId = NULL WHERE username = '" + username + "';";
+            String sqlLogout = "UPDATE Player SET online = 0, gameId = NULL, gamesLost = gamesLost+1 WHERE username = '" + username + "';";
             statement.executeUpdate(sqlLogout);
 
             //Automatically lose a game if you log out
