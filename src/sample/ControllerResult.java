@@ -127,8 +127,10 @@ public class ControllerResult {
                     resultText.setText("You won! :)");
                     sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + mePoints + " WHERE username ='" + username + "';";
                     statement.executeUpdate(sqlUpdatePlayerScore);
+                    addGamesWon();
                 } else {
                     resultText.setText("You lost :(");
+                    addGamesLost();
                 }
 
                 resetGameId(); // resets gameId to play new game
@@ -254,6 +256,45 @@ public class ControllerResult {
     public void turnOfTimerR() {
         if (timerR != null) {
             timerR.cancel();
+        }
+    }
+
+    public void addGamesLost(){
+        Connection connection = null;
+        Statement statement = null;
+
+
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+
+            String sqlUpdatePlayerScore = "";
+            sqlUpdatePlayerScore = "UPDATE Player SET gamesLost= gamesLost + 1 WHERE username ='" + username + "';";
+            statement.executeUpdate(sqlUpdatePlayerScore);
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            Cleaner.close(statement, null, connection);
+        }
+    }
+    public void addGamesWon(){
+        Connection connection = null;
+        Statement statement = null;
+
+
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+
+            String sqlUpdatePlayerScore = "";
+            sqlUpdatePlayerScore = "UPDATE Player SET gamesWon= gamesWon + 1 WHERE username ='" + username + "';";
+            statement.executeUpdate(sqlUpdatePlayerScore);
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            Cleaner.close(statement, null, connection);
         }
     }
 }
