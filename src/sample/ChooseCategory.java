@@ -53,6 +53,7 @@ public class ChooseCategory {
             int chosenCategoryId = categoryId.get(randomCategoryId[0]);
             String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
+            // Adds questions from the category to the game
             questionPicker(chosenCategoryId);
         }
         catch (Exception e){
@@ -72,6 +73,7 @@ public class ChooseCategory {
             int chosenCategoryId = categoryId.get(randomCategoryId[1]);
             String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
+            // Adds questions from the category to the game
             questionPicker(chosenCategoryId);
         }
         catch (Exception e){
@@ -91,6 +93,7 @@ public class ChooseCategory {
             int chosenCategoryId = categoryId.get(randomCategoryId[2]);
             String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
+            // Adds questions from the category to the game
             questionPicker(chosenCategoryId);
 
         }
