@@ -9,6 +9,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
+
 import java.sql.*;
 
 public class ControllerRegister {
@@ -23,6 +24,11 @@ public class ControllerRegister {
     public RadioButton btnMale;
     public RadioButton btnFemale;
     public ToggleGroup gender;
+    public Label errorMessageEmpty;
+    public Label errorMessageBirthyear;
+    public Label errorMessageEmailTaken;
+    public Label errorMessageUserTaken;
+    public Label errorMessageEmailInvalid;
 
     private String user_name;
     private String email_adress;
