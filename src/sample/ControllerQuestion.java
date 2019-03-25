@@ -14,11 +14,8 @@ import java.sql.Statement;
 import static sample.ChooseOpponent.getGameId;
 import static sample.ControllerHome.getUserName;
 
-
 import Connection.Cleaner;
 import Connection.ConnectionPool;
-
-import java.util.*;
 
 public class ControllerQuestion {
     private int playerScore = 0;
@@ -27,6 +24,8 @@ public class ControllerQuestion {
     private static String username = getUserName();
     private Connection connection = null;
     private Statement statement = null;
+    private ResultSet rs = null;
+
 
     @FXML
     public TextField answerField;
@@ -44,9 +43,6 @@ public class ControllerQuestion {
     public void nextQuest(ActionEvent event) {
         if(questionCount == 3){
             questionCount = 0;
-            Connection connection = null;
-            Statement statement = null;
-            ResultSet rs = null;
             try {
                 connection = ConnectionPool.getConnection();
                 statement = connection.createStatement();
@@ -56,7 +52,7 @@ public class ControllerQuestion {
                 ChangeScene.change(event, "Result.fxml");
             }
             catch (Exception e){ e.printStackTrace();}
-            finally {Cleaner.close(statement,rs,connection);}
+            finally {Cleaner.close(statement, rs, connection);}
         }else{
             questionDisplay();
             ChangeScene.changeVisibility(false, feedback);
@@ -92,10 +88,9 @@ public class ControllerQuestion {
             }catch(SQLException e) {
                 e.printStackTrace();
             }finally {
-                Cleaner.close(statement, null,connection);
+                Cleaner.close(statement, null, connection);
             }
             ChangeScene.changeVisibilityBtn(true, nxtBtn);
-
         }
         else{
             changeTextVis(riktig);
@@ -129,10 +124,10 @@ public class ControllerQuestion {
 
             //sql to get question text
             String sqlGetText = "SELECT questionText FROM Game JOIN Question ON questionId = question" + (questionCount+1) +  " WHERE gameId = " + gameId;
-            ResultSet rsQuestionText = statement.executeQuery(sqlGetText);
+            rs = statement.executeQuery(sqlGetText);
             String qText = "";
-            if(rsQuestionText.next()) {
-                qText = rsQuestionText.getString("questionText");
+            if(rs.next()) {
+                qText = rs.getString("questionText");
             }
             //displays question
             questionField.setText(qText);
@@ -140,13 +135,12 @@ public class ControllerQuestion {
         }catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            Cleaner.close(statement, null, connection);
+            Cleaner.close(statement, rs, connection);
         }
     }
 
     public boolean questionCheck() {
         boolean riktig = false;
-        ResultSet rs = null;
 
         String[] sqlQuestionName = {"question1", "question2", "question3"};
         try {
@@ -178,15 +172,6 @@ public class ControllerQuestion {
                 System.out.printf(answer);
                 playerScore = 0;
             }
-            //getScore(QId);
-
-            /*while(rs.next()){
-                String realAns = rs.getString("answer");
-                if(answer.equals(realAns.toLowerCase())){
-                    playerScore = rs.getInt("score");
-                    riktig = true;
-                }
-            }*/
 
             //chooses correct players score
             String points = (user.equals("player1") ? "p1Points" : "p2Points");
