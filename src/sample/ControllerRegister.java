@@ -55,8 +55,7 @@ public class ControllerRegister {
         else if(!checkPassword()) {
             System.out.println("Ikke samsvarende passord");
             errorMessagePassword.setVisible(true);
-        }
-        else{
+        } else{
             int gender = chooseGender();
             int ol = 1;
             int startPoints = 0;
@@ -90,15 +89,8 @@ public class ControllerRegister {
         if(user_reg.getText().isEmpty() || email_reg.getText().isEmpty() || birthyear_reg.getText().isEmpty() || pass_reg.getText().isEmpty() || confirm_reg.getText().isEmpty()) {
             return false;
         } else {
-            try{
-                user_name = user_reg.getText().toLowerCase();
-                email_adress = email_reg.getText().toLowerCase();
-                String getYear = birthyear_reg.getText();
-                birthyear = Integer.parseInt(getYear);
-            }catch (NumberFormatException e){
-                //e.printStackTrace();
-                return false;
-            }
+            user_name = user_reg.getText().toLowerCase();
+            email_adress = email_reg.getText().toLowerCase();
             return true;
         }
     }
@@ -158,8 +150,14 @@ public class ControllerRegister {
     }
 
     public boolean checkBirthyear(){
-        int year = Integer.parseInt(birthyear_reg.getText());
-        if(year < 1903 || year > 2019){
+        try{
+            String getYear = birthyear_reg.getText();
+            birthyear = Integer.parseInt(getYear);
+        }catch (NumberFormatException e){
+            //e.printStackTrace();
+            return true;
+        }
+        if(birthyear < 1903 || birthyear > 2019){
             return true;
         }else{
             return false;
