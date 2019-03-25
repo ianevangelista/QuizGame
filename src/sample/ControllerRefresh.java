@@ -5,9 +5,11 @@ import Connection.ConnectionPool;
 import Connection.Cleaner;
 import javafx.scene.control.Button;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import java.sql.*;
 
 import static sample.ControllerHome.getUserName;
+import static sample.ChooseOpponent.getGameId;
 
 public class ControllerRefresh {
 
@@ -15,26 +17,28 @@ public class ControllerRefresh {
     public Button acc;
     public Button dec;
 
+    public Label challenger;
+
     private static String username = getUserName();
+
+    private static Connection connection = null;
+    private static Statement statement = null;
+    private static ResultSet rs = null;
 
     public void initialize(){ challenged(); }
 
 
     public static void refresh(ActionEvent event) {
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet rsSelect = null;
-        ResultSet rs = null;
 
         try {
             String sql = "SELECT gameId FROM Player WHERE username = '" + username + "';";
 
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-            rsSelect = statement.executeQuery(sql);
-            rsSelect.next();
+            rs = statement.executeQuery(sql);
+            rs.next();
 
-            int playerGameId = rsSelect.getInt(1);
+            int playerGameId = rs.getInt(1);
 
             if(playerGameId != 0) {
                 sql = "SELECT player1, categoryId FROM Game WHERE player1 = '" + username + "' OR player2 = '" + username + "' ;";
@@ -57,13 +61,38 @@ public class ControllerRefresh {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            Cleaner.close(statement, null, connection);
+            Cleaner.close(statement, rs, connection);
         }
     }
 
     public void challenged() {
         acc.setStyle("-fx-background-color: #a3f267");
         dec.setStyle("-fx-background-color: #F29B7F");
+
+        int gameId = getGameId();
+
+        String sqlOtherPlayer = "SELECT username FROM Player WHERE gameId = " + gameId + " AND username != '" + username + "';";
+
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+            rs = statement.executeQuery(sqlOtherPlayer);
+
+            //if the other player hasn't quitted before you open the game
+            if(rs.next()) {
+                String challengingPlayer = rs.getString("username");
+                challenger.setText("You've been challenged by " + challengingPlayer);
+            } else {
+                String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + username + "';";
+                statement.executeUpdate(sqlRemoveGameIdFromPlayer);
+                String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
+                statement.executeUpdate(sqlDeleteGame);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            Cleaner.close(statement, rs, connection);
+        }
     }
 
     public void accept(ActionEvent event) {
