@@ -12,14 +12,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerProfile">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerEdit">
    <children>
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@gameLogo.png" />
          </image>
       </ImageView>
-      <Button layoutX="12.0" layoutY="347.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneGame" prefHeight="39.0" prefWidth="76.0" text="BACK">
+      <Button layoutX="12.0" layoutY="347.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneProfile" prefHeight="39.0" prefWidth="76.0" text="BACK">
          <font>
             <Font size="18.0" />
          </font>
@@ -40,8 +40,11 @@
          </font>
       </Label>
       <TextField fx:id="inputEmail" layoutX="253.0" layoutY="130.0" prefHeight="39.0" prefWidth="182.0" />
-      <RadioButton fx:id="btnMale" layoutX="254.0" layoutY="180.0" mnemonicParsing="false" text="Male" />
-      <RadioButton fx:id="btnFemale" layoutX="345.0" layoutY="180.0" mnemonicParsing="false" text="Female" />
+      <RadioButton fx:id="btnMale" layoutX="254.0" layoutY="180.0" mnemonicParsing="false" text="Male">
+         <toggleGroup>
+            <ToggleGroup fx:id="gender" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="btnFemale" layoutX="345.0" layoutY="180.0" mnemonicParsing="false" text="Female" toggleGroup="$gender" />
       <Label alignment="CENTER_RIGHT" layoutX="82.0" layoutY="266.0" prefHeight="39.0" prefWidth="165.0" text="New password:  " textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="20.0" />
