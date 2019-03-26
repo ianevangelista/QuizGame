@@ -9,6 +9,10 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+
 import java.sql.*;
 
 public class ControllerRegister {
@@ -19,7 +23,12 @@ public class ControllerRegister {
     public TextField birthyear_reg;
     public TextField pass_reg;
     public TextField confirm_reg;
-    public Label visibility;
+    public Label errorMessageEmpty;
+    public Label errorMessageBirthyear;
+    public Label errorMessageEmailTaken;
+    public Label errorMessageUserTaken;
+    public Label errorMessageEmailInvalid;
+    public Label errorMessagePassword;
     public RadioButton btnMale;
     public RadioButton btnFemale;
     public ToggleGroup gender;
@@ -35,26 +44,31 @@ public class ControllerRegister {
         Connection connection = null;
         PreparedStatement pstmt = null;
         if(!notNull()) {
-            System.out.println("ingenting skal registreres");
-            ChangeScene.changeVisibility(true, visibility);
-        }
-        else if(!checkPassword()) {
-            System.out.println("ingenting skal registreres");
-            ChangeScene.changeVisibility(true, visibility);
+            System.out.println("Ikke fylt ut alle felt");
+            visible(errorMessageEmpty);
         }
         else if(userExists()) {
-            System.out.println("ingenting skal registreres");
-            ChangeScene.changeVisibility(true, visibility);
+            System.out.println("Brukernavn opptatt");
+            visible(errorMessageUserTaken);
         }
-
-        else if(chooseGender() == -1) {
-            System.out.println("ingenting skal registreres");
-            ChangeScene.changeVisibility(true, visibility);
+        else if(emailExists()) {
+            System.out.println("Email opptatt");
+            visible(errorMessageEmailTaken);
         }
-
-        else{
+        else if(!checkEmail()) {
+            System.out.println("Email ugyldig");
+            visible(errorMessageEmailInvalid);
+        }
+        else if(checkBirthyear()) {
+            System.out.println("Feil fødselsdato");
+            visible(errorMessageBirthyear);
+        }
+        else if(!checkPassword()) {
+            System.out.println("Ikke samsvarende passord");
+            visible(errorMessagePassword);
+        } else{
             int gender = chooseGender();
-            int ol = 1;
+            int ol = 0;
             int startPoints = 0;
             String sql = "INSERT INTO Player(username, email, points, online, password, salt, female, birthyear)VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             try {
@@ -73,7 +87,7 @@ public class ControllerRegister {
                 e.printStackTrace();
             } finally {
                 Cleaner.close(pstmt, null, connection);
-                ChangeScene.change(event, "Game.fxml");
+                ChangeScene.change(event, "Main.fxml");
             }
         }
     }
@@ -86,15 +100,8 @@ public class ControllerRegister {
         if(user_reg.getText().isEmpty() || email_reg.getText().isEmpty() || birthyear_reg.getText().isEmpty() || pass_reg.getText().isEmpty() || confirm_reg.getText().isEmpty()) {
             return false;
         } else {
-            try{
-                user_name = user_reg.getText().toLowerCase();
-                email_adress = email_reg.getText().toLowerCase();
-                String getYear = birthyear_reg.getText();
-                birthyear = Integer.parseInt(getYear);
-            }catch (NumberFormatException e){
-                //e.printStackTrace();
-                return false;
-            }
+            user_name = user_reg.getText().toLowerCase();
+            email_adress = email_reg.getText().toLowerCase();
             return true;
         }
     }
@@ -115,19 +122,15 @@ public class ControllerRegister {
     public boolean userExists(){
         Connection connection = null;
         Statement statementUser = null;
-        Statement statementEmail = null;
         ResultSet rsUser = null;
-        ResultSet rsEmail = null;
         String username = "SELECT username FROM Player WHERE username ='" + user_reg.getText() + "';";
-        String email = "SELECT email FROM Player WHERE username ='" + email_reg.getText() + "';";
+
 
         try {
             connection = ConnectionPool.getConnection();
             statementUser = connection.createStatement();
-            statementEmail = connection.createStatement();
             rsUser = statementUser.executeQuery(username);
-            rsEmail = statementEmail.executeQuery(email);
-            if(rsUser.next() || rsEmail.next()){
+            if(rsUser.next()){
                 return true;
             }else {
                 return false;
@@ -136,11 +139,32 @@ public class ControllerRegister {
             e.printStackTrace();
         }finally {
             Cleaner.close(statementUser, rsUser, null);
-            Cleaner.close(statementEmail, rsEmail, connection);
         }
         return true;
     }
 
+    public boolean emailExists(){
+        Connection connection = null;
+        Statement statementEmail = null;
+        ResultSet rsEmail = null;
+        String email = "SELECT email FROM Player WHERE username ='" + email_reg.getText() + "';";
+
+        try {
+            connection = ConnectionPool.getConnection();
+            statementEmail = connection.createStatement();
+            rsEmail = statementEmail.executeQuery(email);
+            if(rsEmail.next()){
+                return true;
+            }else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            Cleaner.close(statementEmail, rsEmail, connection);
+        }
+        return true;
+    }
     public int chooseGender(){
         if(this.gender.getSelectedToggle().equals(this.btnMale)){
             System.out.println("Male");
@@ -151,5 +175,43 @@ public class ControllerRegister {
             return 1;
         }
         else return -1;
+    }
+
+    public boolean checkEmail(){
+        String getEmail = email_reg.getText();
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (getEmail == null)
+            return false;
+        return pat.matcher(getEmail).matches();
+    }
+
+    public boolean checkBirthyear(){
+        try{
+            String getYear = birthyear_reg.getText();
+            birthyear = Integer.parseInt(getYear);
+        }catch (NumberFormatException e){
+            //e.printStackTrace();
+            return true;
+        }
+        if(birthyear < 1903 || birthyear > 2019){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private void visible(Label label){
+        errorMessageEmpty.setVisible(false);
+        errorMessageBirthyear.setVisible(false);
+        errorMessageEmailTaken.setVisible(false);
+        errorMessageUserTaken.setVisible(false);
+        errorMessageEmailInvalid.setVisible(false);
+        errorMessagePassword.setVisible(false);
+        label.setVisible(true);
     }
 }

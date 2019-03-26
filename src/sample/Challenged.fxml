@@ -20,11 +20,11 @@
             <Image url="@gameLogo.png" />
          </image>
       </ImageView>
-      <Text fill="WHITE" layoutX="167.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have been challenged" textAlignment="CENTER" wrappingWidth="265.1810302734375">
+      <Label fx:id="challenger" layoutX="167.0" layoutY="151.0" text="You have been challenged" textAlignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>
-      </Text>
+      </Label>
       <Button layoutX="12.0" layoutY="347.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneHome" prefHeight="39.0" prefWidth="76.0" text="HOME">
          <font>
             <Font size="18.0" />

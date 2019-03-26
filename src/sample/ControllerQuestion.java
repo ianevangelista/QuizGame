@@ -1,5 +1,8 @@
 package sample;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,26 +14,33 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import static sample.ChooseOpponent.getGameId;
+import static sample.ChooseOpponent.resetGameId;
 import static sample.ControllerHome.getUserName;
 
 import Connection.Cleaner;
 import Connection.ConnectionPool;
+import javafx.util.Duration;
 
 public class ControllerQuestion {
     private int playerScore = 0;
+    private int seconds = 31;
+    private Timer timer = new Timer();
     private static int questionCount = 0;
     private static int gameId;
     private static String username = getUserName();
     private Connection connection = null;
     private Statement statement = null;
     private ResultSet rs = null;
-
-
+    
     @FXML
     public TextField answerField;
     public Label questionField;
     public Label feedback;
+    public Label countdown;
     public Button nxtBtn;
     public Button confirmBtn;
     public Text questionLabel;
@@ -48,7 +58,7 @@ public class ControllerQuestion {
                 statement = connection.createStatement();
                 //Removes gameId from player so that they can play a new game
                 String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + username + "';";
-                statement.executeUpdate(sqlRemoveGameIdFromPlayer);//slå av autocommit??? rollback osv?
+                statement.executeUpdate(sqlRemoveGameIdFromPlayer);
                 ChangeScene.change(event, "Result.fxml");
             }
             catch (Exception e){ e.printStackTrace();}
@@ -64,8 +74,60 @@ public class ControllerQuestion {
             answerField.setText("");
         }
     }
-    public void sceneHome(ActionEvent event) { //feedback knapp
+    public boolean sceneHome(ActionEvent event) { //feedback knapp
         ChangeScene.change(event, "Game.fxml"); //bruker super-metode
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+
+            //Automatically lose a game if you log out
+            int gameId = getGameId();
+            if(gameId != 0){
+                String player = findUser();
+                String sqlRageQuitGame;
+                if(player.equals("player1")) {
+                    sqlRageQuitGame = "UPDATE Game SET p1Points = 0, p1Finished = 1 WHERE gameId =" + gameId + ";";
+                } else{
+                    sqlRageQuitGame = "UPDATE Game SET p2Points = 0, p2Finished = 1 WHERE gameId =" + gameId + ";";
+                }
+                statement.executeUpdate(sqlRageQuitGame);
+
+                //remove gameId from player
+                String sqlRemoveGameId = "UPDATE Player SET gameId = NULL, gamesLost = gamesLost+1 WHERE username = '" + username + "';";
+                statement.executeUpdate(sqlRemoveGameId);
+
+                //Delete game if other player is finished and give opponent points
+                String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
+                ResultSet rsPlayersWithTheGameId = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
+
+                if (!rsPlayersWithTheGameId.next()) {
+                    if(player.equals("player1")) {
+                        String getOpponentPoints = "SELECT player2, p2Points FROM Game WHERE gameId = " + gameId;
+                        rs = statement.executeQuery(getOpponentPoints);
+                        rs.next();
+                        int opponentPoints = rs.getInt("p2Points");
+                        String sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + opponentPoints + " WHERE username ='" + rs.getString("player2") + "';";
+                        statement.executeUpdate(sqlUpdatePlayerScore);
+                    } else {
+                        String getOpponentPoints = "SELECT player1, p1Points FROM Game WHERE gameId = " + gameId;
+                        rs = statement.executeQuery(getOpponentPoints);
+                        rs.next();
+                        int opponentPoints = rs.getInt("p1Points");
+                        String sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + opponentPoints + " WHERE username ='" + rs.getString("player1") + "';";
+                        statement.executeUpdate(sqlUpdatePlayerScore);
+                    }
+                    String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
+                    statement.executeUpdate(sqlDeleteGame);
+                    resetGameId();
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }finally {
+            Cleaner.close(statement, null, connection);
+        }
     }
 
     public void confirmAnswer(ActionEvent event) { //clicks submit button
@@ -100,7 +162,10 @@ public class ControllerQuestion {
         answerField.setVisible(false);
         questionField.setVisible(false);
         questionLabel.setVisible(false);
-
+        ChangeScene.changeVisibility(false, countdown);
+        timer.cancel();
+        timer.purge();
+        seconds = 31;
         questionCount++;
     }
 
@@ -135,6 +200,8 @@ public class ControllerQuestion {
         }catch (SQLException e) {
             e.printStackTrace();
         }finally {
+            ChangeScene.changeVisibility(true, countdown);
+            timerCountdown();
             Cleaner.close(statement, rs, connection);
         }
     }
@@ -208,5 +275,31 @@ public class ControllerQuestion {
         }finally {
             Cleaner.close(statement, rs, connection);
         }
+    }
+
+    private TimerTask makeTask() {
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    seconds--;
+                    countdown.setText("Seconds left: " + seconds);
+                    if (seconds == 0) {
+                        timer.cancel();
+                        timer.purge();
+                        seconds = 31;
+                    }
+                });
+            }
+        };
+        return task;
+    }
+
+
+
+    public void timerCountdown() {
+        TimerTask task = makeTask();
+        timer = new Timer();
+        timer.scheduleAtFixedRate(task, 1000, 1000);
     }
 }

@@ -10,12 +10,12 @@ public class Cleaner {
 
     public static void close(Statement statement, ResultSet resultset, Connection connection){
         try {
-            if (statement != null) statement.close();
+            if (resultset != null) resultset.close();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
-                if (resultset != null) resultset.close();
+                if (statement != null) statement.close();
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -30,12 +30,12 @@ public class Cleaner {
 
     public static void close(PreparedStatement statement, ResultSet resultset, Connection connection){
         try {
-            if (statement != null) statement.close();
+            if (resultset != null) resultset.close();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
-                if (resultset != null) resultset.close();
+                if (statement != null) statement.close();
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
