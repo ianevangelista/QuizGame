@@ -48,5 +48,11 @@
       </Button>
       <Label fx:id="countdown" layoutX="283.0" layoutY="31.0" text="Seconds left: 30" visible="false" />
       <Label fx:id="feedback" layoutX="36.0" layoutY="208.0" text="Label" />
+      <Button fx:id="resultButton" layoutX="250.0" layoutY="214.0" mnemonicParsing="false" onAction="#sceneResult" prefHeight="62.0" prefWidth="138.0" text="Show Result" />
+      <Label fx:id="resultText" layoutX="240.0" layoutY="130.0" prefHeight="42.0" prefWidth="157.0" text="Go to result!" textFill="WHITE" visible="false">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
   </children>
 </AnchorPane>
