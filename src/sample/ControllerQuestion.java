@@ -41,8 +41,9 @@ public class ControllerQuestion {
     public Label questionField;
     public Label feedback;
     public Label countdown;
-    public Button nxtBtn;
+    public Label resultText;
     public Button confirmBtn;
+    public Button resultButton;
     public Text questionLabel;
 
 
@@ -54,8 +55,25 @@ public class ControllerQuestion {
     //Total points for the entire game
     private int totalPoints = 0;
 
+    public void sceneResult(ActionEvent event){ ChangeScene.change(event, "Result.fxml");}
+
+    public void initialize(){
+        timerCountdown();
+        gameId = getGameId();
+        questionDisplay();
+    }
+
     public void nextQuestion() {
         if(questionCount > 2){
+            timer.cancel();
+            timer.purge();
+            answerField.setVisible(false);
+            questionField.setVisible(false);
+            feedback.setVisible(false);
+            countdown.setVisible(false);
+            confirmBtn.setVisible(false);
+            resultText.setVisible(true);
+            resultButton.setVisible(true);
             questionCount = 0;
             try {
                 connection = ConnectionPool.getConnection();
@@ -73,23 +91,19 @@ public class ControllerQuestion {
                 String sqlUpdate = "UPDATE Game SET " + finished + "=1, " + points + "=" + totalPoints + " WHERE gameId=" + gameId + ";";
                 totalPoints = 0;
                 statement.executeUpdate(sqlUpdate);
-
-                //ChangeScene.change(event, "Result.fxml"); TODO REVEAL RESULT BUTTON
             }
             catch (Exception e){ e.printStackTrace();}
             finally {Cleaner.close(statement, rs, connection);}
         } else {
             questionDisplay();
-            timerCountdown();
         }
     }
     public void confirmAnswer(ActionEvent event) { //clicks submit button
         int answerScore = questionCheck();   //checks answer
-        changeTextVis(answerScore);
-        ChangeScene.changeVisibility(true, feedback);
+        showFeedback(answerScore);
     }
 
-    private void changeTextVis(int score){
+    private void showFeedback(int score){
         if(score == -1){
             feedback.setText("You already answered that!");
         }
@@ -115,6 +129,10 @@ public class ControllerQuestion {
                 qText = rs.getString("questionText");
                 qId = rs.getInt("questionId");
             }
+            System.out.println("Emir:");
+            System.out.println(gameId);
+            System.out.println(qId);
+            System.out.println(qText);
             //displays question
             questionField.setText(qText);
 
@@ -129,15 +147,12 @@ public class ControllerQuestion {
 
             //fills arrayLists with answers and scores for the question
             while(rs.next()){
-                rightAnswer.add(rs.getString("answer"));
+                rightAnswer.add(rs.getString("answer").toLowerCase());
                 score.add(rs.getInt("score"));
             }
-
         }catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            ChangeScene.changeVisibility(true, countdown);
-            timerCountdown();
             Cleaner.close(statement, rs, connection);
         }
     }
@@ -204,9 +219,8 @@ public class ControllerQuestion {
                     seconds--;
                     countdown.setText("Seconds left: " + seconds);
                     if (seconds == 0) {
-                        timer.cancel();
-                        timer.purge();
                         seconds = 31;
+                        questionCount++;
                         nextQuestion();
                     }
                 });

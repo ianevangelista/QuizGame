@@ -46,7 +46,7 @@
             <Font size="12.0" />
          </font>
       </Button>
-      <Label fx:id="countdown" layoutX="283.0" layoutY="31.0" text="Seconds left: 30" visible="false" />
+      <Label fx:id="countdown" layoutX="283.0" layoutY="31.0" text="Seconds left: 30" />
       <Label fx:id="feedback" layoutX="36.0" layoutY="208.0" text="Label" />
   </children>
 </AnchorPane>
