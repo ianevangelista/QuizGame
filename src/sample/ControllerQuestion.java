@@ -29,7 +29,7 @@ import javafx.util.Duration;
 public class ControllerQuestion {
     private int seconds = 31;
     private Timer timer = new Timer();
-    private static int questionCount = 0;
+    private int questionCount = 0;
     private static int gameId;
     private static String username = getUserName();
     private Connection connection = null;
@@ -54,14 +54,8 @@ public class ControllerQuestion {
     //Total points for the entire game
     private int totalPoints = 0;
 
-    // TODO: Don't refresh
-    /*public void initialize(){
-        gameId = getGameId();
-        questionDisplay();
-    }*/
-
-    public void nextQuest(ActionEvent event) {
-        if(questionCount == 3){
+    public void nextQuestion() {
+        if(questionCount > 2){
             questionCount = 0;
             try {
                 connection = ConnectionPool.getConnection();
@@ -69,86 +63,8 @@ public class ControllerQuestion {
                 //Removes gameId from player so that they can play a new game
                 String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + username + "';";
                 statement.executeUpdate(sqlRemoveGameIdFromPlayer);
-                ChangeScene.change(event, "Result.fxml");
-            }
-            catch (Exception e){ e.printStackTrace();}
-            finally {Cleaner.close(statement, rs, connection);}
-        }else{
-            questionDisplay();
-            ChangeScene.changeVisibility(false, feedback);
-            ChangeScene.changeVisibilityBtn(false, nxtBtn);
-            ChangeScene.changeVisibilityBtn(true, confirmBtn);
-            answerField.setVisible(true);
-            questionField.setVisible(true);
-            questionLabel.setVisible(true);
-            answerField.setText("");
-        }
-    }
-    public boolean sceneHome(ActionEvent event) { //feedback knapp
-        ChangeScene.change(event, "Game.fxml"); //bruker super-metode
-        try {
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
 
-            //Automatically lose a game if you log out
-            int gameId = getGameId();
-            if(gameId != 0){
-                String player = findUser();
-                String sqlRageQuitGame;
-                if(player.equals("player1")) {
-                    sqlRageQuitGame = "UPDATE Game SET p1Points = 0, p1Finished = 1 WHERE gameId =" + gameId + ";";
-                } else{
-                    sqlRageQuitGame = "UPDATE Game SET p2Points = 0, p2Finished = 1 WHERE gameId =" + gameId + ";";
-                }
-                statement.executeUpdate(sqlRageQuitGame);
-
-                //remove gameId from player
-                String sqlRemoveGameId = "UPDATE Player SET gameId = NULL, gamesLost = gamesLost+1 WHERE username = '" + username + "';";
-                statement.executeUpdate(sqlRemoveGameId);
-
-                //Delete game if other player is finished and give opponent points
-                String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
-                ResultSet rsPlayersWithTheGameId = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
-
-                if (!rsPlayersWithTheGameId.next()) {
-                    if(player.equals("player1")) {
-                        String getOpponentPoints = "SELECT player2, p2Points FROM Game WHERE gameId = " + gameId;
-                        rs = statement.executeQuery(getOpponentPoints);
-                        rs.next();
-                        int opponentPoints = rs.getInt("p2Points");
-                        String sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + opponentPoints + " WHERE username ='" + rs.getString("player2") + "';";
-                        statement.executeUpdate(sqlUpdatePlayerScore);
-                    } else {
-                        String getOpponentPoints = "SELECT player1, p1Points FROM Game WHERE gameId = " + gameId;
-                        rs = statement.executeQuery(getOpponentPoints);
-                        rs.next();
-                        int opponentPoints = rs.getInt("p1Points");
-                        String sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + opponentPoints + " WHERE username ='" + rs.getString("player1") + "';";
-                        statement.executeUpdate(sqlUpdatePlayerScore);
-                    }
-                    String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
-                    statement.executeUpdate(sqlDeleteGame);
-                    resetGameId();
-                }
-            }
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }finally {
-            Cleaner.close(statement, null, connection);
-        }
-    }
-
-    public void confirmAnswer(ActionEvent event) { //clicks submit button
-        boolean riktig = questionCheck();   //checks answer
-
-        //checks if all the quesitons have been displayed
-        if(questionCount == 2) {
-            try{
-                connection = ConnectionPool.getConnection();
-                statement = connection.createStatement();
-
+                //Update Game with player finished and final score
                 String player = findUser();
                 String finished = player.equals("player1") ? "p1Finished" : "p2Finished";
                 String points = player.equals("player1") ? "p1Points" : "p2Points";
@@ -157,40 +73,31 @@ public class ControllerQuestion {
                 String sqlUpdate = "UPDATE Game SET " + finished + "=1, " + points + "=" + totalPoints + " WHERE gameId=" + gameId + ";";
                 totalPoints = 0;
                 statement.executeUpdate(sqlUpdate);
-                changeTextVis(riktig);
 
-            }catch(SQLException e) {
-                e.printStackTrace();
-            }finally {
-                Cleaner.close(statement, null, connection);
+                //ChangeScene.change(event, "Result.fxml"); TODO REVEAL RESULT BUTTON
             }
-            ChangeScene.changeVisibilityBtn(true, nxtBtn);
+            catch (Exception e){ e.printStackTrace();}
+            finally {Cleaner.close(statement, rs, connection);}
+        } else {
+            questionDisplay();
+            timerCountdown();
         }
-        else{
-            changeTextVis(riktig);
-        }
-        ChangeScene.changeVisibilityBtn(false, confirmBtn);
+    }
+    public void confirmAnswer(ActionEvent event) { //clicks submit button
+        int answerScore = questionCheck();   //checks answer
+        changeTextVis(answerScore);
         ChangeScene.changeVisibility(true, feedback);
-        answerField.setVisible(false);
-        questionField.setVisible(false);
-        questionLabel.setVisible(false);
-        ChangeScene.changeVisibility(false, countdown);
-        timer.cancel();
-        timer.purge();
-        seconds = 31;
-        questionCount++;
     }
 
-    private void changeTextVis(boolean bool){
-        if(bool){
-            ChangeScene.changeVisibility(true, feedback);
-            feedback.setText("Congratulations! You got " + playerScore + " point(s).");
-            ChangeScene.changeVisibilityBtn(true, nxtBtn);
+    private void changeTextVis(int score){
+        if(score == -1){
+            feedback.setText("You already answered that!");
+        }
+        else if(score > 0){
+            feedback.setText("Congratulations! You got " + score + " point(s).");
         }
         else{
-            ChangeScene.changeVisibility(true, feedback);
             feedback.setText("You answered wrong.");
-            ChangeScene.changeVisibilityBtn(true, nxtBtn);
         }
     }
 
@@ -235,12 +142,12 @@ public class ControllerQuestion {
         }
     }
 
-    private boolean questionCheck() {
-        boolean correctAnswer = false;
+    //Checks if the answered question is correct and if it has already been answered by the user this round
+    private int questionCheck() {
+        int answerScore = 0;
+        boolean alreadyAnswerd = false;
 
         String answer = answerField.getText().toLowerCase();  //get answer in lowercase
-
-        boolean alreadyAnswerd = false;
 
         //Check if player gave actual answer before checking DB
         if(!answer.equals("")){
@@ -250,23 +157,23 @@ public class ControllerQuestion {
                     for(Integer previousAnswer: previouslyAnswered){
                         if(previousAnswer == i){
                             //That answer is already used
-                            alreadyAnswerd = true;
+                            return -1;
                         }
                     }
-                    if(!alreadyAnswerd){
-                        previouslyAnswered.add(i);
-                        totalPoints += score.get(i);
-                        correctAnswer = true;
-                        //TODO: Give feedback to the user
-                    }
+                    previouslyAnswered.add(i);
+                    totalPoints += score.get(i);
+                    answerScore = score.get(i);
+                    //TODO: Give feedback to the user
                 }
             }
         } else {
             //TODO: "PLEASE ENTER YOUR ANSWER"
         }
-        return correctAnswer;
+        answerField.setText("");
+        return answerScore;
     }
 
+    //Finds out whether current user is player 1 or player 2
     public static String findUser() {
         Connection connection = null;
         Statement statement = null;
@@ -288,6 +195,7 @@ public class ControllerQuestion {
         }
     }
 
+    //Timer
     private TimerTask makeTask() {
         TimerTask task = new TimerTask() {
             @Override
@@ -299,6 +207,7 @@ public class ControllerQuestion {
                         timer.cancel();
                         timer.purge();
                         seconds = 31;
+                        nextQuestion();
                     }
                 });
             }
@@ -306,11 +215,57 @@ public class ControllerQuestion {
         return task;
     }
 
-
-
     public void timerCountdown() {
         TimerTask task = makeTask();
         timer = new Timer();
         timer.scheduleAtFixedRate(task, 1000, 1000);
+    }
+
+    //Home-button quits game
+    public boolean sceneHome(ActionEvent event) { //feedback knapp
+        ChangeScene.change(event, "Game.fxml"); //bruker super-metode
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+
+            //Automatically lose a game if you log out
+            int gameId = getGameId();
+            if(gameId != 0){
+                String player = findUser();
+                String sqlRageQuitGame;
+                String rageQuittingPlayer = player.equals("player1") ? "p1Points = 0, p1Finished = 1" : "p2Points = 0, p2Finished = 1";
+                sqlRageQuitGame = "UPDATE Game SET " + rageQuittingPlayer + " WHERE gameId =" + gameId + ";";
+                statement.executeUpdate(sqlRageQuitGame);
+
+                //remove gameId from player
+                String sqlRemoveGameId = "UPDATE Player SET gameId = NULL, gamesLost = gamesLost+1 WHERE username = '" + username + "';";
+                statement.executeUpdate(sqlRemoveGameId);
+
+                //Delete game if other player is finished and give opponent points
+                String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
+                ResultSet rsPlayersWithTheGameId = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
+
+                if (!rsPlayersWithTheGameId.next()) {
+                    String points = player.equals("player1") ? "p2Points" : "p1Points";
+                    String opponent = player.equals("player1") ? "player2" : "player1";
+                    String getOpponentPoints = "SELECT player2, p2Points FROM Game WHERE gameId = " + gameId;
+                    rs = statement.executeQuery(getOpponentPoints);
+                    rs.next();
+                    int opponentPoints = rs.getInt(points);
+                    String sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + opponentPoints + " WHERE username ='" + rs.getString(opponent) + "';";
+                    statement.executeUpdate(sqlUpdatePlayerScore);
+
+                    String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
+                    statement.executeUpdate(sqlDeleteGame);
+                    resetGameId();
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }finally {
+            Cleaner.close(statement, null, connection);
+        }
     }
 }
