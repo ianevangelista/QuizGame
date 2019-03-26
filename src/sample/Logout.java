@@ -25,14 +25,14 @@ public class Logout {
             statement = connection.createStatement();
 
             //Updates player to be offline
-            String sqlLogout = "UPDATE Player SET online = 0, gameId = NULL WHERE username = '" + username + "';";
+            String sqlLogout = "UPDATE Player SET online = 0 WHERE username = '" + username + "';";
             statement.executeUpdate(sqlLogout);
 
             //Automatically lose a game if you log out
             int gameId = getGameId();
             if(gameId != 0) {
                 //Add to games lost
-                String sqlLoseGame = "UPDATE Player SET gamesLost = gamesLost+1 WHERE username = '" + username + "';";
+                String sqlLoseGame = "UPDATE Player SET gamesLost = gamesLost+1, gameId = NULL WHERE username = '" + username + "';";
                 statement.executeUpdate(sqlLoseGame);
 
                 String player = findUser();

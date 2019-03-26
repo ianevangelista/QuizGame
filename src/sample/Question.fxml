@@ -41,7 +41,7 @@
          <font>
             <Font size="18.0" />
          </font></Label>
-      <Button fx:id="nxtBtn" layoutX="280.0" layoutY="245.0" mnemonicParsing="false" onAction="#nextQuest" prefHeight="29.0" prefWidth="78.0" text="NEXT" visible="false">
+      <Button fx:id="nxtBtn" layoutX="280.0" layoutY="245.0" mnemonicParsing="false" onAction="#nextQuestion" prefHeight="29.0" prefWidth="78.0" text="NEXT" visible="false">
          <font>
             <Font size="12.0" />
          </font>
