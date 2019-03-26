@@ -2,10 +2,7 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import Connection.ConnectionPool;
 import Connection.Cleaner;
@@ -13,6 +10,7 @@ import java.sql.PreparedStatement;
 
 import javafx.scene.image.Image;
 
+import javax.sound.midi.Soundbank;
 import javax.swing.*;
 import java.sql.*;
 import java.io.File;
@@ -21,10 +19,10 @@ import static sample.ControllerHome.getUserName;
 
 public class ControllerProfile {
 
-    private static String username = getUserName();
+    private String username = getUserName();
 
-    Connection connection = null;
-    PreparedStatement statement = null;
+    private Connection connection = null;
+    private PreparedStatement statement = null;
 
     @FXML
     public ImageView picture;
@@ -34,14 +32,6 @@ public class ControllerProfile {
     public Label printWon;
     public Label printLost;
 
-    public Button confirmEmail;
-    public Button confirmGender;
-    public Button confirmPassword;
-    public TextField inputEmail;
-    public TextField inputOldPassword;
-    public TextField inputNewPassword;
-    public RadioButton btnMale;
-    public RadioButton btnFemale;
 
     public void initialize() {
         choosePic();
@@ -53,9 +43,12 @@ public class ControllerProfile {
 
     public void edit(ActionEvent event){
         ChangeScene.change(event, "EditProfile.fxml");
+        System.out.println("test");
     }
 
     public void choosePic(){
+
+        ResultSet rs = null;
 
         String sql = "SELECT points, email, gamesWon, gamesLost FROM Player WHERE username = ?;";
 
@@ -67,7 +60,7 @@ public class ControllerProfile {
             connection = ConnectionPool.getConnection();
             statement = connection.prepareStatement(sql);
             statement.setString(1, username);
-            ResultSet rs = statement.executeQuery();
+            rs = statement.executeQuery();
 
             rs.next();
             int pointsLest = rs.getInt("points");
@@ -95,8 +88,6 @@ public class ControllerProfile {
                 picture.setImage(three);
             }
 
-            System.out.println(username);
-
             printUsername.setText(username);
             printEmail.setText(email);
             printPoints.setText(points);
@@ -107,13 +98,9 @@ public class ControllerProfile {
             e.printStackTrace();
         }
         finally {
-            Cleaner.close(statement, null, connection);
+            Cleaner.close(statement, rs, connection);
         }
     }
 
-    /*public void editProfile(){
-
-        String
-    }*/
 
 }
