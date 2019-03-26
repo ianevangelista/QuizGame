@@ -87,7 +87,7 @@ public class ControllerRegister {
                 e.printStackTrace();
             } finally {
                 Cleaner.close(pstmt, null, connection);
-                ChangeScene.change(event, "Game.fxml");
+                ChangeScene.change(event, "Main.fxml");
             }
         }
     }
