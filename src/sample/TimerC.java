@@ -20,7 +20,7 @@ import static sample.ChooseOpponent.getGameId;
 
 public class TimerC {
 
-    private static Timer timerC;
+    private static Timer timer;
     private static int gameId = getGameId();
     private static Connection connection = null;
     private static Statement statement = null;
@@ -31,7 +31,7 @@ public class TimerC {
     public Button btnNext;
 
     public void sceneGame(ActionEvent event) { //hjemknapp
-        turnOfTimerC();
+        turnOfTimer();
         ChangeScene.change(event, "Game.fxml");
     }
 
@@ -41,18 +41,18 @@ public class TimerC {
     }
 
     public void timerCat(){
-        timerC = new Timer();
+        timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 if(checkCat()) {
-                    turnOfTimerC();
+                    turnOfTimer();
                     categoryChosen = true;
                     showBtn();
                 }
             }
         };
-        timerC.schedule(task, 10000, 3000);
+        timer.schedule(task, 10000, 3000);
     }
 
     public void showBtn(){
@@ -88,9 +88,10 @@ public class TimerC {
         }
     }
 
-    public static void turnOfTimerC() {
-        if (timerC != null) {
-            timerC.cancel();
+    public static void turnOfTimer() {
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
         }
     }
 }
