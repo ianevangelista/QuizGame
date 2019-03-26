@@ -7,6 +7,8 @@ import java.sql.Statement;
 
 import Connection.ConnectionPool;
 import Connection.Cleaner;
+
+import static sample.ChooseOpponent.resetGameId;
 import static sample.ControllerHome.getUserName;
 import static sample.ControllerQuestion.findUser;
 import static sample.ChooseOpponent.getGameId;
@@ -60,6 +62,7 @@ public class Logout {
                     }
                     String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
                     statement.executeUpdate(sqlDeleteGame);
+                    resetGameId();
                     return true;
                 }
             }
