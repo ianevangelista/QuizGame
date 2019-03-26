@@ -68,7 +68,7 @@ public class ControllerRegister {
             visible(errorMessagePassword);
         } else{
             int gender = chooseGender();
-            int ol = 1;
+            int ol = 0;
             int startPoints = 0;
             String sql = "INSERT INTO Player(username, email, points, online, password, salt, female, birthyear)VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             try {
@@ -87,7 +87,7 @@ public class ControllerRegister {
                 e.printStackTrace();
             } finally {
                 Cleaner.close(pstmt, null, connection);
-                ChangeScene.change(event, "Game.fxml");
+                ChangeScene.change(event, "Main.fxml");
             }
         }
     }
