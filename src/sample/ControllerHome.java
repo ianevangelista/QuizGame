@@ -42,23 +42,26 @@ public class ControllerHome {
         return true;
     }
 
-    public void playerLogin(ActionEvent event) {
+    public boolean playerLogin(ActionEvent event) {
 
 		String sql = "SELECT username, online, password, salt FROM Player WHERE username = ?;";
 		try {
 		    connection = ConnectionPool.getConnection();
             pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, username.getText());
+            pstmt.setString(1, usernameGetText());
             rs = pstmt.executeQuery();
 
             if (!(rs.next())) {
                 ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
+                return false;
             }
-            else if (username.getText().isEmpty() || password.getText().isEmpty()) {
+            else if (usernameGetText().isEmpty() || passwordGetText().isEmpty()) {
                 ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
+                return false;
             }
             else if (rs.getBoolean("online")) {
                 ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
+                return false;
             }
             else {
                 String salt = rs.getString("salt");
@@ -73,16 +76,27 @@ public class ControllerHome {
                     setUserName(username.getText());
                     Logout.logIn();
                     ChangeScene.change(event, "Game.fxml");
+                    return true;
                 } else {
                     ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
+                    return false;
                 }
             }
             }catch(Exception e){
                 e.printStackTrace();
+                return false;
             }finally{
                 Cleaner.close(pstmt, rs, connection);
             }
 	}
+
+	public String usernameGetText() {
+        return username.getText();
+    }
+
+    public String passwordGetText() {
+        return password.getText();
+    }
 
     public void setUserName(String username){
         this.userName = username;
