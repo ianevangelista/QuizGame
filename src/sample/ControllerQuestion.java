@@ -1,5 +1,8 @@
 package sample;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,14 +14,20 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import static sample.ChooseOpponent.getGameId;
 import static sample.ControllerHome.getUserName;
 
 import Connection.Cleaner;
 import Connection.ConnectionPool;
+import javafx.util.Duration;
 
 public class ControllerQuestion {
     private int playerScore = 0;
+    private int seconds = 31;
+    private Timer timer = new Timer();
     private static int questionCount = 0;
     private static int gameId;
     private static String username = getUserName();
@@ -30,6 +39,7 @@ public class ControllerQuestion {
     public TextField answerField;
     public Label questionField;
     public Label feedback;
+    public Label countdown;
     public Button nxtBtn;
     public Button confirmBtn;
     public Text questionLabel;
@@ -150,7 +160,9 @@ public class ControllerQuestion {
         answerField.setVisible(false);
         questionField.setVisible(false);
         questionLabel.setVisible(false);
-
+        ChangeScene.changeVisibility(false, countdown);
+        seconds = 0;
+        timer.cancel();
         questionCount++;
     }
 
@@ -185,6 +197,8 @@ public class ControllerQuestion {
         }catch (SQLException e) {
             e.printStackTrace();
         }finally {
+            ChangeScene.changeVisibility(true, countdown);
+            //timerCountdown();
             Cleaner.close(statement, rs, connection);
         }
     }
@@ -259,4 +273,21 @@ public class ControllerQuestion {
             Cleaner.close(statement, rs, connection);
         }
     }
+    /*
+    public void timerCountdown() {
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    seconds--;
+                    countdown.setText("Seconds left: " + seconds);
+                    if(seconds == 0){
+                        timer.cancel();
+                        seconds = 0;
+                    }
+                });
+            }
+        } , 1000, 1000);
+    }*/
 }
