@@ -163,9 +163,9 @@ public class ControllerQuestion {
         questionField.setVisible(false);
         questionLabel.setVisible(false);
         ChangeScene.changeVisibility(false, countdown);
-        seconds = 0;
         timer.cancel();
         timer.purge();
+        seconds = 31;
         questionCount++;
     }
 
@@ -287,7 +287,7 @@ public class ControllerQuestion {
                     if (seconds == 0) {
                         timer.cancel();
                         timer.purge();
-                        seconds = 0;
+                        seconds = 31;
                     }
                 });
             }
