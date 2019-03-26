@@ -61,7 +61,6 @@ public class ChooseOpponent{
                     userOffline.setVisible(true);
                 } else {
                     makeGame(username, opponentUsername);
-                    //timerCat();
                     ChangeScene.change(event, "Wait.fxml");
                 }
             }
