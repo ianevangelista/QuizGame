@@ -22,20 +22,24 @@ public class ControllerHome {
     public TextField password;
     public Label visibility;
 
-    public void sceneInfo(ActionEvent event) { //trykker på infoknapp
-       ChangeScene.change(event, "Info.fxml"); //bruker super-metode
+    public boolean sceneInfo(ActionEvent event) { //trykker på infoknapp
+        ChangeScene.change(event, "Info.fxml"); //bruker super-metode
+        return true;
     }
 
-    public void sceneHome(ActionEvent event) { //feedback knapp
+    public boolean sceneHome(ActionEvent event) { //feedback knapp
         ChangeScene.change(event, "Main.fxml");
+        return true;
     }
 
-    public void register(ActionEvent event) { //trykker registrer
+    public boolean register(ActionEvent event) { //trykker registrer
         ChangeScene.change(event, "Register.fxml");
+        return true;
     }
 
-    public void feedback(ActionEvent event) { //feedback knapp
+    public boolean feedback(ActionEvent event) { //feedback knapp
         ChangeScene.change(event, "Feedback.fxml");
+        return true;
     }
 
     public void playerLogin(ActionEvent event) {
@@ -80,7 +84,7 @@ public class ControllerHome {
             }
 	}
 
-    private void setUserName(String username){
+    public void setUserName(String username){
         this.userName = username;
     }
 

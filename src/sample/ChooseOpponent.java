@@ -5,10 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-<<<<<<< HEAD
 
-=======
->>>>>>> becdb65cf904a98701bcd88bbaef4355129cdb4d
 
 import java.sql.*;
 
