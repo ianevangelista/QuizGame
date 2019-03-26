@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -26,7 +27,6 @@ import Connection.ConnectionPool;
 import javafx.util.Duration;
 
 public class ControllerQuestion {
-    private int playerScore = 0;
     private int seconds = 31;
     private Timer timer = new Timer();
     private static int questionCount = 0;
@@ -45,10 +45,20 @@ public class ControllerQuestion {
     public Button confirmBtn;
     public Text questionLabel;
 
-    public void initialize(){
+
+    //Answers locally cached
+    private ArrayList<Integer> score = new ArrayList<Integer>();
+    private ArrayList<String> rightAnswer = new ArrayList<String>();
+    private ArrayList<Integer> previouslyAnswered = new ArrayList<Integer>();
+
+    //Total points for the entire game
+    private int totalPoints = 0;
+
+    // TODO: Don't refresh
+    /*public void initialize(){
         gameId = getGameId();
         questionDisplay();
-    }
+    }*/
 
     public void nextQuest(ActionEvent event) {
         if(questionCount == 3){
@@ -141,9 +151,11 @@ public class ControllerQuestion {
 
                 String player = findUser();
                 String finished = player.equals("player1") ? "p1Finished" : "p2Finished";
+                String points = player.equals("player1") ? "p1Points" : "p2Points";
 
                 //puts the finished variable true
-                String sqlUpdate = "UPDATE Game SET " + finished + "=1 WHERE gameId=" + gameId + ";";
+                String sqlUpdate = "UPDATE Game SET " + finished + "=1, " + points + "=" + totalPoints + " WHERE gameId=" + gameId + ";";
+                totalPoints = 0;
                 statement.executeUpdate(sqlUpdate);
                 changeTextVis(riktig);
 
@@ -182,20 +194,37 @@ public class ControllerQuestion {
         }
     }
 
-    public void questionDisplay() { //displays questions
+    private void questionDisplay() { //displays questions
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             //sql to get question text
-            String sqlGetText = "SELECT questionText FROM Game JOIN Question ON questionId = question" + (questionCount+1) +  " WHERE gameId = " + gameId;
+            String sqlGetText = "SELECT questionText, questionId FROM Game JOIN Question ON questionId = question" + (questionCount+1) +  " WHERE gameId = " + gameId;
             rs = statement.executeQuery(sqlGetText);
+            int qId = 0;
             String qText = "";
             if(rs.next()) {
                 qText = rs.getString("questionText");
+                qId = rs.getInt("questionId");
             }
             //displays question
             questionField.setText(qText);
+
+            //selects all alternatives to the question
+            String sqlGetAlt = "SELECT score, answer FROM Alternative WHERE questionId = " + qId +";";
+            rs = statement.executeQuery(sqlGetAlt);
+
+            //emptys previous values from the question that came before
+            rightAnswer = new ArrayList<String>();
+            score = new ArrayList<Integer>();
+            previouslyAnswered = new ArrayList<Integer>();
+
+            //fills arrayLists with answers and scores for the question
+            while(rs.next()){
+                rightAnswer.add(rs.getString("answer"));
+                score.add(rs.getInt("score"));
+            }
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -206,54 +235,36 @@ public class ControllerQuestion {
         }
     }
 
-    public boolean questionCheck() {
-        boolean riktig = false;
+    private boolean questionCheck() {
+        boolean correctAnswer = false;
 
-        String[] sqlQuestionName = {"question1", "question2", "question3"};
-        try {
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
+        String answer = answerField.getText().toLowerCase();  //get answer in lowercase
 
-            String user = findUser();       //find user
-            String answer = answerField.getText().toLowerCase();  //get answer in lowercase
+        boolean alreadyAnswerd = false;
 
-            //gets the answered questionid
-            String sqlGetQId = " FROM Game WHERE gameId=" + gameId + ";";
-            rs = statement.executeQuery("SELECT " + sqlQuestionName[questionCount] + sqlGetQId);
-            rs.next();
-            int QId = rs.getInt(1);
-
-            //Check if player gave actual answer before checking DB
-            if(answer != ""){
-                //selects all alternatives to the question
-                String sqlGetAlt = "SELECT score FROM Alternative WHERE questionId = " + QId +" AND answer = '" + answer + "';";
-                rs = statement.executeQuery(sqlGetAlt);
-
-                if(rs.next()){
-                    playerScore = rs.getInt("score");
-                    riktig = true;
-                } else {
-                    playerScore = 0;
+        //Check if player gave actual answer before checking DB
+        if(!answer.equals("")){
+            //check trought arrayList of all possible answers
+            for(int i = 0; i < rightAnswer.size(); i++){
+                if(answer.equals(rightAnswer.get(i))){
+                    for(Integer previousAnswer: previouslyAnswered){
+                        if(previousAnswer == i){
+                            //That answer is already used
+                            alreadyAnswerd = true;
+                        }
+                    }
+                    if(!alreadyAnswerd){
+                        previouslyAnswered.add(i);
+                        totalPoints += score.get(i);
+                        correctAnswer = true;
+                        //TODO: Give feedback to the user
+                    }
                 }
-            } else {
-                System.out.printf(answer);
-                playerScore = 0;
             }
-
-            //chooses correct players score
-            String points = (user.equals("player1") ? "p1Points" : "p2Points");
-
-            //updates score in database
-            String sqlUpdate = "UPDATE Game SET " + points + " = " + points + " + " + playerScore + " WHERE gameId=" + gameId + ";";
-            statement.execute(sqlUpdate);
-            return riktig;
-
-        }catch (SQLException e) {
-            e.printStackTrace();
-            return riktig;
-        }finally {
-            Cleaner.close(statement, rs, connection);
+        } else {
+            //TODO: "PLEASE ENTER YOUR ANSWER"
         }
+        return correctAnswer;
     }
 
     public static String findUser() {
