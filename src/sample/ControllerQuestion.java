@@ -18,6 +18,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static sample.ChooseOpponent.getGameId;
+import static sample.ChooseOpponent.resetGameId;
 import static sample.ControllerHome.getUserName;
 
 import Connection.Cleaner;
@@ -117,6 +118,7 @@ public class ControllerQuestion {
                     }
                     String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
                     statement.executeUpdate(sqlDeleteGame);
+                    resetGameId();
                 }
             }
             return true;
@@ -163,6 +165,7 @@ public class ControllerQuestion {
         ChangeScene.changeVisibility(false, countdown);
         seconds = 0;
         timer.cancel();
+        timer.purge();
         questionCount++;
     }
 
@@ -198,7 +201,7 @@ public class ControllerQuestion {
             e.printStackTrace();
         }finally {
             ChangeScene.changeVisibility(true, countdown);
-            //timerCountdown();
+            timerCountdown();
             Cleaner.close(statement, rs, connection);
         }
     }
@@ -273,21 +276,30 @@ public class ControllerQuestion {
             Cleaner.close(statement, rs, connection);
         }
     }
-    /*
-    public void timerCountdown() {
 
-        timer.scheduleAtFixedRate(new TimerTask() {
+    private TimerTask makeTask() {
+        TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 Platform.runLater(() -> {
                     seconds--;
                     countdown.setText("Seconds left: " + seconds);
-                    if(seconds == 0){
+                    if (seconds == 0) {
                         timer.cancel();
+                        timer.purge();
                         seconds = 0;
                     }
                 });
             }
-        } , 1000, 1000);
-    }*/
+        };
+        return task;
+    }
+
+
+
+    public void timerCountdown() {
+        TimerTask task = makeTask();
+        timer = new Timer();
+        timer.scheduleAtFixedRate(task, 1000, 1000);
+    }
 }
