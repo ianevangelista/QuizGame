@@ -72,6 +72,7 @@ public class ControllerQuestion {
             feedback.setVisible(false);
             countdown.setVisible(false);
             confirmBtn.setVisible(false);
+            questionLabel.setVisible(false);
             resultText.setVisible(true);
             resultButton.setVisible(true);
             questionCount = 0;
