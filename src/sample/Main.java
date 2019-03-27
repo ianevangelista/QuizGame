@@ -12,7 +12,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent main = FXMLLoader.load(getClass().getResource("Main.fxml"));
-        primaryStage.setTitle("How Dumb Are You?");
+        primaryStage.setTitle("How Dumb R You?");
         primaryStage.setOnCloseRequest(e -> {
             e.consume();
             closeProgram(primaryStage);
