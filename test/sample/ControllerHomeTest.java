@@ -1,37 +1,18 @@
 package sample;
 
 import Connection.ConnectionPool;
-import com.mysql.cj.protocol.Resultset;
+
 import javafx.event.ActionEvent;
-import javafx.scene.control.TextFormatter;
-import jdk.nashorn.internal.runtime.ECMAException;
+
 import org.junit.Before;
-
 import org.junit.Test;
-import javafx.scene.control.TextField;
 import static org.junit.Assert.*;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 
-import java.rmi.activation.ActivationInstantiator;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
-
-import org.mockito.MockitoAnnotations;
-
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class ControllerHomeTest {
     ControllerHome ch;
     ChangeScene cs;
     ConnectionPool cp;
-    PreparedStatement pstmt;
 
     @Before
         public void setUp() {
