@@ -31,4 +31,8 @@ public class ControllerGame {
     public void profile(ActionEvent event) {
         ChangeScene.change(event, "Profile.fxml");
     }
+
+    public void feedback(ActionEvent event){
+        ChangeScene.change(event, "Feedback.fxml");
+    }
 }

@@ -1,17 +1,25 @@
 package sample;
 
+import java.sql.Connection;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
 
-import Connection.ConnectionPool;
+import java.sql.PreparedStatement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 
+import static sample.ControllerHome.getUserName;
+
 
 public class ControllerEmail {
+
+    private String username = getUserName();
+
+    private Connection connection = null;
+    private PreparedStatement statement = null;
 
     @FXML
     public TextArea feedback;
@@ -91,7 +99,6 @@ public class ControllerEmail {
 
         }
         catch (MessagingException e) {
-            System.out.println("Heihei fanger feil2");
             e.printStackTrace();
         }
 
@@ -103,7 +110,13 @@ public class ControllerEmail {
         ChangeScene.change(event, "Main.fxml");
     }
 
-    public void sceneHome(ActionEvent event) { //feedback knapp
-        ChangeScene.change(event, "Main.fxml");
+    public void sceneHome(ActionEvent event) { //back button
+        if(username == null) {
+            ChangeScene.change(event, "Main.fxml");
+        }
+        else{
+            ChangeScene.change(event, "Game.fxml");
+        }
+
     }
 }
