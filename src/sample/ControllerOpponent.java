@@ -56,9 +56,9 @@ public class ControllerOpponent{
                 opponentUsername = rs.getString("username");
                 opponentOnline = rs.getInt("Online");
                 if(opponentUsername.equals(username)) {
-                    challengeYou.setVisible(true);
+                    setVisible(challengeYou);
                 } else if(opponentOnline == 0){
-                    userOffline.setVisible(true);
+                    setVisible(userOffline);
                 } else {
                     makeGame(username, opponentUsername);
                     ChangeScene.change(event, "Wait.fxml");
@@ -66,7 +66,7 @@ public class ControllerOpponent{
             }
             //if the username doesn't exsist
             else {
-                usernameWrong.setVisible(true);
+                setVisible(usernameWrong);
             }
         }
         catch (SQLException e) {
@@ -122,6 +122,14 @@ public class ControllerOpponent{
 
    public static void resetGameId(){
         gameId = 0;
+   }
+
+   private void setVisible(Label label){
+       usernameWrong.setVisible(false);
+       userOffline.setVisible(false);
+       challengeYou.setVisible(false);
+
+       label.setVisible(true);
    }
 
     public static int getGameId() {
