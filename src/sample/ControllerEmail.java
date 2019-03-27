@@ -1,11 +1,13 @@
 package sample;
 
 import java.util.Properties;
+import java.util.regex.Pattern;
 import javax.mail.*;
 import javax.mail.internet.*;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 
@@ -19,6 +21,7 @@ public class ControllerEmail {
     @FXML
     public TextArea feedback;
     public TextField email;
+    public Label errorMessageEmailInvalid;
 
     Properties props = new Properties();
     Session session = Session.getDefaultInstance(props);
@@ -100,9 +103,14 @@ public class ControllerEmail {
     }
 
     public void feedback(ActionEvent event){
-        sendFeedback();
-        sendConfirm();
-        ChangeScene.change(event, "Main.fxml");
+        if(!checkEmail()) {
+            System.out.println("Feil email");
+            errorMessageEmailInvalid.setVisible(true);
+        } else{
+            sendFeedback();
+            sendConfirm();
+            ChangeScene.change(event, "Main.fxml");
+        }
     }
 
     public void sceneHome(ActionEvent event) { //back button
@@ -113,5 +121,18 @@ public class ControllerEmail {
             ChangeScene.change(event, "Game.fxml");
         }
 
+    }
+
+    private boolean checkEmail(){
+        String getEmail = email.getText();
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (getEmail == null)
+            return false;
+        return pat.matcher(getEmail).matches();
     }
 }
