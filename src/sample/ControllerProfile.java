@@ -52,10 +52,6 @@ public class ControllerProfile {
 
         String sql = "SELECT points, email, gamesWon, gamesLost FROM Player WHERE username = ?;";
 
-        File first = new File("src/sample/1..png");
-        File second = new File("src/sample/2..png");
-        File third = new File("src/sample/3..png");
-
         try{
             connection = ConnectionPool.getConnection();
             statement = connection.prepareStatement(sql);
@@ -71,20 +67,21 @@ public class ControllerProfile {
             int lostLest = rs.getInt("gamesLost");
             String lost = String.valueOf(lostLest);
 
-            Image one = new Image(first.toURI().toString());
-            Image two = new Image(second.toURI().toString());
-            Image three = new Image(third.toURI().toString());
-
-
             if(pointsLest < 100){
+                File first = new File("src/sample/1..png");
+                Image one = new Image(first.toURI().toString());
                 picture.setImage(one);
             }
 
             else if(pointsLest < 500){
+                File second = new File("src/sample/2..png");
+                Image two = new Image(second.toURI().toString());
                 picture.setImage(two);
             }
 
-            else if(pointsLest > 500){
+            else{
+                File third = new File("src/sample/3..png");
+                Image three = new Image(third.toURI().toString());
                 picture.setImage(three);
             }
 
