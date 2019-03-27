@@ -46,16 +46,17 @@ public class ControllerHome {
 
 		String sql = "SELECT username, online, password, salt FROM Player WHERE username = ?;";
 		try {
-		    connection = ConnectionPool.getConnection();
-            pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, usernameGetText());
-            rs = pstmt.executeQuery();
-
-            if (!(rs.next())) {
+		     if (username.getText().isEmpty() || password.getText().isEmpty()) {
                 ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
                 return false;
             }
-            else if (usernameGetText().isEmpty() || passwordGetText().isEmpty()) {
+
+            connection = ConnectionPool.getConnection();
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, username.getText());
+            rs = pstmt.executeQuery();
+
+            if (!(rs.next())) {
                 ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
                 return false;
             }
@@ -89,14 +90,6 @@ public class ControllerHome {
                 Cleaner.close(pstmt, rs, connection);
             }
 	}
-
-	public String usernameGetText() {
-        return username.getText();
-    }
-
-    public String passwordGetText() {
-        return password.getText();
-    }
 
     public void setUserName(String username){
         this.userName = username;
