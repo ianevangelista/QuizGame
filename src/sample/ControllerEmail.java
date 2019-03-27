@@ -1,11 +1,9 @@
 package sample;
 
-import java.sql.Connection;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
 
-import java.sql.PreparedStatement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -17,9 +15,6 @@ import static sample.ControllerHome.getUserName;
 public class ControllerEmail {
 
     private String username = getUserName();
-
-    private Connection connection = null;
-    private PreparedStatement statement = null;
 
     @FXML
     public TextArea feedback;
