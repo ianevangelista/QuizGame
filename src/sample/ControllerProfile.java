@@ -98,6 +98,4 @@ public class ControllerProfile {
             Cleaner.close(statement, rs, connection);
         }
     }
-
-
 }
