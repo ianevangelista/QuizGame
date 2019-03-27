@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import java.sql.*;
 
 import static sample.ControllerHome.getUserName;
-import static sample.ChooseOpponent.getGameId;
+import static sample.ControllerOpponent.getGameId;
 
 public class ControllerRefresh {
 

@@ -14,7 +14,7 @@ import javafx.scene.control.Button;
 
 import static sample.ControllerHome.getUserName;
 
-public class ChooseOpponent{
+public class ControllerOpponent{
 
     private static Connection connection = null;
     private static Statement statement = null;
