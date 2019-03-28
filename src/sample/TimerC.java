@@ -14,7 +14,7 @@ import java.sql.Statement;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static sample.ChooseOpponent.getGameId;
+import static sample.ControllerOpponent.getGameId;
 
 
 

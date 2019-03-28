@@ -15,11 +15,11 @@ import java.util.Random;
 import java.util.ArrayList;
 
 //imports the method getGameId() from the class ChooseOpponent
-import static sample.ChooseOpponent.getGameId;
+import static sample.ControllerOpponent.getGameId;
 
 
 
-public class ChooseCategory {
+public class ControllerCategory {
     private int gameId;
 
     @FXML
@@ -42,7 +42,7 @@ public class ChooseCategory {
         ChangeScene.change(event, "Game.fxml");
     }
 
-    public void chooseCategory1(ActionEvent event){ //When button 1 is pressed
+    public boolean chooseCategory1(ActionEvent event){ //When button 1 is pressed
         try{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
@@ -52,9 +52,11 @@ public class ChooseCategory {
             statement.executeUpdate(sql);
             // Adds questions from the category to the game
             questionPicker(chosenCategoryId);
+            return true;
         }
         catch (Exception e){
             e.printStackTrace();
+            return false;
         }
         finally {
             Cleaner.close(statement, rs, connection);
@@ -62,7 +64,7 @@ public class ChooseCategory {
         }
     }
 
-    public void chooseCategory2(ActionEvent event){ //When button 2 is pressed
+    public boolean chooseCategory2(ActionEvent event){ //When button 2 is pressed
         try{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
@@ -72,9 +74,11 @@ public class ChooseCategory {
             statement.executeUpdate(sql);
             // Adds questions from the category to the game
             questionPicker(chosenCategoryId);
+            return true;
         }
         catch (Exception e){
             e.printStackTrace();
+            return false;
         }
         finally {
             Cleaner.close(statement, rs, connection);
@@ -82,7 +86,7 @@ public class ChooseCategory {
         }
     }
 
-    public void chooseCategory3(ActionEvent event){ //When button 3 is pressed
+    public boolean chooseCategory3(ActionEvent event){ //When button 3 is pressed
         try{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
@@ -92,10 +96,11 @@ public class ChooseCategory {
             statement.executeUpdate(sql);
             // Adds questions from the category to the game
             questionPicker(chosenCategoryId);
-
+            return true;
         }
         catch (Exception e){
             e.printStackTrace();
+            return false;
         }
         finally {
             Cleaner.close(statement, rs, connection);
@@ -103,7 +108,7 @@ public class ChooseCategory {
         }
     }
 
-    public void initialize(){ //gets run when the window is opened for the first time
+    public boolean initialize(){ //gets run when the window is opened for the first time
         Random rand = new java.util.Random();
         try {
             connection = ConnectionPool.getConnection();
@@ -140,10 +145,11 @@ public class ChooseCategory {
             category1.setText(categoryName.get(randomCategoryId[0]));
             category2.setText(categoryName.get(randomCategoryId[1]));
             category3.setText(categoryName.get(randomCategoryId[2]));
-
+            return true;
         }
         catch (Exception e) {
             e.printStackTrace();
+            return true;
         }
         finally {
             Cleaner.close(statement, rs, connection);

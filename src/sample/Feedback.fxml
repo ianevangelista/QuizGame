@@ -18,7 +18,7 @@
          </image>
       </ImageView>
       <TextField fx:id="email" layoutX="200.0" layoutY="127.0" prefWidth="200.0" promptText="E-mail" text="" />
-      <Button layoutX="14.0" layoutY="330.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneHome" prefHeight="42.0" prefWidth="78.0" text="BACK">
+      <Button layoutX="14.0" layoutY="330.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneHome" prefHeight="42.0" prefWidth="88.0" text="BACK">
          <font>
             <Font size="18.0" />
          </font>

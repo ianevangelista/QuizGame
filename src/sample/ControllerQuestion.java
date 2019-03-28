@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static sample.ChooseOpponent.getGameId;
-import static sample.ChooseOpponent.resetGameId;
+import static sample.ControllerOpponent.getGameId;
+import static sample.ControllerOpponent.resetGameId;
 import static sample.ControllerHome.getUserName;
 
 import Connection.Cleaner;
@@ -68,6 +68,7 @@ public class ControllerQuestion {
             timer.cancel();
             timer.purge();
             answerField.setVisible(false);
+            answerField.setText("");
             questionField.setVisible(false);
             feedback.setVisible(false);
             countdown.setVisible(false);
@@ -102,15 +103,17 @@ public class ControllerQuestion {
     }
     public void confirmAnswer(ActionEvent event) { //clicks submit button
         int answerScore = questionCheck();   //checks answer
+
         showFeedback(answerScore);
     }
 
     private void showFeedback(int score){
         if(score == -1){
             feedback.setText("You already answered that!");
+            answerField.setText("");
         }
         else if(score > 0){
-            feedback.setText("Congratulations! You got " + score + " point(s).");
+            feedback.setText("Congratulations! You got " + score + ((score > 1) ? " points." : " point."));
         }
         else{
             feedback.setText("You answered wrong.");

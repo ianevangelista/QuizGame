@@ -12,13 +12,11 @@ import static org.junit.Assert.*;
 public class ControllerHomeTest {
     ControllerHome ch;
     ChangeScene cs;
-    ConnectionPool cp;
 
     @Before
         public void setUp() {
         ch = new ControllerHome();
         cs = new ChangeScene();
-        cp = new ConnectionPool();
     }
 
     @Test
