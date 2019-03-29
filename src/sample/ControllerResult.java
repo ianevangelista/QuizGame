@@ -164,9 +164,10 @@ public class ControllerResult {
             @Override
             public void run() {
                 if(checkRes()) {
-                    turnOfTimerR();
+                    //turnOfTimerR();
                     showBtn();
                     System.out.println("funker i run");
+                    return;
                 }
             }
         };
@@ -202,11 +203,11 @@ public class ControllerResult {
         }
     }
 
-    public void turnOfTimerR() {
+    /*public void turnOfTimerR() {
         if (timerR != null) {
             timerR.cancel();
         }
-    }
+    }*/
 
     public void addGamesLost(){
         Connection connection = null;
