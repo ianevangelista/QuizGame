@@ -5,11 +5,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
 
 
 import java.sql.*;
 
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,7 +42,7 @@ public class ControllerOpponent {
     public Label usernameWrong;
     public Label challengeYou;
     public Label userOffline;
-    public Label onlineLabel;
+    public ListView onlineListView;
 
     public void initialize(){
         //timerOpponent();
@@ -179,7 +181,7 @@ public class ControllerOpponent {
         String sqlOnlineUsers = "SELECT username FROM `Player` WHERE online = 1;";
 
 
-        ArrayList<String> onlineList = new ArrayList<>();
+        ObservableList<String> onlineList = FXCollections.<String>observableArrayList();
 
         try {
             connection = ConnectionPool.getConnection();
@@ -188,16 +190,13 @@ public class ControllerOpponent {
             //Legger navn i tabellen onlinelist
             hs = statement.executeQuery(sqlOnlineUsers);
             while(hs.next()){
-                onlineList.add( hs.getString("username"));
+                if(!hs.getString("username").equals(username)) {
+                    onlineList.add( hs.getString("username"));
+                }
             }
 
 
-            String onlineText = "";
-            for(String name : onlineList){
-                onlineText += name +"\n\n";
-            }
-
-            onlineLabel.setText(onlineText);
+            onlineListView.setItems(onlineList);
 
 
         } catch (Exception e) {
@@ -210,11 +209,11 @@ public class ControllerOpponent {
     public void showBtn(){
         ChangeScene.changeVisibilityBtn(true, btnQuestion);
     }
-
+*/
     public void sceneCategory(ActionEvent event) {
         ChangeScene.change(event, "Category.fxml");
     }
-
+/*
     public void timerOpponent(){
         timer = new Timer();
         TimerTask task = new TimerTask() {
