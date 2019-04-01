@@ -178,7 +178,7 @@ public class ControllerOpponent {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
-            //Legger navn i tabellen highScoreList
+            //Legger navn i tabellen onlinelist
             hs = statement.executeQuery(sqlOnlineUsers);
             while(hs.next()){
                 onlineList.add( hs.getString("username"));
