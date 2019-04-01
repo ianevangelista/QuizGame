@@ -13,10 +13,7 @@ import javafx.scene.control.TextArea;
 
 import static sample.ControllerHome.getUserName;
 
-
 public class ControllerEmail {
-
-    private String username = getUserName();
 
     @FXML
     public TextArea feedback;
@@ -114,13 +111,12 @@ public class ControllerEmail {
     }
 
     public void sceneHome(ActionEvent event) { //back button
-        if(username == null) {
+        if(getUserName() == null) {
             ChangeScene.change(event, "Main.fxml");
         }
         else{
             ChangeScene.change(event, "Game.fxml");
         }
-
     }
 
     private boolean checkEmail(){

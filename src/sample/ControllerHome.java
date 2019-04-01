@@ -94,6 +94,9 @@ public class ControllerHome {
     public void setUserName(String username){
         this.userName = username;
     }
+    public static void setUserNull(){
+        userName = null;
+    }
 
     public static String getUserName(){
         return userName;
