@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import static sample.ControllerHome.getUserName;
 
 public class AlertBox {
     static boolean answer;
@@ -23,7 +24,9 @@ public class AlertBox {
         Button regretBtn = new Button("No, stay");
 
         closeBtn.setOnAction(event -> {
-            Logout.logOut();
+            if(getUserName() != null) {
+                Logout.logOut();
+            }
             answer = true;
             window.close();
         });
