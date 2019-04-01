@@ -99,6 +99,7 @@ public class ControllerQuestion {
         } else {
 
             questionDisplay();
+            timerCountdown();
         }
     }
     public void confirmAnswer(ActionEvent event) { //clicks submit button
@@ -229,6 +230,9 @@ public class ControllerQuestion {
                         seconds = 31;
                         questionCount++;
                         nextQuestion();
+                        timer.cancel();
+                        timer.purge();
+                        return;
                     }
                 });
             }
@@ -244,7 +248,6 @@ public class ControllerQuestion {
 
     //Home-button quits game
     public boolean sceneHome(ActionEvent event) { //feedback knapp
-        ChangeScene.change(event, "Game.fxml"); //bruker super-metode
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
@@ -287,6 +290,7 @@ public class ControllerQuestion {
             return false;
         }finally {
             Cleaner.close(statement, null, connection);
+            ChangeScene.change(event, "Game.fxml"); //bruker super-metode
         }
     }
 }

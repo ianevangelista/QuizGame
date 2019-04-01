@@ -25,8 +25,6 @@ public class ControllerRefresh {
     private static Statement statement = null;
     private static ResultSet rs = null;
 
-    public void initialize(){ challenged(); }
-
 
     public static void refresh(ActionEvent event) {
 
@@ -65,7 +63,7 @@ public class ControllerRefresh {
         }
     }
 
-    public void challenged() {
+    public void initialize() {
         acc.setStyle("-fx-background-color: #a3f267");
         dec.setStyle("-fx-background-color: #F29B7F");
 
