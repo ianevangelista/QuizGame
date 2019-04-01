@@ -44,27 +44,21 @@ public class ControllerRegister {
         Connection connection = null;
         PreparedStatement pstmt = null;
         if(!notNull()) {
-            System.out.println("Ikke fylt ut alle felt");
             visible(errorMessageEmpty);
         }
         else if(userExists()) {
-            System.out.println("Brukernavn opptatt");
             visible(errorMessageUserTaken);
         }
         else if(emailExists()) {
-            System.out.println("Email opptatt");
             visible(errorMessageEmailTaken);
         }
         else if(!checkEmail()) {
-            System.out.println("Email ugyldig");
             visible(errorMessageEmailInvalid);
         }
         else if(checkBirthyear()) {
-            System.out.println("Feil fødselsdato");
             visible(errorMessageBirthyear);
         }
         else if(!checkPassword()) {
-            System.out.println("Ikke samsvarende passord");
             visible(errorMessagePassword);
         } else{
             int gender = chooseGender();
@@ -167,11 +161,9 @@ public class ControllerRegister {
     }
     public int chooseGender(){
         if(this.gender.getSelectedToggle().equals(this.btnMale)){
-            System.out.println("Male");
             return 0;
         }
         else if(this.gender.getSelectedToggle().equals(this.btnFemale)){
-            System.out.println("Female");
             return 1;
         }
         else return -1;

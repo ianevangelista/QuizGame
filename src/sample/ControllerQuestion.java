@@ -134,10 +134,6 @@ public class ControllerQuestion {
                 qText = rs.getString("questionText");
                 qId = rs.getInt("questionId");
             }
-            System.out.println("Emir:");
-            System.out.println(gameId);
-            System.out.println(qId);
-            System.out.println(qText);
             //displays question
             questionField.setText(qText);
 

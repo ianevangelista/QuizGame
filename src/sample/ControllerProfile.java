@@ -43,7 +43,6 @@ public class ControllerProfile {
 
     public void edit(ActionEvent event){
         ChangeScene.change(event, "EditProfile.fxml");
-        System.out.println("test");
     }
 
     public void choosePic(){

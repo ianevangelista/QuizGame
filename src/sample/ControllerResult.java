@@ -166,7 +166,6 @@ public class ControllerResult {
                 if(checkRes()) {
                     turnOfTimerR();
                     showBtn();
-                    System.out.println("funker i run");
                     return;
                 }
             }
@@ -189,7 +188,6 @@ public class ControllerResult {
             if(rs.next()){
                 int user = rs.getInt(opponentFinished);
                 if (user == 1) {
-                    System.out.println("funker i checkRes");
                     return true;
                 }
             }
@@ -199,7 +197,6 @@ public class ControllerResult {
             return false;
         }finally {
             Cleaner.close(statement, rs, connection);
-            System.out.println(opponentFinished);
         }
     }
 
