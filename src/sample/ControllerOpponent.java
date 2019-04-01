@@ -20,6 +20,7 @@ import java.util.TimerTask;
 
 import Connection.Cleaner;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 
 import static sample.ControllerHome.getUserName;
 
@@ -54,6 +55,14 @@ public class ControllerOpponent {
 
     public void sceneHome(ActionEvent event) { //home button
         ChangeScene.change(event, "Game.fxml");
+    }
+
+    public void enter(ActionEvent event) {
+        opponent.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                findOpponent(event);
+            }
+        });
     }
 
     public void findOpponent(ActionEvent event) {

@@ -46,8 +46,8 @@ public class ControllerHome {
     }
 
     public void enter(ActionEvent event) {
-        password.setOnKeyPressed(event1 -> {
-            if (event1.getCode() == KeyCode.ENTER) {
+        password.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
                 playerLogin(event);
             }
         });

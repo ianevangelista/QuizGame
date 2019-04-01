@@ -21,7 +21,7 @@
       </ImageView>
       <Button layoutX="12.0" layoutY="347.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneGame" prefHeight="39.0" prefWidth="76.0" text="HOME">
          <font>
-            <Font size="18.0" />
+            <Font size="16.0" />
          </font>
       </Button>
       <Button layoutX="510.0" layoutY="347.0" minHeight="28.0" mnemonicParsing="false" onAction="#edit" prefHeight="39.0" prefWidth="76.0" text="EDIT">

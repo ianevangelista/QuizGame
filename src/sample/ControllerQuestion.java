@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 
 import java.sql.Connection;
@@ -106,7 +107,6 @@ public class ControllerQuestion {
     }
     public void confirmAnswer(ActionEvent event) { //clicks submit button
         int answerScore = questionCheck();   //checks answer
-
         showFeedback(answerScore);
     }
 
@@ -159,6 +159,14 @@ public class ControllerQuestion {
         }finally {
             Cleaner.close(statement, rs, connection);
         }
+    }
+
+    public void enter(ActionEvent event) {
+        answerField.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                confirmAnswer(event);
+            }
+        });
     }
 
     //Checks if the answered question is correct and if it has already been answered by the user this round
