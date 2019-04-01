@@ -23,7 +23,7 @@ public class ControllerResult {
 
     private String username = getUserName();
     private int gameId = getGameId();
-    private java.util.Timer timerR;
+    private Timer timerR;
     private boolean bothFinished = false;
 
     @FXML
@@ -158,7 +158,7 @@ public class ControllerResult {
     }
 
 
-        public void timerRes(){
+    public void timerRes(){
         timerR = new Timer();
         TimerTask task = new TimerTask() {
             @Override
@@ -206,6 +206,8 @@ public class ControllerResult {
     /*public void turnOfTimerR() {
         if (timerR != null) {
             timerR.cancel();
+            timerR.purge();
+            return;
         }
     }*/
 

@@ -26,9 +26,9 @@ public class AlertBox {
         closeBtn.setOnAction(event -> {
             if(getUserName() != null) {
                 Logout.logOut();
-                answer = true;
-                window.close();
             }
+            answer = true;
+            window.close();
         });
 
         regretBtn.setOnAction(event -> {
