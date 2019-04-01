@@ -8,12 +8,9 @@ import javafx.scene.control.TextField;
 
 
 import java.sql.*;
-<<<<<<< HEAD
+
 import java.util.ArrayList;
-=======
-import java.util.Timer;
-import java.util.TimerTask;
->>>>>>> 4dd406d87471d92c24c47255d76759c6959a0b13
+
 
 import Connection.Cleaner;
 import javafx.scene.control.Button;
