@@ -8,13 +8,14 @@ import javafx.scene.control.TextField;
 
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import Connection.Cleaner;
 import javafx.scene.control.Button;
 
 import static sample.ControllerHome.getUserName;
 
-public class ControllerOpponent{
+public class ControllerOpponent {
 
     private static Connection connection = null;
     private static Statement statement = null;
@@ -33,6 +34,9 @@ public class ControllerOpponent{
     public Label usernameWrong;
     public Label challengeYou;
     public Label userOffline;
+    public Label onlineLabel;
+
+    public void initialize(){ onlineUsersTable(); }
 
     public void sceneHome(ActionEvent event) { //home button
         ChangeScene.change(event, "Game.fxml");
@@ -155,6 +159,43 @@ public class ControllerOpponent{
             }finally {
                 Cleaner.close(statement, rsGameId, connection);
             }
+        }
+    }
+
+    public void onlineUsersTable(){
+
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet hs = null;
+
+        String sqlOnlineUsers = "SELECT username FROM `Player` WHERE online = 1;";
+
+
+        ArrayList<String> onlineList = new ArrayList<>();
+
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+
+            //Legger navn i tabellen highScoreList
+            hs = statement.executeQuery(sqlOnlineUsers);
+            while(hs.next()){
+                onlineList.add( hs.getString("username"));
+            }
+
+
+            String onlineText = "";
+            for(String name : onlineList){
+                onlineText += name +"\n\n";
+            }
+
+            onlineLabel.setText(onlineText);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            Cleaner.close(statement, hs, connection);
         }
     }
 }
