@@ -8,6 +8,8 @@ import javafx.scene.control.TextField;
 
 
 import java.sql.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import Connection.Cleaner;
 import javafx.scene.control.Button;
@@ -25,7 +27,6 @@ public class ControllerOpponent{
     private String opponentUsername = null;
     private int opponentOnline = 0;
     private static int gameId;
-
 
     @FXML
     public TextField opponent;

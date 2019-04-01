@@ -92,6 +92,7 @@ public class TimerC {
         if (timer != null) {
             timer.cancel();
             timer.purge();
+            return;
         }
     }
 }
