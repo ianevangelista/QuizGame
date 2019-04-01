@@ -23,7 +23,7 @@
       </image>
     </ImageView>
     <TextField fx:id="username" layoutX="200.0" layoutY="200.0" prefWidth="200.0" promptText="Username" text="" />
-    <PasswordField fx:id="password" layoutX="200.0" layoutY="262.0" prefHeight="27.0" prefWidth="200.0" promptText="Password" />
+    <PasswordField fx:id="password" layoutX="200.0" layoutY="262.0" onAction="#enter" prefHeight="27.0" prefWidth="200.0" promptText="Password" />
     <Button layoutX="14.0" layoutY="330.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneInfo" prefHeight="42.0" prefWidth="78.0" text="INFO">
       <font>
         <Font size="18.0" />
