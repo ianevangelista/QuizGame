@@ -14,7 +14,7 @@
             <Image url="@gameLogo.png" />
          </image>
       </ImageView>
-      <Button layoutX="14.0" layoutY="344.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneInfoLogin" prefHeight="42.0" prefWidth="136.0" text="INFO">
+      <Button layoutX="14.0" layoutY="344.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneInfo" prefHeight="42.0" prefWidth="136.0" text="INFO">
          <font>
             <Font size="18.0" />
          </font>

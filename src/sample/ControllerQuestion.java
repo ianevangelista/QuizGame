@@ -97,6 +97,7 @@ public class ControllerQuestion {
             catch (Exception e){ e.printStackTrace();}
             finally {Cleaner.close(statement, rs, connection);}
         } else {
+
             questionDisplay();
             timerCountdown();
         }
@@ -124,6 +125,8 @@ public class ControllerQuestion {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
+
+
 
             //sql to get question text
             String sqlGetText = "SELECT questionText, questionId FROM Game JOIN Question ON questionId = question" + (questionCount+1) +  " WHERE gameId = " + gameId;
