@@ -36,5 +36,6 @@
       <Label fx:id="challengeYou" layoutX="411.0" layoutY="191.0" prefHeight="18.0" prefWidth="149.0" text="Can't challenge yourself" textFill="RED" visible="false" />
       <Label fx:id="userOffline" layoutX="392.0" layoutY="183.0" text="Can't challenge an offline user&#10;Please try again!" textAlignment="CENTER" textFill="RED" visible="false" />
       <Label fx:id="onlineLabel" layoutX="452.0" layoutY="59.0" text="Label" />
+      <Button fx:id="btnQuestion" layoutX="276.0" layoutY="320.0" mnemonicParsing="false" onAction="#sceneCategory" text="Button" visible="false" />
    </children>
 </AnchorPane>

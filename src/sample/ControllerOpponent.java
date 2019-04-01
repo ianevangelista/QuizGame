@@ -10,6 +10,8 @@ import javafx.scene.control.TextField;
 import java.sql.*;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 import Connection.Cleaner;
@@ -26,18 +28,23 @@ public class ControllerOpponent {
 
     private String username = getUserName();
     private String opponentUsername = null;
+    private Timer timer;
     private int opponentOnline = 0;
     private static int gameId;
+
 
     @FXML
     public TextField opponent;
     public Button challenge;
+    public Button btnQuestion;
     public Label usernameWrong;
     public Label challengeYou;
     public Label userOffline;
     public Label onlineLabel;
 
-    public void initialize(){ onlineUsersTable(); }
+    public void initialize(){
+        //timerOpponent();
+        onlineUsersTable(); }
 
     public void sceneHome(ActionEvent event) { //home button
         ChangeScene.change(event, "Game.fxml");
@@ -199,4 +206,55 @@ public class ControllerOpponent {
             Cleaner.close(statement, hs, connection);
         }
     }
+    /*
+    public void showBtn(){
+        ChangeScene.changeVisibilityBtn(true, btnQuestion);
+    }
+
+    public void sceneCategory(ActionEvent event) {
+        ChangeScene.change(event, "Category.fxml");
+    }
+
+    public void timerOpponent(){
+        timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if(checkGameId()) {
+                    turnOfTimer();
+                    showBtn();
+                    System.out.println("funker i run");
+                    return;
+                }
+            }
+        };
+        timer.schedule(task, 5000, 3000);
+    }
+
+    public void turnOfTimer() {
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
+        }
+    }
+
+    public boolean checkGameId() {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+            String sql = "SELECT gameId FROM Player WHERE username = '" + username + "'";
+            rs = statement.executeQuery(sql);
+            if (rs.next()) { return true; }
+            else return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            Cleaner.close(statement, rs, connection);
+        }
+    }*/
 }

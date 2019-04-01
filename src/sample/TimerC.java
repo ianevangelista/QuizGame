@@ -49,6 +49,7 @@ public class TimerC {
                     turnOfTimer();
                     categoryChosen = true;
                     showBtn();
+                    return;
                 }
             }
         };
@@ -92,7 +93,6 @@ public class TimerC {
         if (timer != null) {
             timer.cancel();
             timer.purge();
-            return;
         }
     }
 }
