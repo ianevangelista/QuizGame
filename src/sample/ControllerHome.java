@@ -43,57 +43,70 @@ public class ControllerHome {
     }
 
     public boolean playerLogin(ActionEvent event) {
+        //checks if there is a input
+        if (username.getText().isEmpty() || password.getText().isEmpty()) {
+            ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
+            return false;
+        }
 
-		String sql = "SELECT username, online, password, salt FROM Player WHERE username = ?;";
-		try {
-		     if (username.getText().isEmpty() || password.getText().isEmpty()) {
-                ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
-                return false;
-            }
 
+        String inputUsername = username.getText();
+        String inputPassword = password.getText();
+
+        //uses method validateLogin to check if username and password is correct
+        if(validateLogin(inputUsername, inputPassword)) {
+            ChangeScene.change(event, "Game.fxml");
+            return true;
+        }
+
+        //if validateLogin returns false, an errormessage is shown
+        ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
+        return false;
+	}
+
+
+	public boolean validateLogin(String inputUsername, String inputPassword) {
+        String sql = "SELECT username, online, password, salt FROM Player WHERE username = ?;";
+        try {
             connection = ConnectionPool.getConnection();
             pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, username.getText());
+            pstmt.setString(1, inputUsername);
             rs = pstmt.executeQuery();
 
-            if (!(rs.next())) {
-                ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
-                return false;
+            //if user does not exist
+            if (!(rs.next())) { return false;
             }
-            else if (rs.getBoolean("online")) {
-                ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
-                return false;
-            }
+
+            //if user is online
+            else if (rs.getBoolean("online")) { return false; }
+
             else {
                 String salt = rs.getString("salt");
                 String realPassword = rs.getString("password");
-                String inputPassword = password.getText();
 
                 HashSalt hashedSaltedPass = new HashSalt();
                 byte[] byteSalt = hashedSaltedPass.decodeHexString(salt);
                 String hashedPassword = hashedSaltedPass.genHashSalted(inputPassword, byteSalt);
 
                 if (realPassword.equals(hashedPassword)) {
-                    setUserName(username.getText());
+                    setUserName(inputUsername);
                     Logout.logIn();
-                    ChangeScene.change(event, "Game.fxml");
                     return true;
-                } else {
-                    ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
-                    return false;
                 }
             }
-            }catch(Exception e){
-                e.printStackTrace();
-                return false;
-            }finally{
-                Cleaner.close(pstmt, rs, connection);
-            }
-	}
+            return false;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }finally{
+            Cleaner.close(pstmt, rs, connection);
+        }
+    }
 
     public void setUserName(String username){
         this.userName = username;
     }
+
     public static void setUserNull(){
         userName = null;
     }

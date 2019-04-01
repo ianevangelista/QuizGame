@@ -56,7 +56,6 @@ public class ControllerEmail {
 
         }
         catch (MessagingException e) {
-            System.out.println("Heihei fanger feil");
             e.printStackTrace();
         }
 
@@ -101,7 +100,6 @@ public class ControllerEmail {
 
     public void feedback(ActionEvent event){
         if(!checkEmail()) {
-            System.out.println("Feil email");
             errorMessageEmailInvalid.setVisible(true);
         } else{
             sendFeedback();

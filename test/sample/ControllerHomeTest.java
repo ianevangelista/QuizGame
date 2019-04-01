@@ -56,11 +56,14 @@ public class ControllerHomeTest {
         assertEquals(expResult, result);
     }
 
-    @Test //får ikke sjekka metoden sikkelig fordi textfield alltid vil være tomt
-    public void playerLoginTest() {
-        ActionEvent event = new ActionEvent();
-        boolean ans = ch.playerLogin(event);
-        assertFalse(ans);
+    //
+    @Test
+    public void validateLoginTest() {
+        String username = "helene";
+        String password = "helene";
+        boolean ans = ch.validateLogin(username, password);
+        Logout.logOut();
+        assertTrue(ans);
     }
 
 

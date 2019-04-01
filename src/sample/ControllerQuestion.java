@@ -64,7 +64,11 @@ public class ControllerQuestion {
     }
 
     public void nextQuestion() {
-        if(questionCount > 2){
+        //System.out.println(questionCount);
+        if(questionCount > 3){
+
+        }
+        else if(questionCount > 2){
             timer.cancel();
             timer.purge();
             answerField.setVisible(false);
@@ -76,7 +80,6 @@ public class ControllerQuestion {
             questionLabel.setVisible(false);
             resultText.setVisible(true);
             resultButton.setVisible(true);
-            questionCount = 0;
             try {
                 connection = ConnectionPool.getConnection();
                 statement = connection.createStatement();
@@ -134,10 +137,6 @@ public class ControllerQuestion {
                 qText = rs.getString("questionText");
                 qId = rs.getInt("questionId");
             }
-            System.out.println("Emir:");
-            System.out.println(gameId);
-            System.out.println(qId);
-            System.out.println(qText);
             //displays question
             questionField.setText(qText);
 

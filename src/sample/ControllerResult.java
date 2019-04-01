@@ -164,9 +164,8 @@ public class ControllerResult {
             @Override
             public void run() {
                 if(checkRes()) {
-                    //turnOfTimerR();
+                    turnOfTimerR();
                     showBtn();
-                    System.out.println("funker i run");
                     return;
                 }
             }
@@ -189,7 +188,6 @@ public class ControllerResult {
             if(rs.next()){
                 int user = rs.getInt(opponentFinished);
                 if (user == 1) {
-                    System.out.println("funker i checkRes");
                     return true;
                 }
             }
@@ -199,17 +197,16 @@ public class ControllerResult {
             return false;
         }finally {
             Cleaner.close(statement, rs, connection);
-            System.out.println(opponentFinished);
         }
     }
 
-    /*public void turnOfTimerR() {
+    public void turnOfTimerR() {
         if (timerR != null) {
             timerR.cancel();
             timerR.purge();
             return;
         }
-    }*/
+    }
 
     public void addGamesLost(){
         Connection connection = null;
