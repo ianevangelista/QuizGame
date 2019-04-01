@@ -43,59 +43,43 @@ public class ControllerCategory {
     }
 
     public boolean chooseCategory1(ActionEvent event){ //When button 1 is pressed
-        try{
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-
-            int chosenCategoryId = categoryId.get(randomCategoryId[0]);
-            String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
-            statement.executeUpdate(sql);
+        int chosenCategoryId = categoryId.get(randomCategoryId[0]);
+        if(updateCategory(chosenCategoryId, gameId)) {
             // Adds questions from the category to the game
-            questionPicker(chosenCategoryId);
+            questionPicker(chosenCategoryId, gameId);
+            ChangeScene.change(event, "Question.fxml");
             return true;
         }
-        catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-        finally {
-            Cleaner.close(statement, rs, connection);
-            ChangeScene.change(event, "Question.fxml");
-        }
+        return false;
     }
 
     public boolean chooseCategory2(ActionEvent event){ //When button 2 is pressed
-        try{
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-
-            int chosenCategoryId = categoryId.get(randomCategoryId[1]);
-            String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
-            statement.executeUpdate(sql);
-            // Adds questions from the category to the game
-            questionPicker(chosenCategoryId);
+        int chosenCategoryId = categoryId.get(randomCategoryId[1]);
+        if(updateCategory(chosenCategoryId, gameId)) {
+            questionPicker(chosenCategoryId, gameId);
+            ChangeScene.change(event, "Question.fxml");
             return true;
         }
-        catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-        finally {
-            Cleaner.close(statement, rs, connection);
-            ChangeScene.change(event, "Question.fxml");
-        }
+        return false;
     }
 
     public boolean chooseCategory3(ActionEvent event){ //When button 3 is pressed
-        try{
+        int chosenCategoryId = categoryId.get(randomCategoryId[2]);
+        if(updateCategory(chosenCategoryId, gameId)) {
+            questionPicker(chosenCategoryId, gameId);
+            ChangeScene.change(event, "Question.fxml");
+            return true;
+        }
+        return false;
+    }
+
+    public boolean updateCategory(int category, int gameId) {
+        try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-
-            int chosenCategoryId = categoryId.get(randomCategoryId[2]);
-            String sql = "UPDATE Game SET categoryId = " + chosenCategoryId + " WHERE gameId = " + gameId;
+            String sql = "UPDATE Game SET categoryId = " + category + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
             // Adds questions from the category to the game
-            questionPicker(chosenCategoryId);
             return true;
         }
         catch (Exception e){
@@ -104,7 +88,6 @@ public class ControllerCategory {
         }
         finally {
             Cleaner.close(statement, rs, connection);
-            ChangeScene.change(event, "Question.fxml");
         }
     }
 
@@ -156,7 +139,7 @@ public class ControllerCategory {
         }
     }
 
-    private void questionPicker(int categoryId) { //helene
+    private void questionPicker(int categoryId, int gameId) { //helene
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
