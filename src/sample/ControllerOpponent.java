@@ -10,6 +10,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 
 
+
+
 import java.sql.*;
 
 import java.util.Timer;
@@ -18,6 +20,7 @@ import java.util.TimerTask;
 
 import Connection.Cleaner;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 
 import static sample.ControllerHome.getUserName;
 
@@ -33,6 +36,7 @@ public class ControllerOpponent {
     private Timer timer;
     private int opponentOnline = 0;
     private static int gameId;
+    ObservableList<String> onlineList = FXCollections.observableArrayList();
 
 
     @FXML
@@ -43,6 +47,7 @@ public class ControllerOpponent {
     public Label challengeYou;
     public Label userOffline;
     public ListView onlineListView;
+    public Label label;
 
     public void initialize(){
         //timerOpponent();
@@ -50,6 +55,14 @@ public class ControllerOpponent {
 
     public void sceneHome(ActionEvent event) { //home button
         ChangeScene.change(event, "Game.fxml");
+    }
+
+    public void enter(ActionEvent event) {
+        opponent.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                findOpponent(event);
+            }
+        });
     }
 
     public void findOpponent(ActionEvent event) {
@@ -178,10 +191,8 @@ public class ControllerOpponent {
         Statement statement = null;
         ResultSet hs = null;
 
-        String sqlOnlineUsers = "SELECT username FROM `Player` WHERE online = 1;";
+        String sqlOnlineUsers = "SELECT username FROM `Player` WHERE online = 1 AND gameId IS NULL;";
 
-
-        ObservableList<String> onlineList = FXCollections.<String>observableArrayList();
 
         try {
             connection = ConnectionPool.getConnection();
@@ -189,21 +200,43 @@ public class ControllerOpponent {
 
             //Legger navn i tabellen onlinelist
             hs = statement.executeQuery(sqlOnlineUsers);
-            while(hs.next()){
-                if(!hs.getString("username").equals(username)) {
-                    onlineList.add( hs.getString("username"));
+            if(hs.next() && !hs.getString("username").equals(username)){
+                hideOnlineUsers(true);
+                onlineList.add( hs.getString("username"));
+                while(hs.next()){
+                    if(!hs.getString("username").equals(username)) {
+                        onlineList.add( hs.getString("username"));
+                    }
                 }
+            }else{
+                hideOnlineUsers(false);
             }
 
 
             onlineListView.setItems(onlineList);
-
 
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             Cleaner.close(statement, hs, connection);
         }
+    }
+    public void chooseOnlineUser(){
+        ObservableList selectedIndices = onlineListView.getSelectionModel().getSelectedIndices();
+        int index = -1;
+
+        for(Object o : selectedIndices){
+            index = (Integer) o;
+        }
+
+        String user = onlineList.get(index);
+
+        opponent.setText(user);
+    }
+
+    private void hideOnlineUsers(boolean visibility){
+        onlineListView.setVisible(visibility);
+        label.setVisible(visibility);
     }
     /*
     public void showBtn(){
