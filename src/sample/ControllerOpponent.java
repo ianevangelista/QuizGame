@@ -73,7 +73,7 @@ public class ControllerOpponent {
             challengeYou.setVisible(false);
 
             //gets the opponents username, using a prepared statment beacause it's user input
-            String insertSql = "SELECT username, online FROM Player WHERE username =?;";
+            String insertSql = "SELECT username, online FROM Player WHERE username = ?;";
             pstmt = connection.prepareStatement(insertSql);
             pstmt.setString(1, (opponent.getText().toLowerCase())); //toLowerCase
             rs = pstmt.executeQuery();

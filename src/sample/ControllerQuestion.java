@@ -169,7 +169,6 @@ public class ControllerQuestion {
     //Checks if the answered question is correct and if it has already been answered by the user this round
     private int questionCheck() {
         int answerScore = 0;
-        boolean alreadyAnswerd = false;
 
         String answer = answerField.getText().toLowerCase();  //get answer in lowercase
 
