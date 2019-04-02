@@ -47,7 +47,10 @@
          <font>
             <Font name="Avenir Book" size="13.0" />
          </font></Button>
-    <Label fx:id="visibility" layoutX="409.0" layoutY="204.0" text="Wrong username or password" visible="false" />
+    <Label fx:id="visibility" layoutX="409.0" layoutY="204.0" text="Wrong username or password" textFill="RED" visible="false">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></Label>
       <Button layoutX="458.0" layoutY="335.0" minHeight="28.0" mnemonicParsing="false" onAction="#feedback" prefHeight="42.0" prefWidth="128.0" style="-fx-background-color: #dae1e8 #dae1e8;" text="FEEDBACK">
          <font>
             <Font name="Avenir Book" size="18.0" />

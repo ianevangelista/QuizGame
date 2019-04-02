@@ -64,7 +64,10 @@
             <Font name="Avenir Book" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="errorMessage" alignment="CENTER" layoutX="226.0" layoutY="306.0" prefHeight="59.0" prefWidth="236.0" text="You need to insert something" visible="false" />
+      <Label fx:id="errorMessage" alignment="CENTER" layoutX="228.0" layoutY="318.0" prefHeight="59.0" prefWidth="236.0" text="You need to insert something" textFill="RED" visible="false">
+         <font>
+            <Font size="17.0" />
+         </font></Label>
       <PasswordField fx:id="inputOldPassword" layoutX="253.0" layoutY="221.0" prefHeight="39.0" prefWidth="182.0">
          <font>
             <Font name="Avenir Book" size="13.0" />
@@ -88,8 +91,19 @@
             <Font size="15.0" />
          </font>
       </Button>
-      <Label fx:id="confirmed" alignment="CENTER" layoutX="226.0" layoutY="306.0" prefHeight="59.0" prefWidth="236.0" text="Edit complete" visible="false" />
-      <Label fx:id="wrongPassword" alignment="CENTER" layoutX="236.0" layoutY="316.0" prefHeight="59.0" prefWidth="236.0" text="Wrong password" visible="false" />
+      <Label fx:id="confirmed" alignment="CENTER" layoutX="226.0" layoutY="306.0" prefHeight="59.0" prefWidth="236.0" text="Edit complete!" textFill="WHITE" visible="false">
+         <font>
+            <Font name="Avenir Book" size="19.0" />
+         </font></Label>
+      <Label fx:id="wrongPassword" alignment="CENTER" layoutX="226.0" layoutY="318.0" prefHeight="59.0" prefWidth="236.0" text="Wrong password" textFill="RED" visible="false">
+         <font>
+            <Font name="Avenir Book" size="17.0" />
+         </font></Label>
       <Line endX="-15.0" layoutX="453.0" layoutY="109.0" startX="-204.0" stroke="WHITE" />
+      <Label fx:id="errorMessageEmail" alignment="CENTER" layoutX="226.0" layoutY="318.0" prefHeight="59.0" prefWidth="236.0" text="Invalid e-mail" textFill="RED" visible="false">
+         <font>
+            <Font name="Avenir Book" size="17.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

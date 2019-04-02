@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 
 import static sample.ControllerHome.getUserName;
 
@@ -28,6 +29,7 @@ public class ControllerEdit {
     public Button confirmPassword;
     public Label errorMessage;
     public Label confirmed;
+    public Label errorMessageEmail;
     public Label wrongPassword;
     public TextField inputEmail;
     public PasswordField inputOldPassword;
@@ -44,20 +46,20 @@ public class ControllerEdit {
 
         String input = "UPDATE Player SET email = ? WHERE username = ?;";
 
-        try{
+        try {
             connection = ConnectionPool.getConnection();
 
             statement = connection.prepareStatement(input);
-            statement.setString(1,inputEmail.getText());
-            statement.setString(2,username);
+            statement.setString(1, inputEmail.getText());
+            statement.setString(2, username);
 
-            if(inputEmail.getText() == null){
-                errorMessage.setVisible(true);
-            }
-            else{
+            if (inputEmail.getText().isEmpty()) {
+                setVisibility(errorMessage);
+            }else if(!checkEmail()){
+                setVisibility(errorMessageEmail);
+            }else{
                 statement.executeUpdate();
-                errorMessage.setVisible(false);
-                confirmed.setVisible(true);
+                setVisibility(confirmed);
             }
 
         }
@@ -81,12 +83,11 @@ public class ControllerEdit {
             statement.setString(2, username);
 
             if(chooseGender() == -1){
-                errorMessage.setVisible(true);
+                setVisibility(errorMessage);
             }
             else{
                 statement.executeUpdate();
-                errorMessage.setVisible(false);
-                confirmed.setVisible(true);
+                setVisibility(confirmed);
             }
         }
         catch(SQLException e){
@@ -132,11 +133,12 @@ public class ControllerEdit {
                 statement.setString(3, username);
                 statement.executeUpdate();
 
-                wrongPassword.setVisible(false);
-                confirmed.setVisible(true);
+                setVisibility(confirmed);
 
-            } else {
-                wrongPassword.setVisible(true);
+            } else if(inputNewPassword.getText().isEmpty()) {
+                setVisibility(errorMessage);
+            } else{
+                setVisibility(wrongPassword);
             }
 
         }
@@ -144,18 +146,37 @@ public class ControllerEdit {
             e.printStackTrace();
         }
         finally {
-
+            Cleaner.close(statement, rs, connection);
         }
     }
 
     public int chooseGender(){
-        if(this.gender.getSelectedToggle().equals(this.btnMale)){
+        if(this.btnMale.isSelected()){
             return 0;
         }
-        else if(this.gender.getSelectedToggle().equals(this.btnFemale)){
+        else if(this.btnFemale.isSelected()){
             return 1;
         }
         else return -1;
     }
+    private boolean checkEmail(){
+        String getEmail = inputEmail.getText();
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
 
+        Pattern pat = Pattern.compile(emailRegex);
+        if (getEmail == null)
+            return false;
+        return pat.matcher(getEmail).matches();
+    }
+
+    private void setVisibility(Label label){
+        errorMessage.setVisible(false);
+        confirmed.setVisible(false);
+        wrongPassword.setVisible(false);
+        errorMessageEmail.setVisible(false);
+        label.setVisible(true);
+    }
 }
