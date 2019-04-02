@@ -38,7 +38,6 @@ public class ControllerOpponent {
     private static int gameId;
     ObservableList<String> onlineList = FXCollections.observableArrayList();
 
-
     @FXML
     public TextField opponent;
     public Button challenge;
@@ -51,7 +50,8 @@ public class ControllerOpponent {
 
     public void initialize(){
         //timerOpponent();
-        onlineUsersTable(); }
+        onlineUsersTable();
+    }
 
     public void sceneHome(ActionEvent event) { //home button
         ChangeScene.change(event, "Game.fxml");
@@ -135,8 +135,6 @@ public class ControllerOpponent {
 
             sqlInsert = "UPDATE `Player` SET `gameId` = " + gameId + " WHERE `Player`.`username` = '" + player2 + "'";
             statement.executeUpdate(sqlInsert);
-
-            Cleaner.close(statement, rsGameId, connection);
             return true;
 
         }catch (SQLException e) {
@@ -191,13 +189,10 @@ public class ControllerOpponent {
         Statement statement = null;
         ResultSet hs = null;
 
-        String sqlOnlineUsers = "SELECT username FROM `Player` WHERE online = 1 AND gameId IS NULL;";
-
-
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-
+            String sqlOnlineUsers = "SELECT username FROM `Player` WHERE online = 1 AND gameId IS NULL;";
             //Legger navn i tabellen onlinelist
             hs = statement.executeQuery(sqlOnlineUsers);
             if(hs.next() && !hs.getString("username").equals(username)){
@@ -211,8 +206,6 @@ public class ControllerOpponent {
             }else{
                 hideOnlineUsers(false);
             }
-
-
             onlineListView.setItems(onlineList);
 
         } catch (Exception e) {
@@ -224,13 +217,10 @@ public class ControllerOpponent {
     public void chooseOnlineUser(){
         ObservableList selectedIndices = onlineListView.getSelectionModel().getSelectedIndices();
         int index = -1;
-
         for(Object o : selectedIndices){
             index = (Integer) o;
         }
-
         String user = onlineList.get(index);
-
         opponent.setText(user);
     }
 
