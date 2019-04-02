@@ -43,24 +43,21 @@ public class ControllerRegister {
     public void reg(ActionEvent event) {
         Connection connection = null;
         PreparedStatement pstmt = null;
-        if(!notNull()) {
+        if (!notNull()) {
             visible(errorMessageEmpty);
-        }
-        else if(userExists()) {
+        } else if (userExists()) {
             visible(errorMessageUserTaken);
-        }
-        else if(emailExists()) {
+        } else if (emailExists()) {
             visible(errorMessageEmailTaken);
-        }
-        else if(!checkEmail()) {
+        } else if (!checkEmail()) {
             visible(errorMessageEmailInvalid);
-        }
-        else if(checkBirthyear()) {
+        } else if (checkBirthyear()) {
             visible(errorMessageBirthyear);
-        }
-        else if(!checkPassword()) {
+        } else if (!checkPassword()) {
             visible(errorMessagePassword);
-        } else{
+        } else if(chooseGender() == -1){
+            visible(errorMessageEmpty);
+        }else{
             int gender = chooseGender();
             int ol = 0;
             int startPoints = 0;
@@ -160,13 +157,13 @@ public class ControllerRegister {
         return true;
     }
     public int chooseGender(){
-        if(this.gender.getSelectedToggle().equals(this.btnMale)){
+        if(this.btnMale.isSelected()){
             return 0;
         }
-        else if(this.gender.getSelectedToggle().equals(this.btnFemale)){
+        else if(this.btnFemale.isSelected()){
             return 1;
         }
-        else return -1;
+        return -1;
     }
 
     public boolean checkEmail(){
