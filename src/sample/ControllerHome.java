@@ -56,7 +56,7 @@ public class ControllerHome {
     public boolean playerLogin(ActionEvent event) {
         //checks if there is a input
         if (username.getText().isEmpty() || password.getText().isEmpty()) {
-            ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
+            visibility.setVisible(true); //her skal en pop-up komme
             return false;
         }
 
@@ -71,7 +71,7 @@ public class ControllerHome {
         }
 
         //if validateLogin returns false, an errormessage is shown
-        ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
+        visibility.setVisible(true); //her skal en pop-up komme
         return false;
 	}
 
