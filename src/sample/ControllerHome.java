@@ -28,6 +28,10 @@ public class ControllerHome {
         ChangeScene.change(event, "Info.fxml"); //bruker super-metode
         return true;
     }
+    public boolean forgotPassword(ActionEvent event) { //forgot password knapp
+        ChangeScene.change(event, "ResetPassword.fxml");
+        return true;
+    }
 
     public boolean sceneHome(ActionEvent event) { //feedback knapp
         ChangeScene.change(event, "Main.fxml");

@@ -55,5 +55,10 @@
          <font>
             <Font name="Avenir Book" size="18.0" />
          </font></Button>
+      <Button layoutX="251.0" layoutY="365.0" mnemonicParsing="false" onAction="#forgotPassword" style="-fx-background-color: rgb(11,90,200) rgb(11,90,200);" text="Forgot password" textFill="#6ee4f8" underline="true">
+         <font>
+            <Font name="Avenir Book" size="11.0" />
+         </font>
+      </Button>
   </children>
 </AnchorPane>

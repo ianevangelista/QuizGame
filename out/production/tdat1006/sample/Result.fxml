@@ -45,7 +45,10 @@
             <Font name="Avenir Book" size="18.0" />
          </font>
       </Text>
-      <Button fx:id="btnNext" layoutX="261.0" layoutY="265.0" mnemonicParsing="false" onAction="#sceneResult" text="Get result" visible="false" />
+      <Button fx:id="btnNext" layoutX="250.0" layoutY="265.0" mnemonicParsing="false" onAction="#sceneResult" style="-fx-background-color: #dae1e8 #dae1e#dae1e8;" text="GET RESULT" visible="false">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></Button>
       <Text fx:id="theirScore" fill="#1dd1ff" layoutX="120.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your opponent got 0 points this round." textAlignment="CENTER" visible="false" wrappingWidth="361.84765625">
          <font>
             <Font name="Avenir Book" size="14.0" />
