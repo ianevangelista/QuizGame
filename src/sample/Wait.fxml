@@ -20,12 +20,12 @@
             <Font name="Avenir Book" size="24.0" />
          </font>
       </Text>
-      <Button layoutX="12.0" layoutY="347.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneGame" prefHeight="39.0" prefWidth="85.0" text="HOME">
+      <Button layoutX="12.0" layoutY="347.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneGame" prefHeight="39.0" prefWidth="85.0" style="-fx-background-color: #dae1e8 #dae1e8;" text="HOME">
          <font>
             <Font name="Avenir Book" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnNext" layoutX="259.0" layoutY="229.0" mnemonicParsing="false" onAction="#sceneQuestion" text="Start game">
+      <Button fx:id="btnNext" layoutX="251.0" layoutY="228.0" mnemonicParsing="false" onAction="#sceneQuestion" style="-fx-background-color: #dae1e8 #dae1e8;" text="START GAME" visible="false">
          <font>
             <Font name="Avenir Book" size="13.0" />
          </font></Button>
