@@ -1,4 +1,6 @@
 package sample;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -9,14 +11,15 @@ import java.sql.Statement;
 
 import Connection.Cleaner;
 import Connection.ConnectionPool;
+import javafx.scene.control.ListView;
 
 import java.util.ArrayList;
 
 public class ControllerHighScore {
 
     @FXML
-    public Label userCol;
-    public Label scoreCol;
+    public ListView userCol;
+    public ListView scoreCol;
 
     public void initialize(){ highscoreTable(); }
 
@@ -33,8 +36,8 @@ public class ControllerHighScore {
         String sqlHighScoreUser = "SELECT username FROM `Player` ORDER BY points desc LIMIT 5;";
         String sqlHighScorePoints = "SELECT points FROM `Player` ORDER BY points desc LIMIT 5;";
 
-        ArrayList<String> usernameList = new ArrayList<>();
-        ArrayList<String> pointsList = new ArrayList<>();
+        ObservableList<String> usernameList = FXCollections.observableArrayList();
+        ObservableList<String> pointsList = FXCollections.observableArrayList();
 
         try {
             connection = ConnectionPool.getConnection();
@@ -53,16 +56,9 @@ public class ControllerHighScore {
                 pointsList.add( Integer.toString(hs.getInt("points")));
             }
 
-            String userText = "";
-            for(String name : usernameList){
-                userText += name +"\n\n";
-            }
-            String pointsText = "";
-            for(String points : pointsList){
-                pointsText += points +"\n\n";
-            }
-            userCol.setText(userText);
-            scoreCol.setText(pointsText);
+
+            userCol.setItems(usernameList);
+            scoreCol.setItems(pointsList);
 
         } catch (Exception e) {
             e.printStackTrace();
