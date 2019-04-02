@@ -4,30 +4,37 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerGame">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerGame">
    <children>
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@gameLogo.png" />
          </image>
       </ImageView>
-      <Text fill="WHITE" layoutX="271.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="INFO" wrappingWidth="57.84765625">
+      <Text fill="WHITE" layoutX="261.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="INFO" textAlignment="CENTER" wrappingWidth="77.99999713897705">
          <font>
-            <Font size="24.0" />
+            <Font name="Avenir Book" size="24.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="35.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello and welcome to How Dumb R U?&#10;How to play:&#10;- Register or log in&#10;- Type in the e-mail of your desired opponent&#10;- Choose category&#10;- Each game consists of one category and three questions&#10;- You have 30 seconds on each question to type in an answer &#10;- There are multiple answers to the question - the more difficult answer you type in, the move points you get&#10;- The user with the most points after each game will gain all the points achieved in the game&#10;- The loser will not gain any points&#10;" textAlignment="CENTER" wrappingWidth="529.1809990406036">
+      <Text fill="WHITE" layoutX="8.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="How to play:&#10;- Register or log in&#10;- Type in the e-mail of your desired opponent&#10;- Choose category&#10;- Each game consists of one category and three questions&#10;- You have 30 seconds on each question to type in an answer &#10;- There are multiple answers to the question - the more difficult answer you type in, the move points you get&#10;- The user with the most points after each game will gain all the points achieved in the game&#10;- The loser will not gain any points&#10;" wrappingWidth="583.1809990406036">
          <font>
-            <Font size="14.0" />
+            <Font name="Avenir Book" size="14.0" />
          </font>
       </Text>
-      <Button layoutX="14.0" layoutY="330.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneBack" prefHeight="42.0" prefWidth="78.0" text="BACK">
+      <Button layoutX="14.0" layoutY="330.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneBack" prefHeight="42.0" prefWidth="78.0" style="-fx-background-color: #dae1e8 #dae1e8 #dae1e8 #dae1e8;" text="BACK">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
+      <Line endX="46.0" layoutX="327.0" layoutY="89.0" startX="-100.0" stroke="WHITE" />
+      <Text fill="WHITE" layoutX="151.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello and welcome to How Dumb R U?">
+         <font>
+            <Font name="Avenir Book" size="17.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

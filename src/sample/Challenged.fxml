@@ -24,7 +24,7 @@
             <Font name="Avenir Book" size="24.0" />
          </font>
       </Label>
-      <Button layoutX="12.0" layoutY="347.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneHome" prefHeight="39.0" prefWidth="83.0" style="-fx-background-color: #d6f6ff#d6f6ff;" text="HOME">
+      <Button layoutX="12.0" layoutY="347.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneHome" prefHeight="39.0" prefWidth="83.0" style="-fx-background-color: #dae1e8 #dae1e8;" text="HOME">
          <font>
             <Font name="Avenir Book" size="18.0" />
          </font>

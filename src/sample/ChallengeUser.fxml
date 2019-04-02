@@ -23,7 +23,7 @@
             <Font name="Avenir Book" size="17.0" />
          </font>
       </Text>
-      <Button layoutX="12.0" layoutY="347.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneHome" prefHeight="39.0" prefWidth="101.0" text="HOME">
+      <Button layoutX="12.0" layoutY="347.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneHome" prefHeight="39.0" prefWidth="101.0" style="-fx-background-color: #dae1e8 #dae1e8;" text="HOME">
          <font>
             <Font name="Avenir Book" size="18.0" />
          </font>
@@ -32,9 +32,9 @@
          <font>
             <Font name="Avenir Book" size="13.0" />
          </font></TextField>
-      <Button fx:id="challenge" layoutX="93.0" layoutY="247.0" mnemonicParsing="false" onAction="#findOpponent" prefHeight="29.0" prefWidth="129.0" text="Challenge">
+      <Button fx:id="challenge" layoutX="93.0" layoutY="247.0" mnemonicParsing="false" onAction="#findOpponent" prefHeight="29.0" prefWidth="129.0" style="-fx-background-color: #dae1e8 #dae1e8;" text="CHALLENGE">
          <font>
-            <Font name="Avenir Book" size="18.0" />
+            <Font name="Avenir Book" size="14.0" />
          </font>
       </Button>
       <Label fx:id="usernameWrong" layoutX="164.0" layoutY="287.0" prefHeight="18.0" prefWidth="101.0" text="Can't find user" textFill="RED" visible="false" />

@@ -22,7 +22,7 @@
             <Font name="Avenir Book" size="24.0" />
          </font>
       </Text>
-      <Button layoutX="12.0" layoutY="347.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneGame" prefHeight="39.0" prefWidth="76.0" text="BACK">
+      <Button layoutX="12.0" layoutY="347.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneGame" prefHeight="39.0" prefWidth="76.0" style="-fx-background-color: #dae1e8;" text="BACK">
          <font>
             <Font name="Avenir Book" size="18.0" />
          </font>
