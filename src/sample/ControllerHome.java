@@ -6,6 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -40,6 +43,14 @@ public class ControllerHome {
     public boolean feedback(ActionEvent event) { //feedback knapp
         ChangeScene.change(event, "Feedback.fxml");
         return true;
+    }
+
+    public void enter(ActionEvent event) {
+        password.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                playerLogin(event);
+            }
+        });
     }
 
     public boolean playerLogin(ActionEvent event) {
