@@ -73,7 +73,6 @@ public class ControllerHome {
         return false;
 	}
 
-
 	public boolean validateLogin(String inputUsername, String inputPassword) {
         String sql = "SELECT username, online, password, salt FROM Player WHERE username = ?;";
         try {

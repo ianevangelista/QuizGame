@@ -19,6 +19,7 @@ public class Logout {
     public static boolean logOut(){
         Connection connection = null;
         Statement statement = null;
+        ResultSet rsPlayersWithTheGameId = null;
         ResultSet rs = null;
         try {
             connection = ConnectionPool.getConnection();
@@ -46,7 +47,7 @@ public class Logout {
 
                 //Delete game if other player is finished and give opponent points
                 String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
-                ResultSet rsPlayersWithTheGameId = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
+                rsPlayersWithTheGameId = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
 
                 if (!rsPlayersWithTheGameId.next()) {
                     if (player.equals("player1")) {
@@ -74,25 +75,18 @@ public class Logout {
             e.printStackTrace();
             return false;
         }finally {
-            Cleaner.close(statement, null, connection);
+            Cleaner.close(statement, rsPlayersWithTheGameId, null);
+            Cleaner.close(null, rs, connection);
         }
         return true;
     }
     public static boolean logIn(){
         Connection connection = null;
         PreparedStatement statement = null;
-        ResultSet rs = null;
-        String sql = "SELECT online FROM Player WHERE username = ?;";
-        String login = "UPDATE Player SET online = ? WHERE username = ?;";
         try {
             connection = ConnectionPool.getConnection();
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, username);
-            rs = statement.executeQuery();
-            rs.next();
-
-            int status = rs.getInt("online");
             int online = 1;
+            String login = "UPDATE Player SET online = ? WHERE username = ?;";
             statement = connection.prepareStatement(login);
             statement.setInt(1, online);
             statement.setString(2, username);
