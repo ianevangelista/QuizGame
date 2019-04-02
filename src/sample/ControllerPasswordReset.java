@@ -64,10 +64,10 @@ public class ControllerPasswordReset {
             message.setFrom(new InternetAddress(username));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));
 
-            message.setSubject("New password");
+            message.setSubject("How Dumb R U?");
             message.setText("Your new password to 'How Dumb R U?': " +
                     passwordNew +
-                    "\nRemember to change it as soon as possible!" +
+                    "\n\nRemember to change it as soon as possible!" +
                     "\n\nFrom: How Dumb R U?");
 
             transport = session.getTransport("smtp");
@@ -108,7 +108,7 @@ public class ControllerPasswordReset {
 
 
 
-    public void setPassword(){
+    private void setPassword(){
         String input = "UPDATE Player SET password = ?, salt = ? WHERE email = ?";
         try {
             connection = ConnectionPool.getConnection();
