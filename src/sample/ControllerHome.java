@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -59,7 +58,6 @@ public class ControllerHome {
             visibility.setVisible(true); //her skal en pop-up komme
             return false;
         }
-
 
         String inputUsername = username.getText();
         String inputPassword = password.getText();
