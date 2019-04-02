@@ -3,7 +3,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,8 +11,6 @@ import java.sql.Statement;
 import Connection.Cleaner;
 import Connection.ConnectionPool;
 import javafx.scene.control.ListView;
-
-import java.util.ArrayList;
 
 public class ControllerHighScore {
 
@@ -55,7 +52,6 @@ public class ControllerHighScore {
             while(hs.next()){
                 pointsList.add( Integer.toString(hs.getInt("points")));
             }
-
 
             userCol.setItems(usernameList);
             scoreCol.setItems(pointsList);

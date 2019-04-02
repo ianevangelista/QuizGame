@@ -46,13 +46,10 @@ public class ControllerProfile {
     }
 
     public void choosePic(){
-
         ResultSet rs = null;
-
-        String sql = "SELECT points, email, gamesWon, gamesLost FROM Player WHERE username = ?;";
-
         try{
             connection = ConnectionPool.getConnection();
+            String sql = "SELECT points, email, gamesWon, gamesLost FROM Player WHERE username = ?;";
             statement = connection.prepareStatement(sql);
             statement.setString(1, username);
             rs = statement.executeQuery();
