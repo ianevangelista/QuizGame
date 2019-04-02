@@ -135,7 +135,7 @@ public class ControllerResult {
                 }
 
             }else{
-                ChangeScene.changeVisibilityBtn(false, btnChallenge);
+                btnChallenge.setVisible(false);
                 resultText.setText("Waiting for opponent to finish game");
                 totalScoreText.setVisible(false);
                 timerRes();
@@ -149,12 +149,12 @@ public class ControllerResult {
     }
 
     public void showBtn(){
-        ChangeScene.changeVisibilityBtn(true, btnNext);
+        btnNext.setVisible(true);
     }
 
     public void sceneResult(ActionEvent event) {
         ChangeScene.change(event, "Result.fxml");
-        ChangeScene.changeVisibilityBtn(true, btnChallenge);
+        btnChallenge.setVisible(true);
     }
 
 

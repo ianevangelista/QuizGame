@@ -24,11 +24,4 @@ public class ChangeScene {
             e.printStackTrace();
         }
     }
-
-    public static void changeVisibility(boolean value, Label test){
-        test.setVisible(value);
-    }
-    public static void changeVisibilityBtn(boolean value, Button btn){
-        btn.setVisible(value);
-    }
 }
