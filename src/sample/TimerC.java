@@ -58,7 +58,7 @@ public class TimerC {
 
     public void showBtn(){
         if(categoryChosen) {
-            ChangeScene.changeVisibilityBtn(true, btnNext);
+            btnNext.setVisible(true);
             //messageText.setText("Ready, set, go!");
         }
     }

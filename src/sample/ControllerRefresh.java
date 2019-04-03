@@ -16,52 +16,12 @@ public class ControllerRefresh {
     @FXML
     public Button acc;
     public Button dec;
-
     public Label challenger;
 
     private static String username = getUserName();
-
     private static Connection connection = null;
     private static Statement statement = null;
     private static ResultSet rs = null;
-
-
-    public static void refresh(ActionEvent event) {
-
-        try {
-            String sql = "SELECT gameId FROM Player WHERE username = '" + username + "';";
-
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-            rs = statement.executeQuery(sql);
-            rs.next();
-
-            int playerGameId = rs.getInt(1);
-
-            if(playerGameId != 0) {
-                sql = "SELECT player1, categoryId FROM Game WHERE player1 = '" + username + "' OR player2 = '" + username + "' ;";
-                rs = statement.executeQuery(sql);
-                rs.next();
-                if (rs.getString("player1").equals(username)) {
-                    if(rs.getInt("categoryId") == 0){
-                        ChangeScene.change(event, "Wait.fxml");
-                    }else{
-                        ChangeScene.change(event, "Question.fxml");
-                    }
-                }
-                else {
-                    ChangeScene.change(event, "Challenged.fxml");
-                }
-            }else {
-                ChangeScene.change(event, "ChallengeUser.fxml");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            Cleaner.close(statement, rs, connection);
-        }
-    }
 
     public void initialize() {
         acc.setStyle("-fx-background-color: #a3f267");
@@ -86,6 +46,41 @@ public class ControllerRefresh {
                 String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
                 statement.executeUpdate(sqlDeleteGame);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            Cleaner.close(statement, rs, connection);
+        }
+    }
+
+    public static void refresh(ActionEvent event) {
+
+        try {
+            String sql = "SELECT gameId FROM Player WHERE username = '" + username + "';";
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+            rs = statement.executeQuery(sql);
+            rs.next();
+
+            int playerGameId = rs.getInt(1);
+            if(playerGameId != 0) {
+                sql = "SELECT player1, categoryId FROM Game WHERE player1 = '" + username + "' OR player2 = '" + username + "' ;";
+                rs = statement.executeQuery(sql);
+                rs.next();
+                if (rs.getString("player1").equals(username)) {
+                    if(rs.getInt("categoryId") == 0){
+                        ChangeScene.change(event, "Wait.fxml");
+                    }else{
+                        ChangeScene.change(event, "Question.fxml");
+                    }
+                }
+                else {
+                    ChangeScene.change(event, "Challenged.fxml");
+                }
+            }else {
+                ChangeScene.change(event, "ChallengeUser.fxml");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -120,7 +115,6 @@ public class ControllerRefresh {
 
             String sqlDeleteGame = "DELETE FROM Game WHERE player2 = '" + username + "';";
             statement.executeUpdate(sqlDeleteGame);
-
         }
         catch (Exception e) {
             e.printStackTrace();

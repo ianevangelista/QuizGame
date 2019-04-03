@@ -22,12 +22,8 @@ public class ControllerGame {
     }
 
     public void sceneBack(ActionEvent event) {
-        if(getUserName() == null) {
-            ChangeScene.change(event, "Main.fxml");
-        }
-        else{
-            ChangeScene.change(event, "Game.fxml");
-        }
+        if( getUserName() == null) { ChangeScene.change(event, "Main.fxml"); }
+        else{ ChangeScene.change(event, "Game.fxml"); }
     }
 
     public void sceneInfo(ActionEvent event) { //trykker på infoknapp

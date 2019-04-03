@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,6 +26,10 @@ public class ControllerHome {
 
     public boolean sceneInfo(ActionEvent event) { //trykker på infoknapp
         ChangeScene.change(event, "Info.fxml"); //bruker super-metode
+        return true;
+    }
+    public boolean forgotPassword(ActionEvent event) { //forgot password knapp
+        ChangeScene.change(event, "ResetPassword.fxml");
         return true;
     }
 
@@ -56,10 +59,9 @@ public class ControllerHome {
     public boolean playerLogin(ActionEvent event) {
         //checks if there is a input
         if (username.getText().isEmpty() || password.getText().isEmpty()) {
-            ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
+            visibility.setVisible(true); //her skal en pop-up komme
             return false;
         }
-
 
         String inputUsername = username.getText();
         String inputPassword = password.getText();
@@ -71,10 +73,9 @@ public class ControllerHome {
         }
 
         //if validateLogin returns false, an errormessage is shown
-        ChangeScene.changeVisibility(true, visibility); //her skal en pop-up komme
+        visibility.setVisible(true); //her skal en pop-up komme
         return false;
 	}
-
 
 	public boolean validateLogin(String inputUsername, String inputPassword) {
         String sql = "SELECT username, online, password, salt FROM Player WHERE username = ?;";

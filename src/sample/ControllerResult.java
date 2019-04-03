@@ -36,54 +36,6 @@ public class ControllerResult {
     public Text yourScore;
     public Text theirScore;
 
-    public void sceneGame(ActionEvent event) {
-        if (bothFinished) {
-            Connection connection = null;
-            Statement statement = null;
-            ResultSet rs = null;
-            try {
-                connection = ConnectionPool.getConnection();
-                statement = connection.createStatement();
-                String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
-                rs = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
-
-                if (!rs.next()) {
-                    String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
-                    statement.executeUpdate(sqlDeleteGame);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                Cleaner.close(statement, rs, connection);
-                ChangeScene.change(event, "Game.fxml");
-            }
-        }
-    }
-
-    public void sceneChallengeUser(ActionEvent event){
-        if (bothFinished) {
-            Connection connection = null;
-            Statement statement = null;
-            ResultSet rs = null;
-            try {
-                connection = ConnectionPool.getConnection();
-                statement = connection.createStatement();
-                String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
-                rs = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
-
-                if (!rs.next()) {
-                    String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
-                    statement.executeUpdate(sqlDeleteGame);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                Cleaner.close(statement, rs, connection);
-                ChangeScene.change(event, "ChallengeUser.fxml");
-            }
-        }
-    }
-
     public void initialize() {
         Connection connection = null;
         Statement statement = null;
@@ -135,7 +87,7 @@ public class ControllerResult {
                 }
 
             }else{
-                ChangeScene.changeVisibilityBtn(false, btnChallenge);
+                btnChallenge.setVisible(false);
                 resultText.setText("Waiting for opponent to finish game");
                 totalScoreText.setVisible(false);
                 timerRes();
@@ -148,15 +100,62 @@ public class ControllerResult {
         }
     }
 
+    public void sceneGame(ActionEvent event) {
+        if (bothFinished) {
+            Connection connection = null;
+            Statement statement = null;
+            ResultSet rs = null;
+            try {
+                connection = ConnectionPool.getConnection();
+                statement = connection.createStatement();
+                String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
+                rs = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
+
+                if (!rs.next()) {
+                    String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
+                    statement.executeUpdate(sqlDeleteGame);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                Cleaner.close(statement, rs, connection);
+                ChangeScene.change(event, "Game.fxml");
+            }
+        }
+    }
+
+    public void sceneChallengeUser(ActionEvent event){
+        if (bothFinished) {
+            Connection connection = null;
+            Statement statement = null;
+            ResultSet rs = null;
+            try {
+                connection = ConnectionPool.getConnection();
+                statement = connection.createStatement();
+                String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
+                rs = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
+
+                if (!rs.next()) {
+                    String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
+                    statement.executeUpdate(sqlDeleteGame);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                Cleaner.close(statement, rs, connection);
+                ChangeScene.change(event, "ChallengeUser.fxml");
+            }
+        }
+    }
+
     public void showBtn(){
-        ChangeScene.changeVisibilityBtn(true, btnNext);
+        btnNext.setVisible(true);
     }
 
     public void sceneResult(ActionEvent event) {
         ChangeScene.change(event, "Result.fxml");
-        ChangeScene.changeVisibilityBtn(true, btnChallenge);
+        btnChallenge.setVisible(true);
     }
-
 
     public void timerRes(){
         timerR = new Timer();
@@ -170,7 +169,7 @@ public class ControllerResult {
                 }
             }
         };
-        timerR.schedule(task, 10000, 3000);
+        timerR.schedule(task, 5000, 3000);
     }
 
     public boolean checkRes() {

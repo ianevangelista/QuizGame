@@ -1,7 +1,5 @@
 package sample;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,7 +23,6 @@ import static sample.ControllerHome.getUserName;
 
 import Connection.Cleaner;
 import Connection.ConnectionPool;
-import javafx.util.Duration;
 
 public class ControllerQuestion {
     private int seconds = 31;
@@ -56,13 +53,13 @@ public class ControllerQuestion {
     //Total points for the entire game
     private int totalPoints = 0;
 
-    public void sceneResult(ActionEvent event){ ChangeScene.change(event, "Result.fxml");}
-
     public void initialize(){
         timerCountdown();
         gameId = getGameId();
         questionDisplay();
     }
+
+    public void sceneResult(ActionEvent event){ ChangeScene.change(event, "Result.fxml");}
 
     public void nextQuestion() {
         //System.out.println(questionCount);
@@ -106,7 +103,7 @@ public class ControllerQuestion {
             timerCountdown();
         }
     }
-    public void confirmAnswer(ActionEvent event) { //clicks submit button
+    public void confirmAnswer() { //clicks submit button
         int answerScore = questionCheck();   //checks answer
         showFeedback(answerScore);
     }
@@ -162,10 +159,10 @@ public class ControllerQuestion {
         }
     }
 
-    public void enter(ActionEvent event) {
+    public void enter() {
         answerField.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
-                confirmAnswer(event);
+                confirmAnswer();
             }
         });
     }
@@ -173,7 +170,6 @@ public class ControllerQuestion {
     //Checks if the answered question is correct and if it has already been answered by the user this round
     private int questionCheck() {
         int answerScore = 0;
-        boolean alreadyAnswerd = false;
 
         String answer = answerField.getText().toLowerCase();  //get answer in lowercase
 
@@ -252,7 +248,7 @@ public class ControllerQuestion {
     }
 
     //Home-button quits game
-    public boolean sceneHome(ActionEvent event) { //feedback knapp
+    public boolean sceneHome(ActionEvent event) {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();

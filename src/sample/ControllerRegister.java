@@ -8,11 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-
 import java.sql.*;
 
 public class ControllerRegister {
@@ -43,24 +39,21 @@ public class ControllerRegister {
     public void reg(ActionEvent event) {
         Connection connection = null;
         PreparedStatement pstmt = null;
-        if(!notNull()) {
+        if (!notNull()) {
             visible(errorMessageEmpty);
-        }
-        else if(userExists()) {
+        } else if (userExists()) {
             visible(errorMessageUserTaken);
-        }
-        else if(emailExists()) {
+        } else if (emailExists()) {
             visible(errorMessageEmailTaken);
-        }
-        else if(!checkEmail()) {
+        } else if (!checkEmail()) {
             visible(errorMessageEmailInvalid);
-        }
-        else if(checkBirthyear()) {
+        } else if (checkBirthyear()) {
             visible(errorMessageBirthyear);
-        }
-        else if(!checkPassword()) {
+        } else if (!checkPassword()) {
             visible(errorMessagePassword);
-        } else{
+        } else if(chooseGender() == -1){
+            visible(errorMessageEmpty);
+        }else{
             int gender = chooseGender();
             int ol = 0;
             int startPoints = 0;
@@ -115,15 +108,16 @@ public class ControllerRegister {
 
     public boolean userExists(){
         Connection connection = null;
-        Statement statementUser = null;
         ResultSet rsUser = null;
-        String username = "SELECT username FROM Player WHERE username ='" + user_reg.getText() + "';";
-
+        PreparedStatement pstmt = null;
 
         try {
             connection = ConnectionPool.getConnection();
-            statementUser = connection.createStatement();
-            rsUser = statementUser.executeQuery(username);
+            String username = "SELECT username FROM Player WHERE username = ?;";
+            pstmt = connection.prepareStatement(username);
+            pstmt.setString(1, user_reg.getText().toLowerCase());
+            rsUser = pstmt.executeQuery();
+
             if(rsUser.next()){
                 return true;
             }else {
@@ -131,42 +125,43 @@ public class ControllerRegister {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }finally {
-            Cleaner.close(statementUser, rsUser, null);
+            Cleaner.close(pstmt, rsUser, connection);
         }
-        return true;
     }
 
     public boolean emailExists(){
         Connection connection = null;
-        Statement statementEmail = null;
         ResultSet rsEmail = null;
-        String email = "SELECT email FROM Player WHERE username ='" + email_reg.getText() + "';";
+        PreparedStatement pstmt = null;
 
         try {
             connection = ConnectionPool.getConnection();
-            statementEmail = connection.createStatement();
-            rsEmail = statementEmail.executeQuery(email);
+            String email = "SELECT email FROM Player WHERE email = ?;";
+            pstmt = connection.prepareStatement(email);
+            pstmt.setString(1, email_reg.getText().toLowerCase());
+            rsEmail = pstmt.executeQuery();
+
             if(rsEmail.next()){
                 return true;
-            }else {
-                return false;
             }
+            return false;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }finally {
-            Cleaner.close(statementEmail, rsEmail, connection);
+            Cleaner.close(pstmt, rsEmail, connection);
         }
-        return true;
     }
     public int chooseGender(){
-        if(this.gender.getSelectedToggle().equals(this.btnMale)){
+        if(this.btnMale.isSelected()){
             return 0;
         }
-        else if(this.gender.getSelectedToggle().equals(this.btnFemale)){
+        else if(this.btnFemale.isSelected()){
             return 1;
         }
-        else return -1;
+        return -1;
     }
 
     public boolean checkEmail(){

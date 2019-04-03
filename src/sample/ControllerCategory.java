@@ -38,6 +38,54 @@ public class ControllerCategory {
     //Array that fills up with three random and distinct numbers that reference indexes of the categoryId ArrayList
     int[] randomCategoryId = new int[3];
 
+    public boolean initialize(){ //gets run when the window is opened for the first time
+        Random rand = new java.util.Random();
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+            gameId = getGameId();
+
+            // Gets all categories from the database
+            String sql = "SELECT categoryId, name FROM `Category`";
+            rs = statement.executeQuery(sql);
+
+            ArrayList<String> categoryName = new ArrayList<String>();
+
+            while(rs.next()){
+                categoryId.add(rs.getInt("categoryId"));
+                categoryName.add(rs.getString("name"));
+            }
+
+            int amountOfCategorys = categoryId.size();
+
+            //Fills array with random numbers
+            for (int i = 0; i < 3; i++) {
+                randomCategoryId[i] = rand.nextInt(amountOfCategorys);
+            }
+
+            //Checks that first and second element are different
+            while (randomCategoryId[0] == randomCategoryId[1]) {
+                randomCategoryId[1] = rand.nextInt(amountOfCategorys);
+            }
+
+            //Checks that third element is different from first and second
+            while (randomCategoryId[0] == randomCategoryId[2] || randomCategoryId[1] == randomCategoryId[2]) {
+                randomCategoryId[2] = rand.nextInt(amountOfCategorys);
+            }
+            category1.setText(categoryName.get(randomCategoryId[0]));
+            category2.setText(categoryName.get(randomCategoryId[1]));
+            category3.setText(categoryName.get(randomCategoryId[2]));
+            return true;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return true;
+        }
+        finally {
+            Cleaner.close(statement, rs, connection);
+        }
+    }
+
     public void sceneHome(ActionEvent event) { //home button
         ChangeScene.change(event, "Game.fxml");
     }
@@ -85,54 +133,6 @@ public class ControllerCategory {
         catch (Exception e){
             e.printStackTrace();
             return false;
-        }
-        finally {
-            Cleaner.close(statement, rs, connection);
-        }
-    }
-
-    public boolean initialize(){ //gets run when the window is opened for the first time
-        Random rand = new java.util.Random();
-        try {
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-            gameId = getGameId();
-
-            // Gets all categories from the database
-            String sql = "SELECT categoryId, name FROM `Category`";
-            rs = statement.executeQuery(sql);
-
-            ArrayList<String> categoryName = new ArrayList<String>();
-
-            while(rs.next()){
-                categoryId.add(rs.getInt("categoryId"));
-                categoryName.add(rs.getString("name"));
-            }
-
-            int amountOfCategorys = categoryId.size();
-
-            //Fills array with random numbers
-            for (int i = 0; i < 3; i++) {
-                randomCategoryId[i] = rand.nextInt(amountOfCategorys);
-            }
-
-            //Checks that first and second element are different
-            while (randomCategoryId[0] == randomCategoryId[1]) {
-                randomCategoryId[1] = rand.nextInt(amountOfCategorys);
-            }
-
-            //Checks that third element is different from first and second
-            while (randomCategoryId[0] == randomCategoryId[2] || randomCategoryId[1] == randomCategoryId[2]) {
-                randomCategoryId[2] = rand.nextInt(amountOfCategorys);
-            }
-            category1.setText(categoryName.get(randomCategoryId[0]));
-            category2.setText(categoryName.get(randomCategoryId[1]));
-            category3.setText(categoryName.get(randomCategoryId[2]));
-            return true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return true;
         }
         finally {
             Cleaner.close(statement, rs, connection);
