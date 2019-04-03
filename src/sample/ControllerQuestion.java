@@ -88,6 +88,7 @@ public class ControllerQuestion {
                 String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + username + "';";
                 statement.executeUpdate(sqlRemoveGameIdFromPlayer);
 
+                //finds out if the player is player1 or 2
                 //Update Game with player finished and final score
                 String player = findUser();
                 String finished = player.equals("player1") ? "p1Finished" : "p2Finished";
