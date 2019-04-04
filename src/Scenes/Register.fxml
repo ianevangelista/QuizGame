@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ControllerRegister">
+  <children>
+    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+        <Image url="@gameLogo.png" />
+      </image>
+    </ImageView>
+    <TextField id="textField" fx:id="user_reg" layoutX="200.0" layoutY="91.0" prefWidth="200.0" promptText="Username" text="">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></TextField>
+    <TextField id="textField" fx:id="email_reg" layoutX="200.0" layoutY="127.0" prefWidth="200.0" promptText="E-mail" text="">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></TextField>
+    <TextField id="textField" fx:id="birthyear_reg" layoutX="200.0" layoutY="166.0" prefWidth="200.0" promptText="Birthyear" text="">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></TextField>
+    <PasswordField fx:id="pass_reg" layoutX="200.0" layoutY="245.0" prefHeight="27.0" prefWidth="200.0" promptText="Password">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></PasswordField>
+    <PasswordField fx:id="confirm_reg" layoutX="200.0" layoutY="288.0" prefHeight="27.0" prefWidth="200.0" promptText="Confirm password">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></PasswordField>
+    <Button layoutX="261.0" layoutY="337.0" mnemonicParsing="false" onAction="#reg" prefHeight="29.0" prefWidth="78.0" style="-fx-background-color: #d6f6ff#d6f6ff #d6f6f;" text="REGISTER">
+      <font>
+        <Font name="Avenir Book" size="12.0" />
+      </font>
+    </Button>
+    <Button layoutX="14.0" layoutY="330.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneHome" prefHeight="42.0" prefWidth="78.0" style="-fx-background-color: #d6f6ff#d6f6ff #d6f6ff#d6f6ff;" text="BACK">
+      <font>
+        <Font name="Avenir Book" size="18.0" />
+      </font>
+    </Button>
+    <Text fill="WHITE" layoutX="213.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="REGISTRATION" wrappingWidth="174.84765625">
+      <font>
+        <Font name="Avenir Book" size="24.0" />
+      </font>
+    </Text>
+      <RadioButton fx:id="btnFemale" layoutX="331.0" layoutY="208.0" mnemonicParsing="false" text="Female">
+         <toggleGroup>
+            <ToggleGroup fx:id="gender" />
+         </toggleGroup>
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font>
+      </RadioButton>
+      <RadioButton fx:id="btnMale" layoutX="261.0" layoutY="208.0" mnemonicParsing="false" onAction="#chooseGender" text="Male" toggleGroup="$gender">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></RadioButton>
+      <Label layoutX="200.0" layoutY="209.0" text="Gender:">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></Label>
+      <Label fx:id="errorMessageUserTaken" layoutX="421.0" layoutY="87.0" prefHeight="36.0" prefWidth="163.0" text="Username taken" textFill="RED" visible="false">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></Label>
+      <Label fx:id="errorMessageEmailTaken" layoutX="421.0" layoutY="123.0" prefHeight="36.0" prefWidth="163.0" text="E-mail taken" textFill="RED" visible="false">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></Label>
+      <Label fx:id="errorMessageEmailInvalid" layoutX="421.0" layoutY="123.0" prefHeight="36.0" prefWidth="163.0" text="Invalid e-mail" textFill="RED" visible="false">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></Label>
+      <Label fx:id="errorMessageBirthyear" layoutX="421.0" layoutY="162.0" prefHeight="36.0" prefWidth="163.0" text="Invalid birthyear" textFill="RED" visible="false">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></Label>
+      <Label fx:id="errorMessageEmpty" layoutX="409.0" layoutY="287.0" prefHeight="29.0" prefWidth="200.0" text="Please fill in all of the columns" textFill="RED" visible="false">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></Label>
+      <Label fx:id="errorMessagePassword" layoutX="421.0" layoutY="284.0" prefHeight="36.0" prefWidth="163.0" text="Passwords do not match" textFill="RED" visible="false">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></Label>
+  </children>
+</AnchorPane>
