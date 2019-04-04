@@ -25,6 +25,7 @@ import Connection.Cleaner;
 import Connection.ConnectionPool;
 
 public class ControllerQuestion {
+    private volatile boolean running = true;
     private int seconds = 31;
     private Timer timer = new Timer();
     private int questionCount = 0;
@@ -67,6 +68,7 @@ public class ControllerQuestion {
 
         }
         else if(questionCount > 2){
+            running = false;
             timer.cancel();
             timer.purge();
             answerField.setVisible(false);
@@ -224,18 +226,20 @@ public class ControllerQuestion {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(() -> {
-                    seconds--;
-                    countdown.setText("Seconds left: " + seconds);
-                    if (seconds == 0) {
-                        seconds = 31;
-                        questionCount++;
-                        nextQuestion();
-                        timer.cancel();
-                        timer.purge();
-                        return;
-                    }
-                });
+                if(running) {
+                    Platform.runLater(() -> {
+                        seconds--;
+                        countdown.setText("Seconds left: " + seconds);
+                        if (seconds == 0) {
+                            seconds = 31;
+                            questionCount++;
+                            nextQuestion();
+                            timer.cancel();
+                            timer.purge();
+                            return;
+                        }
+                    });
+                }
             }
         };
         return task;
