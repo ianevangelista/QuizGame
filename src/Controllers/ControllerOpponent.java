@@ -21,6 +21,7 @@ import java.util.TimerTask;
 import Connection.Cleaner;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
+import javafx.scene.text.Text;
 
 import static Controllers.ControllerHome.getUserName;
 
@@ -47,6 +48,7 @@ public class ControllerOpponent {
     public Label userOffline;
     public ListView onlineListView;
     public Label label;
+    public Label infotext;
 
     public void initialize(){
         //timerOpponent();
@@ -230,6 +232,16 @@ public class ControllerOpponent {
     private void hideOnlineUsers(boolean visibility){
         onlineListView.setVisible(visibility);
         label.setVisible(visibility);
+        if(visibility){
+            challenge.setLayoutX(93);
+            opponent.setLayoutX(74);
+            infotext.setLayoutX(65);
+        } else {
+            challenge.setLayoutX(241);
+            opponent.setLayoutX(222);
+            infotext.setLayoutX(213);
+        }
+
     }
     /*
     public void showBtn(){
