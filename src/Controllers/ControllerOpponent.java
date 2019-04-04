@@ -195,18 +195,21 @@ public class ControllerOpponent {
             String sqlOnlineUsers = "SELECT username FROM `Player` WHERE online = 1 AND gameId IS NULL;";
             //Legger navn i tabellen onlinelist
             hs = statement.executeQuery(sqlOnlineUsers);
-            if(hs.next() && !hs.getString("username").equals(username)){
-                hideOnlineUsers(true);
-                onlineList.add( hs.getString("username"));
-                while(hs.next()){
-                    if(!hs.getString("username").equals(username)) {
-                        onlineList.add( hs.getString("username"));
-                    }
+
+            hideOnlineUsers(true);
+
+            while(hs.next()){
+                if(!hs.getString("username").equals(username)) {
+                    onlineList.add( hs.getString("username"));
                 }
-            }else{
+            }
+
+            onlineListView.setItems(onlineList);
+
+            if(onlineList.isEmpty()){
                 hideOnlineUsers(false);
             }
-            onlineListView.setItems(onlineList);
+
 
         } catch (Exception e) {
             e.printStackTrace();
