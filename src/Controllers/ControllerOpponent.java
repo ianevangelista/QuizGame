@@ -236,10 +236,16 @@ public class ControllerOpponent {
             challenge.setLayoutX(93);
             opponent.setLayoutX(74);
             infotext.setLayoutX(65);
+            usernameWrong.setLayoutX(105);
+            challengeYou.setLayoutX(81);
+            userOffline.setLayoutX(63);
         } else {
             challenge.setLayoutX(241);
             opponent.setLayoutX(222);
             infotext.setLayoutX(213);
+            usernameWrong.setLayoutX(260);
+            challengeYou.setLayoutX(236);
+            userOffline.setLayoutX(218);
         }
 
     }
