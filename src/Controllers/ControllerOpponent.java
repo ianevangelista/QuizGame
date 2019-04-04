@@ -51,7 +51,7 @@ public class ControllerOpponent {
     public Label infotext;
 
     public void initialize(){
-        //timerOpponent();
+        timerOpponent();
         onlineUsersTable();
     }
 
@@ -249,24 +249,24 @@ public class ControllerOpponent {
         }
 
     }
-    /*
-    public void showBtn(){
-        ChangeScene.changeVisibilityBtn(true, btnQuestion);
-    }
-*/
+
     public void sceneCategory(ActionEvent event) {
-        ChangeScene.change(event, "/Scenes/Category.fxml");
+        ControllerRefresh.refresh(event);
     }
-/*
+
+    public void showBtn() {
+        btnQuestion.setVisible(true);
+    }
+
     public void timerOpponent(){
         timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 if(checkGameId()) {
-                    turnOfTimer();
+                    System.out.println(checkGameId());
                     showBtn();
-                    System.out.println("funker i run");
+                    turnOfTimer();
                     return;
                 }
             }
@@ -289,9 +289,11 @@ public class ControllerOpponent {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-            String sql = "SELECT gameId FROM Player WHERE username = '" + username + "'";
+            String sql = "SELECT gameId FROM Player WHERE username ='" + username + "';";
             rs = statement.executeQuery(sql);
-            if (rs.next()) { return true; }
+            rs.next();
+            int playerGameId = rs.getInt(1);
+            if(playerGameId != 0){ return true;}
             else return false;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -299,5 +301,5 @@ public class ControllerOpponent {
         } finally {
             Cleaner.close(statement, rs, connection);
         }
-    }*/
+    }
 }
