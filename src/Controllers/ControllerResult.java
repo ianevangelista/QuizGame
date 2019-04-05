@@ -193,7 +193,7 @@ public class ControllerResult {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if(checkRes()) {
+                if(checkFinish(gameId)) {
                     turnOfTimerR();
                     showBtn();
                     return;
@@ -203,7 +203,7 @@ public class ControllerResult {
         timerR.schedule(task, 5000, 3000);
     }
 
-    public boolean checkRes() {
+    public boolean checkFinish(int game) {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
@@ -213,7 +213,7 @@ public class ControllerResult {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-            String sqlCheck = "SELECT p1Finished, p2Finished FROM Game WHERE gameId = " + gameId + ";";
+            String sqlCheck = "SELECT p1Finished, p2Finished FROM Game WHERE gameId = " + game + ";";
             rs = statement.executeQuery(sqlCheck);
             if(rs.next()){
                 int user = rs.getInt(opponentFinished);
@@ -238,7 +238,7 @@ public class ControllerResult {
         }
     }
 
-    public void addGamesLost(String user){
+    public boolean addGamesLost(String user){
         Connection connection = null;
         Statement statement = null;
 
@@ -246,12 +246,13 @@ public class ControllerResult {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
-            String sqlUpdatePlayerScore = "";
-            sqlUpdatePlayerScore = "UPDATE Player SET gamesLost= gamesLost + 1 WHERE username ='" + user + "';";
+            String sqlUpdatePlayerScore = "UPDATE Player SET gamesLost= gamesLost + 1 WHERE username ='" + user + "';";
             statement.executeUpdate(sqlUpdatePlayerScore);
+            return true;
 
         }catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }finally {
             Cleaner.close(statement, null, connection);
         }
