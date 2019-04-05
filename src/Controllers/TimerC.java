@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
+import javax.xml.bind.SchemaOutputResolver;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,6 +33,7 @@ public class TimerC {
     @FXML
     public Label messageText;
     public Button btnNext;
+    public Label waitingText;
 
     public boolean initialize(){
         timerCat();
@@ -54,7 +56,7 @@ public class TimerC {
                     showMessage();
                     return;
                 }
-                else if(checkGameId()){
+                else if(checkGameId(username)){
                     turnOfTimer();
                     noGameId = true;
                     showMessage();
@@ -70,6 +72,8 @@ public class TimerC {
         if(categoryChosen) { btnNext.setVisible(true); }
         else if(noGameId){
             System.out.println("show label");
+            waitingText.setVisible(false);
+            System.out.println("hide label");
             messageText.setVisible(true);
         }
     }
@@ -101,7 +105,7 @@ public class TimerC {
         }
     }
 
-    public boolean checkGameId() {
+    public boolean checkGameId(String username) {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
