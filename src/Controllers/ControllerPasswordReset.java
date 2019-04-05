@@ -78,6 +78,7 @@ public class ControllerPasswordReset {
         }
         catch (MessagingException e) {
             e.printStackTrace();
+            System.out.println("Feilmelding");
         }
 
     }
