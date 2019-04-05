@@ -6,13 +6,16 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TimerCTest {
-
+    TimerC t;
     @Before
     public void setUp() throws Exception {
+        t = new TimerC();
     }
 
     @Test
     public void initialize() {
+        boolean ans = t.initialize();
+        assertTrue(ans);
     }
 
     @Test

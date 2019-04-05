@@ -33,8 +33,9 @@ public class TimerC {
     public Label messageText;
     public Button btnNext;
 
-    public void initialize(){
+    public boolean initialize(){
         timerCat();
+        return true;
     }
 
     public void sceneGame(ActionEvent event) { //hjemknapp
@@ -50,13 +51,13 @@ public class TimerC {
                 if(checkCat()) {
                     turnOfTimer();
                     categoryChosen = true;
-                    showBtn();
+                    showMessage();
                     return;
                 }
                 else if(checkGameId()){
                     turnOfTimer();
                     noGameId = true;
-                    showBtn();
+                    showMessage();
                     System.out.println("checkgameid funker");
                     return;
                 }
@@ -65,11 +66,10 @@ public class TimerC {
         timer.schedule(task, 2000, 3000);
     }
 
-    public void showBtn(){
+    public void showMessage(){
         if(categoryChosen) { btnNext.setVisible(true); }
         else if(noGameId){
             System.out.println("show label");
-            messageText.setText("User declined your request! Please challenge another player");
             messageText.setVisible(true);
         }
     }
