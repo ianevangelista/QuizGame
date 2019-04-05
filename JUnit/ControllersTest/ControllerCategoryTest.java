@@ -56,12 +56,12 @@ public class ControllerCategoryTest {
             statement = connection.createStatement();
             statement.executeUpdate(sql);
             // Adds questions from the category to the game
-            boolean resultat = cc.updateCategory(category, gameId);
+            boolean result = cc.updateCategory(category, gameId);
             rs = statement.executeQuery(sqlCategory);
             if(rs.next()) {
                 if(rs.getInt(1) ==category) {
                     statement.executeUpdate(sqlDelete);
-                    assertTrue(resultat);
+                    assertTrue(result);
                 }
             }
         } catch (Exception e){

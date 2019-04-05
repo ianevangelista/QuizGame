@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 
+import javax.swing.plaf.OptionPaneUI;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -59,7 +60,21 @@ public class ControllerResult {
             int opponentPoints = rs.getInt(opponent);
 
             if(p1Finished == 1 && p2Finished == 1) {
+                totalScoreText.setVisible(true);
+                theirScore.setVisible(true);
+                yourScore.setVisible(true);
+                theirScore.setText("Your opponent got " + opponentPoints + " points this round.");
+                yourScore.setText("You got " + mePoints + " points this round!");
                 bothFinished = true;
+
+                checkResult(mePoints, opponentPoints);
+
+                if(checkResult(mePoints, opponentPoints) == 1){
+                    resultText.setText("You won! :)");
+                }
+                else{
+                    resultText.setText("You lost :(");
+                }
 
                 resetGameId(); // resets gameId to play new game
 
@@ -78,11 +93,41 @@ public class ControllerResult {
                 return false;
             }
             return true;
+
         }catch (SQLException e) {
             e.printStackTrace();
             return false;
+
         }finally {
             Cleaner.close(statement, rs, connection);
+        }
+    }
+
+    public int checkResult(int myScore, int opponentScore){
+        Connection connection = null;
+        Statement statement = null;
+
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+
+            String sqlUpdatePlayerScore = "";
+            if (myScore > opponentScore) {
+                sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + myScore + " WHERE username ='" + username + "';";
+                statement.executeUpdate(sqlUpdatePlayerScore);
+                addGamesWon(username);
+                return 1;
+            } else {
+                addGamesLost(username);
+                return 0;
+            }
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
+        finally {
+            Cleaner.close(statement, null, connection);
         }
     }
 
@@ -193,7 +238,7 @@ public class ControllerResult {
         }
     }
 
-    public void addGamesLost(){
+    public void addGamesLost(String user){
         Connection connection = null;
         Statement statement = null;
 
@@ -202,7 +247,7 @@ public class ControllerResult {
             statement = connection.createStatement();
 
             String sqlUpdatePlayerScore = "";
-            sqlUpdatePlayerScore = "UPDATE Player SET gamesLost= gamesLost + 1 WHERE username ='" + username + "';";
+            sqlUpdatePlayerScore = "UPDATE Player SET gamesLost= gamesLost + 1 WHERE username ='" + user + "';";
             statement.executeUpdate(sqlUpdatePlayerScore);
 
         }catch (SQLException e) {
@@ -211,7 +256,7 @@ public class ControllerResult {
             Cleaner.close(statement, null, connection);
         }
     }
-    public void addGamesWon(){
+    public boolean addGamesWon(String user){
         Connection connection = null;
         Statement statement = null;
 
@@ -219,12 +264,13 @@ public class ControllerResult {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
-            String sqlUpdatePlayerScore = "";
-            sqlUpdatePlayerScore = "UPDATE Player SET gamesWon= gamesWon + 1 WHERE username ='" + username + "';";
+            String sqlUpdatePlayerScore = "UPDATE Player SET gamesWon= gamesWon + 1 WHERE username ='" + user + "';";
             statement.executeUpdate(sqlUpdatePlayerScore);
+            return true;
 
         }catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }finally {
             Cleaner.close(statement, null, connection);
         }
