@@ -48,6 +48,7 @@ public class ControllerCategoryTest {
     public void updateCategoryTest() {
         int category = 1;
         int gameId = 1;
+        boolean resultat = false;
         String sql = "INSERT INTO Game(gameId) VALUES (" + gameId + ");";
         String sqlCategory = "SELECT categoryId FROM Game WHERE gameId=" + gameId + ";";
         String sqlDelete = "DELETE FROM Game WHERE gameId=" + gameId + ";";
@@ -56,16 +57,17 @@ public class ControllerCategoryTest {
             statement = connection.createStatement();
             statement.executeUpdate(sql);
             // Adds questions from the category to the game
-            boolean resultat = cc.updateCategory(category, gameId);
+            resultat = cc.updateCategory(category, gameId);
             rs = statement.executeQuery(sqlCategory);
             if(rs.next()) {
-                if(rs.getInt(1) ==category) {
+                if((rs.getInt(1) ==category)) {
                     statement.executeUpdate(sqlDelete);
                     assertTrue(resultat);
                 }
             }
         } catch (Exception e){
             e.printStackTrace();
+            assertTrue(resultat);
         } finally {
             Cleaner.close(statement, null, connection);
         }

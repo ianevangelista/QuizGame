@@ -36,7 +36,7 @@ public class ControllerResult {
     public Text yourScore;
     public Text theirScore;
 
-    public void initialize() {
+    public boolean initialize() {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
@@ -61,22 +61,6 @@ public class ControllerResult {
             if(p1Finished == 1 && p2Finished == 1) {
                 bothFinished = true;
 
-                String sqlUpdatePlayerScore = "";
-                totalScoreText.setVisible(true);
-                theirScore.setVisible(true);
-                yourScore.setVisible(true);
-                theirScore.setText("Your opponent got " + opponentPoints + " points this round.");
-                yourScore.setText("You got " + mePoints + " points this round!");
-                if (mePoints > opponentPoints) {
-                    resultText.setText("You won! :)");
-                    sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + mePoints + " WHERE username ='" + username + "';";
-                    statement.executeUpdate(sqlUpdatePlayerScore);
-                    addGamesWon();
-                } else {
-                    resultText.setText("You lost :(");
-                    addGamesLost();
-                }
-
                 resetGameId(); // resets gameId to play new game
 
                 String sqlGetPlayerScore = "SELECT points FROM Player WHERE username = '" + username + "';";
@@ -91,10 +75,12 @@ public class ControllerResult {
                 resultText.setText("Waiting for opponent to finish game");
                 totalScoreText.setVisible(false);
                 timerRes();
+                return false;
             }
-
+            return true;
         }catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }finally {
             Cleaner.close(statement, rs, connection);
         }
