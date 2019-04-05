@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static Controllers.ControllerHome.getUserName;
 import static Controllers.ControllerOpponent.getGameId;
 
 
@@ -22,22 +23,23 @@ public class TimerC {
 
     private static Timer timer;
     private static int gameId = getGameId();
+    private static String username = getUserName();
     private static Connection connection = null;
     private static Statement statement = null;
     private static boolean categoryChosen = false;
+    private static boolean noGameId = false;
 
     @FXML
     public Label messageText;
     public Button btnNext;
 
+    public void initialize(){
+        timerCat();
+    }
+
     public void sceneGame(ActionEvent event) { //hjemknapp
         turnOfTimer();
         ChangeScene.change(event, "/Scenes/Game.fxml");
-    }
-
-    public void initialize(){
-        //ChangeScene.changeVisibility(false, messageText);
-        timerCat();
     }
 
     public void timerCat(){
@@ -51,15 +53,24 @@ public class TimerC {
                     showBtn();
                     return;
                 }
+                else if(checkGameId()){
+                    turnOfTimer();
+                    noGameId = true;
+                    showBtn();
+                    System.out.println("checkgameid funker");
+                    return;
+                }
             }
         };
-        timer.schedule(task, 10000, 3000);
+        timer.schedule(task, 2000, 3000);
     }
 
     public void showBtn(){
-        if(categoryChosen) {
-            btnNext.setVisible(true);
-            //messageText.setText("Ready, set, go!");
+        if(categoryChosen) { btnNext.setVisible(true); }
+        else if(noGameId){
+            System.out.println("show label");
+            messageText.setText("User declined your request! Please challenge another player");
+            messageText.setVisible(true);
         }
     }
 
@@ -85,6 +96,28 @@ public class TimerC {
             e.printStackTrace();
             return false;
         }finally {
+            Cleaner.close(statement, rs, connection);
+        }
+    }
+
+    public boolean checkGameId() {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+            String sql = "SELECT gameId FROM Game WHERE player1 = '" + username + "';";
+            rs = statement.executeQuery(sql);
+            if(rs.next()){
+                return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
             Cleaner.close(statement, rs, connection);
         }
     }
