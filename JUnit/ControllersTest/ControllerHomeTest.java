@@ -59,7 +59,7 @@ public class ControllerHomeTest {
     //
     @Test
     public void validateLoginTest() {
-        String username = "helene";
+        String username = "helenegj";
         String password = "helene";
         boolean ans = ch.validateLogin(username, password);
         Logout.logOut();
