@@ -48,7 +48,7 @@ public class TimerC {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if(checkCat()) {
+                if(checkCat(gameId)) {
                     turnOfTimer();
                     categoryChosen = true;
                     showMessage();
@@ -78,7 +78,8 @@ public class TimerC {
         ChangeScene.change(event, "/Scenes/Question.fxml");
     }
 
-    public static boolean checkCat() {
+
+    public static boolean checkCat(int gameId) {
         ResultSet rs = null;
         String sqlCheck = "SELECT question3 FROM Game WHERE gameId = " + gameId + ";";
 
