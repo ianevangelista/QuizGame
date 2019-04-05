@@ -55,12 +55,14 @@ public class ControllerResultTest {
     public void addGamesWonTest() {
         ResultSet rsBefore = null;
         ResultSet rsAfter = null;
+
+        String username = "juni";
+        String selectSQL = "SELECT gamesWon FROM Player WHERE username ='" + username + "';";
+        String deleteSQL = "UPDATE Player SET gamesWon= gamesWon - 1 WHERE username = '" + username + "';";
+
         try{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-            String username = "jui";
-            String selectSQL = "SELECT gamesWon FROM Player WHERE username ='" + username + "';";
-            String deleteSQL = "UPDATE Player SET gamesWon= gamesWon - 1 WHERE username = '" + username + "';";
 
             rsBefore = statement.executeQuery(selectSQL);
             int selectBefore = rsBefore.getInt("gamesWon");
