@@ -41,7 +41,10 @@
          <font>
             <Font name="Avenir Book" size="13.0" />
          </font></Label>
-      <Button fx:id="btnQuestion" layoutX="276.0" layoutY="320.0" mnemonicParsing="false" onAction="#sceneCategory" text="Button" visible="false" />
+      <Button fx:id="btnQuestion" layoutX="249.0" layoutY="248.0" mnemonicParsing="false" onAction="#sceneCategory" style="-fx-background-color: #dae1e8 #dae1e8 #dae1e8 #dae1e8;" text="GO TO GAME" visible="false">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></Button>
       <ListView fx:id="onlineListView" layoutX="348.0" layoutY="184.0" onMouseClicked="#chooseOnlineUser" prefHeight="123.0" prefWidth="200.0" />
       <Label fx:id="label" layoutX="346.0" layoutY="153.0" text="...or choose an online user:" textFill="WHITE">
          <font>
@@ -55,6 +58,11 @@
       </Text>
       <Line endX="100.0" layoutX="300.0" layoutY="125.0" startX="-100.0" stroke="WHITE" />
       <Label fx:id="infotext" layoutX="71.0" layoutY="153.0" text="Challenge your friend: " textFill="WHITE">
+         <font>
+            <Font name="Avenir Book" size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="beenChallenged" layoutX="186.0" layoutY="172.0" text="Someone has challenged you!" textFill="WHITE" visible="false">
          <font>
             <Font name="Avenir Book" size="17.0" />
          </font>
