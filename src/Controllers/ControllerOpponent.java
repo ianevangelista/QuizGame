@@ -49,6 +49,7 @@ public class ControllerOpponent {
     public ListView onlineListView;
     public Label label;
     public Label infotext;
+    public Label beenChallenged;
 
     public void initialize(){
         timerOpponent();
@@ -256,6 +257,15 @@ public class ControllerOpponent {
 
     public void showBtn() {
         btnQuestion.setVisible(true);
+        beenChallenged.setVisible(true);
+        opponent.setVisible(false);
+        challenge.setVisible(false);
+        usernameWrong.setVisible(false);
+        challengeYou.setVisible(false);
+        userOffline.setVisible(false);
+        onlineListView.setVisible(false);
+        label.setVisible(false);
+        infotext.setVisible(false);
     }
 
     public void timerOpponent(){
