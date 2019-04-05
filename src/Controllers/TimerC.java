@@ -56,7 +56,7 @@ public class TimerC {
                     showMessage();
                     return;
                 }
-                else if(checkGameId()){
+                else if(checkGameId(username)){
                     turnOfTimer();
                     noGameId = true;
                     showMessage();
@@ -105,7 +105,7 @@ public class TimerC {
         }
     }
 
-    public boolean checkGameId() {
+    public boolean checkGameId(String username) {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
