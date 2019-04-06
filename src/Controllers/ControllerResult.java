@@ -27,6 +27,9 @@ public class ControllerResult {
     private Timer timerR;
     private boolean bothFinished = false;
 
+    Connection connection = null;
+    Statement statement = null;
+
     @FXML
     //result
     public Text totalScore;
@@ -38,8 +41,7 @@ public class ControllerResult {
     public Text theirScore;
 
     public boolean initialize() {
-        Connection connection = null;
-        Statement statement = null;
+
         ResultSet rs = null;
 
         try {
@@ -104,8 +106,6 @@ public class ControllerResult {
     }
 
     public int checkResult(int myScore, int opponentScore){
-        Connection connection = null;
-        Statement statement = null;
 
         try {
             connection = ConnectionPool.getConnection();
@@ -131,56 +131,47 @@ public class ControllerResult {
         }
     }
 
-    public void sceneGame(ActionEvent event) {
-        if (bothFinished) {
-            Connection connection = null;
-            Statement statement = null;
-            ResultSet rs = null;
-            try {
-                connection = ConnectionPool.getConnection();
-                statement = connection.createStatement();
-                String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
-                rs = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
+    public boolean deleteGame(int game){
+        ResultSet rs = null;
+        String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + game + ";";
 
-                if (!rs.next()) {
-                    String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
-                    statement.executeUpdate(sqlDeleteGame);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                Cleaner.close(statement, rs, connection);
-                ChangeScene.change(event, "/Scenes/Game.fxml");
+        try{
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+            rs = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
+
+            if (!rs.next()) {
+                String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + game + ";";
+                statement.executeUpdate(sqlDeleteGame);
+                return true;
             }
+            return false;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+        finally {
+            Cleaner.close(statement,rs,connection);
         }
     }
 
-    public void sceneChallengeUser(ActionEvent event){
+    public boolean sceneGame(ActionEvent event) {
         if (bothFinished) {
-            Connection connection = null;
-            Statement statement = null;
-            ResultSet rs = null;
-            try {
-                connection = ConnectionPool.getConnection();
-                statement = connection.createStatement();
-                String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
-                rs = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
-
-                if (!rs.next()) {
-                    String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
-                    statement.executeUpdate(sqlDeleteGame);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                Cleaner.close(statement, rs, connection);
-                ChangeScene.change(event, "/Scenes/ChallengeUser.fxml");
-            }
+            deleteGame(gameId);
+            ChangeScene.change(event, "/Scenes/Game.fxml");
+            return true;
         }
+        return false;
     }
 
-    public void showBtn(){
-        btnNext.setVisible(true);
+    public boolean sceneChallengeUser(ActionEvent event){
+        if (bothFinished) {
+            deleteGame(gameId);
+            ChangeScene.change(event, "/Scenes/ChallengeUser.fxml");
+            return true;
+        }
+        return false;
     }
 
     public void sceneResult(ActionEvent event) {
@@ -195,7 +186,7 @@ public class ControllerResult {
             public void run() {
                 if(checkFinish(gameId)) {
                     turnOfTimerR();
-                    showBtn();
+                    btnNext.setVisible(true);
                     return;
                 }
             }
@@ -204,8 +195,6 @@ public class ControllerResult {
     }
 
     public boolean checkFinish(int game) {
-        Connection connection = null;
-        Statement statement = null;
         ResultSet rs = null;
         String me = findUser();
         String opponentFinished = (me.equals("player1") ? "p2Finished" : "p1Finished");
@@ -239,8 +228,6 @@ public class ControllerResult {
     }
 
     public boolean addGamesLost(String user){
-        Connection connection = null;
-        Statement statement = null;
 
         try {
             connection = ConnectionPool.getConnection();
@@ -258,8 +245,6 @@ public class ControllerResult {
         }
     }
     public boolean addGamesWon(String user){
-        Connection connection = null;
-        Statement statement = null;
 
         try {
             connection = ConnectionPool.getConnection();

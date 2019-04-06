@@ -2,6 +2,7 @@ package Controllers;
 
 import org.junit.Test;
 
+import javafx.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -27,18 +28,37 @@ public class ControllerResultTest {
         assertEquals(expResult, result);
     }
 
-    /*@Test
-    public void initialize() {
+    @Test
+    public void deleteGameTest(){
+        int gameId = 1;
+        String user1 = "juni";
+        String user2 = "tiril";
+        String sqlInsert = "INSERT INTO Game (player1, player2, gameId) VALUES (" + user1 + "," + user2 + "," + gameId + ");";
+        String sqlDelete = "DELETE FROM Game WHERE gameId = " + gameId + ";";
+        try{
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+            statement.executeUpdate(sqlInsert);
+            boolean result = cr.deleteGame(gameId);
+            statement.executeUpdate(sqlDelete);
+
+            assertTrue(result);
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            assertFalse(false);
+        }
     }
 
     @Test
-    public void timerRes() {
-    }*/
+    public void initialize() {
+
+    }
 
     @Test
     public void checkFinishTest(){
         int gameId = 2;
-        String insertSQL = "INSERT INTO Game (p1Finished, p2Finished, gameId) VALUES (1, 1, " + gameId + ");";
+        String insertSQL = "INSERT INTO Game (p1Finished, p2Finished, gameId) VALUES (1, 0, " + gameId + ");";
         String deleteSQL = "DELETE FROM Game WHERE gameId = " + gameId + ";";
         try{
             connection = ConnectionPool.getConnection();
@@ -59,6 +79,20 @@ public class ControllerResultTest {
     /*@Test
     public void turnOfTimerR() {
     }*/
+
+    @Test
+    public void sceneGameTest(){
+        ActionEvent event = new ActionEvent();
+        boolean result = cr.sceneGame(event);
+        assertFalse(result);
+    }
+
+    @Test
+    public void sceneChallengeUserTest(){
+        ActionEvent event = new ActionEvent();
+        boolean result = cr.sceneChallengeUser(event);
+        assertFalse(result);
+    }
 
     @Test
     public void addGamesLost() {
