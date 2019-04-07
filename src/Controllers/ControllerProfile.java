@@ -17,6 +17,10 @@ import java.io.File;
 
 import static Controllers.ControllerHome.getUserName;
 
+/**
+ * The class ControllerProfile includes everything involving showing and editing the profile.
+ */
+
 public class ControllerProfile {
 
     private String username = getUserName();
@@ -33,11 +37,20 @@ public class ControllerProfile {
     public Label printLost;
 
 
+    /**
+     * This method runs when your access the profile function in the program.
+     */
     public void initialize() {
         choosePic();
     }
 
-    public void sceneGame(ActionEvent event) { //hjemknapp
+    /**
+     * This is what happens when the home button is pushed.
+     * You will return to the previous page, the game page.
+     * @param event
+     */
+
+    public void sceneGame(ActionEvent event) {
         ChangeScene.change(event, "/Scenes/Game.fxml");
     }
 
@@ -64,6 +77,9 @@ public class ControllerProfile {
             String lost = String.valueOf(lostLest);
 
             if(pointsLest < 100){
+                /**
+                 * This is the profile picture for the first level
+                 */
                 File first = new File("src/Scenes/1..png");
                 Image one = new Image(first.toURI().toString());
                 picture.setImage(one);
