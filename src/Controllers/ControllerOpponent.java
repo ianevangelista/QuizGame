@@ -252,7 +252,7 @@ public class ControllerOpponent {
     }
 
     public void sceneCategory(ActionEvent event) {
-        ControllerRefresh.refresh(event);
+        ControllerRefresh.refresh(event, username);
     }
 
     public void showBtn() {

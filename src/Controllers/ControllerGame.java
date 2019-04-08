@@ -18,7 +18,7 @@ public class ControllerGame {
     }
 
     public void start(ActionEvent event) {
-        ControllerRefresh.refresh(event);
+        ControllerRefresh.refresh(event, username);
     }
 
     public void sceneBack(ActionEvent event) {
