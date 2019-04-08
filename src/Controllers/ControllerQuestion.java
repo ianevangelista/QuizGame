@@ -177,21 +177,28 @@ public class ControllerQuestion {
         //Check if player gave actual answer before checking DB
         if(!answer.equals("")){
             //check trought arrayList of all possible answers
-            for(int i = 0; i < rightAnswer.size(); i++){
-                if(answer.equals(rightAnswer.get(i))){
-                    for(Integer previousAnswer: previouslyAnswered){
-                        if(previousAnswer == i){
-                            //That answer is already used
-                            return -1;
-                        }
-                    }
-                    previouslyAnswered.add(i);
-                    totalPoints += score.get(i);
-                    answerScore = score.get(i);
-                }
-            }
+            answerScore =findScore(answer);
         }
         answerField.setText("");
+        return answerScore;
+    }
+
+    public int findScore(String answer) {
+        int answerScore = 0;
+        //check trought arrayList of all possible answers
+        for(int i = 0; i < rightAnswer.size(); i++){
+            if(answer.equals(rightAnswer.get(i))){
+                for(Integer previousAnswer: previouslyAnswered){
+                    if(previousAnswer == i){
+                        //That answer is already used
+                        return -1;
+                    }
+                }
+                previouslyAnswered.add(i);
+                totalPoints += score.get(i);
+                answerScore = score.get(i);
+            }
+        }
         return answerScore;
     }
 
