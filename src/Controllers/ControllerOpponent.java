@@ -9,21 +9,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 
-
-
-
 import java.sql.*;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 import Connection.Cleaner;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
-import javafx.scene.text.Text;
 
 import static Controllers.ControllerHome.getUserName;
+
+/**
+ * The class ControllerOpponent is used to create a game.
+ * It will display all online users and give the user the opportunity to challenge a player.
+ *
+ */
 
 public class ControllerOpponent {
 
@@ -51,15 +52,28 @@ public class ControllerOpponent {
     public Label infotext;
     public Label beenChallenged;
 
+    /**
+     * This method runs when accessing the ChallengeUser scene.
+     * The method runs highscoreTable and onlineUserTable.
+     */
     public void initialize(){
         timerOpponent();
         onlineUsersTable();
     }
 
+    /**
+     * The method changes scene to Game.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
     public void sceneHome(ActionEvent event) { //home button
         ChangeScene.change(event, "/Scenes/Game.fxml");
     }
 
+    /**
+     * The method gives user the option to press enter on the keyboard rather than the button.
+     * It will then use the finOpponen-method.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
     public void enter(ActionEvent event) {
         opponent.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
@@ -68,8 +82,12 @@ public class ControllerOpponent {
         });
     }
 
+    /**
+     * The method gives user the option to press enter on the keyboard rather than the button.
+     * It will then use the playerLogin-method.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
     public void findOpponent(ActionEvent event) {
-
         try{
             connection = ConnectionPool.getConnection();
             usernameWrong.setVisible(false);

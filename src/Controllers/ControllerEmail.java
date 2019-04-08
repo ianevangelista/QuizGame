@@ -20,12 +20,12 @@ public class ControllerEmail {
     public TextField email;
     public Label errorMessageEmailInvalid;
 
-    Properties props = new Properties();
-    Session session = Session.getDefaultInstance(props);
-    MimeMessage message = new MimeMessage(session);
-    Transport transport = null;
+    private Properties props = new Properties();
+    private Session session = Session.getDefaultInstance(props);
+    private MimeMessage message = new MimeMessage(session);
+    private Transport transport = null;
 
-    public void sendFeedback(){
+    private void sendFeedback(){
 
         String sendTo = "howdumbru.game@gmail.com";
         String host = "smtp.gmail.com";
@@ -41,7 +41,6 @@ public class ControllerEmail {
         props.put("mail.smtp.ssl.trust", host);
 
         try{
-
             message.setFrom(new InternetAddress(username));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));
 
@@ -53,15 +52,13 @@ public class ControllerEmail {
             transport.connect(host, username, password);
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
-
         }
         catch (MessagingException e) {
             e.printStackTrace();
         }
-
     }
 
-    public void sendConfirm(){
+    private void sendConfirm(){
 
         String sendTo = email.getText();
         String host = "smtp.gmail.com";
@@ -77,7 +74,6 @@ public class ControllerEmail {
         props.put("mail.smtp.ssl.trust", host);
 
         try{
-
             message.setFrom(new InternetAddress(username));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));
 
@@ -95,7 +91,6 @@ public class ControllerEmail {
         catch (MessagingException e) {
             e.printStackTrace();
         }
-
     }
 
     public void feedback(ActionEvent event){

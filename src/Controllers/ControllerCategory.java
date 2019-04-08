@@ -18,6 +18,11 @@ import java.util.ArrayList;
 import static Controllers.ControllerOpponent.getGameId;
 
 
+/**
+ * The class ControllerCategory is used when a game is created.
+ * It displays three random category to the user.
+ * After a category is chosen, another three questions will be randomly chosen from the database.
+ */
 
 public class ControllerCategory {
     private int gameId;
@@ -28,16 +33,20 @@ public class ControllerCategory {
     public Button category3;
 
     //Connections set-up
-    Connection connection = null;
-    Statement statement = null;
-    ResultSet rs = null;
+    private Connection connection = null;
+    private Statement statement = null;
+    private ResultSet rs = null;
 
     //ArrayList containing id of all categories in the database
     ArrayList<Integer> categoryId = new ArrayList<Integer>();
 
     //Array that fills up with three random and distinct numbers that reference indexes of the categoryId ArrayList
-    int[] randomCategoryId = new int[3];
+    private int[] randomCategoryId = new int[3];
 
+    /**
+     * This method runs after a game request is accepted.
+     * It will display three random categorys from the database.
+     */
     public boolean initialize(){ //gets run when the window is opened for the first time
         Random rand = new java.util.Random();
         try {
@@ -86,10 +95,20 @@ public class ControllerCategory {
         }
     }
 
+    /**
+     * A method when the home button is pressed.
+     * You will return to the previous page, the game page.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
     public void sceneHome(ActionEvent event) { //home button
         ChangeScene.change(event, "/Scenes/Game.fxml");
     }
 
+    /**
+     * A method when the category 1 button is pressed.
+     * It will set the categoryId for the Game.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
     public boolean chooseCategory1(ActionEvent event){ //When button 1 is pressed
         int chosenCategoryId = categoryId.get(randomCategoryId[0]);
         if(updateCategory(chosenCategoryId, gameId)) {
@@ -101,6 +120,11 @@ public class ControllerCategory {
         return false;
     }
 
+    /**
+     * A method when the category 2 button is pressed.
+     * It will set the categoryId for the Game.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
     public boolean chooseCategory2(ActionEvent event){ //When button 2 is pressed
         int chosenCategoryId = categoryId.get(randomCategoryId[1]);
         if(updateCategory(chosenCategoryId, gameId)) {
@@ -111,6 +135,11 @@ public class ControllerCategory {
         return false;
     }
 
+    /**
+     * A method when the category 3 button is pressed.
+     * It will set the categoryId for the Game.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
     public boolean chooseCategory3(ActionEvent event){ //When button 3 is pressed
         int chosenCategoryId = categoryId.get(randomCategoryId[2]);
         if(updateCategory(chosenCategoryId, gameId)) {
@@ -121,13 +150,18 @@ public class ControllerCategory {
         return false;
     }
 
-    public boolean updateCategory(int category, int gameId) {
+    /**
+     * A private method which is used inside the chooseCategory-methods.
+     * It will set the categoryId for the Game.
+     * @param categoryId is a paramater which is used to identify which categoryId is chosen.
+     * @param gameId is a paramater which is used to identify which gameId to update with the categoryId.
+     */
+    public boolean updateCategory(int categoryId, int gameId) {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-            String sql = "UPDATE Game SET categoryId = " + category + " WHERE gameId = " + gameId;
+            String sql = "UPDATE Game SET categoryId = " + categoryId + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
-            // Adds questions from the category to the game
             return true;
         }
         catch (Exception e){
@@ -139,7 +173,13 @@ public class ControllerCategory {
         }
     }
 
-    private void questionPicker(int categoryId, int gameId) { //helene
+    /**
+     * A private method to choose three randomly questions when a category is chosen.
+     * The method is usen in all thre chooseCategory-methods.
+     * @param categoryId is a paramater which is used to identify which categoryId is chosen.
+     * @param gameId is a paramater which is used to identify which gameId to update with the categoryId.
+     */
+    private void questionPicker(int categoryId, int gameId) {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
