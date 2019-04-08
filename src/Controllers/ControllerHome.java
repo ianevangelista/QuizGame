@@ -161,8 +161,9 @@ public class ControllerHome {
      * The method will set the username to identify the user.
      * @param username is a paramater which is used to identify the user.
      */
-    public void setUserName(String username){
+    public String setUserName(String username){
         this.userName = username;
+        return username;
     }
 
     /**

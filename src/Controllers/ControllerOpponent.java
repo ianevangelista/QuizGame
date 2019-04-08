@@ -300,7 +300,7 @@ public class ControllerOpponent {
      * A method which uses the refresh method from ControllerRefresh.
      */
     public void sceneCategory(ActionEvent event) {
-        ControllerRefresh.refresh(event);
+        ControllerRefresh.refresh(event, username);
     }
 
     /**

@@ -24,12 +24,16 @@ public class ControllerRefresh {
     private static ResultSet rs = null;
 
     public void initialize() {
+        start(username);
+    }
+
+    public boolean start(String user){
         acc.setStyle("-fx-background-color: #a3f267");
         dec.setStyle("-fx-background-color: #F29B7F");
 
         int gameId = getGameId();
 
-        String sqlOtherPlayer = "SELECT username FROM Player WHERE gameId = " + gameId + " AND username != '" + username + "';";
+        String sqlOtherPlayer = "SELECT username FROM Player WHERE gameId = " + gameId + " AND username != '" + user + "';";
 
         try {
             connection = ConnectionPool.getConnection();
@@ -40,23 +44,25 @@ public class ControllerRefresh {
             if(rs.next()) {
                 String challengingPlayer = rs.getString("username");
                 challenger.setText("You've been challenged by " + challengingPlayer);
+                return true;
             } else {
-                String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + username + "';";
+                String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + user + "';";
                 statement.executeUpdate(sqlRemoveGameIdFromPlayer);
                 String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
                 statement.executeUpdate(sqlDeleteGame);
+                return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         } finally {
             Cleaner.close(statement, rs, connection);
         }
     }
 
-    public static void refresh(ActionEvent event) {
-
+    public static int refresh(ActionEvent event, String user) {
         try {
-            String sql = "SELECT gameId FROM Player WHERE username = '" + username + "';";
+            String sql = "SELECT gameId FROM Player WHERE username = '" + user + "';";
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             rs = statement.executeQuery(sql);
@@ -64,25 +70,32 @@ public class ControllerRefresh {
 
             int playerGameId = rs.getInt(1);
             if(playerGameId != 0) {
-                sql = "SELECT player1, categoryId FROM Game WHERE player1 = '" + username + "' OR player2 = '" + username + "' ;";
+                sql = "SELECT player1, categoryId FROM Game WHERE player1 = '" + user + "' OR player2 = '" + user + "' ;";
                 rs = statement.executeQuery(sql);
                 rs.next();
-                if (rs.getString("player1").equals(username)) {
+                if (rs.getString("player1").equals(user)) {
                     if(rs.getInt("categoryId") == 0){
                         ChangeScene.change(event, "/Scenes/Wait.fxml");
+                        return 1;
                     }else{
+                        System.out.println("test2");
                         ChangeScene.change(event, "/Scenes/Question.fxml");
+                        return 0;
                     }
                 }
                 else {
+                    System.out.println("test2");
                     ChangeScene.change(event, "/Scenes/Challenged.fxml");
+                    return -1;
                 }
             }else {
                 ChangeScene.change(event, "/Scenes/ChallengeUser.fxml");
+                return -1;
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+            return -1;
         } finally {
             Cleaner.close(statement, rs, connection);
         }
@@ -92,7 +105,7 @@ public class ControllerRefresh {
         ChangeScene.change(event, "/Scenes/Category.fxml");
     }
 
-    public void decline(ActionEvent event) {
+    public boolean decline(ActionEvent event) {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
@@ -115,9 +128,11 @@ public class ControllerRefresh {
 
             String sqlDeleteGame = "DELETE FROM Game WHERE player2 = '" + username + "';";
             statement.executeUpdate(sqlDeleteGame);
+            return true;
         }
         catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
         finally {
             Cleaner.close(statement, null, connection);
