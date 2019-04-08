@@ -83,8 +83,10 @@ public class ControllerOpponent {
     }
 
     /**
-     * The method gives user the option to press enter on the keyboard rather than the button.
-     * It will then use the playerLogin-method.
+     * The method finds a user to challenge.
+     * It will check if the user is you or if the user is online.
+     * If the user is not you and is online, a game will be created by using makeGame.
+     * The user will then be sent to a Wait scene.
      * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
      */
     public void findOpponent(ActionEvent event) {
@@ -96,7 +98,7 @@ public class ControllerOpponent {
             //gets the opponents username, using a prepared statment beacause it's user input
             String insertSql = "SELECT username, online FROM Player WHERE username = ?;";
             pstmt = connection.prepareStatement(insertSql);
-            pstmt.setString(1, (opponent.getText().toLowerCase())); //toLowerCase
+            pstmt.setString(1, (opponent.getText().toLowerCase()));
             rs = pstmt.executeQuery();
 
             //if it is a registered username
@@ -124,6 +126,13 @@ public class ControllerOpponent {
         }
     }
 
+    /**
+     * The private method creates a game.
+     * It will check if the challenged user already has gameId.
+     * @param player1 is the challenger.
+     * @param player2 is the challenged user.
+     * @return true if game is made.
+     */
     private boolean makeGame(String player1, String player2) {
         Statement statement = null;
         ResultSet rsGameId = null;
@@ -166,10 +175,17 @@ public class ControllerOpponent {
         }
     }
 
+    /**
+     * The method resets the gameId.
+     */
    public static void resetGameId(){
         gameId = 0;
    }
 
+    /**
+     * A private method for the different error messages.
+     * Either sets the visibilty of the components as true or false.
+     */
    private void setVisible(Label label){
        usernameWrong.setVisible(false);
        userOffline.setVisible(false);
@@ -178,6 +194,10 @@ public class ControllerOpponent {
        label.setVisible(true);
    }
 
+    /**
+     * A static method fetching the gameId of the user.
+     * @return the gameId.
+     */
     public static int getGameId() {
         if(gameId != 0) return gameId;
         else{
@@ -204,7 +224,10 @@ public class ControllerOpponent {
         }
     }
 
-    public void onlineUsersTable(){
+    /**
+     * A private method which displays all online users.
+     */
+    private void onlineUsersTable(){
 
         Connection connection = null;
         Statement statement = null;
@@ -231,13 +254,16 @@ public class ControllerOpponent {
                 hideOnlineUsers(false);
             }
 
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             Cleaner.close(statement, hs, connection);
         }
     }
+
+    /**
+     * A method which chooses an online player's username to appear on the opponent-textfield.
+     */
     public void chooseOnlineUser(){
         ObservableList selectedIndices = onlineListView.getSelectionModel().getSelectedIndices();
         int index = -1;
@@ -248,6 +274,10 @@ public class ControllerOpponent {
         opponent.setText(user);
     }
 
+    /**
+     * A private method which sets the listViev and hides user
+     * @param visibility is either true or false.
+     */
     private void hideOnlineUsers(boolean visibility){
         onlineListView.setVisible(visibility);
         label.setVisible(visibility);
@@ -266,14 +296,19 @@ public class ControllerOpponent {
             challengeYou.setLayoutX(236);
             userOffline.setLayoutX(218);
         }
-
     }
 
+    /**
+     * A method which uses the refresh method from ControllerRefresh.
+     */
     public void sceneCategory(ActionEvent event) {
         ControllerRefresh.refresh(event, username);
     }
 
-    public void showBtn() {
+    /**
+     * A private method which sets the visibility of different opponents
+     */
+    private void showBtn() {
         btnQuestion.setVisible(true);
         beenChallenged.setVisible(true);
         opponent.setVisible(false);
@@ -286,14 +321,17 @@ public class ControllerOpponent {
         infotext.setVisible(false);
     }
 
-    public void timerOpponent(){
+    /**
+     * A timer-method
+     * Checks if the user has a gameId
+     */
+    private void timerOpponent(){
         timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 System.out.println("Opponent timer running");
                 if(checkGameId()) {
-                    System.out.println(checkGameId());
                     showBtn();
                     turnOffTimer();
                     return;
@@ -303,14 +341,21 @@ public class ControllerOpponent {
         timer.schedule(task, 5000, 3000);
     }
 
-    public void turnOffTimer() {
+    /**
+     * A private method which terminates the timer.
+     */
+    private void turnOffTimer() {
         if (timer != null) {
             timer.cancel();
             timer.purge();
         }
     }
 
-    public boolean checkGameId() {
+    /**
+     * A private method which checks if the user has a gameId.
+     * @return if there's no gameId the method returns true if there is it returns false.
+     */
+    private boolean checkGameId() {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;

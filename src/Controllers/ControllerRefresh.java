@@ -28,9 +28,6 @@ public class ControllerRefresh {
     }
 
     public boolean start(String user){
-        acc.setStyle("-fx-background-color: #a3f267");
-        dec.setStyle("-fx-background-color: #F29B7F");
-
         int gameId = getGameId();
 
         String sqlOtherPlayer = "SELECT username FROM Player WHERE gameId = " + gameId + " AND username != '" + user + "';";
@@ -78,13 +75,11 @@ public class ControllerRefresh {
                         ChangeScene.change(event, "/Scenes/Wait.fxml");
                         return 1;
                     }else{
-                        System.out.println("test2");
                         ChangeScene.change(event, "/Scenes/Question.fxml");
                         return 0;
                     }
                 }
                 else {
-                    System.out.println("test2");
                     ChangeScene.change(event, "/Scenes/Challenged.fxml");
                     return -1;
                 }

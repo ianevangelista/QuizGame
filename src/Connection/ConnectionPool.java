@@ -6,6 +6,9 @@ import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * The class Connection is used when creating a connection to the database.
+ */
 
 public class ConnectionPool {
     private static HikariConfig config = new HikariConfig();
@@ -22,6 +25,10 @@ public class ConnectionPool {
         ds = new HikariDataSource(config);
     }
 
+    /**
+     * The static method is used when creating a connection
+     * @return the connection.
+     */
     public static Connection getConnection() throws SQLException{
         return ds.getConnection();
     }

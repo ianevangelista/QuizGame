@@ -14,6 +14,7 @@ public class ControllerGame {
 
     /**
      * The method returns the username of user who has logged in.
+     * @return the username of the user.
      */
     public static String getUsername(){
         return username;

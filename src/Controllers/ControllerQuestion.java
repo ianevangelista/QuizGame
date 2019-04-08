@@ -63,7 +63,6 @@ public class ControllerQuestion {
     public void sceneResult(ActionEvent event){ ChangeScene.change(event, "/Scenes/Result.fxml");}
 
     public void nextQuestion() {
-        //System.out.println(questionCount);
         if(questionCount > 3){
 
         }
@@ -192,7 +191,6 @@ public class ControllerQuestion {
                     previouslyAnswered.add(i);
                     totalPoints += score.get(i);
                     answerScore = score.get(i);
-                    //TODO: Give feedback to the user
                 }
             }
         } else {
@@ -227,7 +225,7 @@ public class ControllerQuestion {
 
     //Timer
     private TimerTask makeTask() {
-        TimerTask task = new TimerTask() {
+        return new TimerTask() {
             @Override
             public void run() {
                 if(running) {
@@ -245,7 +243,6 @@ public class ControllerQuestion {
                 }
             }
         };
-        return task;
     }
 
     public void turnOffTimer() {
@@ -256,7 +253,7 @@ public class ControllerQuestion {
         }
     }
 
-    public void timerCountdown() {
+    private void timerCountdown() {
         TimerTask task = makeTask();
         timer = new Timer();
         timer.scheduleAtFixedRate(task, 1000, 1000);
