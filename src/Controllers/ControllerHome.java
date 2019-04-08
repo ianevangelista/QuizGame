@@ -32,6 +32,7 @@ public class ControllerHome {
     /**
      * The method changes scene to Info and returns true.
      * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @return true if scene is changed.
      */
     public boolean sceneInfo(ActionEvent event) {
         ChangeScene.change(event, "/Scenes/Info.fxml");
@@ -41,6 +42,7 @@ public class ControllerHome {
     /**
      * The method changes scene to ResetPassword and returns true.
      * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @return true if scene is changed.
      */
     public boolean forgotPassword(ActionEvent event) {
         ChangeScene.change(event, "/Scenes/ResetPassword.fxml");
@@ -50,6 +52,7 @@ public class ControllerHome {
     /**
      * The method changes scene to Main and returns true.
      * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @return true if scene is changed.
      */
     public boolean sceneHome(ActionEvent event) {
         ChangeScene.change(event, "/Scenes/Main.fxml");
@@ -59,6 +62,7 @@ public class ControllerHome {
     /**
      * The method changes scene to Register and returns true.
      * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @return true if scene is changed.
      */
     public boolean register(ActionEvent event) {
         ChangeScene.change(event, "/Scenes/Register.fxml");
@@ -68,6 +72,7 @@ public class ControllerHome {
     /**
      * The method changes scene to Feedback and returns true.
      * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @return true if scene is changed.
      */
     public boolean feedback(ActionEvent event) {
         ChangeScene.change(event, "/Scenes/Feedback.fxml");
@@ -92,6 +97,7 @@ public class ControllerHome {
      * Uses the method validateLogin.
      * Displays an error-message if there is no match or if a field is empty.
      * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @return true login is validated.
      */
     public boolean playerLogin(ActionEvent event) {
         //checks if there is a input
@@ -121,6 +127,7 @@ public class ControllerHome {
      * It will check salted and hashed password to the password which is written.
      * @param inputUsername is a paramater which is used to identify the user.
      * @param inputPassword is a paramater which is used to compare the password to the user.
+     * @return true if username and password is validated.
      */
 	public boolean validateLogin(String inputUsername, String inputPassword) {
         String sql = "SELECT username, online, password, salt FROM Player WHERE username = ?;";
@@ -160,6 +167,7 @@ public class ControllerHome {
     /**
      * The method will set the username to identify the user.
      * @param username is a paramater which is used to identify the user.
+     * @return the username after setting the username.
      */
     public String setUserName(String username){
         this.userName = username;
@@ -173,6 +181,7 @@ public class ControllerHome {
 
     /**
      * The method will return the username of the user.
+     * @return the username.
      */
     public static String getUserName(){
         return userName;

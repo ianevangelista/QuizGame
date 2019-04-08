@@ -170,9 +170,7 @@ public class ControllerEdit {
 
     /**
      * A private method for choosing a new gender.
-     * Returns 0 if male is selected.
-     * Returns 1 if female is selected.
-     * Returns -1 if none selected.
+     * @return returns 0 if male is selected, returns 1 if female is selected, returns -1 if none selected.
      */
     private int chooseGender(){
         if(this.btnMale.isSelected()){
@@ -188,6 +186,7 @@ public class ControllerEdit {
      * A method when the confirming a new e-mail adress.
      * It will check if the e-mail is valid or already taken.
      * It will the user's e-mail if the e-mail is valid.
+     * @return if valid e-mail return true, else return false.
      */
     private boolean checkEmail(){
 

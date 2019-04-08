@@ -131,6 +131,7 @@ public class ControllerOpponent {
      * It will check if the challenged user already has gameId.
      * @param player1 is the challenger.
      * @param player2 is the challenged user.
+     * @return true if game is made.
      */
     private boolean makeGame(String player1, String player2) {
         Statement statement = null;
@@ -195,6 +196,7 @@ public class ControllerOpponent {
 
     /**
      * A static method fetching the gameId of the user.
+     * @return the gameId.
      */
     public static int getGameId() {
         if(gameId != 0) return gameId;

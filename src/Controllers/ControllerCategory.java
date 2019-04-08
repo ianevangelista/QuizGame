@@ -46,6 +46,7 @@ public class ControllerCategory {
     /**
      * This method runs after a game request is accepted.
      * It will display three random categorys from the database.
+     * @return if all code is executed return true.
      */
     public boolean initialize(){ //gets run when the window is opened for the first time
         Random rand = new java.util.Random();
@@ -108,6 +109,7 @@ public class ControllerCategory {
      * A method when the category 1 button is pressed.
      * It will set the categoryId for the Game.
      * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @return if category is set return true, else return false.
      */
     public boolean chooseCategory1(ActionEvent event){ //When button 1 is pressed
         int chosenCategoryId = categoryId.get(randomCategoryId[0]);
@@ -124,6 +126,7 @@ public class ControllerCategory {
      * A method when the category 2 button is pressed.
      * It will set the categoryId for the Game.
      * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @return if category is set return true, else return false.
      */
     public boolean chooseCategory2(ActionEvent event){ //When button 2 is pressed
         int chosenCategoryId = categoryId.get(randomCategoryId[1]);
@@ -139,6 +142,7 @@ public class ControllerCategory {
      * A method when the category 3 button is pressed.
      * It will set the categoryId for the Game.
      * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @return if category is set return true, else return false.
      */
     public boolean chooseCategory3(ActionEvent event){ //When button 3 is pressed
         int chosenCategoryId = categoryId.get(randomCategoryId[2]);
@@ -155,6 +159,7 @@ public class ControllerCategory {
      * It will set the categoryId for the Game.
      * @param categoryId is a paramater which is used to identify which categoryId is chosen.
      * @param gameId is a paramater which is used to identify which gameId to update with the categoryId.
+     * @return if category is set return true.
      */
     public boolean updateCategory(int categoryId, int gameId) {
         try {
