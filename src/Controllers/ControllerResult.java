@@ -83,7 +83,7 @@ public class ControllerResult {
                 statement = connection.createStatement();
                 ResultSet rsPlayerScore = statement.executeQuery(sqlGetPlayerScore);
                 if(rsPlayerScore.next()){
-                    String points = rs.getInt(1) + "p";
+                    String points = rsPlayerScore.getInt(1) + "p";
                     System.out.println(points);
                     totalScore.setText(points);
                 }
