@@ -115,6 +115,9 @@ public class ControllerQuestion {
             feedback.setText("You already answered that!");
             answerField.setText("");
         }
+        else if(score == -2){
+            feedback.setText("Please enter an answer");
+        }
         else if(score > 0){
             feedback.setText("Congratulations! You got " + score + ((score > 1) ? " points." : " point."));
         }
@@ -193,7 +196,8 @@ public class ControllerQuestion {
                 }
             }
         } else {
-            //TODO: "PLEASE ENTER YOUR ANSWER"
+            //No answer
+            return -2;
         }
         answerField.setText("");
         return answerScore;
@@ -234,8 +238,7 @@ public class ControllerQuestion {
                             seconds = 31;
                             questionCount++;
                             nextQuestion();
-                            timer.cancel();
-                            timer.purge();
+                            turnOffTimer();
                             return;
                         }
                     });
@@ -243,6 +246,14 @@ public class ControllerQuestion {
             }
         };
         return task;
+    }
+
+    public void turnOffTimer() {
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
+            return;
+        }
     }
 
     public void timerCountdown() {
