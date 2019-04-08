@@ -23,10 +23,10 @@ public class ControllerRefreshTest {
     public void startTest() {
         String username = "juni";
         String p2 = "ian";
-        int gameid = 118;
+        int gameid = 18;
         String sqlInsertGame = "INSERT INTO Game (gameId, player1, player2, p1Points, p2Points) VALUES (" + gameid + ", '" + username + "', '" + p2 + "', 0, 0);";
-        String sqlUpdate = "UPDATE Player SET gameId = " + gameid + " WHERE username = " + username + " AND username = " + p2 + ";";
-        String sqlDeleteGameId = "UPDATE Player SET gameId = NULL WHERE username = " + username + " AND username = " + p2 + ";";
+        String sqlUpdate = "UPDATE Player SET gameId = " + gameid + " WHERE username = '" + username + "' AND username = '" + p2 + "';";
+        String sqlDeleteGameId = "UPDATE Player SET gameId = NULL WHERE username = '" + username + "' AND username = '" + p2 + "';";
         String sqlDeleteGame = "DELETE Game WHERE gameId = " + gameid + ";";
 
         try{
@@ -39,7 +39,6 @@ public class ControllerRefreshTest {
             statement.executeUpdate(sqlDeleteGame);
 
             assertTrue(result);
-
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -75,13 +74,33 @@ public class ControllerRefreshTest {
 
     @Test
     public void decline() {
-        ch.setUserName("juni");
-        String username =
-        String sqlInsert = "INSERT INTO Game(player1, player2, p1Points, p2Points) VALUES('"+ player1 + "', '" + player2 + "', 0, 0);";
+        ActionEvent event = new ActionEvent();
+        ResultSet rs = null;
+        String username = ch.setUserName("juni");
+        String p2 = "ian";
+        int gameid = 60;
+        boolean result = false;
+        String sqlInsert = "INSERT INTO Game(gameId, player1, player2, p1Points, p2Points) VALUES(" + gameid + ", '"+ p2 + "', '" + username + "', 0, 0);";
+        String sqlUpdate1 = "UPDATE Player SET gameId = " + gameid + "WHERE username = '" + username + "';";
+        String sqlUpdate2 = "UPDATE Player SET gameId = " + gameid + "WHERE username = '" + p2 + "';";
+        String sqlSelect = "SELECT player1, player2 FROM Game WHERE gameId = " + gameid + ";";
+        try{
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+            statement.executeUpdate(sqlInsert);
+            statement.executeUpdate(sqlUpdate1);
+            statement.executeUpdate(sqlUpdate2);
+            cr.decline(event);
+            rs = statement.executeQuery(sqlSelect);
 
-    }
-
-    @Test
-    public void sceneHome() {
+            if(!(rs.next())){
+                result = true;
+            }
+            assertTrue(result);
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            assertTrue(false);
+        }
     }
 }
