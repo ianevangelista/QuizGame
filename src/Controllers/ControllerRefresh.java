@@ -28,9 +28,6 @@ public class ControllerRefresh {
     }
 
     public boolean start(String user){
-        acc.setStyle("-fx-background-color: #a3f267");
-        dec.setStyle("-fx-background-color: #F29B7F");
-
         int gameId = getGameId();
 
         String sqlOtherPlayer = "SELECT username FROM Player WHERE gameId = " + gameId + " AND username != '" + user + "';";
