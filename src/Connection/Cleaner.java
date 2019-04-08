@@ -5,9 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class Cleaner {
-    //public Cleaner(){}
+/**
+ * The class Cleaner is used when closing statements, resultsets and connections.
+ */
 
+public class Cleaner {
+
+    /**
+     * The method closes a statement, resultset and connection.
+     */
     public static void close(Statement statement, ResultSet resultset, Connection connection){
         try {
             if (resultset != null) resultset.close();
@@ -27,6 +33,10 @@ public class Cleaner {
             }
         }
     }
+
+    /**
+     * The method closes a preparedstatement, resultset and connection.
+     */
 
     public static void close(PreparedStatement statement, ResultSet resultset, Connection connection){
         try {
