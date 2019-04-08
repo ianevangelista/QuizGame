@@ -77,15 +77,18 @@ public class ControllerResult {
                 else{
                     resultText.setText("You lost :(");
                 }
-
-                resetGameId(); // resets gameId to play new game
-
+                username = getUserName();
                 String sqlGetPlayerScore = "SELECT points FROM Player WHERE username = '" + username + "';";
-                rs = statement.executeQuery(sqlGetPlayerScore);
-                if(rs.next()){
-                    String points = rs.getInt("points") + "p";
+                connection = ConnectionPool.getConnection();
+                statement = connection.createStatement();
+                ResultSet rsPlayerScore = statement.executeQuery(sqlGetPlayerScore);
+                if(rsPlayerScore.next()){
+                    String points = rs.getInt(1) + "p";
+                    System.out.println(points);
                     totalScore.setText(points);
                 }
+
+                resetGameId(); // resets gameId to play new game
 
             }else{
                 btnChallenge.setVisible(false);
