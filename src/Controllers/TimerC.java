@@ -41,7 +41,7 @@ public class TimerC {
     }
 
     public void sceneGame(ActionEvent event) { //hjemknapp
-        turnOfTimer();
+        turnOffTimer();
         ChangeScene.change(event, "/Scenes/Game.fxml");
     }
 
@@ -51,13 +51,13 @@ public class TimerC {
             @Override
             public void run() {
                 if(checkCat(gameId)) {
-                    turnOfTimer();
+                    turnOffTimer();
                     categoryChosen = true;
                     showMessage();
                     return;
                 }
                 else if(checkGameId(username)){
-                    turnOfTimer();
+                    turnOffTimer();
                     noGameId = true;
                     showMessage();
                     return;
@@ -124,7 +124,7 @@ public class TimerC {
         }
     }
 
-    public static void turnOfTimer() {
+    public static void turnOffTimer() {
         if (timer != null) {
             timer.cancel();
             timer.purge();

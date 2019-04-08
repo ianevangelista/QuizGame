@@ -330,9 +330,10 @@ public class ControllerOpponent {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
+                System.out.println("Opponent timer running");
                 if(checkGameId()) {
                     showBtn();
-                    turnOfTimer();
+                    turnOffTimer();
                     return;
                 }
             }
@@ -343,7 +344,7 @@ public class ControllerOpponent {
     /**
      * A private method which terminates the timer.
      */
-    private void turnOfTimer() {
+    private void turnOffTimer() {
         if (timer != null) {
             timer.cancel();
             timer.purge();

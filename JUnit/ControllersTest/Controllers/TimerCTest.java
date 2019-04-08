@@ -38,6 +38,6 @@ public class TimerCTest {
     }
 
     @Test
-    public void turnOfTimer() {
+    public void turnOffTimer() {
     }
 }
