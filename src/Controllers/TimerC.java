@@ -60,7 +60,6 @@ public class TimerC {
                     turnOfTimer();
                     noGameId = true;
                     showMessage();
-                    System.out.println("checkgameid funker");
                     return;
                 }
             }
@@ -71,9 +70,7 @@ public class TimerC {
     public void showMessage(){
         if(categoryChosen) { btnNext.setVisible(true); }
         else if(noGameId){
-            System.out.println("show label");
             waitingText.setVisible(false);
-            System.out.println("hide label");
             messageText.setVisible(true);
         }
     }

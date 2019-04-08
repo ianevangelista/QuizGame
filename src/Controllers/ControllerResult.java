@@ -84,7 +84,6 @@ public class ControllerResult {
                 ResultSet rsPlayerScore = statement.executeQuery(sqlGetPlayerScore);
                 if(rsPlayerScore.next()){
                     String points = rsPlayerScore.getInt(1) + "p";
-                    System.out.println(points);
                     totalScore.setText(points);
                 }
 

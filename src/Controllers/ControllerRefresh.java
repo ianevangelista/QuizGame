@@ -78,13 +78,11 @@ public class ControllerRefresh {
                         ChangeScene.change(event, "/Scenes/Wait.fxml");
                         return 1;
                     }else{
-                        System.out.println("test2");
                         ChangeScene.change(event, "/Scenes/Question.fxml");
                         return 0;
                     }
                 }
                 else {
-                    System.out.println("test2");
                     ChangeScene.change(event, "/Scenes/Challenged.fxml");
                     return -1;
                 }

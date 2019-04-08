@@ -63,7 +63,6 @@ public class ControllerQuestion {
     public void sceneResult(ActionEvent event){ ChangeScene.change(event, "/Scenes/Result.fxml");}
 
     public void nextQuestion() {
-        //System.out.println(questionCount);
         if(questionCount > 3){
 
         }

@@ -331,7 +331,6 @@ public class ControllerOpponent {
             @Override
             public void run() {
                 if(checkGameId()) {
-                    System.out.println(checkGameId());
                     showBtn();
                     turnOfTimer();
                     return;
