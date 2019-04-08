@@ -12,6 +12,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+/**
+ * The class ControllerHome is the starting page which displays the log in system.
+ * It will displays top 5 players with the highest points.
+ */
+
 public class ControllerHome {
 
     private Connection connection = null;
@@ -24,30 +29,56 @@ public class ControllerHome {
     public TextField password;
     public Label visibility;
 
-    public boolean sceneInfo(ActionEvent event) { //trykker på infoknapp
+    /**
+     * The method changes scene to Info and returns true.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
+    public boolean sceneInfo(ActionEvent event) {
         ChangeScene.change(event, "/Scenes/Info.fxml");
         return true;
     }
-    public boolean forgotPassword(ActionEvent event) { //forgot password knapp
+
+    /**
+     * The method changes scene to ResetPassword and returns true.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
+    public boolean forgotPassword(ActionEvent event) {
         ChangeScene.change(event, "/Scenes/ResetPassword.fxml");
         return true;
     }
 
-    public boolean sceneHome(ActionEvent event) { //feedback knapp
+    /**
+     * The method changes scene to Main and returns true.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
+    public boolean sceneHome(ActionEvent event) {
         ChangeScene.change(event, "/Scenes/Main.fxml");
         return true;
     }
 
-    public boolean register(ActionEvent event) { //trykker registrer
+    /**
+     * The method changes scene to Register and returns true.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
+    public boolean register(ActionEvent event) {
         ChangeScene.change(event, "/Scenes/Register.fxml");
         return true;
     }
 
-    public boolean feedback(ActionEvent event) { //feedback knapp
+    /**
+     * The method changes scene to Feedback and returns true.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
+    public boolean feedback(ActionEvent event) {
         ChangeScene.change(event, "/Scenes/Feedback.fxml");
         return true;
     }
 
+    /**
+     * The method gives user the option to press enter on the keyboard rather than the button.
+     * It will then use the playerLogin-method.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
     public void enter(ActionEvent event) {
         password.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
@@ -56,6 +87,12 @@ public class ControllerHome {
         });
     }
 
+    /**
+     * The method checks the username and password of the user.
+     * Uses the method validateLogin.
+     * Displays an error-message if there is no match or if a field is empty.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
     public boolean playerLogin(ActionEvent event) {
         //checks if there is a input
         if (username.getText().isEmpty() || password.getText().isEmpty()) {
@@ -77,6 +114,14 @@ public class ControllerHome {
         return false;
 	}
 
+    /**
+     * The method checks if the username matches the password.
+     * If the user does not exist an error-message will appear.
+     * If the user is already logged in an error-message will appear.
+     * It will check salted and hashed password to the password which is written.
+     * @param inputUsername is a paramater which is used to identify the user.
+     * @param inputPassword is a paramater which is used to compare the password to the user.
+     */
 	public boolean validateLogin(String inputUsername, String inputPassword) {
         String sql = "SELECT username, online, password, salt FROM Player WHERE username = ?;";
         try {
@@ -84,14 +129,11 @@ public class ControllerHome {
             pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, inputUsername);
             rs = pstmt.executeQuery();
-
             //if user does not exist
             if (!(rs.next())) { return false;
             }
-
             //if user is online
             else if (rs.getBoolean("online")) { return false; }
-
             else {
                 String salt = rs.getString("salt");
                 String realPassword = rs.getString("password");
@@ -115,14 +157,22 @@ public class ControllerHome {
         }
     }
 
+    /**
+     * The method will set the username to identify the user.
+     * @param username is a paramater which is used to identify the user.
+     */
     public void setUserName(String username){
         this.userName = username;
     }
 
-    public static void setUserNull(){
-        userName = null;
-    }
+    /**
+     * The method will set the username to null.
+     */
+    public static void setUserNull(){ userName = null; }
 
+    /**
+     * The method will return the username of the user.
+     */
     public static String getUserName(){
         return userName;
     }

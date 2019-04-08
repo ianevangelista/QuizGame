@@ -13,11 +13,11 @@ import java.util.regex.Pattern;
 
 import static Controllers.ControllerHome.getUserName;
 
-public class ControllerEdit {
+/**
+ * The class ControllerEdit is used when a editing the user's profile.
+ */
 
-    private byte[] newSalt;
-    private String stringSalt;
-    private String password;
+public class ControllerEdit {
 
     private String username = getUserName();
 
@@ -38,17 +38,27 @@ public class ControllerEdit {
     public RadioButton btnFemale;
     public ToggleGroup gender;
 
+    /**
+     * A method when the back button is pressed.
+     * You will return to the previous page, the profile page.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
+
     public void sceneProfile(ActionEvent event) { //hjemknapp
         ChangeScene.change(event, "/Scenes/Profile.fxml");
     }
 
+    /**
+     * A method when confirming a new e-mail adress.
+     * It will check if the e-mail is valid or already taken.
+     * It will the user's e-mail if the e-mail is valid.
+     */
     public void emailConfirm(){
 
         String input = "UPDATE Player SET email = ? WHERE username = ?;";
 
         try {
             connection = ConnectionPool.getConnection();
-
             statement = connection.prepareStatement(input);
             statement.setString(1, inputEmail.getText());
             statement.setString(2, username);
@@ -61,7 +71,6 @@ public class ControllerEdit {
                 statement.executeUpdate();
                 setVisibility(confirmed);
             }
-
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -71,6 +80,10 @@ public class ControllerEdit {
         }
     }
 
+    /**
+     * A method for confirming a gender change by using RadioButtons.
+     * Uses the method of chooseGender.
+     */
     public void genderConfirm(){
 
         String input = "UPDATE Player SET female = ? WHERE username = ?;";
@@ -98,6 +111,12 @@ public class ControllerEdit {
         }
     }
 
+    /**
+     * A method when confirming a new password.
+     * It will check if the passwordfield is empty
+     * If not, the password will be hashed and salted.
+     * The password and the salt will then be stored in the database.
+     */
     public void passwordConfirm(){
 
         ResultSet rs = null;
@@ -121,12 +140,11 @@ public class ControllerEdit {
             if (realPassword.equals(hashedPassword)) {
 
                 statement = connection.prepareStatement(input);
-
                 String inPassword = inputNewPassword.getText();
                 HashSalt hashedSaltedPas = new HashSalt();
-                newSalt = hashedSaltedPas.createSalt();
-                stringSalt = hashedSaltedPass.encodeHexString(newSalt);
-                password = hashedSaltedPass.genHashSalted(inPassword, newSalt);
+                byte[] newSalt = hashedSaltedPas.createSalt();
+                String stringSalt = hashedSaltedPass.encodeHexString(newSalt);
+                String password = hashedSaltedPass.genHashSalted(inPassword, newSalt);
 
                 statement.setString(1, password);
                 statement.setString(2, stringSalt);
@@ -150,7 +168,13 @@ public class ControllerEdit {
         }
     }
 
-    public int chooseGender(){
+    /**
+     * A private method for choosing a new gender.
+     * Returns 0 if male is selected.
+     * Returns 1 if female is selected.
+     * Returns -1 if none selected.
+     */
+    private int chooseGender(){
         if(this.btnMale.isSelected()){
             return 0;
         }
@@ -159,19 +183,45 @@ public class ControllerEdit {
         }
         else return -1;
     }
-    private boolean checkEmail(){
-        String getEmail = inputEmail.getText();
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
-                "[a-zA-Z0-9_+&*-]+)*@" +
-                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
-                "A-Z]{2,7}$";
 
-        Pattern pat = Pattern.compile(emailRegex);
-        if (getEmail == null)
+    /**
+     * A method when the confirming a new e-mail adress.
+     * It will check if the e-mail is valid or already taken.
+     * It will the user's e-mail if the e-mail is valid.
+     */
+    private boolean checkEmail(){
+
+        Connection connection = null;
+        ResultSet rsEmail = null;
+        PreparedStatement pstmt = null;
+        try {
+            String getEmail = inputEmail.getText();
+            connection = ConnectionPool.getConnection();
+            String email = "SELECT email FROM Player WHERE email = ?;";
+            pstmt = connection.prepareStatement(email);
+            pstmt.setString(1, getEmail.toLowerCase());
+            rsEmail = pstmt.executeQuery();
+
+            String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
+                    "[a-zA-Z0-9_+&*-]+)*@" +
+                    "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                    "A-Z]{2,7}$";
+            Pattern pat = Pattern.compile(emailRegex);
+
+            if (getEmail == null || rsEmail.next()){return false;}
+            return pat.matcher(getEmail).matches();
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
-        return pat.matcher(getEmail).matches();
+        }finally {
+            Cleaner.close(pstmt, rsEmail, connection);
+        }
     }
 
+    /**
+     * A method for the different error messages.
+     * Either sets the visibilty of the components as true or false.
+     */
     private void setVisibility(Label label){
         errorMessage.setVisible(false);
         confirmed.setVisible(false);

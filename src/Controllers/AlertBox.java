@@ -10,9 +10,23 @@ import javafx.stage.Stage;
 
 import static Controllers.ControllerHome.getUserName;
 
+/**
+ * The class AlertBox is used when exiting the window.
+ */
+
 public class AlertBox {
-    static boolean answer;
+    private static boolean answer;
+
+    /**
+     * This method runs when exiting the window.
+     * It will check if user is logged in or not.
+     * It gives the user the choice of confirming to leave or not.
+     */
     public static boolean display(String title, String message){
+        /*
+          Creates a new window which gives the user two options.
+          Either the user can exit the entire game or stay.
+         */
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
@@ -22,7 +36,10 @@ public class AlertBox {
         label.setText(message);
         Button closeBtn = new Button("Yes, leave");
         Button regretBtn = new Button("No, stay");
-
+        /*
+          Checks if the user is logged in.
+          If logged in the user will be logged out if wanting to exit.
+         */
         closeBtn.setOnAction(event -> {
             if(getUserName() != null) {
                 Logout.logOut();
@@ -31,10 +48,16 @@ public class AlertBox {
             window.close();
         });
 
+        /*
+          If not wanting to exit, the created window will close.
+         */
         regretBtn.setOnAction(event -> {
             answer = false;
             window.close();
         });
+        /*
+          Displays the window to the user.
+         */
         VBox layout = new VBox(10);
         layout.getChildren().addAll(label, closeBtn, regretBtn);
         layout.setAlignment(Pos.CENTER);

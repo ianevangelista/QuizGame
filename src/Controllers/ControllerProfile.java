@@ -10,8 +10,6 @@ import java.sql.PreparedStatement;
 
 import javafx.scene.image.Image;
 
-import javax.sound.midi.Soundbank;
-import javax.swing.*;
 import java.sql.*;
 import java.io.File;
 
@@ -39,34 +37,45 @@ public class ControllerProfile {
 
     /**
      * This method runs when your access the profile function in the program.
+     * The method runs setProfile().
      */
     public void initialize() {
-        choosePic();
+        setProfile();
     }
 
     /**
-     * This is what happens when the home button is pushed.
+     * A method when the home button is pressed.
      * You will return to the previous page, the game page.
-     * @param event
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
      */
 
     public void sceneGame(ActionEvent event) {
         ChangeScene.change(event, "/Scenes/Game.fxml");
     }
 
-    public void edit(ActionEvent event){
-        ChangeScene.change(event, "/Scenes/EditProfile.fxml");
-    }
+    /**
+     * A method for when the home button is pressed.
+     * You will be sent forward to the edit page.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
 
-    public void choosePic(){
+    public void edit(ActionEvent event){ ChangeScene.change(event, "/Scenes/EditProfile.fxml"); }
+
+    /**
+     * A method which sets the profile page of the user.
+     */
+    private void setProfile(){
         ResultSet rs = null;
         try{
+            /*
+              Sets up connection
+              Selects ponts, email, gamesWon and gamesLost from Player
+             */
             connection = ConnectionPool.getConnection();
             String sql = "SELECT points, email, gamesWon, gamesLost FROM Player WHERE username = ?;";
             statement = connection.prepareStatement(sql);
             statement.setString(1, username);
             rs = statement.executeQuery();
-
             rs.next();
             int pointsLest = rs.getInt("points");
             String points = String.valueOf(pointsLest);
@@ -75,28 +84,33 @@ public class ControllerProfile {
             String won = String.valueOf(wonLest);
             int lostLest = rs.getInt("gamesLost");
             String lost = String.valueOf(lostLest);
-
+            /*
+              This is the profile picture for the first level
+             */
             if(pointsLest < 100){
-                /**
-                 * This is the profile picture for the first level
-                 */
                 File first = new File("src/Scenes/1..png");
                 Image one = new Image(first.toURI().toString());
                 picture.setImage(one);
             }
-
+            /*
+              This is the profile picture for the second level
+             */
             else if(pointsLest < 500){
                 File second = new File("src/Scenes/2..png");
                 Image two = new Image(second.toURI().toString());
                 picture.setImage(two);
             }
-
+            /*
+              This is the profile picture for the first level
+             */
             else{
                 File third = new File("src/Scenes/3..png");
                 Image three = new Image(third.toURI().toString());
                 picture.setImage(three);
             }
-
+            /*
+              Displays the information of the user
+             */
             printUsername.setText(username);
             printEmail.setText(email);
             printPoints.setText(points);

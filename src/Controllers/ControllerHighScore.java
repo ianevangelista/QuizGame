@@ -12,19 +12,36 @@ import Connection.Cleaner;
 import Connection.ConnectionPool;
 import javafx.scene.control.ListView;
 
+/**
+ * The class ControllerHighScore is the home page after logging in.
+ * It will displays top 5 players with the highest points.
+ */
+
 public class ControllerHighScore {
 
     @FXML
     public ListView userCol;
     public ListView scoreCol;
 
+    /**
+     * This method runs when your access the profile function in the program.
+     * The method runs highscoreTable().
+     */
     public void initialize(){ highscoreTable(); }
 
+    /**
+     * The method changes scene to Game.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
     public void sceneGame(ActionEvent event) { //hjemknapp
         ChangeScene.change(event, "/Scenes/Game.fxml");
     }
 
-    public void highscoreTable(){
+    /**
+     * The private method connects to the database and fetches the top 5 players with the most points.
+     * It displays the users in a ListView.
+     */
+    private void highscoreTable(){
 
         Connection connection = null;
         Statement statement = null;
