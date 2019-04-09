@@ -23,6 +23,7 @@ public class ControllerRefresh {
     public Button dec;
     public Label challenger;
 
+
     private static String username = getUserName();
     private static Connection connection = null;
     private static Statement statement = null;
@@ -53,10 +54,10 @@ public class ControllerRefresh {
             statement = connection.createStatement();
             rs = statement.executeQuery(sqlOtherPlayer);
 
-            //if the other player hasn't quitted before you open the game
+            //if the other player has not quit before you open the game
             if(rs.next()) {
                 String challengingPlayer = rs.getString("username");
-                challenger.setText("You've been challenged by " + challengingPlayer);
+                setChallengeText("You've been challenged by " + challengingPlayer);
                 return true;
             } else {
                 String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + user + "';";
@@ -73,6 +74,12 @@ public class ControllerRefresh {
         }
     }
 
+    public void setChallengeText(String text) {
+        if(challenger != null) {
+            challenger.setText(text);
+        }
+    }
+
     /**
      * The method refreshes the player's gameId.
      * It will check if you have challenged a player or have been challenged.
@@ -84,9 +91,15 @@ public class ControllerRefresh {
      * If there are no gameId, return -1.
      */
 
-    public static int refresh(ActionEvent event, String user) {
+    public static void refresh(ActionEvent event, String user) {
+        String filename = getCorrectScene();
+        ChangeScene.change(event, filename);
+}
+
+    public static String getCorrectScene() {
         try {
-            String sql = "SELECT gameId FROM Player WHERE username = '" + user + "';";
+            String username = getUserName();
+            String sql = "SELECT gameId FROM Player WHERE username = '" + username + "';";
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             rs = statement.executeQuery(sql);
@@ -94,29 +107,25 @@ public class ControllerRefresh {
 
             int playerGameId = rs.getInt(1);
             if(playerGameId != 0) {
-                sql = "SELECT player1, categoryId FROM Game WHERE player1 = '" + user + "' OR player2 = '" + user + "' ;";
+                sql = "SELECT player1, categoryId FROM Game WHERE player1 = '" + username + "' OR player2 = '" + username + "' ;";
                 rs = statement.executeQuery(sql);
                 rs.next();
-                if (rs.getString("player1").equals(user)) {
+                if (rs.getString("player1").equals(username)) {
                     if(rs.getInt("categoryId") == 0){
-                        ChangeScene.change(event, "/Scenes/Wait.fxml");
-                        return 1;
+                        return "/Scenes/Wait.fxml";
                     }else{
-                        ChangeScene.change(event, "/Scenes/Question.fxml");
-                        return 0;
+                        return "/Scenes/Question.fxml";
                     }
                 }
                 else {
-                    ChangeScene.change(event, "/Scenes/Challenged.fxml");
-                    return -1;
+                    return "/Scenes/Challenged.fxml";
                 }
             }else {
-                ChangeScene.change(event, "/Scenes/ChallengeUser.fxml");
-                return -1;
+                return "/Scenes/ChallengeUser.fxml";
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return -1;
+            return "";
         } finally {
             Cleaner.close(statement, rs, connection);
         }

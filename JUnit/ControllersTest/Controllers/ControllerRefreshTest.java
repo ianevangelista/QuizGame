@@ -2,7 +2,14 @@ package Controllers;
 
 import Connection.ConnectionPool;
 import javafx.event.ActionEvent;
+import org.junit.Before;
 import org.junit.Test;
+import Connection.Cleaner;
+import static Controllers.ControllerOpponent.setGameId;
+import org.mockito.Mockito;
+import org.mockito.Matchers;
+
+
 
 import javax.swing.*;
 import java.sql.Connection;
@@ -18,52 +25,69 @@ public class ControllerRefreshTest {
     Statement statement = null;
     ControllerRefresh cr = new ControllerRefresh();
     ControllerHome ch = new ControllerHome();
+    private ControllerRefresh mock;
+    public String player1 = "juni";
+    public String player2 = "ian";
+    public int gameId = 1;
+
+
+    @Before
+    public void createGame() {
+        String sqlInsertGame = "INSERT INTO Game (gameId, player1, player2) VALUES (" + gameId + ", '" + player1 + "', '" + player2 + "');";
+        String sqlUpdateP1 = "UPDATE Player SET gameId = " + gameId + " WHERE username = '" + player1 + "';";
+        String sqlUpdateP2 = "UPDATE Player SET gameId = " + gameId + " WHERE username = '" + player2 + "';";
+        String sqlDeleteGameIdP1 = "UPDATE Player SET gameId = NULL WHERE username = '" + player1 + "';";
+        String sqlDeleteGameIdP2 = "UPDATE Player SET gameId = NULL WHERE username = '" + player2 + "';";
+        try{
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+            setGameId(gameId);
+            statement.executeUpdate(sqlInsertGame);
+            statement.executeUpdate(sqlUpdateP1);
+            statement.executeUpdate(sqlUpdateP2);
+            statement.executeUpdate(sqlDeleteGameIdP1);
+            statement.executeUpdate(sqlDeleteGameIdP2);
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            Cleaner.close(statement, null, connection);
+        }
+    }
 
     @Test
     public void startTest() {
-        String username = "juni";
-        String p2 = "ian";
-        int gameid = 18;
-        String sqlInsertGame = "INSERT INTO Game (gameId, player1, player2, p1Points, p2Points) VALUES (" + gameid + ", '" + username + "', '" + p2 + "', 0, 0);";
-        String sqlUpdate = "UPDATE Player SET gameId = " + gameid + " WHERE username = '" + username + "' AND username = '" + p2 + "';";
-        String sqlDeleteGameId = "UPDATE Player SET gameId = NULL WHERE username = '" + username + "' AND username = '" + p2 + "';";
-        String sqlDeleteGame = "DELETE Game WHERE gameId = " + gameid + ";";
+
+        boolean result = false;
+        String sqlDeleteGame = "DELETE Game WHERE gameId = " + gameId + ";";
 
         try{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-            statement.executeUpdate(sqlInsertGame);
-            statement.executeUpdate(sqlUpdate);
-            boolean result = cr.start(username);
-            statement.executeUpdate(sqlDeleteGameId);
+            setGameId(gameId);
+            result = cr.start(player1);
             statement.executeUpdate(sqlDeleteGame);
 
             assertTrue(result);
         }
         catch (SQLException e){
             e.printStackTrace();
-            assertFalse(true);
+            assertTrue(result);
+        } finally {
+            Cleaner.close(statement, null, connection);
         }
     }
 
     @Test
     public void refreshTest() {
-        String username = "juni";
-        int gameid = 118;
-        String sqlInsertGame = "INSERT INTO Game (gameId, player1, player2, categoryId) VALUES (" + gameid + ", '" + username + "', 'ian', 1);";
-        String sqlUpdate = "UPDATE Player SET gameId = " + gameid + " WHERE username = '" + username + "';";
-        String sqlDelete = "UPDATE Player SET gameId = null WHERE username = '" + username + "';";
-        String sqlDeleteGame = "DELETE Game WHERE gameId = " + gameid + ";";
-        ActionEvent event = new ActionEvent();
+        String sqlDeleteGame = "DELETE Game WHERE gameId = " + gameId + ";";
         try{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-            statement.executeUpdate(sqlInsertGame);
-            statement.executeUpdate(sqlUpdate);
-            int result = cr.refresh(event, username);
-            int expect = 0;
-            statement.executeUpdate(sqlDelete);
-            statement.executeUpdate(sqlDeleteGame);
+
+            String result = cr.getCorrectScene();
+            System.out.println(result);
+            String expect = "hei";
             assertEquals(result, expect);
         }
         catch (SQLException e){

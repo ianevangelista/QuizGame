@@ -145,6 +145,7 @@ public class ControllerQuestion {
                 qId = rs.getInt("questionId");
             }
 
+
             //selects all alternatives to the question
             String sqlGetAlt = "SELECT score, answer FROM Alternative WHERE questionId = " + qId +";";
             rs = statement.executeQuery(sqlGetAlt);
