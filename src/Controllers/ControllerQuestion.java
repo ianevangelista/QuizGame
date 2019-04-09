@@ -182,12 +182,13 @@ public class ControllerQuestion {
             //check trought arrayList of all possible answers
             answerScore =findScore(answer);
         }
+        else return -2;
         answerField.setText("");
         return answerScore;
     }
 
     public int findScore(String answer) {
-        int answerScore = -2;
+        int answerScore = 0;
         //check trought arrayList of all possible answers
         for(int i = 0; i < rightAnswer.size(); i++) {
             if (answer.equals(rightAnswer.get(i))) {
