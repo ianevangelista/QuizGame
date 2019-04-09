@@ -169,9 +169,9 @@ public class ControllerHome {
      * @param username is a parameter which is used to identify the user.
      * @return the username after setting the username.
      */
-    public String setUserName(String username){
-        this.userName = username;
-        return username;
+    public static String setUserName(String username){
+        userName = username;
+        return userName;
     }
 
     /**
