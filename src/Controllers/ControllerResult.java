@@ -22,6 +22,7 @@ import static Controllers.ControllerOpponent.resetGameId;
 /**
  * The class ControllerResult is used when checking the result of both players after a game.
  */
+
 public class ControllerResult {
 
     private String username = getUserName();

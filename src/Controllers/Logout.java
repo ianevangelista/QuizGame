@@ -13,9 +13,20 @@ import static Controllers.ControllerHome.getUserName;
 import static Controllers.ControllerQuestion.findUser;
 import static Controllers.ControllerOpponent.getGameId;
 
+/**
+ * The class Logout is used when logging out a player.
+ */
+
 public class Logout {
     private static String username = getUserName();
 
+    /**
+     * The method updates online to 0 in Player.
+     * If the player has a gameId it update the game and the player's gameId.
+     * It will also add games lost if you have a gameId.
+     * If the player does not have a gameId online is updated to 0.
+     * @return true if online is updated or false if not.
+     */
     public static boolean logOut(){
         Connection connection = null;
         Statement statement = null;
@@ -71,6 +82,7 @@ public class Logout {
                     return true;
                 }
             }
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -78,8 +90,12 @@ public class Logout {
             Cleaner.close(statement, rsPlayersWithTheGameId, null);
             Cleaner.close(null, rs, connection);
         }
-        return true;
     }
+
+    /**
+     * The method updates online to 1 in Player.
+     * @return true if online is updated or false if not.
+     */
     public static boolean logIn(){
         Connection connection = null;
         PreparedStatement statement = null;
