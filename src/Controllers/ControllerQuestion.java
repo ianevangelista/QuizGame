@@ -187,12 +187,12 @@ public class ControllerQuestion {
     }
 
     public int findScore(String answer) {
-        int answerScore = 0;
+        int answerScore = -2;
         //check trought arrayList of all possible answers
-        for(int i = 0; i < rightAnswer.size(); i++){
-            if(answer.equals(rightAnswer.get(i))){
-                for(Integer previousAnswer: previouslyAnswered){
-                    if(previousAnswer == i){
+        for(int i = 0; i < rightAnswer.size(); i++) {
+            if (answer.equals(rightAnswer.get(i))) {
+                for (Integer previousAnswer : previouslyAnswered) {
+                    if (previousAnswer == i) {
                         //That answer is already used
                         return -1;
                     }
@@ -201,9 +201,6 @@ public class ControllerQuestion {
                 totalPoints += score.get(i);
                 answerScore = score.get(i);
             }
-        } else {
-            //No answer
-            return -2;
         }
         return answerScore;
     }

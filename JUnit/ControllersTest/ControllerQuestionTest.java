@@ -35,28 +35,29 @@ public class ControllerQuestionTest {
 
     @Test
     public void findScoreTest() {
+        int expScore = 0;
+        int score = -1;
+        int question = 26;
         int category = 1;
         int gameId = 1;
-        int question = 26;
         String answer = "miami heat";
-        String sql = "INSERT INTO Game(gameId) VALUES (" + gameId + ");";
-        String sqlQ = "SELECT * FROM Alternative WHERE answerId= 255;";
+        String sql = "INSERT INTO Game(gameId, categoryId, question1) VALUES (" + gameId + ", " + category + ", " + question + ");";
         String sqlDelete = "DELETE FROM Game WHERE gameId=" + gameId + ";";
+        String sqlQ = "SELECT * FROM Alternative WHERE answerId= 255;";
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             statement.executeUpdate(sql);
-            // Adds questions from the category to the game
-            /*
-            rs = statement.executeQuery(sqlCategory);
+            score = cq.findScore(answer);
+            rs = statement.executeQuery(sqlQ);
             if(rs.next()) {
-                if((rs.getInt(1) ==category)) {
-                    statement.executeUpdate(sqlDelete);
-                    assertTrue(resultat);
-                }
-            }*/
+                expScore = rs.getInt("score");
+                statement.executeUpdate(sqlDelete);
+                assertEquals(expScore, score);
+            }
         } catch (Exception e){
             e.printStackTrace();
+            assertEquals(expScore, score);
         } finally {
             Cleaner.close(statement, null, connection);
         }
