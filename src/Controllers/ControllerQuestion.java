@@ -125,8 +125,8 @@ public class ControllerQuestion {
         }
     }
 
-    private void questionDisplay() { //displays questions
-        try {
+    public void questionDisplay() { //displays questions
+        /*try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
@@ -160,8 +160,49 @@ public class ControllerQuestion {
             e.printStackTrace();
         }finally {
             Cleaner.close(statement, rs, connection);
+        }*/
+        String qText = questionInfo();
+        questionField.setText(qText);
+    }
+
+    public String questionInfo() {
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+
+            //sql to get question text
+            String sqlGetText = "SELECT questionText, questionId FROM Game JOIN Question ON questionId = question" + (questionCount+1) +  " WHERE gameId = " + getGameId();
+            rs = statement.executeQuery(sqlGetText);
+            int qId = 0;
+            String qText = "";
+            if(rs.next()) {
+                qText = rs.getString("questionText");
+                qId = rs.getInt("questionId");
+            }
+
+            //selects all alternatives to the question
+            String sqlGetAlt = "SELECT score, answer FROM Alternative WHERE questionId = " + qId +";";
+            rs = statement.executeQuery(sqlGetAlt);
+
+            //emptys previous values from the question that came before
+            rightAnswer = new ArrayList<String>();
+            score = new ArrayList<Integer>();
+            previouslyAnswered = new ArrayList<Integer>();
+
+            //fills arrayLists with answers and scores for the question
+            while(rs.next()){
+                rightAnswer.add(rs.getString("answer").toLowerCase());
+                score.add(rs.getInt("score"));
+            }
+            return qText;
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return "";
+        }finally {
+            Cleaner.close(statement, rs, connection);
         }
     }
+
 
     public void enter() {
         answerField.setOnKeyPressed(e -> {
@@ -174,20 +215,20 @@ public class ControllerQuestion {
     //Checks if the answered question is correct and if it has already been answered by the user this round
     private int questionCheck() {
         int answerScore = 0;
-
         String answer = answerField.getText().toLowerCase();  //get answer in lowercase
-
+        answerField.setText("");
         //Check if player gave actual answer before checking DB
         if(!answer.equals("")){
-            //check trought arrayList of all possible answers
             answerScore =findScore(answer);
+            return answerScore;
         }
-        answerField.setText("");
-        return answerScore;
+        else {
+            return -2;
+        }
     }
 
     public int findScore(String answer) {
-        int answerScore = -2;
+        int answerScore = 0;
         //check trought arrayList of all possible answers
         for(int i = 0; i < rightAnswer.size(); i++) {
             if (answer.equals(rightAnswer.get(i))) {
@@ -213,7 +254,7 @@ public class ControllerQuestion {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-            String sqlPlayer = "SELECT player1 FROM Game WHERE gameId=" + gameId + ";";
+            String sqlPlayer = "SELECT player1 FROM Game WHERE gameId=" + getGameId() + ";";
             rs = statement.executeQuery(sqlPlayer);
             rs.next();
             String player1Name = rs.getString("player1");
