@@ -6,9 +6,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * The class Main covers the startup of the application How Dumb R U?
+*/
 
 public class Main extends Application {
 
+    /**
+     * The method creates stage and fetches a scene and displays it.
+     */
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent main = FXMLLoader.load(getClass().getResource("/Scenes/Main.fxml"));
@@ -21,6 +27,10 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    /**
+     * The method closes the program.
+     * Gives the user the option to confirm.
+     */
     private void closeProgram(Stage stage){
         Boolean answer = AlertBox.display("Exit game", "Are you sure you want to quit?");
         if(answer) stage.close();

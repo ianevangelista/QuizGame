@@ -11,6 +11,11 @@ import java.sql.*;
 import static Controllers.ControllerHome.getUserName;
 import static Controllers.ControllerOpponent.getGameId;
 
+/**
+ * The class ControllerRefresh is used to check if have been challenged when pressing start after logging in.
+ * It will also provide you the choice of accepting or declining the request if you are challenged.
+ */
+
 public class ControllerRefresh {
 
     @FXML
@@ -23,9 +28,20 @@ public class ControllerRefresh {
     private static Statement statement = null;
     private static ResultSet rs = null;
 
+    /**
+     * This method runs when pressing the start button after logging in.
+     * The method runs start.
+     */
+
     public void initialize() {
         start(username);
     }
+
+    /**
+     * The method runs checks if you have been challenged.
+     * @param user is the your username.
+     * @return true if you have a gameId or false if not.
+     */
 
     public boolean start(String user){
         int gameId = getGameId();
@@ -57,6 +73,17 @@ public class ControllerRefresh {
         }
     }
 
+    /**
+     * The method refreshes the player's gameId.
+     * It will check if you have challenged a player or have been challenged.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param user you username.
+     * @return an int 1 if you have a gameId, are player1 and no category has been set.
+     * If there is a category set return 0.
+     * If you are not player1, return -1.
+     * If there are no gameId, return -1.
+     */
+
     public static int refresh(ActionEvent event, String user) {
         try {
             String sql = "SELECT gameId FROM Player WHERE username = '" + user + "';";
@@ -87,7 +114,6 @@ public class ControllerRefresh {
                 ChangeScene.change(event, "/Scenes/ChallengeUser.fxml");
                 return -1;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
@@ -96,10 +122,20 @@ public class ControllerRefresh {
         }
     }
 
+    /**
+     * The method accepts a game request.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
     public void accept(ActionEvent event) {
         ChangeScene.change(event, "/Scenes/Category.fxml");
     }
 
+    /**
+     * The method declines a game request.
+     * Removes the gameId of both players in Player.
+     * Deletes the entire game in Game.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
     public boolean decline(ActionEvent event) {
         Connection connection = null;
         Statement statement = null;
@@ -135,6 +171,10 @@ public class ControllerRefresh {
         }
     }
 
+    /**
+     * The method changes scene to Game.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
     public void sceneHome(ActionEvent event) { //feedback knapp
         ChangeScene.change(event, "/Scenes/Game.fxml");
     }
