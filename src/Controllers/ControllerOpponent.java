@@ -63,7 +63,7 @@ public class ControllerOpponent {
 
     /**
      * The method changes scene to Game.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
     public void sceneHome(ActionEvent event) { //home button
         ChangeScene.change(event, "/Scenes/Game.fxml");
@@ -72,7 +72,7 @@ public class ControllerOpponent {
     /**
      * The method gives user the option to press enter on the keyboard rather than the button.
      * It will then use the finOpponen-method.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
     public void enter(ActionEvent event) {
         opponent.setOnKeyPressed(e -> {
@@ -87,7 +87,7 @@ public class ControllerOpponent {
      * It will check if the user is you or if the user is online.
      * If the user is not you and is online, a game will be created by using makeGame.
      * The user will then be sent to a Wait scene.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
     public void findOpponent(ActionEvent event) {
         try{

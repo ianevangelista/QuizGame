@@ -31,7 +31,7 @@ public class ControllerHome {
 
     /**
      * The method changes scene to Info and returns true.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      * @return true if scene is changed.
      */
     public boolean sceneInfo(ActionEvent event) {
@@ -41,7 +41,7 @@ public class ControllerHome {
 
     /**
      * The method changes scene to ResetPassword and returns true.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      * @return true if scene is changed.
      */
     public boolean forgotPassword(ActionEvent event) {
@@ -51,7 +51,7 @@ public class ControllerHome {
 
     /**
      * The method changes scene to Main and returns true.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      * @return true if scene is changed.
      */
     public boolean sceneHome(ActionEvent event) {
@@ -61,7 +61,7 @@ public class ControllerHome {
 
     /**
      * The method changes scene to Register and returns true.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      * @return true if scene is changed.
      */
     public boolean register(ActionEvent event) {
@@ -71,7 +71,7 @@ public class ControllerHome {
 
     /**
      * The method changes scene to Feedback and returns true.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      * @return true if scene is changed.
      */
     public boolean feedback(ActionEvent event) {
@@ -82,7 +82,7 @@ public class ControllerHome {
     /**
      * The method gives user the option to press enter on the keyboard rather than the button.
      * It will then use the playerLogin-method.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
     public void enter(ActionEvent event) {
         password.setOnKeyPressed(e -> {
@@ -96,7 +96,7 @@ public class ControllerHome {
      * The method checks the username and password of the user.
      * Uses the method validateLogin.
      * Displays an error-message if there is no match or if a field is empty.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      * @return true login is validated.
      */
     public boolean playerLogin(ActionEvent event) {
@@ -125,8 +125,8 @@ public class ControllerHome {
      * If the user does not exist an error-message will appear.
      * If the user is already logged in an error-message will appear.
      * It will check salted and hashed password to the password which is written.
-     * @param inputUsername is a paramater which is used to identify the user.
-     * @param inputPassword is a paramater which is used to compare the password to the user.
+     * @param inputUsername is a parameter which is used to identify the user.
+     * @param inputPassword is a parameter which is used to compare the password to the user.
      * @return true if username and password is validated.
      */
 	public boolean validateLogin(String inputUsername, String inputPassword) {
@@ -166,7 +166,7 @@ public class ControllerHome {
 
     /**
      * The method will set the username to identify the user.
-     * @param username is a paramater which is used to identify the user.
+     * @param username is a parameter which is used to identify the user.
      * @return the username after setting the username.
      */
     public String setUserName(String username){

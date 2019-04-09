@@ -31,7 +31,7 @@ public class ControllerHighScore {
 
     /**
      * The method changes scene to Game.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
     public void sceneGame(ActionEvent event) { //hjemknapp
         ChangeScene.change(event, "/Scenes/Game.fxml");
