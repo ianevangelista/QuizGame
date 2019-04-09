@@ -239,11 +239,16 @@ public class ControllerEdit {
 
             // Return true if the email passes the regex validation and false if it is invalid
             return pat.matcher(getEmail).matches();
-        } catch (SQLException e) {
-            // If the sql fails
+        }  catch(SQLException sqle){
+            // Database access error
+            System.out.println("Database access error");
+            sqle.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            // If something else goes wrong
             e.printStackTrace();
             return false;
-        }finally {
+        } finally {
             // Close connection
             Cleaner.close(pstmt, rsEmail, connection);
         }
