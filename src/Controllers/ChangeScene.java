@@ -32,6 +32,11 @@ public class ChangeScene {
             window.setScene(scene); //Sets the stage
             window.show(); //Shows the scene
         }catch (IOException e){
+            // Input output error when getting the fxml file
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            // If something else goes wrong
             e.printStackTrace();
         }
     }

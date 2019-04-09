@@ -18,12 +18,13 @@ import java.sql.ResultSet;
  */
 
 public class ControllerHome {
-
+    // Set up connection
     private Connection connection = null;
     private ResultSet rs = null;
     private PreparedStatement pstmt = null;
     private static String userName;
 
+    // Fxml elements
     @FXML
     private TextField username;
     public TextField password;
@@ -85,7 +86,9 @@ public class ControllerHome {
      * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
      */
     public void enter(ActionEvent event) {
+        // When a button is pressed in the password field it triggers this event
         password.setOnKeyPressed(e -> {
+            // If the button pressed is enter, the user attempts to log in
             if (e.getCode() == KeyCode.ENTER) {
                 playerLogin(event);
             }
@@ -100,17 +103,20 @@ public class ControllerHome {
      * @return true login is validated.
      */
     public boolean playerLogin(ActionEvent event) {
-        //checks if there is a input
-        if (username.getText().isEmpty() || password.getText().isEmpty()) {
-            visibility.setVisible(true); //her skal en pop-up komme
-            return false;
-        }
-
+        // Get input
         String inputUsername = username.getText();
         String inputPassword = password.getText();
 
-        //uses method validateLogin to check if username and password is correct
+        // Checks if there is a input
+        if (inputUsername.isEmpty() || inputPassword.isEmpty()) {
+            // Error message to user that either password or username is empty
+            visibility.setVisible(true);
+            return false;
+        }
+
+        // Uses method validateLogin to check if username and password is correct
         if(validateLogin(inputUsername, inputPassword)) {
+            // If the login is valid it changes scene to the
             ChangeScene.change(event, "/Scenes/Game.fxml");
             return true;
         }

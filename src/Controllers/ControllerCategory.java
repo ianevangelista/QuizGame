@@ -49,7 +49,7 @@ public class ControllerCategory {
      * It will display three random categorys from the database.
      * @return if all code is executed return true.
      */
-    public boolean initialize(){ //gets run when the window is opened for the first time
+    public boolean initialize() { //gets run when the window is opened for the first time
         Random rand = new java.util.Random();
         try {
             connection = ConnectionPool.getConnection();
@@ -64,7 +64,7 @@ public class ControllerCategory {
             ArrayList<String> categoryName = new ArrayList<String>();
 
             // Fills up the arraylists with data from the database
-            while(rs.next()){
+            while (rs.next()) {
                 categoryId.add(rs.getInt("categoryId"));
                 categoryName.add(rs.getString("name"));
             }
@@ -91,12 +91,16 @@ public class ControllerCategory {
             category2.setText(categoryName.get(randomCategoryId[1]));
             category3.setText(categoryName.get(randomCategoryId[2]));
             return true;
-        }
-        catch (Exception e) {
+        } catch (SQLException sqle) {
+            // Database access error
+            System.out.println("Database access error");
+            sqle.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            // If something else goes wrong
             e.printStackTrace();
-            return true;
-        }
-        finally {
+            return false;
+        } finally {
             // closes everything
             Cleaner.close(statement, rs, connection);
         }
@@ -189,7 +193,14 @@ public class ControllerCategory {
             statement.executeUpdate(sql);
             return true;
         }
-        catch (Exception e){
+        catch(SQLException sqle){
+            // Database access error
+            System.out.println("Database access error");
+            sqle.printStackTrace();
+            return false;
+        }
+        catch (Exception e) {
+            // If something else goes wrong
             e.printStackTrace();
             return false;
         }
@@ -232,7 +243,14 @@ public class ControllerCategory {
             String sqlUpdate = "UPDATE Game SET question1='" + questionId[0] + "', question2 ='" + questionId[1] + "' , question3='" + questionId[2] + "' WHERE gameId=" + gameId + ";";
             statement.executeUpdate(sqlUpdate);
 
-        }catch (SQLException e) {
+        }
+        catch(SQLException sqle){
+            // Database access error
+            System.out.println("Database access error");
+            sqle.printStackTrace();
+        }
+        catch (Exception e) {
+            // If something else goes wrong
             e.printStackTrace();
         }finally {
             Cleaner.close(statement, rs, connection);
