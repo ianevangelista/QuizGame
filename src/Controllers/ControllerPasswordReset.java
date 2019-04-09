@@ -23,10 +23,21 @@ import java.util.Properties;
 
 import static Controllers.ControllerHome.getUserName;
 
+
+/**
+ * The class ControllerPasswordReset is the page where the users password can be reset.
+ * It will appear when you press the forgot password button on the Login page.
+ */
 public class ControllerPasswordReset {
+    /**
+     * Fxml element for the textfield
+     */
     @FXML
     public TextField email;
 
+    /**
+     * Set up for java email
+     */
     Properties props = new Properties();
     Session session = Session.getDefaultInstance(props);
     MimeMessage message = new MimeMessage(session);
@@ -34,14 +45,28 @@ public class ControllerPasswordReset {
 
     private String passwordNew = newPassword();
 
+    /**
+     * Set up for connection
+     */
     private Connection connection = null;
     private PreparedStatement statement = null;
     ResultSet rs = null;
 
+    /**
+     * Set up for hashing of password
+     */
     private byte[] salt;
     private String stringSalt;
     private String password;
 
+
+    /**
+     * This methods sends the new password to the user's email account.
+     * The first thing happening is establishing the receiver and the host we send from (host, username, password)
+     * After this, we start to put the properties, so we can load the stream.
+     * Then we start to formulate the mail and add the new password to the text.
+     * Last, but not least, the mail is sent and the transaction is closed.
+     */
 
     public void sendPassword(){
 
@@ -82,6 +107,10 @@ public class ControllerPasswordReset {
 
     }
 
+    /**
+     * This method changes scene to Main and execute the methods sendPassword and setPassword if validateEmail() is true.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
+     */
     public void feedback(ActionEvent event){
         if(validateEmail()){
             sendPassword();
@@ -90,16 +119,19 @@ public class ControllerPasswordReset {
             ChangeScene.change(event, "/Scenes/Main.fxml");
     }
 
+    /**
+     * This method executes when you press the back button.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
+     */
     public void sceneHome(ActionEvent event) { //back button
-        if(getUserName() == null) {
             ChangeScene.change(event, "/Scenes/Main.fxml");
-        }
-        else{
-            ChangeScene.change(event, "/Scenes/Game.fxml");
-        }
     }
 
-
+    /**
+     * This method generates a new Password consisting of a 4 digit random number.
+     * Then it converts the int to a String for later usage.
+     * @return String with new password
+     */
     private String newPassword(){
         Random ran = new Random();
         int number = ran.nextInt(9000) + 1000;
@@ -107,7 +139,10 @@ public class ControllerPasswordReset {
     }
 
 
-
+    /**
+     * This method hashes and salts the new password generated in newPassword()..
+     * The password and the salt will then be stored in the database.
+     */
     private void setPassword(){
         String input = "UPDATE Player SET password = ?, salt = ? WHERE email = ?";
         try {
@@ -133,7 +168,10 @@ public class ControllerPasswordReset {
         }
     }
 
-
+    /**
+     * This method checks if the email from the textField matches with a user in the database.
+     * @return true if a user with the chosen email exists, and false if not.
+     */
     public boolean validateEmail() {
         String sql = "SELECT username FROM Player WHERE email = ?;";
         try {
