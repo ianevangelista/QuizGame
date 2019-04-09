@@ -11,6 +11,10 @@ import javafx.scene.control.ToggleGroup;
 import java.util.regex.Pattern;
 import java.sql.*;
 
+/**
+ * The class ControllerRegister is used to register a new user.
+ */
+
 public class ControllerRegister {
 
     @FXML
@@ -36,6 +40,12 @@ public class ControllerRegister {
     private byte[] salt;
     private String stringSalt;
 
+    /**
+     * The method register a new user.
+     * If user already exists or any input is invalid, an error message will show.
+     * If the registrations passes all requirements, the user will be registered.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
     public void reg(ActionEvent event) {
         Connection connection = null;
         PreparedStatement pstmt = null;
@@ -79,10 +89,18 @@ public class ControllerRegister {
         }
     }
 
+    /**
+     * The method changes scene to Main.
+     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     */
     public void sceneHome(ActionEvent event) { //hjemknapp
         ChangeScene.change(event, "/Scenes/Main.fxml");
     }
 
+    /**
+     * The method checks if the user input is empty.
+     * @return false if input is empty or true if not.
+     */
     public boolean notNull() {
         if(user_reg.getText().isEmpty() || email_reg.getText().isEmpty() || birthyear_reg.getText().isEmpty() || pass_reg.getText().isEmpty() || confirm_reg.getText().isEmpty()) {
             return false;
@@ -93,6 +111,11 @@ public class ControllerRegister {
         }
     }
 
+    /**
+     * The method checks if the passwordfields match each other and are not empty.
+     * If not empty and matches, the password will be hashed and salted.
+     * @return true if password is hashed and salted or false if empty or no match.
+     */
     public boolean checkPassword(){
         if(pass_reg.getText().equals(confirm_reg.getText()) && (!(pass_reg.getText().isEmpty() && confirm_reg.getText().isEmpty()))){
             String inputPassword = pass_reg.getText();
@@ -106,6 +129,10 @@ public class ControllerRegister {
         }
     }
 
+    /**
+     * The method checks if the username already exists.
+     * @return true if username taken or false if not.
+     */
     public boolean userExists(){
         Connection connection = null;
         ResultSet rsUser = null;
@@ -131,6 +158,10 @@ public class ControllerRegister {
         }
     }
 
+    /**
+     * The method checks if the e-mail already exists.
+     * @return true if e-mail taken or false if not.
+     */
     public boolean emailExists(){
         Connection connection = null;
         ResultSet rsEmail = null;
@@ -154,6 +185,11 @@ public class ControllerRegister {
             Cleaner.close(pstmt, rsEmail, connection);
         }
     }
+
+    /**
+     * The method checks if any gender is chosen.
+     * @return 0 if male, 1 if female or -1 if none chosen.
+     */
     public int chooseGender(){
         if(this.btnMale.isSelected()){
             return 0;
@@ -164,6 +200,10 @@ public class ControllerRegister {
         return -1;
     }
 
+    /**
+     * The method checks if the e-mail is valid written.
+     * @return the boolean of the validity.
+     */
     public boolean checkEmail(){
         String getEmail = email_reg.getText();
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
@@ -172,17 +212,19 @@ public class ControllerRegister {
                 "A-Z]{2,7}$";
 
         Pattern pat = Pattern.compile(emailRegex);
-        if (getEmail == null)
-            return false;
+        if (getEmail == null) return false;
         return pat.matcher(getEmail).matches();
     }
 
+    /**
+     * The method checks if birthyear is valid.
+     * @return true if valid or false if not.
+     */
     public boolean checkBirthyear(){
         try{
             String getYear = birthyear_reg.getText();
             birthyear = Integer.parseInt(getYear);
         }catch (NumberFormatException e){
-            //e.printStackTrace();
             return true;
         }
         if(birthyear < 1903 || birthyear > 2019){
@@ -192,6 +234,9 @@ public class ControllerRegister {
         }
     }
 
+    /**
+     * A private method which sets the visibility of different opponents
+     */
     private void visible(Label label){
         errorMessageEmpty.setVisible(false);
         errorMessageBirthyear.setVisible(false);
