@@ -126,41 +126,6 @@ public class ControllerQuestion {
     }
 
     public void questionDisplay() { //displays questions
-        /*try {
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-
-            //sql to get question text
-            String sqlGetText = "SELECT questionText, questionId FROM Game JOIN Question ON questionId = question" + (questionCount+1) +  " WHERE gameId = " + gameId;
-            rs = statement.executeQuery(sqlGetText);
-            int qId = 0;
-            String qText = "";
-            if(rs.next()) {
-                qText = rs.getString("questionText");
-                qId = rs.getInt("questionId");
-            }
-            //displays question
-            questionField.setText(qText);
-
-            //selects all alternatives to the question
-            String sqlGetAlt = "SELECT score, answer FROM Alternative WHERE questionId = " + qId +";";
-            rs = statement.executeQuery(sqlGetAlt);
-
-            //emptys previous values from the question that came before
-            rightAnswer = new ArrayList<String>();
-            score = new ArrayList<Integer>();
-            previouslyAnswered = new ArrayList<Integer>();
-
-            //fills arrayLists with answers and scores for the question
-            while(rs.next()){
-                rightAnswer.add(rs.getString("answer").toLowerCase());
-                score.add(rs.getInt("score"));
-            }
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            Cleaner.close(statement, rs, connection);
-        }*/
         String qText = questionInfo();
         questionField.setText(qText);
     }
@@ -258,7 +223,7 @@ public class ControllerQuestion {
             rs = statement.executeQuery(sqlPlayer);
             rs.next();
             String player1Name = rs.getString("player1");
-            if(username.equals(player1Name)){return "player1";}
+            if(getUserName().equals(player1Name)){return "player1";}
             else return "player2";
         }catch (SQLException e) {
             e.printStackTrace();

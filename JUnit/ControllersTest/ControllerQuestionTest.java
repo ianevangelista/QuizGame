@@ -5,37 +5,48 @@ import Connection.Cleaner;
 import Connection.ConnectionPool;
 import static Controllers.ControllerOpponent.setGameId;
 import java.sql.ResultSet;
-import javafx.event.ActionEvent;
-import org.junit.Test;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Statement;
-
-import static org.junit.Assert.assertTrue;
 
 import static org.junit.Assert.*;
 
 public class ControllerQuestionTest {
     ControllerQuestion cq = new ControllerQuestion();
+    ControllerHome ch = new ControllerHome();
     Connection connection = null;
     Statement statement = null;
     ResultSet rs = null;
 
 
     @Test
-    public void nextQuestion() {
+    public void findUserTest() {
+        int gameId = 1;
+        String username = "helenegj";
+        String expAnswer = "player1";
+        String ans = "";
+        String sqlGame = "INSERT INTO Game(gameId, player1) VALUES (" + gameId + ", '" + username + "');";
+        String sqlDelete = "DELETE FROM Game WHERE gameId=" + gameId + ";";
+        ch.setUserName(username);
+        setGameId(gameId);
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+            statement.executeUpdate(sqlGame);
+            ans = cq.findUser();
+            statement.executeUpdate(sqlDelete);
+            assertEquals(expAnswer, ans);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            Cleaner.close(statement, null, connection);
+        }
     }
 
     @Test
-    public void confirmAnswer() {
-    }
-
-    @Test
-    public void findUser() {
-    }
-
-    @Test
-    public void questionInfo() {
+    public void questionInfoTest() {
         int question = 26;
         int category = 1;
         int gameId = 1;
