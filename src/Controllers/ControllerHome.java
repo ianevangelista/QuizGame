@@ -11,6 +11,7 @@ import javafx.scene.input.KeyCode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * The class ControllerHome is the starting page which displays the log in system.
@@ -121,7 +122,7 @@ public class ControllerHome {
             return true;
         }
 
-        //if validateLogin returns false, an errormessage is shown
+        // If validateLogin returns false, an errormessage is shown
         visibility.setVisible(true); //her skal en pop-up komme
         return false;
 	}
@@ -138,23 +139,30 @@ public class ControllerHome {
 	public boolean validateLogin(String inputUsername, String inputPassword) {
         String sql = "SELECT username, online, password, salt FROM Player WHERE username = ?;";
         try {
+            // Setting up connection
             connection = ConnectionPool.getConnection();
             pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, inputUsername);
             rs = pstmt.executeQuery();
-            //if user does not exist
-            if (!(rs.next())) { return false;
-            }
-            //if user is online
+
+            // If user does not exist
+            if (!(rs.next())) return false;
+
+            // If user is online
             else if (rs.getBoolean("online")) { return false; }
+
+            // If the user is not online
             else {
+                // Get salt and hashed & salted password from the database
                 String salt = rs.getString("salt");
                 String realPassword = rs.getString("password");
 
+                // Hash input password and add the salt from the database
                 HashSalt hashedSaltedPass = new HashSalt();
                 byte[] byteSalt = hashedSaltedPass.decodeHexString(salt);
                 String hashedPassword = hashedSaltedPass.genHashSalted(inputPassword, byteSalt);
 
+                // If hashed input matches the password in the database, it logs in
                 if (realPassword.equals(hashedPassword)) {
                     setUserName(inputUsername);
                     Logout.logIn();
@@ -162,7 +170,13 @@ public class ControllerHome {
                 }
             }
             return false;
-        }catch(Exception e){
+        } catch(SQLException sqle){
+            // Database access error
+            System.out.println("Database access error");
+            sqle.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            // If something else goes wrong
             e.printStackTrace();
             return false;
         }finally{
