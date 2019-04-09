@@ -195,6 +195,14 @@ public class ControllerOpponent {
    }
 
     /**
+     * A static method to set the gameId.
+     */
+
+   public static void setGameId(int newGameId) {
+       gameId = newGameId;
+   }
+
+    /**
      * A static method fetching the gameId of the user.
      * @return the gameId.
      */
