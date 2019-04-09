@@ -27,6 +27,7 @@ import static Controllers.ControllerOpponent.getGameId;
 public class ControllerCategory {
     private int gameId;
 
+    //Fxml buttons
     @FXML
     public Button category1;
     public Button category2;
@@ -59,8 +60,10 @@ public class ControllerCategory {
             String sql = "SELECT categoryId, name FROM `Category`";
             rs = statement.executeQuery(sql);
 
+            // ArrayList that contains all category names
             ArrayList<String> categoryName = new ArrayList<String>();
 
+            // Fills up the arraylists with data from the database
             while(rs.next()){
                 categoryId.add(rs.getInt("categoryId"));
                 categoryName.add(rs.getString("name"));
@@ -68,20 +71,22 @@ public class ControllerCategory {
 
             int amountOfCategorys = categoryId.size();
 
-            //Fills array with random numbers
+            // Fills array with random numbers
             for (int i = 0; i < 3; i++) {
                 randomCategoryId[i] = rand.nextInt(amountOfCategorys);
             }
 
-            //Checks that first and second element are different
+            // Checks that first and second element are different
             while (randomCategoryId[0] == randomCategoryId[1]) {
                 randomCategoryId[1] = rand.nextInt(amountOfCategorys);
             }
 
-            //Checks that third element is different from first and second
+            // Checks that third element is different from first and second
             while (randomCategoryId[0] == randomCategoryId[2] || randomCategoryId[1] == randomCategoryId[2]) {
                 randomCategoryId[2] = rand.nextInt(amountOfCategorys);
             }
+
+            // Adds the names of three random categories to the buttons in the scene
             category1.setText(categoryName.get(randomCategoryId[0]));
             category2.setText(categoryName.get(randomCategoryId[1]));
             category3.setText(categoryName.get(randomCategoryId[2]));
@@ -92,6 +97,7 @@ public class ControllerCategory {
             return true;
         }
         finally {
+            // closes everything
             Cleaner.close(statement, rs, connection);
         }
     }
@@ -101,56 +107,68 @@ public class ControllerCategory {
      * You will return to the previous page, the game page.
      * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
      */
-    public void sceneHome(ActionEvent event) { //home button
+    public void sceneHome(ActionEvent event) { 
+        // Change scene to the main game page
         ChangeScene.change(event, "/Scenes/Game.fxml");
     }
 
     /**
-     * A method when the category 1 button is pressed.
+     * A method for when the category 1 button is pressed.
      * It will set the categoryId for the Game.
      * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
      * @return if category is set return true, else return false.
      */
     public boolean chooseCategory1(ActionEvent event){ //When button 1 is pressed
+        // Translates the random number to the equivalent id in the database in case of the Id's not being sequential
         int chosenCategoryId = categoryId.get(randomCategoryId[0]);
         if(updateCategory(chosenCategoryId, gameId)) {
             // Adds questions from the category to the game
             questionPicker(chosenCategoryId, gameId);
+            // Changes scene to the page where you can answer questions
             ChangeScene.change(event, "/Scenes/Question.fxml");
             return true;
         }
+        // Returns false if the category fails to update
         return false;
     }
 
     /**
-     * A method when the category 2 button is pressed.
+     * A method for when the category 2 button is pressed.
      * It will set the categoryId for the Game.
      * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
      * @return if category is set return true, else return false.
      */
     public boolean chooseCategory2(ActionEvent event){ //When button 2 is pressed
+        // Translates the random number to the equivalent id in the database in case of the Id's not being sequential
         int chosenCategoryId = categoryId.get(randomCategoryId[1]);
         if(updateCategory(chosenCategoryId, gameId)) {
+            // Adds questions from the category to the game
             questionPicker(chosenCategoryId, gameId);
+            // Changes scene to the page where you can answer questions
             ChangeScene.change(event, "/Scenes/Question.fxml");
             return true;
         }
+        // Returns false if the category fails to update
         return false;
     }
 
     /**
-     * A method when the category 3 button is pressed.
+     * A method for when the category 3 button is pressed.
      * It will set the categoryId for the Game.
      * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
      * @return if category is set return true, else return false.
      */
     public boolean chooseCategory3(ActionEvent event){ //When button 3 is pressed
+        // Translates the random number to the equivalent id in the database in case of the Id's not being sequential
         int chosenCategoryId = categoryId.get(randomCategoryId[2]);
         if(updateCategory(chosenCategoryId, gameId)) {
+            // Adds questions from the category to the game
             questionPicker(chosenCategoryId, gameId);
+            // Changes scene to the page where you can answer questions
             ChangeScene.change(event, "/Scenes/Question.fxml");
             return true;
         }
+        // Returns false if the category fails to update
         return false;
     }
 
@@ -163,8 +181,10 @@ public class ControllerCategory {
      */
     public boolean updateCategory(int categoryId, int gameId) {
         try {
+            // Sets up the connection to the database
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
+            // Sets category of the game in the database to the chosen category
             String sql = "UPDATE Game SET categoryId = " + categoryId + " WHERE gameId = " + gameId;
             statement.executeUpdate(sql);
             return true;
@@ -174,6 +194,7 @@ public class ControllerCategory {
             return false;
         }
         finally {
+            // Close connection
             Cleaner.close(statement, rs, connection);
         }
     }
@@ -186,27 +207,29 @@ public class ControllerCategory {
      */
     private void questionPicker(int categoryId, int gameId) {
         try {
+            // Sets up the connection
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
-            //gets all the questions in chosen category
-            int[] questionId = new int[3];
+            // Gets all the question ids that are in the chosen category
             String sqlGetText = "SELECT questionId FROM Question WHERE categoryId=" + categoryId + ";";
             rs = statement.executeQuery(sqlGetText);
+
+            // Adds all of the question ids to an ArrayList
             ArrayList<Integer> listQuestion = new ArrayList<Integer>();
             while(rs.next()) {
                 listQuestion.add(new Integer(rs.getInt("questionId")));
             }
 
-            //shuffles the list and puts 0-2 in a new list
+            // Shuffles the list and adds the first three elements in a new list with random questions for the game
             Collections.shuffle(listQuestion);
+            int[] questionId = new int[3];
             for (int i=0; i<3; i++) {
                 questionId[i] = listQuestion.get(i);
             }
 
-            //updates the database with the selected questionids
+            // Updates the database with the selected questionids
             String sqlUpdate = "UPDATE Game SET question1='" + questionId[0] + "', question2 ='" + questionId[1] + "' , question3='" + questionId[2] + "' WHERE gameId=" + gameId + ";";
-
             statement.executeUpdate(sqlUpdate);
 
         }catch (SQLException e) {
