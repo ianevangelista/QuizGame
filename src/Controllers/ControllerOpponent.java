@@ -18,6 +18,8 @@ import Connection.Cleaner;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 
+import javax.swing.*;
+
 import static Controllers.ControllerHome.getUserName;
 
 /**
@@ -63,7 +65,7 @@ public class ControllerOpponent {
 
     /**
      * The method changes scene to Game.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
     public void sceneHome(ActionEvent event) { //home button
         ChangeScene.change(event, "/Scenes/Game.fxml");
@@ -72,7 +74,7 @@ public class ControllerOpponent {
     /**
      * The method gives user the option to press enter on the keyboard rather than the button.
      * It will then use the finOpponen-method.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
     public void enter(ActionEvent event) {
         opponent.setOnKeyPressed(e -> {
@@ -87,18 +89,36 @@ public class ControllerOpponent {
      * It will check if the user is you or if the user is online.
      * If the user is not you and is online, a game will be created by using makeGame.
      * The user will then be sent to a Wait scene.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
     public void findOpponent(ActionEvent event) {
+        String opponentUser = opponent.getText();
+        int check = checkOpponent(opponentUser);
+        if (check == 1) {
+            ChangeScene.change(event, "/Scenes/Wait.fxml");
+        }
+        else if(check == 0){
+            setVisible(challengeYou);
+        }
+        else if(check == 2){
+            setVisible(userOffline);
+        }
+        else if(check == 3){
+            setVisible(usernameWrong);
+        }
+    }
+
+
+    public int checkOpponent(String opponentName){
         try{
             connection = ConnectionPool.getConnection();
-            usernameWrong.setVisible(false);
-            challengeYou.setVisible(false);
+            //usernameWrong.setVisible(false);
+            //challengeYou.setVisible(false);
 
             //gets the opponents username, using a prepared statment beacause it's user input
             String insertSql = "SELECT username, online FROM Player WHERE username = ?;";
             pstmt = connection.prepareStatement(insertSql);
-            pstmt.setString(1, (opponent.getText().toLowerCase()));
+            pstmt.setString(1, (opponentName.toLowerCase()));
             rs = pstmt.executeQuery();
 
             //if it is a registered username
@@ -106,21 +126,22 @@ public class ControllerOpponent {
                 opponentUsername = rs.getString("username");
                 opponentOnline = rs.getInt("Online");
                 if(opponentUsername.equals(username)) {
-                    setVisible(challengeYou);
+                    return 0;
                 } else if(opponentOnline == 0){
-                    setVisible(userOffline);
+                    return 2;
                 } else {
                     makeGame(username, opponentUsername);
-                    ChangeScene.change(event, "/Scenes/Wait.fxml");
+                    return 1;
                 }
             }
             //if the username doesn't exsist
             else {
-                setVisible(usernameWrong);
+                return 3;
             }
         }
         catch (SQLException e) {
             e.printStackTrace();
+            return -1;
         }finally {
             Cleaner.close(pstmt, rs, connection);
         }

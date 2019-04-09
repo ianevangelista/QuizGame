@@ -42,7 +42,7 @@ public class ControllerEdit {
     /**
      * A method when the back button is pressed.
      * You will return to the previous page, the profile page.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
     public void sceneProfile(ActionEvent event) {
         ChangeScene.change(event, "/Scenes/Profile.fxml");
@@ -239,11 +239,16 @@ public class ControllerEdit {
 
             // Return true if the email passes the regex validation and false if it is invalid
             return pat.matcher(getEmail).matches();
-        } catch (SQLException e) {
-            // If the sql fails
+        }  catch(SQLException sqle){
+            // Database access error
+            System.out.println("Database access error");
+            sqle.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            // If something else goes wrong
             e.printStackTrace();
             return false;
-        }finally {
+        } finally {
             // Close connection
             Cleaner.close(pstmt, rsEmail, connection);
         }

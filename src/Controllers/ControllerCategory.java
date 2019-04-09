@@ -49,7 +49,7 @@ public class ControllerCategory {
      * It will display three random categorys from the database.
      * @return if all code is executed return true.
      */
-    public boolean initialize(){ //gets run when the window is opened for the first time
+    public boolean initialize() { //gets run when the window is opened for the first time
         Random rand = new java.util.Random();
         try {
             connection = ConnectionPool.getConnection();
@@ -64,7 +64,7 @@ public class ControllerCategory {
             ArrayList<String> categoryName = new ArrayList<String>();
 
             // Fills up the arraylists with data from the database
-            while(rs.next()){
+            while (rs.next()) {
                 categoryId.add(rs.getInt("categoryId"));
                 categoryName.add(rs.getString("name"));
             }
@@ -91,12 +91,16 @@ public class ControllerCategory {
             category2.setText(categoryName.get(randomCategoryId[1]));
             category3.setText(categoryName.get(randomCategoryId[2]));
             return true;
-        }
-        catch (Exception e) {
+        } catch (SQLException sqle) {
+            // Database access error
+            System.out.println("Database access error");
+            sqle.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            // If something else goes wrong
             e.printStackTrace();
-            return true;
-        }
-        finally {
+            return false;
+        } finally {
             // closes everything
             Cleaner.close(statement, rs, connection);
         }
@@ -105,7 +109,7 @@ public class ControllerCategory {
     /**
      * A method when the home button is pressed.
      * You will return to the previous page, the game page.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
     public void sceneHome(ActionEvent event) { 
         // Change scene to the main game page
@@ -115,7 +119,7 @@ public class ControllerCategory {
     /**
      * A method for when the category 1 button is pressed.
      * It will set the categoryId for the Game.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      * @return if category is set return true, else return false.
      */
     public boolean chooseCategory1(ActionEvent event){ //When button 1 is pressed
@@ -135,7 +139,7 @@ public class ControllerCategory {
     /**
      * A method for when the category 2 button is pressed.
      * It will set the categoryId for the Game.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      * @return if category is set return true, else return false.
      */
     public boolean chooseCategory2(ActionEvent event){ //When button 2 is pressed
@@ -155,7 +159,7 @@ public class ControllerCategory {
     /**
      * A method for when the category 3 button is pressed.
      * It will set the categoryId for the Game.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      * @return if category is set return true, else return false.
      */
     public boolean chooseCategory3(ActionEvent event){ //When button 3 is pressed
@@ -175,8 +179,8 @@ public class ControllerCategory {
     /**
      * A private method which is used inside the chooseCategory-methods.
      * It will set the categoryId for the Game.
-     * @param categoryId is a paramater which is used to identify which categoryId is chosen.
-     * @param gameId is a paramater which is used to identify which gameId to update with the categoryId.
+     * @param categoryId is a parameter which is used to identify which categoryId is chosen.
+     * @param gameId is a parameter which is used to identify which gameId to update with the categoryId.
      * @return if category is set return true.
      */
     public boolean updateCategory(int categoryId, int gameId) {
@@ -189,7 +193,14 @@ public class ControllerCategory {
             statement.executeUpdate(sql);
             return true;
         }
-        catch (Exception e){
+        catch(SQLException sqle){
+            // Database access error
+            System.out.println("Database access error");
+            sqle.printStackTrace();
+            return false;
+        }
+        catch (Exception e) {
+            // If something else goes wrong
             e.printStackTrace();
             return false;
         }
@@ -202,8 +213,8 @@ public class ControllerCategory {
     /**
      * A private method to choose three randomly questions when a category is chosen.
      * The method is usen in all thre chooseCategory-methods.
-     * @param categoryId is a paramater which is used to identify which categoryId is chosen.
-     * @param gameId is a paramater which is used to identify which gameId to update with the categoryId.
+     * @param categoryId is a parameter which is used to identify which categoryId is chosen.
+     * @param gameId is a parameter which is used to identify which gameId to update with the categoryId.
      */
     private void questionPicker(int categoryId, int gameId) {
         try {
@@ -232,7 +243,14 @@ public class ControllerCategory {
             String sqlUpdate = "UPDATE Game SET question1='" + questionId[0] + "', question2 ='" + questionId[1] + "' , question3='" + questionId[2] + "' WHERE gameId=" + gameId + ";";
             statement.executeUpdate(sqlUpdate);
 
-        }catch (SQLException e) {
+        }
+        catch(SQLException sqle){
+            // Database access error
+            System.out.println("Database access error");
+            sqle.printStackTrace();
+        }
+        catch (Exception e) {
+            // If something else goes wrong
             e.printStackTrace();
         }finally {
             Cleaner.close(statement, rs, connection);
