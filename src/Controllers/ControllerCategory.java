@@ -109,7 +109,7 @@ public class ControllerCategory {
     /**
      * A method when the home button is pressed.
      * You will return to the previous page, the game page.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
     public void sceneHome(ActionEvent event) { 
         // Change scene to the main game page
@@ -119,7 +119,7 @@ public class ControllerCategory {
     /**
      * A method for when the category 1 button is pressed.
      * It will set the categoryId for the Game.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      * @return if category is set return true, else return false.
      */
     public boolean chooseCategory1(ActionEvent event){ //When button 1 is pressed
@@ -139,7 +139,7 @@ public class ControllerCategory {
     /**
      * A method for when the category 2 button is pressed.
      * It will set the categoryId for the Game.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      * @return if category is set return true, else return false.
      */
     public boolean chooseCategory2(ActionEvent event){ //When button 2 is pressed
@@ -159,7 +159,7 @@ public class ControllerCategory {
     /**
      * A method for when the category 3 button is pressed.
      * It will set the categoryId for the Game.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      * @return if category is set return true, else return false.
      */
     public boolean chooseCategory3(ActionEvent event){ //When button 3 is pressed
@@ -179,8 +179,8 @@ public class ControllerCategory {
     /**
      * A private method which is used inside the chooseCategory-methods.
      * It will set the categoryId for the Game.
-     * @param categoryId is a paramater which is used to identify which categoryId is chosen.
-     * @param gameId is a paramater which is used to identify which gameId to update with the categoryId.
+     * @param categoryId is a parameter which is used to identify which categoryId is chosen.
+     * @param gameId is a parameter which is used to identify which gameId to update with the categoryId.
      * @return if category is set return true.
      */
     public boolean updateCategory(int categoryId, int gameId) {
@@ -213,8 +213,8 @@ public class ControllerCategory {
     /**
      * A private method to choose three randomly questions when a category is chosen.
      * The method is usen in all thre chooseCategory-methods.
-     * @param categoryId is a paramater which is used to identify which categoryId is chosen.
-     * @param gameId is a paramater which is used to identify which gameId to update with the categoryId.
+     * @param categoryId is a parameter which is used to identify which categoryId is chosen.
+     * @param gameId is a parameter which is used to identify which gameId to update with the categoryId.
      */
     private void questionPicker(int categoryId, int gameId) {
         try {

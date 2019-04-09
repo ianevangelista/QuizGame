@@ -13,7 +13,12 @@ import javafx.scene.control.TextArea;
 
 import static Controllers.ControllerHome.getUserName;
 
-public class ControllerEmail {
+/**
+ * The class ControllerFeedback is the main page for the feedback function.
+ * It will appear when you press the feedback function on the game page.
+ */
+
+public class ControllerFeedback {
 
     // Fxml elements
     @FXML
@@ -26,6 +31,14 @@ public class ControllerEmail {
     private Session session = Session.getDefaultInstance(props);
     private MimeMessage message = new MimeMessage(session);
     private Transport transport = null;
+
+    /**
+     * This methods sends the feedback to our own email account.
+     * The first think happening is establishing the receiver (sendTo) and the host we send from (host, username, password)
+     * After this, we start to put the properties, so we can load the stream.
+     * Then we start to formulate the mail.
+     * Last, but not least, the mail is sent ang the transaction is closed.
+     */
 
     private void sendFeedback(){
         // Set up email details for the HDRU gmail account
@@ -69,6 +82,10 @@ public class ControllerEmail {
         }
     }
 
+    /**
+     * This is pretty much the same as sendFeedback, but the message and the receiver is different.
+     * The receiver is retrieved from the email textfield.
+     */
     private void sendConfirm(){
         // Set up email details for the HDRU gmail account
         String sendTo = email.getText();
@@ -113,6 +130,10 @@ public class ControllerEmail {
         }
     }
 
+    /**
+     * This is the method that is executed when the send button is pressed.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
+     */
     public void feedback(ActionEvent event){
         if(!checkEmail()) {
             // If the email is invalid
@@ -127,12 +148,21 @@ public class ControllerEmail {
         }
     }
 
+    /**
+     * This method executing when you press the home button. If the user is online, he/she will return to Game.fxml.
+     * Otherwise, the user will return to Main.fxml.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
+     */
     public void sceneHome(ActionEvent event) { //back button
         // Go to game if logged inn or main if not
         if(getUserName()!= null) ChangeScene.change(event, "/Scenes/Game.fxml");
         else ChangeScene.change(event, "/Scenes/Main.fxml");
     }
 
+    /**
+     *
+     * @return
+     */
     private boolean checkEmail(){
         // Get email from textfield
         String getEmail = email.getText();

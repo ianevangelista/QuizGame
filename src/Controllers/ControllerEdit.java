@@ -42,7 +42,7 @@ public class ControllerEdit {
     /**
      * A method when the back button is pressed.
      * You will return to the previous page, the profile page.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
     public void sceneProfile(ActionEvent event) {
         ChangeScene.change(event, "/Scenes/Profile.fxml");

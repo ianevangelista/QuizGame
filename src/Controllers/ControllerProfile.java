@@ -46,7 +46,7 @@ public class ControllerProfile {
     /**
      * A method when the home button is pressed.
      * You will return to the previous page, the game page.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
 
     public void sceneGame(ActionEvent event) {
@@ -56,7 +56,7 @@ public class ControllerProfile {
     /**
      * A method for when the home button is pressed.
      * You will be sent forward to the edit page.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
 
     public void edit(ActionEvent event){ ChangeScene.change(event, "/Scenes/EditProfile.fxml"); }
