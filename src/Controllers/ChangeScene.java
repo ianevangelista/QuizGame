@@ -26,11 +26,11 @@ public class ChangeScene {
         Displays the window.
         */
         try{
-            Parent tableViewParent = FXMLLoader.load(ChangeScene.class.getResource(fxml)); //henter inn klasse og fxml-fil
-            Scene scene = new Scene(tableViewParent); //lager ny scene
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow(); //caster stage
-            window.setScene(scene); //setter scene
-            window.show(); //viser scene
+            Parent tableViewParent = FXMLLoader.load(ChangeScene.class.getResource(fxml)); //imports class and fxml file
+            Scene scene = new Scene(tableViewParent); //Creates new scene
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow(); //Casts stage
+            window.setScene(scene); //Sets the stage
+            window.show(); //Shows the scene
         }catch (IOException e){
             e.printStackTrace();
         }

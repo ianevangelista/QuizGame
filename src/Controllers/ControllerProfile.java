@@ -87,7 +87,7 @@ public class ControllerProfile {
             /*
               This is the profile picture for the first level
              */
-            if(pointsLest < 100){
+            if(pointsLest < 500){
                 File first = new File("src/Scenes/1..png");
                 Image one = new Image(first.toURI().toString());
                 picture.setImage(one);
@@ -95,7 +95,7 @@ public class ControllerProfile {
             /*
               This is the profile picture for the second level
              */
-            else if(pointsLest < 500){
+            else if(pointsLest < 1000){
                 File second = new File("src/Scenes/2..png");
                 Image two = new Image(second.toURI().toString());
                 picture.setImage(two);
