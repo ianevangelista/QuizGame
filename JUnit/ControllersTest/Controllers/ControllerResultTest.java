@@ -10,6 +10,9 @@ import java.sql.Statement;
 import java.sql.*;
 
 import Connection.ConnectionPool;
+import static Controllers.ControllerOpponent.setGameId;
+import static Controllers.ControllerHome.setUserName;
+import static Controllers.ControllerQuestion.findUser;
 
 import static org.junit.Assert.*;
 
@@ -21,9 +24,11 @@ public class ControllerResultTest {
 
     @Test
     public void checkResultTest() {
+        setGameId(1);
         int myScore = 100;
         int opponentScore = 10;
         int expResult = 1;
+        //There will be an exception on illegal result set, but the test shows that the right winner is chosen.
         int result = cr.checkResult(myScore, opponentScore);
         assertEquals(expResult, result);
     }
@@ -31,16 +36,19 @@ public class ControllerResultTest {
     @Test
     public void deleteGameTest(){
         int gameId = 1;
+        setGameId(gameId);
         String user1 = "juni";
         String user2 = "tiril";
-        String sqlInsert = "INSERT INTO Game (player1, player2, gameId) VALUES (" + user1 + "," + user2 + "," + gameId + ");";
+        String sqlInsert = "INSERT INTO Game (player1, player2, gameId) VALUES ('" + user1 + "', '" + user2 + "'," + gameId + ");";
         String sqlDelete = "DELETE FROM Game WHERE gameId = " + gameId + ";";
         try{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             statement.executeUpdate(sqlInsert);
             boolean result = cr.deleteGame(gameId);
-            statement.executeUpdate(sqlDelete);
+            if(result == false) {
+                statement.executeUpdate(sqlDelete);
+            }
 
             assertTrue(result);
         }
@@ -51,13 +59,10 @@ public class ControllerResultTest {
     }
 
     @Test
-    public void initialize() {
-
-    }
-
-    @Test
     public void checkFinishTest(){
-        int gameId = 2;
+        setUserName("juni");
+        int gameId = 1;
+        setGameId(gameId);
         String insertSQL = "INSERT INTO Game (p1Finished, p2Finished, gameId) VALUES (1, 0, " + gameId + ");";
         String deleteSQL = "DELETE FROM Game WHERE gameId = " + gameId + ";";
         try{
@@ -65,7 +70,7 @@ public class ControllerResultTest {
             statement = connection.createStatement();
 
             statement.executeUpdate(insertSQL);
-            boolean result = cr.checkFinish(gameId);
+            boolean result = cr.checkFinish(gameId, findUser());
             statement.executeUpdate(deleteSQL);
 
             assertTrue(result);
@@ -75,10 +80,6 @@ public class ControllerResultTest {
             assertFalse(false);
         }
     }
-
-    /*@Test
-    public void turnOfTimerR() {
-    }*/
 
     @Test
     public void sceneGameTest(){

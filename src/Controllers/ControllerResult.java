@@ -228,7 +228,7 @@ public class ControllerResult {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if(checkFinish(gameId)) {
+                if(checkFinish(gameId, findUser())) {
                     turnOffTimerR();
                     btnNext.setVisible(true);
                     return;
@@ -243,9 +243,8 @@ public class ControllerResult {
      * @param game is the gameId.
      * @return true the opponent has finished or false if not.
      */
-    public boolean checkFinish(int game) {
+    public boolean checkFinish(int game, String me) {
         ResultSet rs = null;
-        String me = findUser();
         String opponentFinished = (me.equals("player1") ? "p2Finished" : "p1Finished");
 
         try {
