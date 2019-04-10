@@ -49,12 +49,12 @@ public class ControllerEdit {
     }
 
     /**
-     * A method when confirming a new e-mail adress.
+     * A method when confirming a new e-mail address.
      * It will check if the e-mail is valid or already taken.
      * It will the user's e-mail if the e-mail is valid.
      */
     public void emailConfirm(){
-        // Update player's email and username prepared statement
+        // Update player's email and username using prepared statement
         String input = "UPDATE Player SET email = ? WHERE username = ?;";
 
         try {
@@ -143,7 +143,7 @@ public class ControllerEdit {
             rs = statement.executeQuery();
             rs.next();
 
-            // Hash and salt the inputed old password with the salt from the database
+            // Hash and salt the inputted old password with the salt from the database
             String salt = rs.getString("salt");
             String realPassword = rs.getString("password");
             String inputPassword = inputOldPassword.getText();
@@ -151,7 +151,7 @@ public class ControllerEdit {
             byte[] byteSalt = hashedSaltedPass.decodeHexString(salt);
             String hashedPassword = hashedSaltedPass.genHashSalted(inputPassword, byteSalt);
 
-            // If the user inputed their real password, it changes it to the new password
+            // If the user inputted their real password, it changes it to the new password
             if (realPassword.equals(hashedPassword)) {
                 // Hashes the new password with a new salt
                 statement = connection.prepareStatement(input);
@@ -174,7 +174,7 @@ public class ControllerEdit {
                 // If no new password was written in
                 setVisibility(errorMessage);
             } else{
-                // If the player inputed the wrong password for their old password
+                // If the player inputted the wrong password for their old password
                 setVisibility(wrongPassword);
             }
         }
@@ -206,7 +206,7 @@ public class ControllerEdit {
     }
 
     /**
-     * A method when the confirming a new e-mail adress.
+     * A method when the confirming a new e-mail address.
      * It will check if the e-mail is valid or already taken.
      * It will update the user's e-mail if the e-mail is valid.
      * @return if valid e-mail return true, else return false.
@@ -222,7 +222,7 @@ public class ControllerEdit {
             String email = "SELECT email FROM Player WHERE email = ?;";
             pstmt = connection.prepareStatement(email);
 
-            // Add inputed email to prepared statement and get users with the email from database
+            // Add inputted email to prepared statement and get users with the email from database
             String getEmail = inputEmail.getText();
             pstmt.setString(1, getEmail.toLowerCase());
             rsEmail = pstmt.executeQuery();
@@ -241,7 +241,6 @@ public class ControllerEdit {
             return pat.matcher(getEmail).matches();
         }  catch(SQLException sqle){
             // Database access error
-            System.out.println("Database access error");
             sqle.printStackTrace();
             return false;
         } catch (Exception e) {
@@ -257,7 +256,7 @@ public class ControllerEdit {
     /**
      * A method for the different error messages.
      * Sets the parameter label visibility to true.
-     * Sets the visibilty of all other messages to false.
+     * Sets the visibility of all other messages to false.
      */
     private void setVisibility(Label label){
         // Sets all other messages to invisible

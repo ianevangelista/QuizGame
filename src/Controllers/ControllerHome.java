@@ -123,7 +123,7 @@ public class ControllerHome {
         }
 
         // If validateLogin returns false, an errormessage is shown
-        visibility.setVisible(true); //her skal en pop-up komme
+        visibility.setVisible(true);
         return false;
 	}
 
