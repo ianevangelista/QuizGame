@@ -263,7 +263,7 @@ public class ControllerOpponent {
                 rsGameId = statement.executeQuery(sqlGetGameIdFromPlayer);
                 rsGameId.next();
                 gameId = rsGameId.getInt("gameId");
-                return  gameId;
+                return gameId;
             }
             catch (Exception e){
                 e.printStackTrace();
