@@ -12,6 +12,9 @@ import java.sql.Statement;
 
 import static org.junit.Assert.*;
 
+/*
+    JUnit tests for the ControllerQuestion class
+ */
 public class ControllerQuestionTest {
     ControllerQuestion cq = new ControllerQuestion();
     ControllerHome ch = new ControllerHome();
@@ -19,13 +22,14 @@ public class ControllerQuestionTest {
     Statement statement = null;
     ResultSet rs = null;
 
-
+    /*
+        Testing method for the findUser method
+     */
     @Test
     public void findUserTest() {
         int gameId = 1;
         String username = "helenegj";
         String expAnswer = "player1";
-        String ans = "";
         String sqlGame = "INSERT INTO Game(gameId, player1) VALUES (" + gameId + ", '" + username + "');";
         String sqlDelete = "DELETE FROM Game WHERE gameId=" + gameId + ";";
         ch.setUserName(username);
@@ -34,7 +38,7 @@ public class ControllerQuestionTest {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             statement.executeUpdate(sqlGame);
-            ans = cq.findUser();
+            String ans = cq.findUser();
             statement.executeUpdate(sqlDelete);
             assertEquals(expAnswer, ans);
 

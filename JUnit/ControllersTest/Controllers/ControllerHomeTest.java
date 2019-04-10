@@ -1,39 +1,17 @@
 package Controllers;
 
-import Connection.ConnectionPool;
-
-import javafx.event.ActionEvent;
-
-import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-
+/*
+    JUnit tests for ControllerHome class
+ */
 public class ControllerHomeTest {
-    ControllerHome ch;
-    ChangeScene cs;
+    public ControllerHome ch = new ControllerHome();
 
-    @Before
-        public void setUp() {
-        ch = new ControllerHome();
-        cs = new ChangeScene();
-    }
-
-    @Test
-    public void registerTest() {
-        ActionEvent event = new ActionEvent();
-        boolean ans = ch.register(event);
-        assertTrue(ans);
-    }
-
-    @Test
-    public void feedbackTest() {
-        ActionEvent event = new ActionEvent();
-        boolean ans = ch.feedback(event);
-        assertTrue(ans);
-    }
-
-    //testing get and set method for UserName
+    /*
+        Testing get and set method for Username
+     */
     @Test
     public void userNameTest() {
         String expResult = "helene";
@@ -42,7 +20,10 @@ public class ControllerHomeTest {
         assertEquals(expResult, result);
     }
 
-    //
+    /*
+        Testing the validateLogin method.
+        Using a username and password to test.
+     */
     @Test
     public void validateLoginTest() {
         String username = "juni";
@@ -51,6 +32,4 @@ public class ControllerHomeTest {
         Logout.logOut();
         assertTrue(ans);
     }
-
-
 }

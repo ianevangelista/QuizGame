@@ -9,20 +9,23 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import static Controllers.ControllerHome.setUserName;
-
-
+import static Controllers.ControllerHome.getUserName;
 import static Controllers.ControllerOpponent.setGameId;
 import static Controllers.ControllerOpponent.getGameId;
-import static Controllers.ControllerHome.getUserName;
 import static org.junit.Assert.*;
 
+/*
+    JUnit tests for ControllerOpponent class
+ */
 public class ControllerOpponentTest {
 
     ControllerOpponent co = new ControllerOpponent();
     Connection connection = null;
     Statement statement = null;
-    //int gameId = getGameId();
 
+    /*
+        Test for checkOpponent method
+     */
     @Test
     public void checkOpponentTest() {
         setUserName("juni");
@@ -31,12 +34,14 @@ public class ControllerOpponentTest {
         String sqlUpdate2 = "UPDATE Player SET online = 0 WHERE username = '" + opponent + "';";
 
         try{
+            //sets the opponent to online
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             statement.executeUpdate(sqlUpdate1);
-            //An error will appear here because it enters makeGame.
+            //An error will appear here because it enters makeGame
             int result =  co.checkOpponent(opponent);
             int expectedResult = 1;
+            //sets opponent offline
             statement.executeUpdate(sqlUpdate2);
             assertEquals(expectedResult, result);
         }
@@ -48,6 +53,9 @@ public class ControllerOpponentTest {
         }
     }
 
+    /*
+        Testing the makeGame method
+     */
     @Test
     public void makeGameTest(){
         String player1 = "juni";
@@ -59,13 +67,13 @@ public class ControllerOpponentTest {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-
+            //makes a game
             boolean result = co.makeGame(player1, player2);
 
+            //deletes the game
             statement.executeUpdate(sqlUpdate1);
             statement.executeUpdate(sqlUpdate2);
             statement.executeUpdate(sqlDelete);
-
             assertTrue(result);
         }
         catch (SQLException e){
@@ -76,6 +84,9 @@ public class ControllerOpponentTest {
         }
     }
 
+    /*
+        Testing for the alreadyChallenged method
+     */
     @Test
     public void alreadyChallengedTest(){
         String username = "juni";
@@ -88,9 +99,12 @@ public class ControllerOpponentTest {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
+            //makes a game and updates player with gameId
             statement.executeUpdate(sqlInsert);
             statement.executeUpdate(sqlUpdate);
             int result = co.alreadyChallenged(username);
+
+            //deletes game and players gameId
             statement.executeUpdate(sqlUpdateAgain);
             statement.executeUpdate(sqlDelete);
 
@@ -104,8 +118,11 @@ public class ControllerOpponentTest {
         }
     }
 
+    /*
+        Testing for the set and get methods for gameId
+     */
     @Test
-    public void setGameIdTest() {
+    public void gameIdTest() {
         int expected = 1;
         setGameId(expected);
         int result = getGameId();
@@ -114,6 +131,9 @@ public class ControllerOpponentTest {
 
     }
 
+    /*
+        Testing for the checkGameId
+     */
     @Test
     public void checkGameIdTest(){
         String username = setUserName("juni");
@@ -126,9 +146,13 @@ public class ControllerOpponentTest {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
+            //makes a game and updates the players gameId
             statement.executeUpdate(sqlInsert);
             statement.executeUpdate(sqlUpdate1);
+
             boolean result = co.checkGameId(getUserName());
+
+            //deletes game and players gameId
             statement.executeUpdate(sqlUpdate2);
             statement.executeUpdate(sqlDelete);
 
