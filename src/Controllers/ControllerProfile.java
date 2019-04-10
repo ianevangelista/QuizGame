@@ -21,11 +21,13 @@ import static Controllers.ControllerHome.getUserName;
 
 public class ControllerProfile {
 
+    // Static variable from ControllerHome
     private String username = getUserName();
 
     private Connection connection = null;
     private PreparedStatement statement = null;
 
+    //FXML
     @FXML
     public ImageView picture;
     public Label printUsername;
@@ -67,10 +69,8 @@ public class ControllerProfile {
     private void setProfile(){
         ResultSet rs = null;
         try{
-            /*
-              Sets up connection
-              Selects ponts, email, gamesWon and gamesLost from Player
-             */
+            //Sets up connection
+            //Selects points, email, gamesWon and gamesLost from Player
             connection = ConnectionPool.getConnection();
             String sql = "SELECT points, email, gamesWon, gamesLost FROM Player WHERE username = ?;";
             statement = connection.prepareStatement(sql);
@@ -84,33 +84,31 @@ public class ControllerProfile {
             String won = String.valueOf(wonLest);
             int lostLest = rs.getInt("gamesLost");
             String lost = String.valueOf(lostLest);
-            /*
-              This is the profile picture for the first level
-             */
+
+            //This is the profile picture for the first level
+
             if(pointsLest < 500){
                 File first = new File("src/Scenes/1..png");
                 Image one = new Image(first.toURI().toString());
                 picture.setImage(one);
             }
-            /*
-              This is the profile picture for the second level
-             */
+
+            //This is the profile picture for the second level
+
             else if(pointsLest < 1000){
                 File second = new File("src/Scenes/2..png");
                 Image two = new Image(second.toURI().toString());
                 picture.setImage(two);
             }
-            /*
-              This is the profile picture for the first level
-             */
+
+            //This is the profile picture for the first level
             else{
                 File third = new File("src/Scenes/3..png");
                 Image three = new Image(third.toURI().toString());
                 picture.setImage(three);
             }
-            /*
-              Displays the information of the user
-             */
+
+            //Displays the information of the user
             printUsername.setText(username);
             printEmail.setText(email);
             printPoints.setText(points);

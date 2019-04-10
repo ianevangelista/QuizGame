@@ -46,8 +46,8 @@ public class ControllerCategory {
 
     /**
      * This method runs after a game request is accepted.
-     * It will display three random categorys from the database.
-     * @return if all code is executed return true.
+     * It will display three random categories from the database.
+     * @return true if all code is executed.
      */
     public boolean initialize() { //gets run when the window is opened for the first time
         Random rand = new java.util.Random();
@@ -179,7 +179,7 @@ public class ControllerCategory {
     }
 
     /**
-     * A private method which is used inside the chooseCategory-methods.
+     * A method which is used inside the chooseCategory-methods.
      * It will set the categoryId for the Game.
      * @param categoryId is a parameter which is used to identify which categoryId is chosen.
      * @param gameId is a parameter which is used to identify which gameId to update with the categoryId.

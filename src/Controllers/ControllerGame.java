@@ -37,7 +37,7 @@ public class ControllerGame {
      * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
     public void start(ActionEvent event) {
-        ControllerRefresh.refresh(event, username);
+        ControllerRefresh.refresh(event);
     }
 
     /**

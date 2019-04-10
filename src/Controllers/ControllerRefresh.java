@@ -18,12 +18,14 @@ import static Controllers.ControllerOpponent.getGameId;
 
 public class ControllerRefresh {
 
+    //FXML
     @FXML
     public Button acc;
     public Button dec;
     public Label challenger;
 
 
+    // Static variable from ControllerHome
     private static String username = getUserName();
     private static Connection connection = null;
     private static Statement statement = null;
@@ -55,11 +57,14 @@ public class ControllerRefresh {
             //if the other player has not quit before you open the game
             if(rs.next()) {
                 String challengingPlayer = rs.getString("username");
+                //Prints text at the label
                 setChallengeText("You've been challenged by " + challengingPlayer);
                 return true;
             } else {
+                // Updating the player in the database
                 String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + username + "';";
                 statement.executeUpdate(sqlRemoveGameIdFromPlayer);
+                // Deleting the game from the database
                 String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
                 statement.executeUpdate(sqlDeleteGame);
                 return false;
@@ -72,6 +77,10 @@ public class ControllerRefresh {
         }
     }
 
+    /**
+     * This method prints a text to the label
+     * @param text the text you want to print
+     */
     public void setChallengeText(String text) {
         if(challenger != null) {
             challenger.setText(text);
@@ -81,19 +90,26 @@ public class ControllerRefresh {
     /**
      * The method refreshes the player's gameId.
      * It will check if you have challenged a player or have been challenged.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
-     * @param user you username.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      * @return an int 1 if you have a gameId, are player1 and no category has been set.
      * If there is a category set return 0.
      * If you are not player1, return -1.
      * If there are no gameId, return -1.
      */
 
-    public static void refresh(ActionEvent event, String user) {
+    /**
+     * This method changes the scene to the right one depending on getCorrectScene
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
+     */
+    public static void refresh(ActionEvent event) {
         String filename = getCorrectScene();
         ChangeScene.change(event, filename);
-}
+    }
 
+    /**
+     * This method finds out what condition the player is in, and finds out what the consequences of this.
+     * @return a string depending on what the next scene should be
+     */
     public static String getCorrectScene() {
         try {
             String username = getUserName();
@@ -104,11 +120,14 @@ public class ControllerRefresh {
             rs.next();
 
             int playerGameId = rs.getInt(1);
+            //If the player is online
             if(playerGameId != 0) {
                 sql = "SELECT player1, categoryId FROM Game WHERE player1 = '" + username + "' OR player2 = '" + username + "' ;";
                 rs = statement.executeQuery(sql);
                 rs.next();
+                // If you are player1
                 if (rs.getString("player1").equals(username)) {
+                    // If the category is not already chosen
                     if(rs.getInt("categoryId") == 0){
                         return "/Scenes/Wait.fxml";
                     }else{
@@ -131,7 +150,7 @@ public class ControllerRefresh {
 
     /**
      * The method accepts a game request.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
     public void accept(ActionEvent event) {
         ChangeScene.change(event, "/Scenes/Category.fxml");
@@ -141,7 +160,7 @@ public class ControllerRefresh {
      * The method declines a game request.
      * Removes the gameId of both players in Player.
      * Deletes the entire game in Game.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
     public boolean decline(ActionEvent event) {
         Connection connection = null;
@@ -181,7 +200,7 @@ public class ControllerRefresh {
 
     /**
      * The method changes scene to Game.
-     * @param event is a neccessary paramater which is used in a method from the class ChangeScene.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
     public void sceneHome(ActionEvent event) { //feedback knapp
         ChangeScene.change(event, "/Scenes/Game.fxml");
