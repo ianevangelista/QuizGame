@@ -178,18 +178,10 @@ public class ControllerQuestion {
         answerField.setText("");
         //Check if player gave actual answer before checking DB
         if(!answer.equals("")){
-            answerScore =findScore(answer);
-            return answerScore;
+            answerScore = findScore(answer);
         }
-        else {
-            return -2;
-        }
-<<<<<<< HEAD
-=======
-        else return -2;
-        answerField.setText("");
+        else answerScore = -2;
         return answerScore;
->>>>>>> c374d33c90ad90cfcf93d5a7cae61598e63cb29d
     }
 
     public int findScore(String answer) {
