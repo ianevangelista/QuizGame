@@ -175,12 +175,15 @@ public class ControllerPasswordReset {
     public boolean validateEmail() {
         String sql = "SELECT username FROM Player WHERE email = ?;";
         try {
+            // Set up conncection and prepared statement
             connection = ConnectionPool.getConnection();
             statement = connection.prepareStatement(sql);
+
+            // Add inputed email to prepared statement and execute
             statement.setString(1, email.getText());
             rs = statement.executeQuery();
 
-            //if user does not exist
+            // If user does not exist
             if (!(rs.next())) {
                 return false;
             } else {
@@ -190,6 +193,7 @@ public class ControllerPasswordReset {
             e.printStackTrace();
             return false;
         }finally{
+            // Close connection
             Cleaner.close(statement, rs, connection);
         }
     }

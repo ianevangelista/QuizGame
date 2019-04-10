@@ -84,8 +84,8 @@ public class ControllerQuestionTest {
         int category = 1;
         int gameId = 1;
         String answer = "miami heat";
-        String sql = "INSERT INTO Game(gameId, categoryId, question1) " +
-                "VALUES (" + gameId + ", "  + category + ", " + question + ");";
+        String sql = "INSERT INTO Game(gameId, categoryId, question1, player1, player2) " +
+                "VALUES (" + gameId + ", "  + category + ", " + question + ", 'juni', 'ian');";
         String sqlDelete = "DELETE FROM Game WHERE gameId=" + gameId + ";";
         String sqlQ = "SELECT * FROM Alternative WHERE answerId= 255;";
 

@@ -45,8 +45,8 @@ public class ControllerHomeTest {
     //
     @Test
     public void validateLoginTest() {
-        String username = "helenegj";
-        String password = "helene";
+        String username = "juni";
+        String password = "hei";
         boolean ans = ch.validateLogin(username, password);
         Logout.logOut();
         assertTrue(ans);

@@ -51,7 +51,7 @@ public class ControllerCategoryTest {
         int category = 1;
         int gameId = 1;
         boolean resultat = false;
-        String sql = "INSERT INTO Game(gameId) VALUES (" + gameId + ");";
+        String sql = "INSERT INTO Game(gameId, player1, player2) VALUES (" + gameId + ", 'juni', 'ian');";
         String sqlCategory = "SELECT categoryId FROM Game WHERE gameId=" + gameId + ";";
         String sqlDelete = "DELETE FROM Game WHERE gameId=" + gameId + ";";
         try {
