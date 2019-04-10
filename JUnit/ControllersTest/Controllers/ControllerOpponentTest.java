@@ -80,7 +80,7 @@ public class ControllerOpponentTest {
     public void alreadyChallengedTest(){
         String username = "juni";
         int expected = 1;
-        String sqlInsert = "INSERT INTO Game (gameId) VALUES (1);";
+        String sqlInsert = "INSERT INTO Game (gameId, player1, player2) VALUES (1, 'juni', 'ian');";
         String sqlUpdate = "UPDATE Player SET gameId = 1 WHERE username = '" + username + "';";
         String sqlUpdateAgain = "UPDATE Player SET gameId = NULL WHERE username = '" + username + "';";
         String sqlDelete = "DELETE FROM Game WHERE gameId = 1";
@@ -117,7 +117,7 @@ public class ControllerOpponentTest {
     @Test
     public void checkGameIdTest(){
         String username = setUserName("juni");
-        String sqlInsert = "INSERT INTO Game (gameId) VALUES (1);";
+        String sqlInsert = "INSERT INTO Game (gameId, player1, player2) VALUES (1, 'juni', 'ian');";
         String sqlUpdate1 = "UPDATE Player SET gameId = 1 WHERE username = '" + username + "';";
         String sqlUpdate2 = "UPDATE Player SET gameId = null WHERE username = '" + username + "';";
         String sqlDelete = "DELETE FROM Game WHERE gameId = 1";
