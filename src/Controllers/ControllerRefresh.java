@@ -35,32 +35,33 @@ public class ControllerRefresh {
      */
 
     public void initialize() {
-        start(username);
+        start();
     }
 
     /**
      * The method runs checks if you have been challenged.
-     * @param user is the your username.
      * @return true if you have a gameId or false if not.
      */
 
-    public boolean start(String user){
+    public boolean start(){
         int gameId = getGameId();
-
-        String sqlOtherPlayer = "SELECT username FROM Player WHERE gameId = " + gameId + " AND username != '" + user + "';";
+        String username = getUserName();
+        String sqlOtherPlayer = "SELECT username FROM Player WHERE gameId = " + gameId + " AND username != '" + username + "';";
 
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             rs = statement.executeQuery(sqlOtherPlayer);
-
+            System.out.println("her");
             //if the other player has not quit before you open the game
             if(rs.next()) {
+                System.out.println("inne");
                 String challengingPlayer = rs.getString("username");
                 setChallengeText("You've been challenged by " + challengingPlayer);
                 return true;
             } else {
-                String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + user + "';";
+                String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + username + "';";
+                System.out.println("feil");
                 statement.executeUpdate(sqlRemoveGameIdFromPlayer);
                 String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
                 statement.executeUpdate(sqlDeleteGame);
@@ -157,9 +158,10 @@ public class ControllerRefresh {
             //Updates both players with a gameId that points to the new game
             String sqlGetPlayer1 = "SELECT player1 FROM Game WHERE player2 = '" + username + "';";
             rs = statement.executeQuery(sqlGetPlayer1);
-            rs.next();
-            String player1 = rs.getString("player1");
-
+            String player1 = "";
+            if(rs.next()) {
+                player1 = rs.getString("player1");
+            }
             String sqlInsert = "UPDATE `Player` SET `gameId` = NULL WHERE `Player`.`username` = '" + player1 + "'";
             statement.executeUpdate(sqlInsert);
 
