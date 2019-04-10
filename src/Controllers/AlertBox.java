@@ -49,16 +49,15 @@ public class AlertBox {
             window.close();
         });
 
-        /*
-          If not wanting to exit, the created window will close.
-         */
+
+        // If not wanting to exit, the created window will close.
         regretBtn.setOnAction(event -> {
             answer = false;
             window.close();
         });
-        /*
-          Displays the window to the user.
-         */
+
+
+        // Displays the window to the user.
         VBox layout = new VBox(10);
         layout.getChildren().addAll(label, closeBtn, regretBtn);
         layout.setAlignment(Pos.CENTER);

@@ -20,11 +20,14 @@ public class ConnectionPool {
     private static HikariDataSource ds;
 
     static {
-        // Gets user directory for the personal computer to find the Password file
+        // Gets user directory for the program to find the Password file
         String path = System.getProperty("user.dir");
         File file = new File(path + "/src/password.txt");
-        // All the details for the connection are set as static so they persist and can be used by different classes without creating an object
-        config.setJdbcUrl("jdbc:mysql://mysql.stud.iie.ntnu.no:3306/iaevange");
+       /*
+          All the details for the connection are set as static so they persist
+          and can be used by different classes without creating an object
+         */
+       config.setJdbcUrl("jdbc:mysql://mysql.stud.iie.ntnu.no:3306/iaevange");
         config.setUsername("iaevange");
         config.setPassword(readPassword(file));
         config.setDriverClassName("com.mysql.cj.jdbc.Driver");
