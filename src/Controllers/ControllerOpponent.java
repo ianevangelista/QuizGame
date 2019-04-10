@@ -154,7 +154,7 @@ public class ControllerOpponent {
      * @param player2 is the challenged user.
      * @return true if game is made.
      */
-    private boolean makeGame(String player1, String player2) {
+    public boolean makeGame(String player1, String player2) {
         Statement statement = null;
         ResultSet rsGameId = null;
 
@@ -163,13 +163,8 @@ public class ControllerOpponent {
             statement = connection.createStatement();
 
             //Checks if the player you are trying to challenge is already challenged
-            String sqlCheckIfPlayerAlreadyChallenged = "SELECT gameId FROM `Player` WHERE `Player`.`username` = '" + player2 + "'";
-            rsGameId = statement.executeQuery(sqlCheckIfPlayerAlreadyChallenged);
-            rsGameId.next();
-            int opponentGameId = rsGameId.getInt("gameId");
 
-            if(opponentGameId != 0){ // If the opponent has a gameId it means they are challenged by another player
-                Cleaner.close(statement, rsGameId, connection);
+            if(alreadyChallenged(player2) != -1){ // If the opponent has a gameId it means they are challenged by another player
                 return false;
             }
 
@@ -192,6 +187,34 @@ public class ControllerOpponent {
             e.printStackTrace();
             return false;
         }finally {
+            Cleaner.close(statement, rsGameId, connection);
+        }
+    }
+
+    public int alreadyChallenged (String player2){
+        Statement statement = null;
+        ResultSet rsGameId = null;
+
+        try {
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
+
+            //Checks if the player you are trying to challenge is already challenged
+            String sqlCheckIfPlayerAlreadyChallenged = "SELECT gameId FROM `Player` WHERE `Player`.`username` = '" + player2 + "'";
+            rsGameId = statement.executeQuery(sqlCheckIfPlayerAlreadyChallenged);
+            rsGameId.next();
+            int opponentGameId = rsGameId.getInt("gameId");
+
+            if (opponentGameId != 0) { // If the opponent has a gameId it means they are challenged by another player
+                return opponentGameId;
+            }
+            return -1;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            return -1;
+        }
+        finally {
             Cleaner.close(statement, rsGameId, connection);
         }
     }
@@ -360,7 +383,7 @@ public class ControllerOpponent {
             @Override
             public void run() {
                 System.out.println("Opponent timer running");
-                if(checkGameId()) {
+                if(checkGameId(username)) {
                     showBtn();
                     turnOffTimer();
                     return;
@@ -384,7 +407,7 @@ public class ControllerOpponent {
      * A private method which checks if the user has a gameId.
      * @return if there's no gameId the method returns true if there is it returns false.
      */
-    private boolean checkGameId() {
+    public boolean checkGameId(String user) {
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
@@ -392,11 +415,13 @@ public class ControllerOpponent {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-            String sql = "SELECT gameId FROM Player WHERE username ='" + username + "';";
+            String sql = "SELECT gameId FROM Player WHERE username ='" + user + "';";
             rs = statement.executeQuery(sql);
             rs.next();
-            int playerGameId = rs.getInt(1);
-            if(playerGameId != 0){ return true;}
+            int playerGameId = rs.getInt("gameId");
+            if(playerGameId != 0){
+                return true;
+            }
             else return false;
         } catch (SQLException e) {
             e.printStackTrace();
