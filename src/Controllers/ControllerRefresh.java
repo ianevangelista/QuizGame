@@ -52,16 +52,13 @@ public class ControllerRefresh {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             rs = statement.executeQuery(sqlOtherPlayer);
-            System.out.println("her");
             //if the other player has not quit before you open the game
             if(rs.next()) {
-                System.out.println("inne");
                 String challengingPlayer = rs.getString("username");
                 setChallengeText("You've been challenged by " + challengingPlayer);
                 return true;
             } else {
                 String sqlRemoveGameIdFromPlayer = "UPDATE Player SET gameId=NULL WHERE username ='" + username + "';";
-                System.out.println("feil");
                 statement.executeUpdate(sqlRemoveGameIdFromPlayer);
                 String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + gameId + ";";
                 statement.executeUpdate(sqlDeleteGame);
