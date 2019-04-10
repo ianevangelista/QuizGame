@@ -12,6 +12,9 @@ import java.sql.Statement;
 
 import static org.junit.Assert.assertTrue;
 
+//import static Controllers.ControllerOpponent.getGameId;
+import static Controllers.ControllerOpponent.setGameId;
+
 
 public class ControllerCategoryTest {
 
@@ -75,6 +78,7 @@ public class ControllerCategoryTest {
     //ikke ferdig helene
     @Test
     public void initialize() {
+        setGameId(1);
         boolean ans = cc.initialize();
         assertTrue(ans);
     }

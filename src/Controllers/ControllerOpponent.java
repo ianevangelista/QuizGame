@@ -112,8 +112,6 @@ public class ControllerOpponent {
     public int checkOpponent(String opponentName){
         try{
             connection = ConnectionPool.getConnection();
-            //usernameWrong.setVisible(false);
-            //challengeYou.setVisible(false);
 
             //gets the opponents username, using a prepared statment beacause it's user input
             String insertSql = "SELECT username, online FROM Player WHERE username = ?;";
