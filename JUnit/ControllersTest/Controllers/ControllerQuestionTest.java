@@ -37,8 +37,12 @@ public class ControllerQuestionTest {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
+
+            //creates game
             statement.executeUpdate(sqlGame);
             String ans = cq.findUser();
+
+            //deletes game
             statement.executeUpdate(sqlDelete);
             assertEquals(expAnswer, ans);
 
@@ -49,6 +53,9 @@ public class ControllerQuestionTest {
         }
     }
 
+    /*
+        fortsett her imorra helene :)
+     */
     @Test
     public void questionInfoTest() {
         int question = 26;
