@@ -25,7 +25,7 @@ public class ConnectionPool {
          */
         config.setJdbcUrl("jdbc:mysql://mysql.stud.iie.ntnu.no:3306/iaevange");
         config.setUsername("iaevange");
-        config.setPassword("53BJMtne");
+        config.setPassword(readPassword("password.txt"));
         config.setDriverClassName("com.mysql.cj.jdbc.Driver");
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
