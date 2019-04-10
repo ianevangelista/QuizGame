@@ -229,7 +229,7 @@ public class ControllerResult {
             @Override
             public void run() {
                 if(checkFinish(gameId)) {
-                    turnOfTimerR();
+                    turnOffTimerR();
                     btnNext.setVisible(true);
                     return;
                 }
@@ -271,7 +271,7 @@ public class ControllerResult {
     /**
      * The method terminates the timer.
      */
-    public void turnOfTimerR() {
+    public void turnOffTimerR() {
         if (timerR != null) {
             timerR.cancel();
             timerR.purge();
