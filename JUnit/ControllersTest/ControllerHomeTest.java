@@ -20,20 +20,6 @@ public class ControllerHomeTest {
     }
 
     @Test
-    public void sceneInfoTest() {
-        ActionEvent event = new ActionEvent();
-        boolean ans = ch.sceneInfo(event);
-        assertTrue(ans);
-    }
-
-    @Test
-    public void sceneHomeTest() {
-        ActionEvent event = new ActionEvent();
-        boolean ans = ch.sceneHome(event);
-        assertTrue(ans);
-    }
-
-    @Test
     public void registerTest() {
         ActionEvent event = new ActionEvent();
         boolean ans = ch.register(event);
