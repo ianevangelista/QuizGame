@@ -191,6 +191,12 @@ public class ControllerQuestion {
         else {
             return -2;
         }
+<<<<<<< HEAD
+=======
+        else return -2;
+        answerField.setText("");
+        return answerScore;
+>>>>>>> c374d33c90ad90cfcf93d5a7cae61598e63cb29d
     }
 
     public int findScore(String answer) {
