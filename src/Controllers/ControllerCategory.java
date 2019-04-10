@@ -67,7 +67,6 @@ public class ControllerCategory {
             while (rs.next()) {
                 categoryId.add(rs.getInt("categoryId"));
                 categoryName.add(rs.getString("name"));
-                System.out.println("test");
             }
 
             int amountOfCategorys = categoryId.size();
@@ -75,25 +74,24 @@ public class ControllerCategory {
             // Fills array with random numbers
             for (int i = 0; i < 3; i++) {
                 randomCategoryId[i] = rand.nextInt(amountOfCategorys);
-                System.out.println("test3");
             }
 
             // Checks that first and second element are different
             while (randomCategoryId[0] == randomCategoryId[1]) {
                 randomCategoryId[1] = rand.nextInt(amountOfCategorys);
-                System.out.println("test2");
             }
 
             // Checks that third element is different from first and second
             while (randomCategoryId[0] == randomCategoryId[2] || randomCategoryId[1] == randomCategoryId[2]) {
                 randomCategoryId[2] = rand.nextInt(amountOfCategorys);
-                System.out.println("test1");
             }
 
             // Adds the names of three random categories to the buttons in the scene
-            category1.setText(categoryName.get(randomCategoryId[0]));
-            category2.setText(categoryName.get(randomCategoryId[1]));
-            category3.setText(categoryName.get(randomCategoryId[2]));
+            if(category1 != null && category2 != null && category3 != null){
+                category1.setText(categoryName.get(randomCategoryId[0]));
+                category2.setText(categoryName.get(randomCategoryId[1]));
+                category3.setText(categoryName.get(randomCategoryId[2]));
+            }
             return true;
         } catch (SQLException sqle) {
             // Database access error
