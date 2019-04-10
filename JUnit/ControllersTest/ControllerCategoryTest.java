@@ -12,7 +12,6 @@ import java.sql.Statement;
 
 import static org.junit.Assert.assertTrue;
 
-//import static Controllers.ControllerOpponent.getGameId;
 import static Controllers.ControllerOpponent.setGameId;
 
 
