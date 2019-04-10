@@ -22,9 +22,9 @@ import static Controllers.ControllerOpponent.resetGameId;
 /**
  * The class ControllerResult is used when checking the result of both players after a game.
  */
-
 public class ControllerResult {
 
+    //Static method from the class ControllerHome
     private String username = getUserName();
     private int gameId = getGameId();
     private Timer timerR;
@@ -64,7 +64,7 @@ public class ControllerResult {
             rs = statement.executeQuery(sqlFinished);
             rs.next();
 
-            //get bool value of whether they are finnished or not
+            //get bool value of whether they are finished or not
             int p1Finished = rs.getInt("p1Finished");
             int p2Finished = rs.getInt("p2Finished");
             int mePoints = rs.getInt(me);
@@ -239,9 +239,9 @@ public class ControllerResult {
     }
 
     /**
-     * The method checks if your opponent has finished.
-     * @param game is the gameId.
-     * @return true the opponent has finished or false if not.
+     * The method checks if your opponent has finished
+     * @param game is the gameId
+     * @return true the opponent has finished or false if not
      */
     public boolean checkFinish(int game, String me) {
         ResultSet rs = null;
