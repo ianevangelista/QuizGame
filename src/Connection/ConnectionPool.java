@@ -3,6 +3,9 @@ package Connection;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -33,5 +36,28 @@ public class ConnectionPool {
      */
     public static Connection getConnection() throws SQLException{
         return ds.getConnection();
+    }
+
+    public static String readPassword(String filename) {
+        String password = null;
+        FileReader fr = null;
+        BufferedReader br = null;
+        try {
+            fr = new FileReader(filename);
+            br = new BufferedReader(fr);
+            password = br.readLine();
+            br.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            br.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            br.close();
+        } finally {
+            return password;
+
+        }
     }
 }
