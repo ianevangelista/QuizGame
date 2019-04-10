@@ -17,6 +17,7 @@ import java.sql.*;
 
 public class ControllerRegister {
 
+    //FXML
     @FXML
     public TextField user_reg;
     public TextField email_reg;
@@ -33,6 +34,7 @@ public class ControllerRegister {
     public RadioButton btnFemale;
     public ToggleGroup gender;
 
+    //Global variables
     private String user_name;
     private String email_adress;
     private int birthyear;
@@ -49,6 +51,7 @@ public class ControllerRegister {
     public void reg(ActionEvent event) {
         Connection connection = null;
         PreparedStatement pstmt = null;
+        //Checks if any of the textfields are empty
         if (!notNull()) {
             visible(errorMessageEmpty);
         } else if (userExists()) {
@@ -57,13 +60,14 @@ public class ControllerRegister {
             visible(errorMessageEmailTaken);
         } else if (!checkEmail()) {
             visible(errorMessageEmailInvalid);
-        } else if (checkBirthyear()) {
+        } else if (checkBirthYear()) {
             visible(errorMessageBirthyear);
         } else if (!checkPassword()) {
             visible(errorMessagePassword);
         } else if(chooseGender() == -1){
             visible(errorMessageEmpty);
         }else{
+            // Inserts from the textfields into the database
             int gender = chooseGender();
             int ol = 0;
             int startPoints = 0;
@@ -102,6 +106,7 @@ public class ControllerRegister {
      * @return false if input is empty or true if not.
      */
     public boolean notNull() {
+        // Checks to see if the fields are empty
         if(user_reg.getText().isEmpty() || email_reg.getText().isEmpty() || birthyear_reg.getText().isEmpty() || pass_reg.getText().isEmpty() || confirm_reg.getText().isEmpty()) {
             return false;
         } else {
@@ -112,7 +117,7 @@ public class ControllerRegister {
     }
 
     /**
-     * The method checks if the passwordfields match each other and are not empty.
+     * The method checks if the password fields match each other and are not empty.
      * If not empty and matches, the password will be hashed and salted.
      * @return true if password is hashed and salted or false if empty or no match.
      */
@@ -146,6 +151,7 @@ public class ControllerRegister {
             rsUser = pstmt.executeQuery();
 
             if(rsUser.next()){
+                // Username already exists
                 return true;
             }else {
                 return false;
@@ -175,6 +181,7 @@ public class ControllerRegister {
             rsEmail = pstmt.executeQuery();
 
             if(rsEmail.next()){
+                // Email already exists
                 return true;
             }
             return false;
@@ -217,16 +224,17 @@ public class ControllerRegister {
     }
 
     /**
-     * The method checks if birthyear is valid.
+     * The method checks if birth year is valid.
      * @return true if valid or false if not.
      */
-    public boolean checkBirthyear(){
+    public boolean checkBirthYear(){
         try{
             String getYear = birthyear_reg.getText();
             birthyear = Integer.parseInt(getYear);
         }catch (NumberFormatException e){
             return true;
         }
+        // The birth year needs to be between 1903 and 2019
         if(birthyear < 1903 || birthyear > 2019){
             return true;
         }else{
