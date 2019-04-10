@@ -33,7 +33,7 @@ public class Main extends Application {
      */
     private void closeProgram(Stage stage){
         Boolean answer = AlertBox.display("Exit game", "Are you sure you want to quit?");
-        if(answer) stage.close();
+        if(answer) System.exit(1);
     }
 
     public static void main(String[] args) {

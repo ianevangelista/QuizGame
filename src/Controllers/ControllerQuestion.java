@@ -25,7 +25,8 @@ import Connection.Cleaner;
 import Connection.ConnectionPool;
 
 public class ControllerQuestion {
-    private int seconds = 2;
+    private boolean running = true;
+    private int seconds = 31;
     private Timer timer = new Timer();
     private int questionCount = 0, previousQuestion = 0;
     private static int gameId;
@@ -63,6 +64,7 @@ public class ControllerQuestion {
 
     public void nextQuestion() {
         if(questionCount > 2){
+            running = false;
             answerField.setVisible(false);
             answerField.setText("");
             questionField.setVisible(false);
@@ -225,6 +227,34 @@ public class ControllerQuestion {
         }
     }
 
+    //Timer
+    private void timerCountdown() {
+        TimerTask task = makeTask();
+        timer = new Timer();
+        timer.scheduleAtFixedRate(task, 1000, 1000);
+    }
+
+    private TimerTask makeTask() {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                if(running) {
+                    Platform.runLater(() -> {
+                        seconds--;
+                        countdown.setText("Seconds left: " + seconds);
+                        if (seconds == 0) {
+                            seconds = 31;
+                            questionCount++;
+                            nextQuestion();
+                            turnOffTimer();
+                            return;
+                        }
+                    });
+                }
+            }
+        };
+    }
+
     public void turnOffTimer() {
         if (timer != null) {
             timer.cancel();
@@ -233,33 +263,6 @@ public class ControllerQuestion {
         }
     }
 
-    private void timerCountdown() {
-        TimerTask task = new TimerTask(){
-            @Override
-            public void run() {
-                if(previousQuestion<questionCount) {
-                    Platform.runLater(() -> {
-                        System.out.println(questionCount);
-                        seconds--;
-                        countdown.setText("Seconds left: " + seconds);
-                        if (seconds == 0) {
-                            seconds = 2;
-                            questionCount++;
-                            nextQuestion();
-                            turnOffTimer();
-                            return;
-                        }
-                    });
-                }
-                else {
-                    previousQuestion++;
-                    return;
-                }
-            }
-        };
-        timer = new Timer();
-        timer.schedule(task, 1000, 1000);
-    }
 
     //Home-button quits game
     public boolean sceneHome(ActionEvent event) {
