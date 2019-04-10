@@ -75,7 +75,7 @@ public class ControllerCategoryTest {
             Cleaner.close(statement, null, connection);
         }
     }
-
+    //ikke ferdig helene
     @Test
     public void initialize() {
         setGameId(1);

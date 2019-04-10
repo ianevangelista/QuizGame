@@ -25,10 +25,9 @@ import Connection.Cleaner;
 import Connection.ConnectionPool;
 
 public class ControllerQuestion {
-    private volatile boolean running = true;
-    private int seconds = 31;
+    private int seconds = 2;
     private Timer timer = new Timer();
-    private int questionCount = 0;
+    private int questionCount = 0, previousQuestion = 0;
     private static int gameId;
     private static String username = getUserName();
     private Connection connection = null;
@@ -63,13 +62,7 @@ public class ControllerQuestion {
     public void sceneResult(ActionEvent event){ ChangeScene.change(event, "/Scenes/Result.fxml");}
 
     public void nextQuestion() {
-        if(questionCount > 3){
-
-        }
-        else if(questionCount > 2){
-            running = false;
-            timer.cancel();
-            timer.purge();
+        if(questionCount > 2){
             answerField.setVisible(false);
             answerField.setText("");
             questionField.setVisible(false);
@@ -125,13 +118,18 @@ public class ControllerQuestion {
         }
     }
 
-    private void questionDisplay() { //displays questions
+    public void questionDisplay() { //displays questions
+        String qText = questionInfo();
+        questionField.setText(qText);
+    }
+
+    public String questionInfo() {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             //sql to get question text
-            String sqlGetText = "SELECT questionText, questionId FROM Game JOIN Question ON questionId = question" + (questionCount+1) +  " WHERE gameId = " + gameId;
+            String sqlGetText = "SELECT questionText, questionId FROM Game JOIN Question ON questionId = question" + (questionCount+1) +  " WHERE gameId = " + getGameId();
             rs = statement.executeQuery(sqlGetText);
             int qId = 0;
             String qText = "";
@@ -139,8 +137,7 @@ public class ControllerQuestion {
                 qText = rs.getString("questionText");
                 qId = rs.getInt("questionId");
             }
-            //displays question
-            questionField.setText(qText);
+
 
             //selects all alternatives to the question
             String sqlGetAlt = "SELECT score, answer FROM Alternative WHERE questionId = " + qId +";";
@@ -156,12 +153,15 @@ public class ControllerQuestion {
                 rightAnswer.add(rs.getString("answer").toLowerCase());
                 score.add(rs.getInt("score"));
             }
+            return qText;
         }catch (SQLException e) {
             e.printStackTrace();
+            return "";
         }finally {
             Cleaner.close(statement, rs, connection);
         }
     }
+
 
     public void enter() {
         answerField.setOnKeyPressed(e -> {
@@ -174,16 +174,13 @@ public class ControllerQuestion {
     //Checks if the answered question is correct and if it has already been answered by the user this round
     private int questionCheck() {
         int answerScore = 0;
-
         String answer = answerField.getText().toLowerCase();  //get answer in lowercase
-
+        answerField.setText("");
         //Check if player gave actual answer before checking DB
         if(!answer.equals("")){
-            //check trought arrayList of all possible answers
-            answerScore =findScore(answer);
+            answerScore = findScore(answer);
         }
-        else return -2;
-        answerField.setText("");
+        else answerScore = -2;
         return answerScore;
     }
 
@@ -214,11 +211,11 @@ public class ControllerQuestion {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-            String sqlPlayer = "SELECT player1 FROM Game WHERE gameId=" + gameId + ";";
+            String sqlPlayer = "SELECT player1 FROM Game WHERE gameId=" + getGameId() + ";";
             rs = statement.executeQuery(sqlPlayer);
             rs.next();
             String player1Name = rs.getString("player1");
-            if(username.equals(player1Name)){return "player1";}
+            if(getUserName().equals(player1Name)){return "player1";}
             else return "player2";
         }catch (SQLException e) {
             e.printStackTrace();
@@ -226,28 +223,6 @@ public class ControllerQuestion {
         }finally {
             Cleaner.close(statement, rs, connection);
         }
-    }
-
-    //Timer
-    private TimerTask makeTask() {
-        return new TimerTask() {
-            @Override
-            public void run() {
-                if(running) {
-                    Platform.runLater(() -> {
-                        seconds--;
-                        countdown.setText("Seconds left: " + seconds);
-                        if (seconds == 0) {
-                            seconds = 31;
-                            questionCount++;
-                            nextQuestion();
-                            turnOffTimer();
-                            return;
-                        }
-                    });
-                }
-            }
-        };
     }
 
     public void turnOffTimer() {
@@ -259,9 +234,31 @@ public class ControllerQuestion {
     }
 
     private void timerCountdown() {
-        TimerTask task = makeTask();
+        TimerTask task = new TimerTask(){
+            @Override
+            public void run() {
+                if(previousQuestion<questionCount) {
+                    Platform.runLater(() -> {
+                        System.out.println(questionCount);
+                        seconds--;
+                        countdown.setText("Seconds left: " + seconds);
+                        if (seconds == 0) {
+                            seconds = 2;
+                            questionCount++;
+                            nextQuestion();
+                            turnOffTimer();
+                            return;
+                        }
+                    });
+                }
+                else {
+                    previousQuestion++;
+                    return;
+                }
+            }
+        };
         timer = new Timer();
-        timer.scheduleAtFixedRate(task, 1000, 1000);
+        timer.schedule(task, 1000, 1000);
     }
 
     //Home-button quits game
