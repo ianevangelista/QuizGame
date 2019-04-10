@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -19,13 +20,16 @@ public class ConnectionPool {
     private static HikariDataSource ds;
 
     static {
-        /*
+        // Gets user directory for the program to find the Password file
+        String path = System.getProperty("user.dir");
+        File file = new File(path + "/src/password.txt");
+       /*
           All the details for the connection are set as static so they persist
           and can be used by different classes without creating an object
          */
-        config.setJdbcUrl("jdbc:mysql://mysql.stud.iie.ntnu.no:3306/iaevange");
+       config.setJdbcUrl("jdbc:mysql://mysql.stud.iie.ntnu.no:3306/iaevange");
         config.setUsername("iaevange");
-        config.setPassword(readPassword("password.txt"));
+        config.setPassword(readPassword(file));
         config.setDriverClassName("com.mysql.cj.jdbc.Driver");
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
@@ -41,7 +45,7 @@ public class ConnectionPool {
         return ds.getConnection();
     }
 
-    public static String readPassword(String filename) {
+    public static String readPassword(File filename) {
         String password = null;
         FileReader fr = null;
         BufferedReader br = null;
