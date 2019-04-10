@@ -19,7 +19,10 @@ public class ConnectionPool {
     private static HikariDataSource ds;
 
     static {
-        // All the details for the connection are set as static so they persist and can be used by different classes without creating an object
+        /*
+          All the details for the connection are set as static so they persist
+          and can be used by different classes without creating an object
+         */
         config.setJdbcUrl("jdbc:mysql://mysql.stud.iie.ntnu.no:3306/iaevange");
         config.setUsername("iaevange");
         config.setPassword("53BJMtne");

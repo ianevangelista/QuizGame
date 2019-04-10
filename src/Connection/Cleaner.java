@@ -33,6 +33,7 @@ public class Cleaner {
 
     public static void close(PreparedStatement statement, ResultSet resultset, Connection connection){
         try {
+            // Closes connection, statement and resultset
             if (resultset != null) resultset.close();
             if (statement != null) statement.close();
             if (connection != null) connection.close();
