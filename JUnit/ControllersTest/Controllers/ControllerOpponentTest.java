@@ -34,6 +34,7 @@ public class ControllerOpponentTest {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             statement.executeUpdate(sqlUpdate1);
+            //An error will appear here because it enters makeGame.
             int result =  co.checkOpponent(opponent);
             int expectedResult = 1;
             statement.executeUpdate(sqlUpdate2);
@@ -116,16 +117,20 @@ public class ControllerOpponentTest {
     @Test
     public void checkGameIdTest(){
         String username = setUserName("juni");
+        String sqlInsert = "INSERT INTO Game (gameId) VALUES (1);";
         String sqlUpdate1 = "UPDATE Player SET gameId = 1 WHERE username = '" + username + "';";
         String sqlUpdate2 = "UPDATE Player SET gameId = null WHERE username = '" + username + "';";
+        String sqlDelete = "DELETE FROM Game WHERE gameId = 1";
 
         try{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
+            statement.executeUpdate(sqlInsert);
             statement.executeUpdate(sqlUpdate1);
             boolean result = co.checkGameId(getUserName());
             statement.executeUpdate(sqlUpdate2);
+            statement.executeUpdate(sqlDelete);
 
             assertTrue(result);
         }

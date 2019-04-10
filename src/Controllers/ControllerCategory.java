@@ -87,9 +87,11 @@ public class ControllerCategory {
             }
 
             // Adds the names of three random categories to the buttons in the scene
-            category1.setText(categoryName.get(randomCategoryId[0]));
-            category2.setText(categoryName.get(randomCategoryId[1]));
-            category3.setText(categoryName.get(randomCategoryId[2]));
+            if(category1 != null && category2 != null && category3 != null){
+                category1.setText(categoryName.get(randomCategoryId[0]));
+                category2.setText(categoryName.get(randomCategoryId[1]));
+                category3.setText(categoryName.get(randomCategoryId[2]));
+            }
             return true;
         } catch (SQLException sqle) {
             // Database access error

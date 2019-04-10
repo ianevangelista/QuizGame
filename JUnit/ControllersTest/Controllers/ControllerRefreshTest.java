@@ -2,15 +2,12 @@ package Controllers;
 
 import Connection.ConnectionPool;
 import javafx.event.ActionEvent;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import Connection.Cleaner;
 import static Controllers.ControllerOpponent.setGameId;
 import static Controllers.ControllerHome.setUserName;
 
 
-
-import javax.swing.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,23 +17,19 @@ import static org.junit.Assert.*;
 
 public class ControllerRefreshTest {
 
-    Connection connection = null;
-    Statement statement = null;
-    ControllerRefresh cr = new ControllerRefresh();
-    ControllerHome ch = new ControllerHome();
-    private ControllerRefresh mock;
-    public String player1 = "juni";
-    public String player2 = "ian";
-    public int gameId = 1;
+    static Connection connection = null;
+    static Statement statement = null;
+    static ControllerRefresh cr = new ControllerRefresh();
+    static public String player1 = "juni";
+    static public String player2 = "ian";
+    static public int gameId = 1;
 
 
-    @Before
-    public void createGame() {
+    @BeforeClass
+    public static void createGame() {
         String sqlInsertGame = "INSERT INTO Game (gameId, player1, player2) VALUES (" + gameId + ", '" + player1 + "', '" + player2 + "');";
         String sqlUpdateP1 = "UPDATE Player SET gameId = " + gameId + " WHERE username = '" + player1 + "';";
         String sqlUpdateP2 = "UPDATE Player SET gameId = " + gameId + " WHERE username = '" + player2 + "';";
-        String sqlDeleteGameIdP1 = "UPDATE Player SET gameId = NULL WHERE username = '" + player1 + "';";
-        String sqlDeleteGameIdP2 = "UPDATE Player SET gameId = NULL WHERE username = '" + player2 + "';";
         try{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
@@ -44,8 +37,25 @@ public class ControllerRefreshTest {
             statement.executeUpdate(sqlInsertGame);
             statement.executeUpdate(sqlUpdateP1);
             statement.executeUpdate(sqlUpdateP2);
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            Cleaner.close(statement, null, connection);
+        }
+    }
+
+    @AfterClass
+    public static void deleteGame() {
+        String sqlDeleteGameIdP1 = "UPDATE Player SET gameId = NULL WHERE username = '" + player1 + "';";
+        String sqlDeleteGameIdP2 = "UPDATE Player SET gameId = NULL WHERE username = '" + player2 + "';";
+        String sqlDeleteGame = "DELETE FROM Game WHERE gameId = " + gameId + ";";
+        try{
+            connection = ConnectionPool.getConnection();
+            statement = connection.createStatement();
             statement.executeUpdate(sqlDeleteGameIdP1);
             statement.executeUpdate(sqlDeleteGameIdP2);
+            statement.executeUpdate(sqlDeleteGame);
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -63,6 +73,7 @@ public class ControllerRefreshTest {
         try{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
+
             setGameId(gameId);
             setUserName(player1);
             result = cr.start();
@@ -87,8 +98,8 @@ public class ControllerRefreshTest {
             statement = connection.createStatement();
             setUserName(player1);
             result = cr.getCorrectScene();
-            expect = "/Scenes/ChallengeUser.fxml";
-            assertEquals(result, expect);
+            expect = "/Scenes/Wait.fxml";
+            assertEquals(expect, result);
         }
         catch (SQLException e){
             e.printStackTrace();
