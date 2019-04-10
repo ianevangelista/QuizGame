@@ -49,7 +49,7 @@ public class ControllerHighScore {
         Statement statement = null;
         ResultSet hs = null;
 
-        // get top 5 players from the database
+        // Get top 5 players from the database
         String sqlHighScore = "SELECT username, points FROM `Player` ORDER BY points desc LIMIT 5;";
 
         ObservableList<String> usernameList = FXCollections.observableArrayList();
@@ -60,7 +60,7 @@ public class ControllerHighScore {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
-            //Add usernames and points of top 5 playes to ObersvableLists
+            // Add usernames and points of top 5 playes to ObersvableLists
             hs = statement.executeQuery(sqlHighScore);
             while(hs.next()){
                 usernameList.add( hs.getString("username"));

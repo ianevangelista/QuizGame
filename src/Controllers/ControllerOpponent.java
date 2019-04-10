@@ -18,14 +18,11 @@ import Connection.Cleaner;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 
-import javax.swing.*;
-
 import static Controllers.ControllerHome.getUserName;
 
 /**
  * The class ControllerOpponent is used to create a game.
  * It will display all online users and give the user the opportunity to challenge a player.
- *
  */
 
 public class ControllerOpponent {
@@ -108,7 +105,13 @@ public class ControllerOpponent {
         }
     }
 
-
+    /**
+     * The method finds a user to challenge.
+     * It will check if the user is you or if the user is online.
+     * If the user is not you and is online, a game will be created by using makeGame.
+     * @param opponentName is the opponent's username
+     * @return an int which represents if the opponent is you, is online or does not exist.
+     */
     public int checkOpponent(String opponentName){
         try{
             connection = ConnectionPool.getConnection();
@@ -119,20 +122,23 @@ public class ControllerOpponent {
             pstmt.setString(1, (opponentName.toLowerCase()));
             rs = pstmt.executeQuery();
 
-            //if it is a registered username
+            // If it is a registered username
             if(rs.next()){
                 opponentUsername = rs.getString("username");
                 opponentOnline = rs.getInt("Online");
+                // If the username is you
                 if(opponentUsername.equals(username)) {
                     return 0;
+                    // If the opponent is not online
                 } else if(opponentOnline == 0){
                     return 2;
+                    // If the user is online
                 } else {
                     makeGame(username, opponentUsername);
                     return 1;
                 }
             }
-            //if the username doesn't exsist
+            // If the username doesn't exsist
             else {
                 return 3;
             }
@@ -161,8 +167,7 @@ public class ControllerOpponent {
             statement = connection.createStatement();
 
             //Checks if the player you are trying to challenge is already challenged
-
-            if(alreadyChallenged(player2) != -1){ // If the opponent has a gameId it means they are challenged by another player
+            if(alreadyChallenged(player2) != -1){
                 return false;
             }
 
@@ -180,7 +185,6 @@ public class ControllerOpponent {
             sqlInsert = "UPDATE `Player` SET `gameId` = " + gameId + " WHERE `Player`.`username` = '" + player2 + "'";
             statement.executeUpdate(sqlInsert);
             return true;
-
         }catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -202,8 +206,8 @@ public class ControllerOpponent {
             rsGameId = statement.executeQuery(sqlCheckIfPlayerAlreadyChallenged);
             rsGameId.next();
             int opponentGameId = rsGameId.getInt("gameId");
-
-            if (opponentGameId != 0) { // If the opponent has a gameId it means they are challenged by another player
+            // If the opponent has a gameId it means they are challenged by another player
+            if (opponentGameId != 0) {
                 return opponentGameId;
             }
             return -1;
@@ -226,7 +230,7 @@ public class ControllerOpponent {
 
     /**
      * A private method for the different error messages.
-     * Either sets the visibilty of the components as true or false.
+     * Either sets the visibility of the components as true or false.
      */
    private void setVisible(Label label){
        usernameWrong.setVisible(false);
@@ -255,7 +259,7 @@ public class ControllerOpponent {
             try {
                 connection = ConnectionPool.getConnection();
                 statement = connection.createStatement();
-
+                // Fetches your username
                 String username = getUserName();
 
                 //Checks if the player you are trying to challenge is already challenged
@@ -287,23 +291,21 @@ public class ControllerOpponent {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             String sqlOnlineUsers = "SELECT username FROM `Player` WHERE online = 1 AND gameId IS NULL;";
-            //Legger navn i tabellen onlinelist
             hs = statement.executeQuery(sqlOnlineUsers);
-
             hideOnlineUsers(true);
 
+            // Adds all online users in an ArrayList except yourself
             while(hs.next()){
                 if(!hs.getString("username").equals(username)) {
                     onlineList.add( hs.getString("username"));
                 }
             }
-
+            // Puts all items from the ArrayList in the ListView
             onlineListView.setItems(onlineList);
-
+            // If the ArrayList is empty do not show the ListView
             if(onlineList.isEmpty()){
                 hideOnlineUsers(false);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -315,12 +317,16 @@ public class ControllerOpponent {
      * A method which chooses an online player's username to appear on the opponent-textfield.
      */
     public void chooseOnlineUser(){
+        // Creates an ObservableList to view all online users
         ObservableList selectedIndices = onlineListView.getSelectionModel().getSelectedIndices();
         int index = -1;
+        // Each items in the list will be given an index
         for(Object o : selectedIndices){
             index = (Integer) o;
         }
+        // Sets the user chosen by index
         String user = onlineList.get(index);
+        // Displays the username
         opponent.setText(user);
     }
 
@@ -331,6 +337,7 @@ public class ControllerOpponent {
     private void hideOnlineUsers(boolean visibility){
         onlineListView.setVisible(visibility);
         label.setVisible(visibility);
+        // If true display this layout
         if(visibility){
             challenge.setLayoutX(93);
             opponent.setLayoutX(74);
@@ -338,6 +345,7 @@ public class ControllerOpponent {
             usernameWrong.setLayoutX(105);
             challengeYou.setLayoutX(81);
             userOffline.setLayoutX(63);
+            // If false display this layout
         } else {
             challenge.setLayoutX(241);
             opponent.setLayoutX(222);
@@ -376,11 +384,12 @@ public class ControllerOpponent {
      * Checks if the user has a gameId
      */
     private void timerOpponent(){
+        // Creates a timer
         timer = new Timer();
+        // Creates a TimerTask
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Opponent timer running");
                 if(checkGameId(username)) {
                     showBtn();
                     turnOffTimer();
@@ -388,6 +397,7 @@ public class ControllerOpponent {
                 }
             }
         };
+        // Scheduled to run the task and start after 5 seconds and every 3 seconds
         timer.schedule(task, 5000, 3000);
     }
 
@@ -406,6 +416,7 @@ public class ControllerOpponent {
      * @return if there's no gameId the method returns true if there is it returns false.
      */
     public boolean checkGameId(String user) {
+        // Connection set-up
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
@@ -413,18 +424,22 @@ public class ControllerOpponent {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
+            // Selects the your gameId
             String sql = "SELECT gameId FROM Player WHERE username ='" + user + "';";
             rs = statement.executeQuery(sql);
             rs.next();
             int playerGameId = rs.getInt("gameId");
+            // If there is a gameId return true
             if(playerGameId != 0){
                 return true;
             }
+            // If no gameId return false
             else return false;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         } finally {
+            // Close everything
             Cleaner.close(statement, rs, connection);
         }
     }

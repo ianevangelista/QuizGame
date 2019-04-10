@@ -20,17 +20,13 @@ import static Controllers.ControllerHome.getUserName;
 
 public class ControllerFeedback {
 
-    /**
-     * Fxml elements
-     */
+    // Fxml elements
     @FXML
     public TextArea feedback;
     public TextField email;
     public Label errorMessageEmailInvalid;
 
-    /**
-     * Set up for java email
-     */
+    // Set up for java email
     private Properties props = new Properties();
     private Session session = Session.getDefaultInstance(props);
     private MimeMessage message = new MimeMessage(session);
