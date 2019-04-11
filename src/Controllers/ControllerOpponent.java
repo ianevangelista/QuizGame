@@ -170,6 +170,9 @@ public class ControllerOpponent {
                 return false;
             }
 
+            //Start transaction
+            connection.setAutoCommit(false);
+
             //Creates a new game
             String sqlInsert = "INSERT INTO Game(player1, player2, p1Points, p2Points) VALUES('"+ player1 + "', '" + player2 + "', 0, 0);";
             statement.executeUpdate(sqlInsert, Statement.RETURN_GENERATED_KEYS);
@@ -178,14 +181,24 @@ public class ControllerOpponent {
             gameId = rsGameId.getInt(1);
 
             //Updates both players with a gameId that points to the new game
+            sqlInsert = "UPDATE `Player` SET `gameId` = " + gameId + " WHERE `Player`.`username` = '" + player2 + "'";
+            statement.executeUpdate(sqlInsert);
+
             sqlInsert = "UPDATE `Player` SET `gameId` = " + gameId + " WHERE `Player`.`username` = '" + player1 + "'";
             statement.executeUpdate(sqlInsert);
 
-            sqlInsert = "UPDATE `Player` SET `gameId` = " + gameId + " WHERE `Player`.`username` = '" + player2 + "'";
-            statement.executeUpdate(sqlInsert);
+            //Transaction successful
+            connection.commit();
             return true;
-        }catch (SQLException e) {
-            e.printStackTrace();
+        }catch (SQLException sqle) {
+            sqle.printStackTrace();
+            try {
+                connection.rollback();
+            }
+            catch (Exception e){
+                //Rollback fails
+                e.printStackTrace();
+            }
             return false;
         }finally {
             Cleaner.close(statement, rsGameId, connection);
