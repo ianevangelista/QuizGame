@@ -50,7 +50,7 @@ public class LoginSystem {
                 String player = findUser();
                 String sqlRageQuitGame;
                 if (player.equals("player1")) {
-                    sqlRageQuitGame = "UPDATE Game SET p1Points = 0, p1Finished = 1 WHERE gameId =" + gameId + ";"; //TODO COPY NICER CODE FROM SCENEHOME IN CONTROLERQUESTION
+                    sqlRageQuitGame = "UPDATE Game SET p1Points = 0, p1Finished = 1 WHERE gameId =" + gameId + ";";
                 } else {
                     sqlRageQuitGame = "UPDATE Game SET p2Points = 0, p2Finished = 1 WHERE gameId =" + gameId + ";";
                 }
