@@ -18,20 +18,25 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static Controllers.ControllerOpponent.getGameId;
-import static Controllers.ControllerOpponent.resetGameId;
 import static Controllers.ControllerHome.getUserName;
 
 import Connection.Cleaner;
 import Connection.ConnectionPool;
 
+/**
+ * The class ControllerOpponent is used to create a game.
+ * It will display all online users and give the user the opportunity to challenge a player.
+ */
+
 public class ControllerQuestion {
     private boolean running = true;
     private int seconds = 31;
     private Timer timer = new Timer();
-    private int questionCount = 0, previousQuestion = 0;
+    private int questionCount = 0;
     private static int gameId;
     private static String username = getUserName();
-    
+
+    // FXML components
     @FXML
     public TextField answerField;
     public Label questionField;
@@ -57,8 +62,17 @@ public class ControllerQuestion {
         questionDisplay();
     }
 
+    /**
+     * The method changes scene to Result.
+     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
+     */
     public void sceneResult(ActionEvent event){ ChangeScene.change(event, "/Scenes/Result.fxml");}
 
+    /**
+     * The method checks if all questions have been answered.
+     * If all questions are answered it will update the player's gameId and update the game and set you as finished.
+     * If not all questions are answered, display next question and start the countdown.
+     */
     public void nextQuestion() {
         // Connection objects
         Connection connection = null;
@@ -104,11 +118,19 @@ public class ControllerQuestion {
             timerCountdown();
         }
     }
-    public void confirmAnswer() { //clicks submit button
-        int answerScore = questionCheck();   //checks answer
+
+    /**
+     * The method is connected to the confirm button and uses questionCheck to validate the answer.
+     */
+    public void confirmAnswer() {
+        int answerScore = questionCheck();
         showFeedback(answerScore);
     }
 
+    /**
+     * The method displays a feedback message after answering.
+     * @param score your score gained after a question.
+     */
     private void showFeedback(int score){
         if(score == -1){
             feedback.setText("You already answered that!");
@@ -125,11 +147,19 @@ public class ControllerQuestion {
         }
     }
 
-    public void questionDisplay() { //displays questions
+    /**
+     * The method displays the question by using questionInfo.
+     */
+    public void questionDisplay() {
         String qText = questionInfo();
         questionField.setText(qText);
     }
 
+    /**
+     * The method fetches the questions from the database depending on the category.
+     * It will save the answers of every questions and the user's input to keep track of the score.
+     * @return the question text.
+     */
     public String questionInfo() {
         // Connection objects
         Connection connection = null;
@@ -174,7 +204,10 @@ public class ControllerQuestion {
         }
     }
 
-
+    /**
+     * The method gives user the option to press enter on the keyboard rather than the button.
+     * It will then use the confirmAnswer-method.
+     */
     public void enter() {
         answerField.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
@@ -183,7 +216,11 @@ public class ControllerQuestion {
         });
     }
 
-    //Checks if the answered question is correct and if it has already been answered by the user this round
+    /**
+     * The method checks if the answered question is correct.
+     * It will also check if the user already have answered the same input the same round.
+     * @return an int depending on answering correct, incorrect or answering null.
+     */
     private int questionCheck() {
         int answerScore = 0;
         String answer = answerField.getText().toLowerCase();  //get answer in lowercase
@@ -196,6 +233,12 @@ public class ControllerQuestion {
         return answerScore;
     }
 
+    /**
+     * The method checks the score of your input.
+     * It will add the score to your total score the same game.
+     * @param answer is the user's input.
+     * @return the score of your answer.
+     */
     public int findScore(String answer) {
         int answerScore = 0;
         //check trought arrayList of all possible answers
@@ -215,7 +258,10 @@ public class ControllerQuestion {
         return answerScore;
     }
 
-    //Finds out whether current user is player 1 or player 2
+    /**
+     * The method checks if the user is player 1 or player 2
+     * @return a String if the player is either 1 or 2 or else it will return game deleted.
+     */
     public static String findUser() {
         Connection connection = null;
         Statement statement = null;
@@ -241,13 +287,20 @@ public class ControllerQuestion {
         }
     }
 
-    //Timer
+    /**
+     * The method start a timer which starts after one second and repeats every seconds.
+     */
     private void timerCountdown() {
         TimerTask task = makeTask();
         timer = new Timer();
         timer.scheduleAtFixedRate(task, 1000, 1000);
     }
 
+    /**
+     * The method creates a task for a timer. It will display the amount of seconds left.
+     * It displays the next question if the seconds run out.
+     * @return the TimerTask
+     */
     private TimerTask makeTask() {
         return new TimerTask() {
             @Override
@@ -269,6 +322,9 @@ public class ControllerQuestion {
         };
     }
 
+    /**
+     * The method terminates the timer
+     */
     public void turnOffTimer() {
         if (timer != null) {
             timer.cancel();
