@@ -26,8 +26,6 @@ public class TimerC {
     private static Timer timer;
     private static int gameId = getGameId();
     private static String username = getUserName();
-    private static Connection connection = null;
-    private static Statement statement = null;
     private static boolean categoryChosen = false;
     private static boolean noGameId = false;
 
@@ -110,13 +108,14 @@ public class TimerC {
      * @return true if category and the last question has been set. False if only one or none is set.
      */
     public static boolean checkCat(int gameId) {
-        ResultSet rs = null;
         String sqlCheck = "SELECT question3 FROM Game WHERE gameId = " + gameId + ";";
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
 
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
-
             rs = statement.executeQuery(sqlCheck);
             if(rs.next()) {
                 int qId = rs.getInt(1);

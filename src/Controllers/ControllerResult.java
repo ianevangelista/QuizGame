@@ -30,9 +30,6 @@ public class ControllerResult {
     private Timer timerR;
     private boolean bothFinished = false;
 
-    Connection connection = null;
-    Statement statement = null;
-
     @FXML
     //result
     public Text totalScore;
@@ -50,7 +47,8 @@ public class ControllerResult {
      * @return true if both finished, or false if none or one finished.
      */
     public boolean initialize() {
-
+        Connection connection = null;
+        Statement statement = null;
         ResultSet rs = null;
 
         try {
@@ -128,6 +126,8 @@ public class ControllerResult {
      * @return 1 if your score is higher than the opponent or 0 if not.
      */
     public int checkResult(int myScore, int opponentScore){
+        Connection connection = null;
+        Statement statement = null;
 
         try {
             connection = ConnectionPool.getConnection();
@@ -162,6 +162,8 @@ public class ControllerResult {
      * @return true if the game still exists and deletes the game or false if does not exist.
      */
     public boolean deleteGame(int game){
+        Connection connection = null;
+        Statement statement = null;
         ResultSet rs = null;
         String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + game + ";";
 
@@ -254,6 +256,8 @@ public class ControllerResult {
      * @return true the opponent has finished or false if not
      */
     public boolean checkFinish(int game, String me) {
+        Connection connection = null;
+        Statement statement = null;
         ResultSet rs = null;
         String opponentFinished = (me.equals("player1") ? "p2Finished" : "p1Finished");
 
@@ -294,6 +298,8 @@ public class ControllerResult {
      * @return true if total losses is updated or false if not.
      */
     public boolean addGamesLost(String user){
+        Connection connection = null;
+        Statement statement = null;
 
         try {
             connection = ConnectionPool.getConnection();
@@ -318,6 +324,8 @@ public class ControllerResult {
      * @return true if total wins is updated or false if not.
      */
     public boolean addGamesWon(String user){
+        Connection connection = null;
+        Statement statement = null;
 
         try {
             connection = ConnectionPool.getConnection();
