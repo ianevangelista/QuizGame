@@ -43,7 +43,7 @@ public class AlertBox {
          */
         closeBtn.setOnAction(event -> {
             if(getUserName() != null) {
-                Logout.logOut();
+                LoginSystem.logOut();
             }
             answer = true;
             window.close();

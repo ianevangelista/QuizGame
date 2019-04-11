@@ -22,16 +22,13 @@ import static Controllers.ControllerOpponent.resetGameId;
 /**
  * The class ControllerResult is used when checking the result of both players after a game.
  */
-
 public class ControllerResult {
 
+    //Static method from the class ControllerHome
     private String username = getUserName();
     private int gameId = getGameId();
     private Timer timerR;
     private boolean bothFinished = false;
-
-    Connection connection = null;
-    Statement statement = null;
 
     @FXML
     //result
@@ -50,7 +47,8 @@ public class ControllerResult {
      * @return true if both finished, or false if none or one finished.
      */
     public boolean initialize() {
-
+        Connection connection = null;
+        Statement statement = null;
         ResultSet rs = null;
 
         try {
@@ -64,12 +62,13 @@ public class ControllerResult {
             rs = statement.executeQuery(sqlFinished);
             rs.next();
 
-            //get bool value of whether they are finnished or not
+            //get bool value of whether they are finished or not
             int p1Finished = rs.getInt("p1Finished");
             int p2Finished = rs.getInt("p2Finished");
             int mePoints = rs.getInt(me);
             int opponentPoints = rs.getInt(opponent);
 
+            //Prints the result if both is finished
             if(p1Finished == 1 && p2Finished == 1) {
                 totalScoreText.setVisible(true);
                 theirScore.setVisible(true);
@@ -80,6 +79,7 @@ public class ControllerResult {
 
                 checkResult(mePoints, opponentPoints);
 
+                //Checks who won
                 if(checkResult(mePoints, opponentPoints) == 1){
                     resultText.setText("You won! :)");
                 }
@@ -91,6 +91,8 @@ public class ControllerResult {
                 connection = ConnectionPool.getConnection();
                 statement = connection.createStatement();
                 ResultSet rsPlayerScore = statement.executeQuery(sqlGetPlayerScore);
+
+                //prints the score
                 if(rsPlayerScore.next()){
                     String points = rsPlayerScore.getInt(1) + "p";
                     totalScore.setText(points);
@@ -124,18 +126,23 @@ public class ControllerResult {
      * @return 1 if your score is higher than the opponent or 0 if not.
      */
     public int checkResult(int myScore, int opponentScore){
+        Connection connection = null;
+        Statement statement = null;
 
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             String sqlUpdatePlayerScore = "";
+            // Checks if your score is higher and updates the database
             if (myScore > opponentScore) {
                 sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + myScore + " WHERE username ='" + username + "';";
                 statement.executeUpdate(sqlUpdatePlayerScore);
+                //adds to games won using addGamesWon
                 addGamesWon(username);
                 return 1;
             } else {
+                //adds to games lost using addGamesLost
                 addGamesLost(username);
                 return 0;
             }
@@ -155,6 +162,8 @@ public class ControllerResult {
      * @return true if the game still exists and deletes the game or false if does not exist.
      */
     public boolean deleteGame(int game){
+        Connection connection = null;
+        Statement statement = null;
         ResultSet rs = null;
         String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + game + ";";
 
@@ -163,6 +172,7 @@ public class ControllerResult {
             statement = connection.createStatement();
             rs = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
 
+            //if both players have left, the last til leave, will delete the game from the database
             if (!rs.next()) {
                 String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + game + ";";
                 statement.executeUpdate(sqlDeleteGame);
@@ -187,6 +197,7 @@ public class ControllerResult {
      */
     public boolean sceneGame(ActionEvent event) {
         if (bothFinished) {
+            //Deletes game when changing scene
             deleteGame(gameId);
             ChangeScene.change(event, "/Scenes/Game.fxml");
             return true;
@@ -202,6 +213,7 @@ public class ControllerResult {
      */
     public boolean sceneChallengeUser(ActionEvent event){
         if (bothFinished) {
+            //Deletes game when changing scene
             deleteGame(gameId);
             ChangeScene.change(event, "/Scenes/ChallengeUser.fxml");
             return true;
@@ -239,11 +251,13 @@ public class ControllerResult {
     }
 
     /**
-     * The method checks if your opponent has finished.
-     * @param game is the gameId.
-     * @return true the opponent has finished or false if not.
+     * The method checks if your opponent has finished
+     * @param game is the gameId
+     * @return true the opponent has finished or false if not
      */
     public boolean checkFinish(int game, String me) {
+        Connection connection = null;
+        Statement statement = null;
         ResultSet rs = null;
         String opponentFinished = (me.equals("player1") ? "p2Finished" : "p1Finished");
 
@@ -284,12 +298,15 @@ public class ControllerResult {
      * @return true if total losses is updated or false if not.
      */
     public boolean addGamesLost(String user){
+        Connection connection = null;
+        Statement statement = null;
 
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             String sqlUpdatePlayerScore = "UPDATE Player SET gamesLost= gamesLost + 1 WHERE username ='" + user + "';";
+            // adds games lost in the database
             statement.executeUpdate(sqlUpdatePlayerScore);
             return true;
 
@@ -307,12 +324,15 @@ public class ControllerResult {
      * @return true if total wins is updated or false if not.
      */
     public boolean addGamesWon(String user){
+        Connection connection = null;
+        Statement statement = null;
 
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
             String sqlUpdatePlayerScore = "UPDATE Player SET gamesWon= gamesWon + 1 WHERE username ='" + user + "';";
+            //adds games won in the database
             statement.executeUpdate(sqlUpdatePlayerScore);
             return true;
 

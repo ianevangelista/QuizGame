@@ -26,12 +26,6 @@ import static Controllers.ControllerHome.getUserName;
  */
 
 public class ControllerOpponent {
-
-    private static Connection connection = null;
-    private static Statement statement = null;
-    private static ResultSet rs = null;
-    private PreparedStatement pstmt = null;
-
     private String username = getUserName();
     private String opponentUsername = null;
     private Timer timer;
@@ -113,10 +107,14 @@ public class ControllerOpponent {
      * @return an int which represents if the opponent is you, is online or does not exist.
      */
     public int checkOpponent(String opponentName){
+        // Connection objects
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try{
             connection = ConnectionPool.getConnection();
-
-            //gets the opponents username, using a prepared statment beacause it's user input
+            System.out.println(opponentName);
+            //gets the opponents username, using a prepared statment beacause it is user input
             String insertSql = "SELECT username, online FROM Player WHERE username = ?;";
             pstmt = connection.prepareStatement(insertSql);
             pstmt.setString(1, (opponentName.toLowerCase()));
@@ -152,13 +150,15 @@ public class ControllerOpponent {
     }
 
     /**
-     * The private method creates a game.
+     * The public method creates a game.
      * It will check if the challenged user already has gameId.
      * @param player1 is the challenger.
      * @param player2 is the challenged user.
      * @return true if game is made.
      */
     public boolean makeGame(String player1, String player2) {
+        // Connection objects
+        Connection connection = null;
         Statement statement = null;
         ResultSet rsGameId = null;
 
@@ -194,6 +194,8 @@ public class ControllerOpponent {
     }
 
     public int alreadyChallenged (String player2){
+        // Connection objects
+        Connection connection = null;
         Statement statement = null;
         ResultSet rsGameId = null;
 
@@ -226,9 +228,9 @@ public class ControllerOpponent {
      */
    public static void resetGameId(){
         gameId = 0;
-   }
+   }    /**
 
-    /**
+
      * A private method for the different error messages.
      * Either sets the visibility of the components as true or false.
      */
@@ -253,9 +255,13 @@ public class ControllerOpponent {
      * @return the gameId.
      */
     public static int getGameId() {
+        // Connection objects
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rsGameId = null;
+
         if(gameId != 0) return gameId;
         else{
-            ResultSet rsGameId = null;
             try {
                 connection = ConnectionPool.getConnection();
                 statement = connection.createStatement();

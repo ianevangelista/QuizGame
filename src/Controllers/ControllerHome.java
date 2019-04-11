@@ -165,7 +165,7 @@ public class ControllerHome {
                 // If hashed input matches the password in the database, it logs in
                 if (realPassword.equals(hashedPassword)) {
                     setUserName(inputUsername);
-                    Logout.logIn();
+                    LoginSystem.logIn();
                     return true;
                 }
             }
