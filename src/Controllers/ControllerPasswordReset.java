@@ -57,7 +57,7 @@ public class ControllerPasswordReset {
      * Last, but not least, the mail is sent and the transaction is closed.
      */
 
-    public void sendPassword(){
+    public boolean sendPassword(){
 
         // Set up email details for the HDRU gmail account
         String sendTo = email.getText();
@@ -94,9 +94,12 @@ public class ControllerPasswordReset {
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
 
+            return true;
+
         }
-        catch (MessagingException e) {
+        catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
 
     }
@@ -108,8 +111,9 @@ public class ControllerPasswordReset {
     public void feedback(ActionEvent event){
         // Sends mail to the user with the new password if the email is in the database and updates
         if(validateEmail()){
-            sendPassword();
-            setPassword();
+            if(sendPassword()){
+                setPassword();
+            }
         }
         ChangeScene.change(event, "/Scenes/Main.fxml");
     }
