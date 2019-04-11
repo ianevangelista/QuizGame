@@ -26,12 +26,6 @@ import static Controllers.ControllerHome.getUserName;
  */
 
 public class ControllerOpponent {
-
-    private static Connection connection = null;
-    private static Statement statement = null;
-    private static ResultSet rs = null;
-    private PreparedStatement pstmt = null;
-
     private String username = getUserName();
     private String opponentUsername = null;
     private Timer timer;
@@ -113,6 +107,10 @@ public class ControllerOpponent {
      * @return an int which represents if the opponent is you, is online or does not exist.
      */
     public int checkOpponent(String opponentName){
+        // Connection objects
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
         try{
             connection = ConnectionPool.getConnection();
             System.out.println(opponentName);
@@ -159,6 +157,8 @@ public class ControllerOpponent {
      * @return true if game is made.
      */
     public boolean makeGame(String player1, String player2) {
+        // Connection objects
+        Connection connection = null;
         Statement statement = null;
         ResultSet rsGameId = null;
 
@@ -194,6 +194,8 @@ public class ControllerOpponent {
     }
 
     public int alreadyChallenged (String player2){
+        // Connection objects
+        Connection connection = null;
         Statement statement = null;
         ResultSet rsGameId = null;
 
@@ -253,9 +255,13 @@ public class ControllerOpponent {
      * @return the gameId.
      */
     public static int getGameId() {
+        // Connection objects
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rsGameId = null;
+
         if(gameId != 0) return gameId;
         else{
-            ResultSet rsGameId = null;
             try {
                 connection = ConnectionPool.getConnection();
                 statement = connection.createStatement();

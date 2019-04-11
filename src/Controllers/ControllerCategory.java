@@ -33,11 +33,6 @@ public class ControllerCategory {
     public Button category2;
     public Button category3;
 
-    //Connections set-up
-    private Connection connection = null;
-    private Statement statement = null;
-    private ResultSet rs = null;
-
     //ArrayList containing id of all categories in the database
     ArrayList<Integer> categoryId = new ArrayList<Integer>();
 
@@ -50,6 +45,11 @@ public class ControllerCategory {
      * @return true if all code is executed.
      */
     public boolean initialize() { //gets run when the window is opened for the first time
+        //Connection objects
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+
         Random rand = new java.util.Random();
         try {
             connection = ConnectionPool.getConnection();
@@ -186,6 +186,11 @@ public class ControllerCategory {
      * @return if category is set return true.
      */
     public boolean updateCategory(int categoryId, int gameId) {
+        //Connection objects
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+
         try {
             // Sets up the connection to the database
             connection = ConnectionPool.getConnection();
@@ -219,6 +224,11 @@ public class ControllerCategory {
      * @param gameId is a parameter which is used to identify which gameId to update with the categoryId.
      */
     private void questionPicker(int categoryId, int gameId) {
+        //Connection objects
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+
         try {
             // Sets up the connection
             connection = ConnectionPool.getConnection();
