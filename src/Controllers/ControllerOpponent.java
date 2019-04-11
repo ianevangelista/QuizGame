@@ -113,7 +113,6 @@ public class ControllerOpponent {
         ResultSet rs = null;
         try{
             connection = ConnectionPool.getConnection();
-            System.out.println(opponentName);
             //gets the opponents username, using a prepared statment beacause it is user input
             String insertSql = "SELECT username, online FROM Player WHERE username = ?;";
             pstmt = connection.prepareStatement(insertSql);
@@ -330,10 +329,12 @@ public class ControllerOpponent {
         for(Object o : selectedIndices){
             index = (Integer) o;
         }
-        // Sets the user chosen by index
-        String user = onlineList.get(index);
-        // Displays the username
-        opponent.setText(user);
+        if(index!= -1) {
+            // Sets the user chosen by index
+            String user = onlineList.get(index);
+            // Displays the username
+            opponent.setText(user);
+        }
     }
 
     /**

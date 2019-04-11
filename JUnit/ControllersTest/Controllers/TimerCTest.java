@@ -17,9 +17,9 @@ import org.junit.*;
  */
 public class TimerCTest {
     TimerC timerc;
-    Connection connection;
-    Statement statement;
-    ResultSet rs;
+    static Connection connection;
+    static Statement statement;
+    static ResultSet rs;
 
     /*
         sets up the connections
@@ -36,7 +36,7 @@ public class TimerCTest {
         closes the connections after all the tests
      */
     @AfterClass
-    public void closing() {
+    public static void closing() {
         Cleaner.close(statement, rs, connection);
     }
 

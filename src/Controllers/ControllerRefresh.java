@@ -10,6 +10,7 @@ import java.sql.*;
 
 import static Controllers.ControllerHome.getUserName;
 import static Controllers.ControllerOpponent.getGameId;
+import static Controllers.ControllerOpponent.resetGameId;
 
 /**
  * The class ControllerRefresh is used to check if have been challenged when pressing start after logging in.
@@ -23,7 +24,6 @@ public class ControllerRefresh {
     public Button acc;
     public Button dec;
     public Label challenger;
-
 
     // Static method from ControllerHome
     private static String username = getUserName();
@@ -200,6 +200,7 @@ public class ControllerRefresh {
             return false;
         }
         finally {
+            resetGameId();
             Cleaner.close(statement, null, connection);
             ChangeScene.change(event, "/Scenes/ChallengeUser.fxml");
         }

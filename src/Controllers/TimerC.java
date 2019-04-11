@@ -136,18 +136,24 @@ public class TimerC {
      * @return true if the opponent declined the request or false if not.
      */
     public boolean checkGameId(String username) {
+        // Connection objects
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
 
         try {
+            // Get connection
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
+
+            // Check if the game is deleted
             String sql = "SELECT gameId FROM Game WHERE player1 = '" + username + "';";
             rs = statement.executeQuery(sql);
             if(rs.next()){
+                // The game exists, continue waiting
                 return false;
             }
+            // The game is deleted and the opponent therefore declined the game
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

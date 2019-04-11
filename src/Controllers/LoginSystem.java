@@ -57,7 +57,7 @@ public class LoginSystem {
                 statement.executeUpdate(sqlRageQuitGame);
 
                 //Delete game if other player is finished and give opponent points
-                String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + ";";
+                String sqlCheckIfOtherPlayerHasLeft = "SELECT gameId FROM Player WHERE gameId =" + gameId + " AND username != + '" + username + "';";
                 rsPlayersWithTheGameId = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
 
                 if (!rsPlayersWithTheGameId.next()) {
