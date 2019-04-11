@@ -6,15 +6,14 @@ import org.junit.*;
 import Connection.Cleaner;
 import static Controllers.ControllerOpponent.setGameId;
 import static Controllers.ControllerHome.setUserName;
-
-
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import static org.junit.Assert.*;
 
+/*
+     JUnit tests for the ControllerRefresh class
+ */
 public class ControllerRefreshTest {
 
     static Connection connection = null;
@@ -24,7 +23,9 @@ public class ControllerRefreshTest {
     static public String player2 = "ian";
     static public int gameId = 1;
 
-
+    /*
+        creates a game with players before the tests
+     */
     @BeforeClass
     public static void createGame() {
         String sqlInsertGame = "INSERT INTO Game (gameId, player1, player2) VALUES (" + gameId + ", '" + player1 + "', '" + player2 + "');";
@@ -45,6 +46,9 @@ public class ControllerRefreshTest {
         }
     }
 
+    /*
+        deletes the game and removes gameId from players after the tests
+     */
     @AfterClass
     public static void deleteGame() {
         String sqlDeleteGameIdP1 = "UPDATE Player SET gameId = NULL WHERE username = '" + player1 + "';";
@@ -64,67 +68,40 @@ public class ControllerRefreshTest {
         }
     }
 
+    /*
+        Test for the start method
+     */
     @Test
     public void startTest() {
+        //sets gameId and username
+        setGameId(gameId);
+        setUserName(player1);
+        boolean result = cr.start();
 
-        boolean result = false;
-        String sqlDeleteGame = "DELETE Game WHERE gameId = " + gameId + ";";
-
-        try{
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-
-            setGameId(gameId);
-            setUserName(player1);
-            result = cr.start();
-
-            assertTrue(result);
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-            assertTrue(result);
-        } finally {
-            Cleaner.close(statement, null, connection);
-        }
+        assertTrue(result);
     }
 
+    /*
+        Test for the refresh method
+     */
     @Test
     public void refreshTest() {
-        String result = "result";
-        String expect = "expected";
-        String sqlDeleteGame = "DELETE Game WHERE gameId = " + gameId + ";";
-        try{
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-            setUserName(player1);
-            result = cr.getCorrectScene();
-            expect = "/Scenes/Wait.fxml";
-            assertEquals(expect, result);
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-            assertEquals(expect, result);
-        } finally {
-            Cleaner.close(statement, null, connection);
-        }
+        //sets username and test that the method return the correct scenename
+        setUserName(player1);
+        String result = cr.getCorrectScene();
+        String expect = "/Scenes/Wait.fxml";
+        assertEquals(expect, result);
     }
 
+    /*
+        Test for the decline method
+     */
     @Test
-    public void decline() {
+    public void declineTest() {
+        //sets username and creates a ActionEvent to use the method
         ActionEvent event = new ActionEvent();
-        ResultSet rs = null;
-        boolean result = false;
-        String sqlSelect = "SELECT player1, player2 FROM Game WHERE gameId = " + gameId + ";";
         setUserName(player2);
-        try{
-            connection = ConnectionPool.getConnection();
-            statement = connection.createStatement();
-            result = cr.decline(event);
-            assertTrue(result);
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-            assertTrue(result);
-        }
+        boolean result = cr.decline(event);
+        assertTrue(result);
     }
 }
