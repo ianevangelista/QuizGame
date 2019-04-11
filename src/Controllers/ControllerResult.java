@@ -70,6 +70,7 @@ public class ControllerResult {
             int mePoints = rs.getInt(me);
             int opponentPoints = rs.getInt(opponent);
 
+            //Prints the result if both is finished
             if(p1Finished == 1 && p2Finished == 1) {
                 totalScoreText.setVisible(true);
                 theirScore.setVisible(true);
@@ -80,6 +81,7 @@ public class ControllerResult {
 
                 checkResult(mePoints, opponentPoints);
 
+                //Checks who won
                 if(checkResult(mePoints, opponentPoints) == 1){
                     resultText.setText("You won! :)");
                 }
@@ -91,6 +93,8 @@ public class ControllerResult {
                 connection = ConnectionPool.getConnection();
                 statement = connection.createStatement();
                 ResultSet rsPlayerScore = statement.executeQuery(sqlGetPlayerScore);
+
+                //prints the score
                 if(rsPlayerScore.next()){
                     String points = rsPlayerScore.getInt(1) + "p";
                     totalScore.setText(points);
@@ -130,12 +134,15 @@ public class ControllerResult {
             statement = connection.createStatement();
 
             String sqlUpdatePlayerScore = "";
+            // Checks if your score is higher and updates the database
             if (myScore > opponentScore) {
                 sqlUpdatePlayerScore = "UPDATE Player SET points= points +" + myScore + " WHERE username ='" + username + "';";
                 statement.executeUpdate(sqlUpdatePlayerScore);
+                //adds to games won using addGamesWon
                 addGamesWon(username);
                 return 1;
             } else {
+                //adds to games lost using addGamesLost
                 addGamesLost(username);
                 return 0;
             }
@@ -163,6 +170,7 @@ public class ControllerResult {
             statement = connection.createStatement();
             rs = statement.executeQuery(sqlCheckIfOtherPlayerHasLeft);
 
+            //if both players have left, the last til leave, will delete the game from the database
             if (!rs.next()) {
                 String sqlDeleteGame = "DELETE FROM Game WHERE gameId =" + game + ";";
                 statement.executeUpdate(sqlDeleteGame);
@@ -187,6 +195,7 @@ public class ControllerResult {
      */
     public boolean sceneGame(ActionEvent event) {
         if (bothFinished) {
+            //Deletes game when changing scene
             deleteGame(gameId);
             ChangeScene.change(event, "/Scenes/Game.fxml");
             return true;
@@ -202,6 +211,7 @@ public class ControllerResult {
      */
     public boolean sceneChallengeUser(ActionEvent event){
         if (bothFinished) {
+            //Deletes game when changing scene
             deleteGame(gameId);
             ChangeScene.change(event, "/Scenes/ChallengeUser.fxml");
             return true;
@@ -290,6 +300,7 @@ public class ControllerResult {
             statement = connection.createStatement();
 
             String sqlUpdatePlayerScore = "UPDATE Player SET gamesLost= gamesLost + 1 WHERE username ='" + user + "';";
+            // adds games lost in the database
             statement.executeUpdate(sqlUpdatePlayerScore);
             return true;
 
@@ -313,6 +324,7 @@ public class ControllerResult {
             statement = connection.createStatement();
 
             String sqlUpdatePlayerScore = "UPDATE Player SET gamesWon= gamesWon + 1 WHERE username ='" + user + "';";
+            //adds games won in the database
             statement.executeUpdate(sqlUpdatePlayerScore);
             return true;
 

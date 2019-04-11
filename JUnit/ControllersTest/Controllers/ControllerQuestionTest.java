@@ -5,13 +5,14 @@ import Connection.Cleaner;
 import Connection.ConnectionPool;
 import static Controllers.ControllerOpponent.setGameId;
 import java.sql.ResultSet;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import static org.junit.Assert.*;
 
+/*
+    JUnit tests for the ControllerQuestion class
+ */
 public class ControllerQuestionTest {
     ControllerQuestion cq = new ControllerQuestion();
     ControllerHome ch = new ControllerHome();
@@ -19,13 +20,14 @@ public class ControllerQuestionTest {
     Statement statement = null;
     ResultSet rs = null;
 
-
+    /*
+        Testing method for the findUser method
+     */
     @Test
     public void findUserTest() {
         int gameId = 1;
         String username = "helenegj";
         String expAnswer = "player1";
-        String ans = "";
         String sqlGame = "INSERT INTO Game(gameId, player1) VALUES (" + gameId + ", '" + username + "');";
         String sqlDelete = "DELETE FROM Game WHERE gameId=" + gameId + ";";
         ch.setUserName(username);
@@ -33,8 +35,12 @@ public class ControllerQuestionTest {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
+
+            //creates game
             statement.executeUpdate(sqlGame);
-            ans = cq.findUser();
+            String ans = cq.findUser();
+
+            //deletes game
             statement.executeUpdate(sqlDelete);
             assertEquals(expAnswer, ans);
 
@@ -45,6 +51,9 @@ public class ControllerQuestionTest {
         }
     }
 
+    /*
+        Test for the questionInfo method
+     */
     @Test
     public void questionInfoTest() {
         int question = 26;
@@ -59,12 +68,18 @@ public class ControllerQuestionTest {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
+
+            //creates a game with a category and a question
             statement.executeUpdate(sql);
             setGameId(gameId);
+
+            //gets the question from the database and compares it to the method
             rs = statement.executeQuery(sqlQues);
             if(rs.next()) {
                 expAns = rs.getString("questionText");
                 ans = cq.questionInfo();
+
+                //deletes the game
                 statement.executeUpdate(sqlDelete);
                 assertEquals(expAns, ans);
             }
@@ -76,6 +91,9 @@ public class ControllerQuestionTest {
         }
     }
 
+    /*
+        Test for the findScore method
+     */
     @Test
     public void findScoreTest() {
         int expScore = 0;
@@ -92,9 +110,13 @@ public class ControllerQuestionTest {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
+
+            //creates game with category, question and players
             statement.executeUpdate(sql);
             setGameId(gameId);
             cq.questionInfo();
+
+            //gets the score for the answer form the database and compares to the method
             rs = statement.executeQuery(sqlQ);
             if(rs.next()) {
                 expScore = rs.getInt("score");
