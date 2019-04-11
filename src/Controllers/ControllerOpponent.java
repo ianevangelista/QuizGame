@@ -113,8 +113,8 @@ public class ControllerOpponent {
         ResultSet rs = null;
         try{
             connection = ConnectionPool.getConnection();
-
-            //gets the opponents username, using a prepared statment beacause it's user input
+            System.out.println(opponentName);
+            //gets the opponents username, using a prepared statment beacause it is user input
             String insertSql = "SELECT username, online FROM Player WHERE username = ?;";
             pstmt = connection.prepareStatement(insertSql);
             pstmt.setString(1, (opponentName.toLowerCase()));
@@ -150,7 +150,7 @@ public class ControllerOpponent {
     }
 
     /**
-     * The private method creates a game.
+     * The public method creates a game.
      * It will check if the challenged user already has gameId.
      * @param player1 is the challenger.
      * @param player2 is the challenged user.
@@ -228,9 +228,9 @@ public class ControllerOpponent {
      */
    public static void resetGameId(){
         gameId = 0;
-   }
+   }    /**
 
-    /**
+
      * A private method for the different error messages.
      * Either sets the visibility of the components as true or false.
      */

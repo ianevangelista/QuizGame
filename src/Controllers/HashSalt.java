@@ -20,14 +20,20 @@ public class HashSalt {
      */
     public static String genHashSalted(String password, byte[] salt) {
         try{
-            MessageDigest digest = MessageDigest.getInstance("SHA-256"); //hash-algorithm
-            digest.reset(); //resets digest
-            digest.update(salt); //updates
-            byte[] hash = digest.digest(password.getBytes());//hashes password in bytes
-            return bytesToStringHex(hash); //converts from bytes to hexadecimal in form of a string
+            // Hash-algorithm
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            // Resets digest
+            digest.reset();
+            // Updates
+            digest.update(salt);
+            // Hashes password in bytes
+            byte[] hash = digest.digest(password.getBytes());
+            // Converts from bytes to hexadecimal in form of a string and returns
+            return bytesToStringHex(hash);
         }catch (NoSuchAlgorithmException e){
             e.printStackTrace();
         }
+        // Returns null if it is not possible to convert and return
         return null;
     }
 
@@ -50,10 +56,14 @@ public class HashSalt {
      * @return an array of bytes.
      */
     public static byte[] createSalt(){
-        SecureRandom random = new SecureRandom(); //random generator
-        byte[] salt = new byte[16]; //byte variable
-        random.nextBytes(salt); //fills up the array with random numbers
-        return salt; //returns salt
+        // Random generator
+        SecureRandom random = new SecureRandom();
+        // Byte variable
+        byte[] salt = new byte[16];
+        // Fills up the array with random numbers
+        random.nextBytes(salt);
+        // Returns salt
+        return salt;
     }
 
     /**
@@ -62,7 +72,9 @@ public class HashSalt {
      * @return an amount of hexadecimals of chars converted to String.
      */
     private static String byteToHex(byte num) {
+        // An array of two chars
         char[] hexDigits = new char[2];
+        // This returns the char representation of the specified digit in the specified radix.
         hexDigits[0] = Character.forDigit((num >> 4) & 0xF, 16);
         hexDigits[1] = Character.forDigit((num & 0xF), 16);
         return new String(hexDigits);
@@ -93,21 +105,35 @@ public class HashSalt {
         return digit;
     }
 
+    /**
+     * The method converts byte to hexadecimal and adds it into a StringBuffer
+     * @param byteArray is an array of bytes
+     * @return a String of hexadecimals
+     */
     public static String encodeHexString(byte[] byteArray) {
+        // Creates a StringBuffer
         StringBuffer hexStringBuffer = new StringBuffer();
+        // Converts every byte to hexadecimal and adds text at the end of the existence text
         for (int i = 0; i < byteArray.length; i++) {
             hexStringBuffer.append(byteToHex(byteArray[i]));
         }
         return hexStringBuffer.toString();
     }
 
+    /**
+     * The method converts hexadecimal to byte
+     * @param hexString is a String of hexadecimals
+     * @return an array of byte
+     */
     public static byte[] decodeHexString(String hexString) {
+        // Checks if the length of the String is valid
         if (hexString.length() % 2 == 1) {
             throw new IllegalArgumentException(
-                    "Invalid hexadecimal String supplied.");
+                    "Invalid hexadecimal String.");
         }
 
         byte[] bytes = new byte[hexString.length() / 2];
+        // Converts from 0-3, 4-7, 8-11, 12-15 from hexadecimal to byte and adds into the array
         for (int i = 0; i < hexString.length(); i += 2) {
             bytes[i / 2] = hexToByte(hexString.substring(i, i + 2));
         }

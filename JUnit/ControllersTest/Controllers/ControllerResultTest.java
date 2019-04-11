@@ -1,29 +1,32 @@
 package Controllers;
 
 import org.junit.Test;
-
 import javafx.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.Statement;
-
 import java.sql.*;
-
 import Connection.ConnectionPool;
 import static Controllers.ControllerOpponent.setGameId;
 import static Controllers.ControllerHome.setUserName;
 import static Controllers.ControllerQuestion.findUser;
-
 import static org.junit.Assert.*;
 
+/*
+     JUnit tests for the ControllerResult class
+ */
 public class ControllerResultTest {
 
     Connection connection = null;
     Statement statement = null;
     ControllerResult cr = new ControllerResult();
 
+    /*
+        test for the checkResult method
+     */
     @Test
     public void checkResultTest() {
+        //sets variables and gameId to test the method
         setGameId(1);
         int myScore = 100;
         int opponentScore = 10;
@@ -33,6 +36,9 @@ public class ControllerResultTest {
         assertEquals(expResult, result);
     }
 
+    /*
+        Test for the deleteGame Test
+     */
     @Test
     public void deleteGameTest(){
         int gameId = 1;
@@ -44,8 +50,12 @@ public class ControllerResultTest {
         try{
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
+
+            //creates a game, then deletes it
             statement.executeUpdate(sqlInsert);
             boolean result = cr.deleteGame(gameId);
+
+            //if the method return false, it gets deleted anyway
             if(result == false) {
                 statement.executeUpdate(sqlDelete);
             }
@@ -58,6 +68,9 @@ public class ControllerResultTest {
         }
     }
 
+    /*
+        Test for the checkFinish method
+     */
     @Test
     public void checkFinishTest(){
         setUserName("juni");
@@ -69,10 +82,12 @@ public class ControllerResultTest {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
+            //creates game
             statement.executeUpdate(insertSQL);
             boolean result = cr.checkFinish(gameId, findUser());
-            statement.executeUpdate(deleteSQL);
 
+            //deletes the game
+            statement.executeUpdate(deleteSQL);
             assertTrue(result);
         }
         catch(SQLException e){
@@ -81,22 +96,11 @@ public class ControllerResultTest {
         }
     }
 
+    /*
+        Test for the addGameLost method
+     */
     @Test
-    public void sceneGameTest(){
-        ActionEvent event = new ActionEvent();
-        boolean result = cr.sceneGame(event);
-        assertFalse(result);
-    }
-
-    @Test
-    public void sceneChallengeUserTest(){
-        ActionEvent event = new ActionEvent();
-        boolean result = cr.sceneChallengeUser(event);
-        assertFalse(result);
-    }
-
-    @Test
-    public void addGamesLost() {
+    public void addGamesLostTest() {
 
         ResultSet rsBefore = null;
         ResultSet rsAfter = null;
@@ -110,14 +114,18 @@ public class ControllerResultTest {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
+            //gets the gamesLost from the database
             rsBefore = statement.executeQuery(selectSQL);
             rsBefore.next();
             int selectBefore = rsBefore.getInt("gamesLost");
+
+            //runs method and gets gamesLost from the database
             result = cr.addGamesLost(username);
             rsAfter = statement.executeQuery(selectSQL);
             rsAfter.next();
             int selectAfter = rsAfter.getInt("gamesLost");
 
+            //compares before and after, then deletes the changes
             if((selectBefore - 1) == selectAfter){
                 statement.executeUpdate(deleteSQL);
                 assertTrue(result);
@@ -129,6 +137,9 @@ public class ControllerResultTest {
         }
     }
 
+    /*
+        Test for the addGamesWon method
+     */
     @Test
     public void addGamesWonTest() {
 
@@ -144,14 +155,18 @@ public class ControllerResultTest {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
 
+            //gets gameswon from the database
             rsBefore = statement.executeQuery(selectSQL);
             rsBefore.next();
             int selectBefore = rsBefore.getInt("gamesWon");
+
+            //runs method and gets gamesWon from the database
             result = cr.addGamesWon(username);
             rsAfter = statement.executeQuery(selectSQL);
             rsAfter.next();
             int selectAfter = rsAfter.getInt("gamesWon");
 
+            //compares before and after, then deletes the changes
             if((selectBefore + 1) == selectAfter){
                 statement.executeUpdate(deleteSQL);
                 assertTrue(result);
