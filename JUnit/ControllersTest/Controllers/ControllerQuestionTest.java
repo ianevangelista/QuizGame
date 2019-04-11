@@ -54,7 +54,7 @@ public class ControllerQuestionTest {
     }
 
     /*
-        fortsett her imorra helene :)
+        Test for the questionInfo method
      */
     @Test
     public void questionInfoTest() {
@@ -70,12 +70,18 @@ public class ControllerQuestionTest {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
+
+            //creates a game with a category and a question
             statement.executeUpdate(sql);
             setGameId(gameId);
+
+            //gets the question from the database and compares it to the method
             rs = statement.executeQuery(sqlQues);
             if(rs.next()) {
                 expAns = rs.getString("questionText");
                 ans = cq.questionInfo();
+
+                //deletes the game
                 statement.executeUpdate(sqlDelete);
                 assertEquals(expAns, ans);
             }
@@ -87,6 +93,9 @@ public class ControllerQuestionTest {
         }
     }
 
+    /*
+        Test for the findScore method
+     */
     @Test
     public void findScoreTest() {
         int expScore = 0;
@@ -103,9 +112,13 @@ public class ControllerQuestionTest {
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
+
+            //creates game with category, question and players
             statement.executeUpdate(sql);
             setGameId(gameId);
             cq.questionInfo();
+
+            //gets the score for the answer form the database and compares to the method
             rs = statement.executeQuery(sqlQ);
             if(rs.next()) {
                 expScore = rs.getInt("score");
