@@ -14,10 +14,10 @@ import static Controllers.ControllerQuestion.findUser;
 import static Controllers.ControllerOpponent.getGameId;
 
 /**
- * The class Logout is used when logging out a player.
+ * The class LoginSystem is used when logging out a player.
  */
 
-public class Logout {
+public class LoginSystem {
     private static String username = getUserName();
 
     /**

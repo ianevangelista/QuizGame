@@ -29,7 +29,7 @@ public class ControllerHomeTest {
         String username = "juni";
         String password = "hei";
         boolean ans = ch.validateLogin(username, password);
-        Logout.logOut();
+        LoginSystem.logOut();
         assertTrue(ans);
     }
 }
