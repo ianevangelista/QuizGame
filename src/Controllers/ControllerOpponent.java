@@ -226,9 +226,9 @@ public class ControllerOpponent {
      */
    public static void resetGameId(){
         gameId = 0;
-   }
+   }    /**
 
-    /**
+
      * A private method for the different error messages.
      * Either sets the visibility of the components as true or false.
      */
