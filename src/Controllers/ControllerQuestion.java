@@ -31,9 +31,6 @@ public class ControllerQuestion {
     private int questionCount = 0, previousQuestion = 0;
     private static int gameId;
     private static String username = getUserName();
-    private Connection connection = null;
-    private Statement statement = null;
-    private ResultSet rs = null;
     
     @FXML
     public TextField answerField;
@@ -63,6 +60,11 @@ public class ControllerQuestion {
     public void sceneResult(ActionEvent event){ ChangeScene.change(event, "/Scenes/Result.fxml");}
 
     public void nextQuestion() {
+        // Connection objects
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+
         if(questionCount > 2){
             running = false;
             answerField.setVisible(false);
@@ -84,13 +86,16 @@ public class ControllerQuestion {
                 //finds out if the player is player1 or 2
                 //Update Game with player finished and final score
                 String player = findUser();
-                String finished = player.equals("player1") ? "p1Finished" : "p2Finished";
-                String points = player.equals("player1") ? "p1Points" : "p2Points";
 
-                //puts the finished variable true
-                String sqlUpdate = "UPDATE Game SET " + finished + "=1, " + points + "=" + totalPoints + " WHERE gameId=" + gameId + ";";
-                totalPoints = 0;
-                statement.executeUpdate(sqlUpdate);
+                if(!player.equals("game deleted")){
+                    String finished = player.equals("player1") ? "p1Finished" : "p2Finished";
+                    String points = player.equals("player1") ? "p1Points" : "p2Points";
+
+                    //puts the finished variable true
+                    String sqlUpdate = "UPDATE Game SET " + finished + "=1, " + points + "=" + totalPoints + " WHERE gameId=" + gameId + ";";
+                    totalPoints = 0;
+                    statement.executeUpdate(sqlUpdate);
+                }
             }
             catch (Exception e){ e.printStackTrace();}
             finally {Cleaner.close(statement, rs, connection);}
@@ -126,6 +131,11 @@ public class ControllerQuestion {
     }
 
     public String questionInfo() {
+        // Connection objects
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
@@ -214,11 +224,19 @@ public class ControllerQuestion {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();
             String sqlPlayer = "SELECT player1 FROM Game WHERE gameId=" + getGameId() + ";";
+
+            //TODO: Delete this
+            System.out.println(sqlPlayer);
+
             rs = statement.executeQuery(sqlPlayer);
-            rs.next();
-            String player1Name = rs.getString("player1");
-            if(getUserName().equals(player1Name)){return "player1";}
-            else return "player2";
+            if(rs.next()) {
+                String player1Name = rs.getString("player1");
+                if (getUserName().equals(player1Name)) {
+                    return "player1";
+                } else return "player2";
+            } else {
+                return "game deleted";
+            }
         }catch (SQLException e) {
             e.printStackTrace();
             return "ex";
@@ -266,6 +284,11 @@ public class ControllerQuestion {
 
     //Home-button quits game
     public boolean sceneHome(ActionEvent event) {
+        // Connection objects
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+
         try {
             connection = ConnectionPool.getConnection();
             statement = connection.createStatement();

@@ -25,11 +25,8 @@ public class ControllerRefresh {
     public Label challenger;
 
 
-    // Static variable from ControllerHome
+    // Static method from ControllerHome
     private static String username = getUserName();
-    private static Connection connection = null;
-    private static Statement statement = null;
-    private static ResultSet rs = null;
 
     /**
      * This method runs when pressing the start button after logging in.
@@ -46,6 +43,11 @@ public class ControllerRefresh {
      */
 
     public boolean start(){
+        // Connection objects
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+
         int gameId = getGameId();
         String username = getUserName();
         String sqlOtherPlayer = "SELECT username FROM Player WHERE gameId = " + gameId + " AND username != '" + username + "';";
@@ -111,6 +113,11 @@ public class ControllerRefresh {
      * @return a string depending on what the next scene should be
      */
     public static String getCorrectScene() {
+        // Connection objects
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+
         try {
             String username = getUserName();
             String sql = "SELECT gameId FROM Player WHERE username = '" + username + "';";

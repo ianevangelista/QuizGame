@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
@@ -19,10 +20,6 @@ import static Controllers.ControllerHome.getUserName;
 
 public class ControllerEdit {
     private String username = getUserName();
-
-    // Global variables for connection
-    private Connection connection = null;
-    private PreparedStatement statement = null;
 
     // Elements from fxml
     public Button confirmEmail;
@@ -54,6 +51,10 @@ public class ControllerEdit {
      * It will the user's e-mail if the e-mail is valid.
      */
     public void emailConfirm(){
+        // Connection objects
+        Connection connection = null;
+        PreparedStatement statement = null;
+
         // Update player's email and username using prepared statement
         String input = "UPDATE Player SET email = ? WHERE username = ?;";
 
@@ -90,6 +91,10 @@ public class ControllerEdit {
      * Uses the method of chooseGender.
      */
     public void genderConfirm(){
+        // Connection objects
+        Connection connection = null;
+        PreparedStatement statement = null;
+
         // Setting up the prepared statement
         String input = "UPDATE Player SET female = ? WHERE username = ?;";
 
@@ -130,7 +135,10 @@ public class ControllerEdit {
      */
     public void passwordConfirm(){
         // Set up result set and prepared statements for getting the password from the database and updating the password
+        Connection connection = null;
+        PreparedStatement statement = null;
         ResultSet rs = null;
+
         String input = "UPDATE Player SET password = ?, salt = ? WHERE username = ?";
         String sql = "SELECT password, salt FROM Player WHERE username = ?;";
         try {
