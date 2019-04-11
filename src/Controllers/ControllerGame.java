@@ -21,12 +21,12 @@ public class ControllerGame {
     }
 
     /**
-     * The method uses the logout method from the class Logout.
+     * The method uses the logout method from the class LoginSystem.
      * Changes scene to the login page.
      * @param event is a necessary parameter which is used in a method from the class ChangeScene.
      */
     public void logout(ActionEvent event) {
-        Logout.logOut();
+        LoginSystem.logOut();
         setUserNull();
         ChangeScene.change(event, "/Scenes/Main.fxml");
     }
