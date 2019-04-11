@@ -48,6 +48,7 @@ public class ControllerRefresh {
         Statement statement = null;
         ResultSet rs = null;
 
+        resetGameId();
         int gameId = getGameId();
         String username = getUserName();
         String sqlOtherPlayer = "SELECT username FROM Player WHERE gameId = " + gameId + " AND username != '" + username + "';";
