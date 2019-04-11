@@ -205,6 +205,11 @@ public class ControllerOpponent {
         }
     }
 
+    /**
+     * The method checks if the opponent already has a gameId
+     * @param player2 is the opponent.
+     * @return an int depending on if the opponent already is challenged.
+     */
     public int alreadyChallenged (String player2){
         // Connection objects
         Connection connection = null;
@@ -245,6 +250,7 @@ public class ControllerOpponent {
 
      * A private method for the different error messages.
      * Either sets the visibility of the components as true or false.
+     * @param label the label you want to set visibilty to true.
      */
    private void setVisible(Label label){
        usernameWrong.setVisible(false);
@@ -256,6 +262,7 @@ public class ControllerOpponent {
 
     /**
      * A static method to set the gameId.
+     * @param newGameId the new gameId.
      */
 
    public static void setGameId(int newGameId) {
@@ -433,6 +440,7 @@ public class ControllerOpponent {
 
     /**
      * A private method which checks if the user has a gameId.
+     * @param user your username.
      * @return if there's no gameId the method returns true if there is it returns false.
      */
     public boolean checkGameId(String user) {

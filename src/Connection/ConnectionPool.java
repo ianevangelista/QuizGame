@@ -39,13 +39,18 @@ public class ConnectionPool {
     }
 
     /**
-     * The static method is used when creating a connection
+     * The static method is used when creating a connection.
      * @return the connection.
      */
     public static Connection getConnection() throws SQLException{
         return ds.getConnection();
     }
 
+    /**
+     * The static method reads password from file.
+     * @param filename the name of the file.
+     * @return the connection.
+     */
     public static String readPassword(File filename) {
         String password = null;
         FileReader fr = null;

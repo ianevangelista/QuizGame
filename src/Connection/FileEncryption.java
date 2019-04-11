@@ -20,7 +20,7 @@ public class FileEncryption {
     SecretKeySpec aeskeySpec;
 
     /**
-     * Constructor: creates ciphers
+     * Constructor: creates ciphers.
      */
     public FileEncryption() throws GeneralSecurityException {
         // create RSA public key cipher
@@ -30,7 +30,7 @@ public class FileEncryption {
     }
 
     /**
-     * Creates a new AES key
+     * Creates a new AES key.
      */
     public void makeKey() throws NoSuchAlgorithmException {
         KeyGenerator kgen = KeyGenerator.getInstance("AES");
@@ -41,7 +41,7 @@ public class FileEncryption {
     }
 
     /**
-     * Decrypts an AES key from a file using an RSA private key
+     * Decrypts an AES key from a file using an RSA private key.
      */
     public void loadKey(File in, File privateKeyFile) throws GeneralSecurityException, IOException {
         // read private key to be used to decrypt the AES key
@@ -62,7 +62,7 @@ public class FileEncryption {
     }
 
     /**
-     * Encrypts the AES key to a file using an RSA public key
+     * Encrypts the AES key to a file using an RSA public key.
      */
     public void saveKey(File out, File publicKeyFile) throws IOException, GeneralSecurityException {
         // read public key to be used to encrypt the AES key

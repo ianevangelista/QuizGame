@@ -10,6 +10,9 @@ public class Cleaner {
 
     /**
      * The method closes a statement, resultset and connection.
+     * @param statement the statement
+     * @param resultset the resultset
+     * @param connection the connection
      */
     public static void close(Statement statement, ResultSet resultset, Connection connection){
         try {
@@ -29,6 +32,9 @@ public class Cleaner {
 
     /**
      * The method closes a preparedstatement, resultset and connection.
+     * @param statement the prepatedstatement
+     * @param resultset the resultset
+     * @param connection the connection
      */
 
     public static void close(PreparedStatement statement, ResultSet resultset, Connection connection){

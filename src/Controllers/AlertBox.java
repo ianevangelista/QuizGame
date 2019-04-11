@@ -21,6 +21,8 @@ public class AlertBox {
      * This method runs when exiting the window.
      * It will check if user is logged in or not.
      * It gives the user the choice of confirming to leave or not.
+     * @param title the name of the window.
+     * @param message the message of the box.
      * @return if confirmed leaving return true, else return false.
      */
     public static boolean display(String title, String message){

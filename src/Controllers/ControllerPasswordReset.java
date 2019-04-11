@@ -55,6 +55,7 @@ public class ControllerPasswordReset {
      * After this, we start to put the properties, so we can load the stream.
      * Then we start to formulate the mail and add the new password to the text.
      * Last, but not least, the mail is sent and the transaction is closed.
+     * @return true if try does not get an exception or false if it does.
      */
 
     public boolean sendPassword(){

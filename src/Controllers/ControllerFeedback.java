@@ -160,8 +160,8 @@ public class ControllerFeedback {
     }
 
     /**
-     *
-     * @return
+     * The method checks if the e-mail is valid written.
+     * @return the boolean of the validity.
      */
     private boolean checkEmail(){
         // Get email from textfield

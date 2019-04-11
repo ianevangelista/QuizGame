@@ -38,7 +38,7 @@ public class ControllerRefresh {
     }
 
     /**
-     * The method runs checks if you have been challenged.
+     * The method checks if you have been challenged.
      * @return true if you have a gameId or false if not.
      */
 
@@ -89,16 +89,6 @@ public class ControllerRefresh {
             challenger.setText(text);
         }
     }
-
-    /**
-     * The method refreshes the player's gameId.
-     * It will check if you have challenged a player or have been challenged.
-     * @param event is a necessary parameter which is used in a method from the class ChangeScene.
-     * @return an int 1 if you have a gameId, are player1 and no category has been set.
-     * If there is a category set return 0.
-     * If you are not player1, return -1.
-     * If there are no gameId, return -1.
-     */
 
     /**
      * This method changes the scene to the right one depending on getCorrectScene
@@ -169,6 +159,7 @@ public class ControllerRefresh {
      * Removes the gameId of both players in Player.
      * Deletes the entire game in Game.
      * @param event is a necessary parameter which is used in a method from the class ChangeScene.
+     * @return true if the user declines, deletes the game and gameId for both players.
      */
     public boolean decline(ActionEvent event) {
         Connection connection = null;

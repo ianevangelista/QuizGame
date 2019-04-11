@@ -14,6 +14,7 @@ public class Main extends Application {
 
     /**
      * The method creates stage and fetches a scene and displays it.
+     * @param primaryStage the stage.
      */
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -21,7 +22,7 @@ public class Main extends Application {
         primaryStage.setTitle("How Dumb R You?");
         primaryStage.setOnCloseRequest(e -> {
             e.consume();
-            closeProgram(primaryStage);
+            closeProgram();
         });
         primaryStage.setScene(new Scene(main, 600, 400));
         primaryStage.show();
@@ -31,7 +32,7 @@ public class Main extends Application {
      * The method closes the program.
      * Gives the user the option to confirm.
      */
-    private void closeProgram(Stage stage){
+    private void closeProgram(){
         Boolean answer = AlertBox.display("Exit game", "Are you sure you want to quit?");
         if(answer) System.exit(1);
     }

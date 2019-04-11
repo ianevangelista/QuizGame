@@ -243,7 +243,8 @@ public class ControllerRegister {
     }
 
     /**
-     * A private method which sets the visibility of different opponents
+     * A private method which sets the visibility of different opponents.
+     * @param label is the label you want to set visibility to true.
      */
     private void visible(Label label){
         errorMessageEmpty.setVisible(false);
