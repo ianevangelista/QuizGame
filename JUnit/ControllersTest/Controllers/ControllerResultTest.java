@@ -1,7 +1,7 @@
 package Controllers;
 
+import org.junit.AfterClass;
 import org.junit.Test;
-import javafx.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -10,6 +10,7 @@ import Connection.ConnectionPool;
 import static Controllers.ControllerOpponent.setGameId;
 import static Controllers.ControllerHome.setUserName;
 import static Controllers.ControllerQuestion.findUser;
+import Connection.Cleaner;
 import static org.junit.Assert.*;
 
 /*
@@ -17,10 +18,15 @@ import static org.junit.Assert.*;
  */
 public class ControllerResultTest {
 
-    Connection connection = null;
-    Statement statement = null;
+    static Connection connection = null;
+    static Statement statement = null;
     ControllerResult cr = new ControllerResult();
 
+
+    @AfterClass
+    public static void close(){
+        Cleaner.close(statement, null, connection);
+    }
     /*
         test for the checkResult method
      */
@@ -76,7 +82,7 @@ public class ControllerResultTest {
         setUserName("juni");
         int gameId = 1;
         setGameId(gameId);
-        String insertSQL = "INSERT INTO Game (p1Finished, p2Finished, gameId) VALUES (1, 0, " + gameId + ");";
+        String insertSQL = "INSERT INTO Game (player1, player2, p1Finished, p2Finished, gameId) VALUES ('juni', 'helene', 1, 0, " + gameId + ");";
         String deleteSQL = "DELETE FROM Game WHERE gameId = " + gameId + ";";
         try{
             connection = ConnectionPool.getConnection();
@@ -108,7 +114,7 @@ public class ControllerResultTest {
         boolean result = false;
         String username = "juni";
         String selectSQL = "SELECT gamesLost FROM Player WHERE username ='" + username + "';";
-        String deleteSQL = "UPDATE Player SET gamesWon= gamesWon + 1 WHERE username = '" + username + "';";
+        String deleteSQL = "UPDATE Player SET gamesLost = gamesLost - 1 WHERE username = '" + username + "';";
 
         try{
             connection = ConnectionPool.getConnection();
@@ -126,7 +132,7 @@ public class ControllerResultTest {
             int selectAfter = rsAfter.getInt("gamesLost");
 
             //compares before and after, then deletes the changes
-            if((selectBefore - 1) == selectAfter){
+            if((selectBefore+1) == selectAfter){
                 statement.executeUpdate(deleteSQL);
                 assertTrue(result);
             }
@@ -178,4 +184,5 @@ public class ControllerResultTest {
         }
 
     }
+
 }
