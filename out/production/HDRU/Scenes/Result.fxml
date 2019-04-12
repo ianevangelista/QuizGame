@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ControllerResult">
+   <children>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@gameLogo.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="btnChallenge" layoutX="187.0" layoutY="264.0" mnemonicParsing="false" onAction="#sceneChallengeUser" prefHeight="29.0" prefWidth="227.0" style="-fx-background-color: #dae1e8 #dae1e8;" text="CHALLENGE NEW PLAYER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button layoutX="14.0" layoutY="330.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneGame" prefHeight="42.0" prefWidth="78.0" style="-fx-background-color: #dae1e8 #dae1e8;" text="HOME">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Text id="resultHeading" fill="WHITE" layoutX="197.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RESULT" textAlignment="CENTER" wrappingWidth="207.84765625">
+         <font>
+            <Font name="Avenir Book" size="24.0" />
+         </font>
+      </Text>
+      <Text id="resultText" fx:id="resultText" fill="WHITE" layoutX="196.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Getting result..." textAlignment="CENTER" wrappingWidth="207.84765625">
+         <font>
+            <Font name="Avenir Book" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="totalScoreText" fill="WHITE" layoutX="141.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your total score now is: " textAlignment="CENTER" wrappingWidth="234.84765625">
+         <font>
+            <Font name="Avenir Book" size="18.0" />
+         </font>
+      </Text>
+      <Text id="totalScore" fx:id="totalScore" fill="WHITE" layoutX="366.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="77.99999713897705">
+         <font>
+            <Font name="Avenir Book" size="18.0" />
+         </font>
+      </Text>
+      <Button fx:id="btnNext" layoutX="250.0" layoutY="265.0" mnemonicParsing="false" onAction="#sceneResult" style="-fx-background-color: #dae1e8 #dae1e#dae1e8;" text="GET RESULT" visible="false">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></Button>
+      <Text fx:id="theirScore" fill="#1dd1ff" layoutX="120.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your opponent got 0 points this round." textAlignment="CENTER" visible="false" wrappingWidth="361.84765625">
+         <font>
+            <Font name="Avenir Book" size="14.0" />
+         </font>
+      </Text>
+      <Text fx:id="yourScore" fill="#1dd1ff" layoutX="119.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You got 0 points this round!" textAlignment="CENTER" visible="false" wrappingWidth="361.8476629257202">
+         <font>
+            <Font name="Avenir Book" size="14.0" />
+         </font>
+      </Text>
+      <Line endX="100.0" layoutX="299.0" layoutY="118.0" startX="-100.0" stroke="WHITE" />
+   </children>
+</AnchorPane>
