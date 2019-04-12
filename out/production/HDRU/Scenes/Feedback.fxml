@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(11,90,200);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ControllerFeedback">
+   <children>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@gameLogo.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="email" layoutX="200.0" layoutY="151.0" prefWidth="200.0" promptText="E-mail" text="">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></TextField>
+      <Button layoutX="14.0" layoutY="330.0" minHeight="28.0" mnemonicParsing="false" onAction="#sceneHome" prefHeight="42.0" prefWidth="88.0" style="-fx-background-color: #dae1e8 #dae1e8;" text="BACK">
+         <font>
+            <Font name="Avenir Book" size="18.0" />
+         </font>
+      </Button>
+      <Button layoutX="260.0" layoutY="337.0" mnemonicParsing="false" onAction="#feedback" prefHeight="29.0" prefWidth="78.0" style="-fx-background-color: #dae1e8 #dae1e8;" text="SEND">
+         <font>
+            <Font name="Avenir Book" size="12.0" />
+         </font>
+      </Button>
+      <Text fill="WHITE" layoutX="236.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FEEDBACK" wrappingWidth="127.84765625">
+         <font>
+            <Font name="Avenir Book" size="24.0" />
+         </font>
+      </Text>
+      <TextArea fx:id="feedback" layoutX="200.0" layoutY="187.0" prefHeight="143.0" prefWidth="200.0" promptText="Message" wrapText="true">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></TextArea>
+      <Label fx:id="errorMessageEmailInvalid" layoutX="428.0" layoutY="132.0" text="Invalid e-mail" textFill="RED" visible="false">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font></Label>
+      <Line endX="100.0" layoutX="299.0" layoutY="105.0" startX="-100.0" stroke="WHITE" />
+      <Text fill="WHITE" layoutX="217.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like to see in the next version?" textAlignment="CENTER" wrappingWidth="164.26171875">
+         <font>
+            <Font name="Avenir Book" size="13.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>
